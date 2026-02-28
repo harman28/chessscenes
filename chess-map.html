@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chess Scenes</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --cream: #f5f2eb;
+  --ink: #1a1a18;
+  --muted: #7a7670;
+  --white: #ffffff;
+  --border: #e0dbd0;
+  --club:   #8b6f47;
+  --meetup: #4a7c59;
+  --scene:  #5b7fa6;
+}
+html, body { height: 100%; font-family: 'Cormorant Garamond', Georgia, serif; background: var(--cream); color: var(--ink); overflow: hidden; }
+
+/* HEADER */
+header { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: var(--cream); border-bottom: 1px solid var(--border); padding: 0 1.5rem; height: 56px; display: flex; align-items: center; justify-content: space-between; }
+.logo { display: flex; align-items: baseline; gap: 0.5rem; }
+.logo-symbol { font-size: 1.3rem; }
+.logo-text { font-size: 1rem; font-weight: 400; letter-spacing: 0.08em; text-transform: uppercase; }
+.logo-sub { font-size: 0.7rem; font-family: 'DM Mono', monospace; color: var(--muted); letter-spacing: 0.04em; }
+.header-right { display: flex; align-items: center; gap: 1.5rem; }
+.legend { display: flex; gap: 1rem; align-items: center; }
+.legend-item { display: flex; align-items: center; gap: 0.35rem; font-family: 'DM Mono', monospace; font-size: 0.65rem; color: var(--muted); }
+.legend-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+.view-toggle { display: flex; border: 1px solid var(--border); border-radius: 3px; overflow: hidden; }
+.toggle-btn { padding: 0.3rem 0.8rem; font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.06em; text-transform: uppercase; background: none; border: none; border-right: 1px solid var(--border); cursor: pointer; color: var(--muted); transition: background 0.15s, color 0.15s; }
+.toggle-btn:last-child { border-right: none; }
+.toggle-btn.active { background: var(--ink); color: var(--white); }
+
+/* MAP */
+#map-view { position: fixed; top: 56px; left: 0; right: 0; bottom: 0; z-index: 1; }
+#map { width: 100%; height: 100%; }
+
+/* MAP FILTER BAR */
+#filter-bar { position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%); z-index: 500; display: flex; background: var(--white); border: 1px solid var(--border); border-radius: 3px; overflow: hidden; }
+.filter-btn { padding: 0.45rem 0.9rem; font-family: 'DM Mono', monospace; font-size: 0.62rem; letter-spacing: 0.07em; text-transform: uppercase; background: none; border: none; border-right: 1px solid var(--border); cursor: pointer; color: var(--muted); transition: background 0.15s, color 0.15s; white-space: nowrap; }
+.filter-btn:last-child { border-right: none; }
+.filter-btn:hover { background: var(--cream); color: var(--ink); }
+.filter-btn.active { background: var(--ink); color: var(--white); }
+
+/* INFO BOX */
+#info-box { position: fixed; bottom: 1.5rem; left: 1.5rem; z-index: 500; background: var(--white); border: 1px solid var(--border); padding: 0.7rem 1rem; pointer-events: none; }
+.info-count { font-family: 'DM Mono', monospace; font-size: 1.6rem; font-weight: 300; color: var(--ink); line-height: 1; }
+.info-label { font-size: 0.72rem; color: var(--muted); margin-top: 0.15rem; font-style: italic; }
+
+/* PANEL */
+#panel { position: fixed; top: 56px; right: 0; width: 320px; height: calc(100vh - 56px); background: var(--white); border-left: 1px solid var(--border); z-index: 800; transform: translateX(100%); transition: transform 0.3s cubic-bezier(0.4,0,0.2,1); overflow-y: auto; display: flex; flex-direction: column; }
+#panel.open { transform: translateX(0); }
+.panel-image { width: 100%; height: 180px; object-fit: cover; display: block; }
+.panel-header { padding: 1.2rem 1.3rem 0.9rem; border-bottom: 1px solid var(--border); position: sticky; top: 0; background: var(--white); z-index: 1; }
+.panel-close { position: absolute; top: 0.9rem; right: 0.9rem; background: none; border: none; font-size: 1rem; cursor: pointer; color: var(--muted); }
+.panel-labels { display: flex; flex-wrap: wrap; gap: 0.3rem; margin-bottom: 0.5rem; }
+.panel-label-chip { font-family: 'DM Mono', monospace; font-size: 0.58rem; letter-spacing: 0.07em; text-transform: uppercase; padding: 0.15rem 0.5rem; border-radius: 2px; color: var(--white); }
+.panel-name { font-size: 1.4rem; font-weight: 400; line-height: 1.2; margin-bottom: 0.25rem; }
+.panel-location { font-size: 0.85rem; color: var(--muted); font-style: italic; }
+.panel-body { padding: 1.3rem; flex: 1; }
+.panel-desc { font-size: 0.95rem; line-height: 1.65; color: #3a3a38; margin-bottom: 1.4rem; }
+.panel-fields { display: flex; flex-direction: column; border-top: 1px solid var(--border); }
+.field-row { display: flex; border-bottom: 1px solid var(--border); }
+.field-key { font-family: 'DM Mono', monospace; color: var(--muted); padding: 0.5rem 0.8rem 0.5rem 0; min-width: 95px; flex-shrink: 0; font-size: 0.68rem; letter-spacing: 0.03em; }
+.field-val { padding: 0.5rem 0; color: var(--ink); line-height: 1.4; font-size: 0.85rem; }
+.field-val a { color: var(--ink); }
+
+/* LIST VIEW */
+#list-view { position: fixed; top: 56px; left: 0; right: 0; bottom: 0; z-index: 1; overflow-y: auto; background: var(--cream); display: none; }
+.list-inner { max-width: 980px; margin: 0 auto; padding: 1.5rem 1.5rem 4rem; }
+.list-toolbar { margin-bottom: 1.2rem; }
+.list-search { padding: 0.45rem 0.8rem; border: 1px solid var(--border); background: var(--white); font-family: 'Cormorant Garamond', serif; font-size: 0.95rem; color: var(--ink); outline: none; border-radius: 3px; width: 100%; max-width: 360px; }
+.list-search:focus { border-color: var(--ink); }
+.filter-groups { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.2rem; align-items: center; }
+.filter-group { display: flex; align-items: stretch; border: 1px solid var(--border); border-radius: 3px; overflow: hidden; background: var(--white); }
+.filter-group-label { font-family: 'DM Mono', monospace; font-size: 0.58rem; color: var(--muted); letter-spacing: 0.07em; text-transform: uppercase; padding: 0 0.6rem; background: var(--cream); border-right: 1px solid var(--border); display: flex; align-items: center; white-space: nowrap; }
+.fg-btn { padding: 0.35rem 0.7rem; font-family: 'DM Mono', monospace; font-size: 0.62rem; letter-spacing: 0.05em; text-transform: uppercase; background: none; border: none; border-right: 1px solid var(--border); cursor: pointer; color: var(--muted); transition: background 0.15s, color 0.15s; white-space: nowrap; }
+.fg-btn:last-child { border-right: none; }
+.fg-btn:hover { background: var(--cream); color: var(--ink); }
+.fg-btn.active { background: var(--ink); color: var(--white); }
+.clear-btn { padding: 0.35rem 0.8rem; font-family: 'DM Mono', monospace; font-size: 0.62rem; letter-spacing: 0.05em; text-transform: uppercase; background: none; border: 1px solid var(--border); border-radius: 3px; cursor: pointer; color: var(--muted); transition: all 0.15s; }
+.clear-btn:hover { background: var(--ink); color: var(--white); border-color: var(--ink); }
+.list-results-info { font-family: 'DM Mono', monospace; font-size: 0.65rem; color: var(--muted); margin-bottom: 1rem; }
+.list-section { margin-bottom: 2rem; }
+.list-section-title { font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.8rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 0.5rem; }
+.section-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+.list-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); }
+.list-card { background: var(--white); cursor: pointer; transition: background 0.15s; display: flex; flex-direction: column; }
+.list-card:hover { background: var(--cream); }
+.list-card-img { width: 100%; height: 140px; object-fit: cover; display: block; }
+.list-card-body { padding: 1rem 1.1rem 1.1rem; flex: 1; }
+.card-name { font-size: 1.05rem; font-weight: 400; margin-bottom: 0.15rem; line-height: 1.25; }
+.card-city { font-size: 0.78rem; color: var(--muted); font-style: italic; margin-bottom: 0.5rem; }
+.card-desc { font-size: 0.82rem; line-height: 1.55; color: #555; margin-bottom: 0.6rem; }
+.card-labels { display: flex; flex-wrap: wrap; gap: 0.3rem; }
+.card-label-chip { font-family: 'DM Mono', monospace; font-size: 0.56rem; letter-spacing: 0.06em; text-transform: uppercase; padding: 0.12rem 0.4rem; border-radius: 2px; color: var(--white); }
+.no-results { text-align: center; padding: 3rem 1rem; color: var(--muted); font-style: italic; font-size: 1.1rem; }
+
+/* Loading / error states */
+#loading { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; background: var(--cream); z-index: 9999; flex-direction: column; gap: 0.8rem; }
+#loading .loading-symbol { font-size: 2.5rem; animation: spin 2s linear infinite; display: inline-block; }
+#loading .loading-text { font-family: 'DM Mono', monospace; font-size: 0.75rem; color: var(--muted); letter-spacing: 0.08em; }
+@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+/* Leaflet overrides */
+.leaflet-control-zoom { border: 1px solid var(--border) !important; border-radius: 3px !important; }
+.leaflet-control-zoom a { font-family: 'DM Mono', monospace !important; color: var(--ink) !important; background: var(--white) !important; border-bottom: 1px solid var(--border) !important; }
+.leaflet-control-zoom a:hover { background: var(--cream) !important; }
+</style>
+</head>
+<body>
+
+<!-- Loading screen -->
+<div id="loading">
+  <span class="loading-symbol">&#9823;</span>
+  <span class="loading-text">Loading places...</span>
+</div>
+
+<header>
+  <div class="logo">
+    <span class="logo-symbol">&#9823;</span>
+    <div>
+      <div class="logo-text">Chess Scenes</div>
+      <div class="logo-sub">A world map of chess culture</div>
+    </div>
+  </div>
+  <div class="header-right">
+    <div class="legend">
+      <div class="legend-item"><div class="legend-dot" style="background:var(--club)"></div>Chess Club</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--meetup)"></div>Chess Meetup</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--scene)"></div>Chess Scene</div>
+    </div>
+    <div class="view-toggle">
+      <button class="toggle-btn active" id="btn-map" onclick="switchView('map')">Map</button>
+      <button class="toggle-btn" id="btn-list" onclick="switchView('list')">List</button>
+    </div>
+  </div>
+</header>
+
+<div id="map-view"><div id="map"></div></div>
+
+<div id="list-view">
+  <div class="list-inner">
+    <div class="list-toolbar">
+      <input class="list-search" id="list-search" type="text" placeholder="Search by name, city, description..." oninput="renderList()">
+    </div>
+    <div class="filter-groups" id="filter-groups"></div>
+    <div class="list-results-info" id="list-results-info"></div>
+    <div id="list-content"></div>
+  </div>
+</div>
+
+<div id="panel">
+  <div id="panel-img-wrap"></div>
+  <div class="panel-header">
+    <button class="panel-close" onclick="closePanel()">&#x2715;</button>
+    <div class="panel-labels" id="p-labels"></div>
+    <div class="panel-name" id="p-name"></div>
+    <div class="panel-location" id="p-location"></div>
+  </div>
+  <div class="panel-body">
+    <div class="panel-desc" id="p-desc"></div>
+    <div class="panel-fields" id="p-fields"></div>
+  </div>
+</div>
+
+<div id="filter-bar">
+  <button class="filter-btn active" onclick="mapFilter('all',this)">All</button>
+  <button class="filter-btn" onclick="mapFilter('chess club',this)">Chess Club</button>
+  <button class="filter-btn" onclick="mapFilter('chess meetup',this)">Chess Meetup</button>
+  <button class="filter-btn" onclick="mapFilter('chess scene',this)">Chess Scene</button>
+</div>
+
+<div id="info-box">
+  <div class="info-count" id="visible-count">0</div>
+  <div class="info-label">chess scenes</div>
+</div>
+
+<script>
+var LABEL_COLORS = { 'chess club': '#8b6f47', 'chess meetup': '#4a7c59', 'chess scene': '#5b7fa6' };
+var ALL_LABELS   = ['chess club', 'chess meetup', 'chess scene'];
+var SYSTEM_KEYS  = ['labels', 'lat', 'lng', 'desc', 'image', 'name', 'id', '_labels', '_extra'];
+
+var places = [];
+var leafletMarkers = [];
+var activeMapFilter = 'all';
+var currentView = 'map';
+var currentPlaceId = null;
+var map;
+var listFilters = { labels: [], scene: [], country: [] };
+
+// ── Parse markdown ────────────────────────────────────────────────────────────
+function parseMarkdown(md) {
+  var results = [];
+  // Strip comment lines
+  var stripped = md.split('\n').filter(function(l) { return !l.trim().startsWith('#'); }).join('\n');
+  var sections = stripped.split(/^## /m).filter(function(s) { return s.trim(); });
+  sections.forEach(function(section, i) {
+    var lines = section.trim().split('\n');
+    var name = lines[0].trim();
+    if (!name) return;
+    var obj = { id: i + 1, name: name, _extra: [] };
+    lines.slice(1).forEach(function(line) {
+      var m = line.match(/^([^:]+):\s*(.+)/);
+      if (!m) return;
+      var key = m[1].trim();
+      var val = m[2].trim();
+      obj[key] = (key === 'lat' || key === 'lng') ? parseFloat(val) : val;
+      if (SYSTEM_KEYS.indexOf(key) === -1) obj._extra.push(key);
+    });
+    obj._labels = obj.labels
+      ? obj.labels.split(',').map(function(l) { return l.trim().toLowerCase(); })
+      : ['chess scene'];
+    if (obj.lat && obj.lng) results.push(obj);
+  });
+  return results;
+}
+
+// ── Marker HTML ───────────────────────────────────────────────────────────────
+function makeMarkerHtml(labels) {
+  var cols = labels.filter(function(l) { return LABEL_COLORS[l]; });
+  if (!cols.length) cols = ['chess scene'];
+  var bg;
+  if (cols.length === 1) {
+    bg = LABEL_COLORS[cols[0]];
+  } else {
+    var n = Math.min(cols.length, 3);
+    var stops = [];
+    for (var j = 0; j < n; j++) {
+      var s = (j * 100 / n).toFixed(1), e = ((j + 1) * 100 / n).toFixed(1);
+      stops.push(LABEL_COLORS[cols[j]] + ' ' + s + '% ' + e + '%');
+    }
+    bg = 'conic-gradient(' + stops.join(',') + ')';
+  }
+  return '<div style="width:30px;height:30px;border-radius:50%;background:' + bg + ';border:2.5px solid white;box-shadow:0 2px 10px rgba(0,0,0,0.25);display:flex;align-items:center;justify-content:center;font-size:13px;color:white;">&#9823;</div>';
+}
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+function init() {
+  fetch('places.md')
+    .then(function(r) {
+      if (!r.ok) throw new Error('Could not load places.md (HTTP ' + r.status + ')');
+      return r.text();
+    })
+    .then(function(md) {
+      places = parseMarkdown(md);
+      document.getElementById('loading').style.display = 'none';
+      initMap();
+      buildListFilters();
+      renderAll();
+    })
+    .catch(function(err) {
+      document.getElementById('loading').innerHTML =
+        '<span style="font-size:2rem">&#9888;</span>' +
+        '<span style="font-family:\'DM Mono\',monospace;font-size:0.75rem;color:#c0392b;max-width:320px;text-align:center;line-height:1.6">' +
+        'Could not load <strong>places.md</strong>.<br>' +
+        'Make sure both files are in the same folder and you\'re serving them via a local server or GitHub Pages.<br><br>' +
+        '<em>' + err.message + '</em></span>';
+    });
+}
+
+function initMap() {
+  map = L.map('map', { center: [48, 12], zoom: 5 });
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    maxZoom: 19
+  }).addTo(map);
+}
+
+// ── List filters ──────────────────────────────────────────────────────────────
+function buildListFilters() {
+  var scenes = {}, countries = {};
+  places.forEach(function(p) {
+    if (p.scene) scenes[p.scene] = true;
+    if (p.city) countries[p.city.split(',').pop().trim()] = true;
+  });
+
+  var container = document.getElementById('filter-groups');
+  container.innerHTML = '';
+
+  // Labels (multi)
+  var lg = makeFilterGroup('Label');
+  ALL_LABELS.forEach(function(lbl) {
+    lg.appendChild(makeToggleBtn(lbl, '3px solid ' + LABEL_COLORS[lbl], function(val, on) {
+      if (on) { if (listFilters.labels.indexOf(val) === -1) listFilters.labels.push(val); }
+      else listFilters.labels = listFilters.labels.filter(function(v) { return v !== val; });
+      renderList();
+    }, function(val) { return listFilters.labels.indexOf(val) !== -1; }));
+  });
+  container.appendChild(lg);
+
+  // Scene (multi)
+  var sceneKeys = Object.keys(scenes).sort();
+  if (sceneKeys.length) {
+    var sg = makeFilterGroup('Scene');
+    sceneKeys.forEach(function(val) {
+      sg.appendChild(makeToggleBtn(val, null, function(v, on) {
+        if (on) { if (listFilters.scene.indexOf(v) === -1) listFilters.scene.push(v); }
+        else listFilters.scene = listFilters.scene.filter(function(x) { return x !== v; });
+        renderList();
+      }, function(v) { return listFilters.scene.indexOf(v) !== -1; }));
+    });
+    container.appendChild(sg);
+  }
+
+  // Country (multi)
+  var countryKeys = Object.keys(countries).sort();
+  if (countryKeys.length > 1) {
+    var cg = makeFilterGroup('Country');
+    countryKeys.forEach(function(val) {
+      cg.appendChild(makeToggleBtn(val, null, function(v, on) {
+        if (on) { if (listFilters.country.indexOf(v) === -1) listFilters.country.push(v); }
+        else listFilters.country = listFilters.country.filter(function(x) { return x !== v; });
+        renderList();
+      }, function(v) { return listFilters.country.indexOf(v) !== -1; }));
+    });
+    container.appendChild(cg);
+  }
+
+  // Clear
+  var clr = document.createElement('button');
+  clr.className = 'clear-btn';
+  clr.textContent = 'Clear';
+  clr.onclick = function() {
+    listFilters = { labels: [], scene: [], country: [] };
+    document.getElementById('list-search').value = '';
+    buildListFilters();
+    renderList();
+  };
+  container.appendChild(clr);
+}
+
+function makeFilterGroup(label) {
+  var wrap = document.createElement('div');
+  wrap.className = 'filter-group';
+  var lbl = document.createElement('div');
+  lbl.className = 'filter-group-label';
+  lbl.textContent = label;
+  wrap.appendChild(lbl);
+  return wrap;
+}
+
+function makeToggleBtn(val, borderLeft, onChange, isActive) {
+  var btn = document.createElement('button');
+  btn.className = 'fg-btn' + (isActive(val) ? ' active' : '');
+  btn.textContent = val;
+  if (borderLeft) btn.style.borderLeft = borderLeft;
+  btn.onclick = function() {
+    btn.classList.toggle('active');
+    onChange(val, btn.classList.contains('active'));
+  };
+  return btn;
+}
+
+// ── Render ────────────────────────────────────────────────────────────────────
+function renderAll() {
+  renderMarkers();
+  renderList();
+}
+
+function renderMarkers() {
+  leafletMarkers.forEach(function(m) { m.marker.remove(); });
+  leafletMarkers = [];
+  places.forEach(function(loc) {
+    var icon = L.divIcon({ className: '', html: makeMarkerHtml(loc._labels), iconSize: [30, 30], iconAnchor: [15, 15] });
+    var marker = L.marker([loc.lat, loc.lng], { icon: icon });
+    marker.on('click', (function(id) { return function() { openPanel(id); }; })(loc.id));
+    leafletMarkers.push({ marker: marker, labels: loc._labels, id: loc.id });
+  });
+  applyMapFilter(activeMapFilter);
+}
+
+function applyMapFilter(filter) {
+  activeMapFilter = filter;
+  var count = 0;
+  leafletMarkers.forEach(function(m) {
+    var show = filter === 'all' || m.labels.indexOf(filter) !== -1;
+    if (show) { m.marker.addTo(map); count++; }
+    else { m.marker.remove(); }
+  });
+  document.getElementById('visible-count').textContent = count;
+}
+
+function mapFilter(filter, btn) {
+  document.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); });
+  btn.classList.add('active');
+  applyMapFilter(filter);
+}
+
+// ── List ──────────────────────────────────────────────────────────────────────
+function getFilteredPlaces() {
+  var q = (document.getElementById('list-search').value || '').toLowerCase().trim();
+  return places.filter(function(p) {
+    if (listFilters.labels.length && !listFilters.labels.some(function(l) { return p._labels.indexOf(l) !== -1; })) return false;
+    if (listFilters.scene.length && listFilters.scene.indexOf(p.scene) === -1) return false;
+    if (listFilters.country.length) {
+      var c = p.city ? p.city.split(',').pop().trim() : '';
+      if (listFilters.country.indexOf(c) === -1) return false;
+    }
+    if (q) {
+      var hay = [p.name, p.city, p.desc].concat(p._extra.map(function(k) { return p[k]; })).join(' ').toLowerCase();
+      if (hay.indexOf(q) === -1) return false;
+    }
+    return true;
+  });
+}
+
+function renderList() {
+  var filtered = getFilteredPlaces();
+  document.getElementById('list-results-info').textContent = filtered.length + ' of ' + places.length + ' scenes shown';
+  var content = document.getElementById('list-content');
+  if (!filtered.length) { content.innerHTML = '<div class="no-results">No scenes match your filters.</div>'; return; }
+
+  var groups = { 'chess club': [], 'chess meetup': [], 'chess scene': [] };
+  filtered.forEach(function(p) { p._labels.forEach(function(l) { if (groups[l]) groups[l].push(p); }); });
+  content.innerHTML = '';
+
+  ALL_LABELS.forEach(function(key) {
+    var group = groups[key];
+    if (!group.length) return;
+    var sec = document.createElement('div');
+    sec.className = 'list-section';
+    var titleEl = document.createElement('div');
+    titleEl.className = 'list-section-title';
+    titleEl.innerHTML = '<div class="section-dot" style="background:' + LABEL_COLORS[key] + '"></div>' +
+      key.charAt(0).toUpperCase() + key.slice(1) + 's' +
+      '<span style="margin-left:auto;font-weight:300">' + group.length + '</span>';
+    sec.appendChild(titleEl);
+    var grid = document.createElement('div');
+    grid.className = 'list-grid';
+    group.forEach(function(p) {
+      var card = document.createElement('div');
+      card.className = 'list-card';
+      var shortDesc = (p.desc || '').length > 110 ? p.desc.slice(0, 110) + '...' : (p.desc || '');
+      card.innerHTML =
+        (p.image ? '<img class="list-card-img" src="' + p.image + '" alt="" onerror="this.style.display=\'none\'">' : '') +
+        '<div class="list-card-body">' +
+          '<div class="card-name">' + p.name + '</div>' +
+          '<div class="card-city">' + (p.city || '') + '</div>' +
+          '<div class="card-desc">' + shortDesc + '</div>' +
+          '<div class="card-labels">' + p._labels.map(function(lbl) {
+            return '<span class="card-label-chip" style="background:' + (LABEL_COLORS[lbl] || '#888') + '">' + lbl + '</span>';
+          }).join('') + '</div>' +
+        '</div>';
+      card.addEventListener('click', (function(place) { return function() {
+        switchView('map');
+        setTimeout(function() { map.setView([place.lat, place.lng], 14, { animate: true }); openPanel(place.id); }, 120);
+      }; })(p));
+      grid.appendChild(card);
+    });
+    sec.appendChild(grid);
+    content.appendChild(sec);
+  });
+}
+
+// ── Panel ─────────────────────────────────────────────────────────────────────
+function openPanel(id) {
+  var loc = places.filter(function(p) { return p.id === id; })[0];
+  if (!loc) return;
+  currentPlaceId = id;
+  document.getElementById('panel-img-wrap').innerHTML = loc.image
+    ? '<img class="panel-image" src="' + loc.image + '" alt="" onerror="this.parentNode.innerHTML=\'\'">' : '';
+  document.getElementById('p-labels').innerHTML = loc._labels.map(function(lbl) {
+    return '<span class="panel-label-chip" style="background:' + (LABEL_COLORS[lbl] || '#888') + '">' + lbl + '</span>';
+  }).join('');
+  document.getElementById('p-name').textContent = loc.name;
+  document.getElementById('p-location').textContent = loc.city || '';
+  document.getElementById('p-desc').textContent = loc.desc || '';
+  var fieldsEl = document.getElementById('p-fields');
+  fieldsEl.innerHTML = '';
+  loc._extra.forEach(function(key) {
+    var val = loc[key]; if (!val) return;
+    var row = document.createElement('div'); row.className = 'field-row';
+    var isUrl = /^https?:\/\//.test(val);
+    row.innerHTML = '<div class="field-key">' + key + '</div><div class="field-val">' +
+      (isUrl ? '<a href="' + val + '" target="_blank" rel="noopener">' + val.replace(/^https?:\/\//, '') + '</a>' : val) +
+      '</div>';
+    fieldsEl.appendChild(row);
+  });
+  document.getElementById('panel').classList.add('open');
+}
+
+function closePanel() { document.getElementById('panel').classList.remove('open'); currentPlaceId = null; }
+
+// ── View switch ───────────────────────────────────────────────────────────────
+function switchView(view) {
+  currentView = view;
+  document.getElementById('map-view').style.display = view === 'map' ? 'block' : 'none';
+  document.getElementById('list-view').style.display = view === 'list' ? 'block' : 'none';
+  document.getElementById('filter-bar').style.display = view === 'map' ? 'flex' : 'none';
+  document.getElementById('info-box').style.display = view === 'map' ? 'block' : 'none';
+  document.getElementById('btn-map').classList.toggle('active', view === 'map');
+  document.getElementById('btn-list').classList.toggle('active', view === 'list');
+  if (view === 'map') { setTimeout(function() { map.invalidateSize(); }, 60); closePanel(); }
+  if (view === 'list') closePanel();
+}
+
+init();
+</script>
+</body>
+</html>
