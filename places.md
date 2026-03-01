@@ -155,34 +155,11 @@ labels: chess club
 coordinates:
 link: https://www.google.com/maps/place/Marshall+Chess+Club/data=!4m2!3m1!1s0x89c25997120286df:0xbdc7c294c9ca4826
 
-name: Chess boards – Many outdoors chess tables.
-labels: chess board
-coordinates: 42.191683, 24.332036
-note: Many outdoors chess tables.
-link: https://www.google.com/maps/search/42.191683,24.332036
-
 name: Chess boards – Pair of outdoor chess tables at a playground.
 labels: chess board
 coordinates: 52.490554, 5.505707
 note: Pair of outdoor chess tables at a playground.
 link: https://www.google.com/maps/search/52.490554,5.505707
-
-name: Chess Cafe Panellinion
-labels: chess bar
-coordinates:
-link: https://www.google.com/maps/place/Chess+Cafe+Panellinion/data=!4m2!3m1!1s0x14a1bd37420f2a3d:0x3ba4fc770f053eaf
-
-name: K.O.T.E.S. (Booze Cooperativa)
-labels: chess bar
-coordinates:
-note: Underground shady vibes place. Chess scenes with smoking allowed indoors.
-link: https://www.google.com/maps/place/K.O.T.E.S.+(Booze+Cooperativa)/data=!4m2!3m1!1s0x14a1bd3cbd1072b3:0xa33e9f068a311ad
-
-name: Chess boards – Giant boards.
-labels: chess board
-coordinates: 37.942749, 23.694164
-note: Giant boards.
-link: https://www.google.com/maps/search/37.942749,23.694164
 
 name: Freiluftschach
 labels: chess board
@@ -213,12 +190,6 @@ labels: chess board
 coordinates:
 note: Outdoor chess tables, not sure if anyone plays.
 link: https://www.google.com/maps/place/Parco+Scacchi+%2F+Chess/data=!4m2!3m1!1s0x4786c70002af3b21:0x6f22f52d92a2ce53
-
-name: Manuel's
-labels: chess bar
-coordinates:
-note: Just a cigar shop, but it seems like people play chess there.
-link: https://www.google.com/maps/place/Manuel's/data=!4m2!3m1!1s0x47900a0439288977:0x80704c7d49f2ef25
 
 name: Dropped pin – Giant board
 labels: chess board
@@ -292,11 +263,6 @@ coordinates:
 note: Every Friday afternoon 13:30–17:00, casual games and small tournaments. All levels welcome, €2.50 entrance.
 link: https://www.google.com/maps/place/Schaakcaf%C3%A9+Utrecht/data=!4m2!3m1!1s0x47c66f00138b8b87:0x8ed2565658efba
 days: Friday
-
-name: Chessmen's Place
-labels: chess shop
-coordinates:
-link: https://www.google.com/maps/place/Chessmen's+Place/data=!4m2!3m1!1s0x40b1ffa5febbaf99:0x2ec0281cb27f7c62
 
 name: Маси за шахмат
 labels: chess board
@@ -473,16 +439,6 @@ link: https://www.google.com/maps/search/48.158276,10.831913
 
 name: Chess boards
 labels: chess board
-coordinates: 47.560883, 7.580881
-link: https://www.google.com/maps/search/47.560883,7.580881
-
-name: Chess boards
-labels: chess board
-coordinates: 47.55345, 7.7918333
-link: https://www.google.com/maps/search/47.55345,7.7918333
-
-name: Chess boards
-labels: chess board
 coordinates: 48.1462333, 11.56685
 link: https://www.google.com/maps/search/48.1462333,11.56685
 
@@ -551,11 +507,6 @@ name: Chess Playground
 labels: chess board
 coordinates:
 link: https://www.google.com/maps/place/Chess+Playground/data=!4m2!3m1!1s0x48760fc9485232b5:0xd01b7cbb3411d544
-
-name: Place de Jeux du Parc des Bastions
-labels: chess board
-coordinates:
-link: https://www.google.com/maps/place/Place+de+Jeux+du+Parc+des+Bastions/data=!4m2!3m1!1s0x478c64d2343f71d7:0xdc48c5964f050e5a
 
 name: Schach Spiele Platz
 labels: chess board
