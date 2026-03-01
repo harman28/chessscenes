@@ -1,10 +1,3 @@
-name: Buurtcentrum Gentbrugge
-labels: chess meetup
-coordinates:
-note: Chess Sunday 10am to 1pm
-link: https://www.google.com/maps/place/Buurtcentrum+Gentbrugge/data=!4m2!3m1!1s0x47c376ac3bdee5a9:0xf8a369ab94002198
-days: Sunday
-
 name: Ka Makana Aliʻi
 labels: chess meetup
 coordinates:
@@ -82,11 +75,6 @@ labels: chess board
 coordinates:
 link: https://www.google.com/maps/place/Schach-+und+M%C3%BChletische/data=!4m2!3m1!1s0x47bf25306d0f1337:0x29c91d3bcecec3d6
 
-name: Svarta Hästen Stureplan
-labels: chess bar
-coordinates:
-link: https://www.google.com/maps/place/Svarta+H%C3%A4sten+Stureplan/data=!4m2!3m1!1s0x465f9dbc578f796f:0x53a5b5f15a5796ae
-
 name: Playground
 labels: chess meetup
 coordinates:
@@ -152,13 +140,6 @@ coordinates:
 note: Thursday Chess Group meets at 6pm.
 link: https://www.google.com/maps/place/The+Corona+Bar+%26+Kitchen/data=!4m2!3m1!1s0x48884658f13631af:0x881efda83facfbca
 days: Thursday
-
-name: Copenhagen Chess
-labels: chess meetup
-coordinates:
-note: Casual chess on Wednesday and Saturday afternoons.
-link: https://www.google.com/maps/place/Copenhagen+Chess/data=!4m2!3m1!1s0x465253bb1578f14b:0xe54306844d593f1b
-days: Wednesday, Saturday
 
 name: Harvest Hall
 labels: chess meetup
@@ -242,24 +223,11 @@ coordinates: 37.942749, 23.694164
 note: Giant boards.
 link: https://www.google.com/maps/search/37.942749,23.694164
 
-name: Le STROF
-labels: chess bar
-coordinates:
-note: Genuine chess bar.
-link: https://www.google.com/maps/place/Le+STROF/data=!4m2!3m1!1s0x47c3c5c725189a65:0xb28bd2bfe00ee30d
-
 name: Freiluftschach
 labels: chess board
 coordinates:
 note: Giant boards visible in a playground.
 link: https://www.google.com/maps/place/Freiluftschach/data=!4m2!3m1!1s0x47b18923b3cbdb01:0xdf349863a302ab28
-
-name: KopieKoffie
-labels: chess bar
-coordinates:
-note: Chess on Sundays at 3.30pm. Casual affair, very Dutch, most people play without clocks.
-link: https://www.google.com/maps/place/KopieKoffie/data=!4m2!3m1!1s0x47c5b50ddfae55e1:0x7f27ebee53234d2e
-days: Sunday
 
 name: Chess Park
 labels: chess board
@@ -369,20 +337,6 @@ labels: chess board
 coordinates: 53.563365, 9.982212
 note: Chess but only in the summers.
 link: https://www.google.com/maps/search/53.563365,9.982212
-
-name: Toots Jazz Club
-labels: chess bar
-coordinates:
-note: Blitz event Tuesdays at 7.30pm. Get there early.
-link: https://www.google.com/maps/place/Toots+Jazz+Club/data=!4m2!3m1!1s0x47c3c57b380641c5:0x20518f8f20b019ae
-days: Tuesday
-
-name: Le Pantin
-labels: chess bar
-coordinates:
-note: Just seems to be a chess bar. Blitz tournament Tuesdays at 7pm.
-link: https://www.google.com/maps/place/Le+Pantin/data=!4m2!3m1!1s0x47c3c4931d8affd3:0xca234321219fd876
-days: Tuesday
 
 name: Dropped pin
 labels: chess board
@@ -729,39 +683,11 @@ coordinates:
 note: Just a chess bar.
 link: https://www.google.com/maps/place/The+Good+Knight/data=!4m2!3m1!1s0x46416f595815fb39:0x8b0371b4e7a9f52f
 
-name: St John's Square
-labels: chess board
-coordinates:
-note: Chess on Saturday at 12pm.
-link: https://www.google.com/maps/place/St+John's+Square/data=!4m2!3m1!1s0x48761b51aeec49ad:0xb0b1c14fb1973add
-days: Saturday
-
-name: Granary Square
-labels: chess board
-coordinates:
-note: Chess on Wednesday at 6.30pm.
-link: https://www.google.com/maps/place/Granary+Square/data=!4m2!3m1!1s0x48761b3d9035396b:0x87d7405a11148df9
-days: Wednesday
-
 name: Wijkcentrum De Daalder
 labels: chess meetup
 coordinates:
 note: Chess on Tuesday evenings.
 link: https://www.google.com/maps/place/Wijkcentrum+De+Daalder/data=!4m2!3m1!1s0x47cf56de6ca38521:0xcbcd443988f96daa
-days: Tuesday
-
-name: Café chez Maria
-labels: chess bar
-coordinates:
-note: Chess on Fridays at 8pm.
-link: https://www.google.com/maps/place/Caf%C3%A9+chez+Maria/data=!4m2!3m1!1s0x479548d1917f7273:0xd02933704d04dd3d
-days: Friday
-
-name: Club d'Echecs Luxembourg 1915
-labels: chess club
-coordinates:
-note: Chess on Tuesday at 8pm.
-link: https://www.google.com/maps/place/Club+d'Echecs+Luxembourg+1915/data=!4m2!3m1!1s0x479548d6c89dd013:0xbcdef2a3c4fbabdb
 days: Tuesday
 
 name: Myo Cafe
@@ -922,12 +848,6 @@ labels: chess club
 coordinates:
 link: https://www.google.com/maps/place/Berkeley+Chess+Club/data=!4m2!3m1!1s0x80857d00662d8961:0x9bcb0fd7259ab6a3
 
-name: Old Brewery
-labels: chess bar
-coordinates:
-note: Chess here on Sundays 12–5.
-link: https://www.google.com/maps/place/Old+Brewery/data=!4m2!3m1!1s0x48760284d129d219:0xfc03125988dcf0bd
-days: Sunday
 
 name: Chess'nBar
 labels: chess bar
@@ -1010,11 +930,6 @@ name: Kennedy Park
 labels: chess board
 coordinates:
 link: https://www.google.com/maps/place/Kennedy+Park/data=!4m2!3m1!1s0x9105c81e30b6695f:0x1015ccad533f5be5
-
-name: Stichting En Passant
-labels: chess club
-coordinates:
-link: https://www.google.com/maps/place/Stichting+En+Passant/data=!4m2!3m1!1s0x47c5b726e3f5bd3f:0x668ad27a6adda496
 
 name: Chess Forum
 labels: chess shop
