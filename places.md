@@ -226,12 +226,6 @@ coordinates: 55.6852033, 12.5328429
 note: Giant board.
 link: https://www.google.com/maps/search/55.6852033,12.5328429
 
-name: Széchenyi Thermal Bath
-labels: chess meetup
-coordinates:
-note: There are chess parties in the pool.
-link: https://www.google.com/maps/place/Sz%C3%A9chenyi+Thermal+Bath/data=!4m2!3m1!1s0x4741db8605675577:0xcbc0c308b68d2412
-
 name: Chess boards – 2 giant chessboards
 labels: chess board
 coordinates: 39.461046, -0.358592
@@ -319,11 +313,6 @@ labels: chess board
 coordinates: 43.6105556, 3.8815278
 link: https://www.google.com/maps/search/43.6105556,3.8815278
 
-name: Magyar Sakkvilág
-labels: chess shop
-coordinates:
-link: https://www.google.com/maps/place/Magyar+Sakkvil%C3%A1g/data=!4m2!3m1!1s0x4741dc0f47790081:0xcc1e61f903166191
-
 name: Dropped pin
 labels: chess board
 coordinates: 48.2263148, 16.4326806
@@ -338,16 +327,6 @@ name: Chess Tables
 labels: chess board
 coordinates:
 link: https://www.google.com/maps/place/Chess+Tables/data=!4m2!3m1!1s0x4755afde4b7603fb:0x9107aa6efc1d8d80
-
-name: Chess tables
-labels: chess board
-coordinates:
-link: https://www.google.com/maps/place/Chess+tables/data=!4m2!3m1!1s0x4741dd8ea76ae0a9:0x86476e2393ddf8c7
-
-name: Chess tables outside
-labels: chess board
-coordinates:
-link: https://www.google.com/maps/place/Chess+tables+outside/data=!4m2!3m1!1s0x4741dd4899f24dc9:0xfc45ea1fadfa3bda
 
 name: ASD Spezia per gli Scacchi
 labels: chess club
