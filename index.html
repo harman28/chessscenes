@@ -30,9 +30,10 @@
     chess board   → green   ♟  (outdoor boards, giant sets)
     chess shop    → blue    ♛  (retailers)
     chess memorial → purple ♔  (historic sites, defunct venues)
-    chess bar     → red     ♞  (bars/cafes with regular chess)
+    chess bar     → red     ♞  (bars/cafes with chess culture)
     chess club    → brown   ♜  (organised clubs)
     chess meetup  → teal    ♝  (informal recurring meetups)
+    chess museum  → gold    ♔  (dedicated heritage institutions) 
 
   Add a new location by copying a block below and editing the values.
   Leave a blank line between entries.
@@ -107,7 +108,7 @@ note: Chess mecca of Amsterdam. Tournaments on barblitz.co. Casual chess always.
 link: https://maps.app.goo.gl/PizEC9TRQ4kt8QyK6
 
 name: Max Euwe Centrum
-labels: chess club
+labels: chess museum
 city: Amsterdam
 coordinates: 52.362777166541285, 4.882811878673435
 note: Free chess museum and library.
@@ -543,6 +544,36 @@ labels: chess bar
 city: Paris
 coordinates: 48.85309115846211, 2.331505957041081
 link: https://www.google.com/maps/place/Blitz+Society/data=!4m2!3m1!1s0x47e6716dc5a5bb15:0xf1333a977c5f335f
+
+name: Chess Club Barrikadnaya
+labels: chess bar
+city: Moscow
+coordinates: 55.76114107694813, 37.58216496066147
+note: Basement chess bar in Kudrinskaya Square.
+link: https://maps.app.goo.gl/dF1hzyujAuhYBb7JA
+
+name: Chess Museum
+labels: chess museum
+city: Moscow
+coordinates: 55.74875901248655, 37.603847376803884
+link: https://maps.app.goo.gl/ndDHypzCEUYLa9N88
+note: Free museum housed with the Central Chess Club. 4000 artifacts, including the 1984 Karpov-Kasparov set. Open only 2-6pm on two weekdays.
+days: Tuesday, Thursday
+
+name: Oktyabr'skiy Shakhmatnyy Klub
+labels: chess club
+city: Moscow
+coordinates: 55.73538745080846, 37.62239074303898
+link: https://maps.app.goo.gl/tv2TPHQXcrNwxF7m6
+note: Old school club with multiple blitz tournaments a week. Weekdays 6pm, Weekends 12pm.
+days: Wednesday, Friday, Saturday, Sunday
+
+name: Belaya Lad'ya | White Rook
+labels: chess board
+city: Moscow
+coordinates: 55.71928944783564, 37.59262720012194
+link: https://maps.app.goo.gl/e2FYnwBkZpQxGh8B6
+note: Free outdoor chess club in Gorky Park. Locals have been playing here since the 1970s.
 
 
 -->
@@ -1348,6 +1379,7 @@ link: https://www.google.com/maps/place/Blitz+Society/data=!4m2!3m1!1s0x47e6716d
             <button type="button" class="toggle-btn" data-value="chess board">♟ Outdoor Board</button>
             <button type="button" class="toggle-btn" data-value="chess shop">♛ Shop</button>
             <button type="button" class="toggle-btn" data-value="chess memorial">♔ Memorial</button>
+            <button type="button" class="toggle-btn" data-value="chess museum">♔ Museum</button>
           </div>
           <input type="hidden" name="labels" id="labels-hidden">
         </div>
@@ -1398,6 +1430,7 @@ const LABEL_CONFIG = {
   'chess bar':      { color: '#8b2500', icon: '♞', display: 'Bar' },
   'chess club':     { color: '#5c4a00', icon: '♜', display: 'Club' },
   'chess meetup':   { color: '#0a5c6b', icon: '♝', display: 'Meetup' },
+  'chess museum':   { color: '#c9a84c', icon: '♔', display: 'Museum' },
 };
 
 const DAYS_ORDER = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
