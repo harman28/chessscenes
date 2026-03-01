@@ -238,18 +238,6 @@ coordinates:
 note: Memorial to Mihails Tāls. People probably play around here somewhere.
 link: https://www.google.com/maps/place/Piemineklis+Mihailam+T%C4%81lam/data=!4m2!3m1!1s0x46eecfd215e41333:0x700681fddf9502a5
 
-name: Schaakbord Agnietenkapel
-labels: chess board
-coordinates:
-note: Mini-giant board, next to a small church.
-link: https://www.google.com/maps/place/Schaakbord+Agnietenkapel/data=!4m2!3m1!1s0x47c5d78900613339:0x1dfe4517eba1f4f9
-
-name: Piazza degli Scacchi
-labels: chess memorial
-coordinates:
-note: A human-scale chess game (Partita a Scacchi) is acted out in medieval costume on the second weekend of September in even-numbered years.
-link: https://www.google.com/maps/place/Piazza+degli+Scacchi/data=!4m2!3m1!1s0x4778cfd5352dbd85:0x431c53b90c66ae66
-
 name: Chess boards – 2 giant chessboards
 labels: chess board
 coordinates: 39.461046, -0.358592
@@ -819,11 +807,6 @@ name: Union Square Park
 labels: chess board
 coordinates:
 link: https://www.google.com/maps/place/Union+Square+Park/data=!4m2!3m1!1s0x89c2599f2db306bb:0x2a5c7f9eea6938a0
-
-name: Blitz Society
-labels: chess club
-coordinates:
-link: https://www.google.com/maps/place/Blitz+Society/data=!4m2!3m1!1s0x47e6716dc5a5bb15:0xf1333a977c5f335f
 
 name: Chess boards
 labels: chess board
