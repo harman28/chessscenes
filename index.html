@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chess Scenes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<!--=============================================================================
+  LOCATION DATA
+  Edit this section to add or update places.
+
+  Each entry is a block of key: value lines separated by blank lines.
+
+  Supported keys:
+    name:         Display name (required)
+    labels:       Comma-separated labels, e.g: chess bar, chess club
+    coordinates:  lat, lng  (required)
+    note:         Short description shown on cards and popups
+    link:         URL to Google Maps or similar
+    image:        URL to a photo shown in the map popup (jpg, png, etc.)
+    city:         City name (optional, shown on card)
+
+  Known labels and their colors/icons:
+    chess board   → green   ♟  (outdoor boards, giant sets)
+    chess shop    → blue    ♛  (retailers)
+    chess memorial → purple ♔  (historic sites, defunct venues)
+    chess bar     → red     ♞  (bars/cafes with regular chess)
+    chess club    → brown   ♜  (organised clubs)
+    chess meetup  → teal    ♝  (informal recurring meetups)
+
+  Add a new location by copying a block below and editing the values.
+  Leave a blank line between entries.
+==============================================================================
+
+name: Chess Table
+labels: chess board
+city: Amsterdam
+coordinates: 52.38606442599711, 4.884032832292178
+note: Abandoned outdoor chess tables.
+link: https://maps.app.goo.gl/Pt2zN4pDBFiQ8ddx8
+
+name: Het Paard
+labels: chess shop
+city: Amsterdam
+coordinates: 52.38477726272416, 4.886900942960506
+note: Notable chess shop.
+link: https://maps.app.goo.gl/ycLy5MS6BBYACa3z9
+
+name: Former Cafe Gambit
+labels: chess memorial
+city: Amsterdam
+coordinates: 52.37556007732979, 4.886647874372124
+note: Defunct chess bar.
+link: https://maps.app.goo.gl/AtdP5dHQVRihL9yt8
+
+name: Cafe de Laurierboom
+labels: chess bar
+city: Amsterdam
+coordinates: 52.373031183991145, 4.88109524189204
+note: Chess mecca of Amsterdam. Tournaments on barblitz.co. Casual chess always.
+link: https://maps.app.goo.gl/PizEC9TRQ4kt8QyK6
+
+name: Former Max Euwe Schaakhuis
+labels: chess memorial
+city: Amsterdam
+coordinates: 52.368472045937146, 4.8712247131282576
+link: https://maps.app.goo.gl/NkxYzuvTdSqDzWNh9
+
+name: Zwart op Wit
+labels: chess club
+city: Amsterdam
+coordinates: 52.37107776390779, 4.866202094898311
+note: Meets every Monday evening at 8pm in the basement of games cafe 2 Klaveren.
+link: https://maps.app.goo.gl/2iYpS9ALfHsJLAwYA
+
+name: Chess & Beer
+labels: chess meetup
+city: Amsterdam
+coordinates: 52.363208136727685, 4.882977053882178
+note: Casual chess meetup every second Sunday afternoon in Cafe De Balie.
+link: https://maps.app.goo.gl/bkpboKbMJeadL65F6
+
+name: Max Euwe Centrum
+labels: chess club
+city: Amsterdam
+coordinates: 52.362777166541285, 4.882811878673435
+note: Free chess museum and library.
+
+name: Max Euweplein
+labels: chess memorial, chess board
+city: Amsterdam
+coordinates: 52.362969674148395, 4.88370529837886
+note: Square named after former Dutch World Champion. 5 outdoor chess tables and a memorial.
+link: https://maps.app.goo.gl/BdbA8DiMEQxf37us9
+
+name: Vondelbunker Chess
+labels: chess meetup
+city: Amsterdam
+coordinates: 52.36139474675469, 4.877288600904013
+note: Underground chess on Sunday afternoons. Irregular.
+link: https://maps.app.goo.gl/zVaGJ4eQ19HZ6h6z8
+
+name: Chess Table
+labels: chess board
+city: Amsterdam
+coordinates: 52.367397288232056, 4.876081661186785
+note: Abandoned outdoor chess tables.
+link: https://maps.app.goo.gl/cDYhY7noTk7SDkwYA
+
+name: Giant Chess Board
+labels: chess board
+city: Amsterdam
+coordinates: 52.36493404989391, 4.869386867764395
+note: Giant board at the corner of the playground. Pieces locked in the steel boxes.
+link: https://maps.app.goo.gl/N9mAaZdBsfyAJDEW6
+
+-->
+
+<style>
+  :root {
+    --cream: #f5f0e8;
+    --ink: #1a1208;
+    --gold: #c9a84c;
+    --gold-light: #e8d98a;
+    --brown: #4a3520;
+    --muted: #7a6a55;
+    --white: #fdfaf4;
+    --border: #d4c5a9;
+    --bg-light: #ede8de;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    height: 100%;
+    overflow: hidden;
+  }
+
+  body {
+    background: var(--cream);
+    color: var(--ink);
+    font-family: 'IBM Plex Mono', monospace;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: var(--ink);
+    position: relative;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  .header-chess-bg {
+    position: absolute;
+    inset: 0;
+    opacity: 0.045;
+    background-image: repeating-conic-gradient(var(--cream) 0% 25%, transparent 0% 50%);
+    background-size: 28px 28px;
+  }
+
+  .header-inner {
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 14px 28px;
+    gap: 12px;
+  }
+
+  .king-icon { font-size: 1.7rem; line-height: 1; user-select: none; }
+
+  .header-title h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+    font-weight: 900;
+    color: var(--cream);
+    letter-spacing: -0.3px;
+  }
+
+  .header-title .subtitle {
+    font-size: 0.6rem;
+    color: var(--gold);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+
+  /* ── CONTROLS ── */
+  .controls {
+    background: var(--ink);
+    border-top: 1px solid rgba(255,255,255,0.07);
+    padding: 9px 28px;
+    display: flex;
+    gap: 7px;
+    align-items: center;
+    flex-wrap: wrap;
+    flex-shrink: 0;
+  }
+
+  .filter-label {
+    font-size: 0.58rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-right: 3px;
+    white-space: nowrap;
+  }
+
+  .filter-btn {
+    border: 1px solid rgba(255,255,255,0.16);
+    background: transparent;
+    color: rgba(255,255,255,0.5);
+    padding: 4px 10px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.63rem;
+    letter-spacing: 0.8px;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: all 0.13s;
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    white-space: nowrap;
+    user-select: none;
+  }
+
+  .filter-btn .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .filter-btn:hover {
+    color: rgba(255,255,255,0.85);
+    border-color: rgba(255,255,255,0.35);
+  }
+
+  .filter-btn.active {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: var(--ink);
+  }
+
+  .controls-right {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  #count-badge {
+    font-size: 0.58rem;
+    color: rgba(255,255,255,0.35);
+    letter-spacing: 1px;
+    white-space: nowrap;
+  }
+
+  .view-toggle { display: flex; gap: 3px; }
+
+  .view-btn {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.18);
+    color: rgba(255,255,255,0.45);
+    width: 30px; height: 30px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.13s;
+    border-radius: 2px;
+  }
+
+  .view-btn.active {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: var(--ink);
+  }
+
+  /* ── MAIN LAYOUT ── */
+  .main {
+    flex: 1;
+    display: flex;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  /* ── MAP ── */
+  #map {
+    flex: 1;
+    min-width: 0;
+    z-index: 1;
+  }
+
+  /* ── SIDEBAR ── */
+  .sidebar {
+    width: 340px;
+    min-width: 340px;
+    background: var(--white);
+    border-left: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .sidebar-header {
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.58rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    background: var(--bg-light);
+    flex-shrink: 0;
+  }
+
+  .sidebar-scroll {
+    overflow-y: auto;
+    flex: 1;
+  }
+
+  .sidebar-scroll::-webkit-scrollbar { width: 3px; }
+  .sidebar-scroll::-webkit-scrollbar-thumb { background: var(--border); }
+
+  /* ── LIST VIEW ── */
+  .main.is-list #map { display: none; }
+  .main.is-list .sidebar {
+    width: 100%;
+    min-width: 0;
+    border-left: none;
+    background: var(--cream);
+    overflow-y: auto;
+  }
+  .main.is-list .sidebar-header { display: none; }
+  .main.is-list .sidebar-scroll {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+    gap: 14px;
+    padding: 22px;
+    align-content: start;
+    overflow: visible;
+  }
+
+  /* ── CARDS ── */
+  .location-card {
+    padding: 13px 16px;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    transition: background 0.1s;
+    position: relative;
+  }
+
+  .location-card::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: transparent;
+    transition: background 0.13s;
+  }
+
+  .location-card:hover { background: var(--bg-light); }
+  .location-card:hover::before { background: var(--gold); }
+  .location-card.highlighted { background: #fef9ee; }
+  .location-card.highlighted::before { background: var(--gold); }
+
+  /* List-view card overrides */
+  .main.is-list .location-card {
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    background: var(--white);
+    box-shadow: 0 1px 6px rgba(0,0,0,0.06);
+    padding: 15px 17px;
+  }
+
+  .main.is-list .location-card::before {
+    border-radius: 3px 0 0 3px;
+  }
+
+  .card-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-bottom: 7px;
+  }
+
+  .card-tag {
+    font-size: 0.55rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 2px 7px;
+    border-radius: 1px;
+    font-weight: 500;
+    color: white;
+    white-space: nowrap;
+  }
+
+  .card-city {
+    font-size: 0.58rem;
+    color: var(--muted);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 3px;
+  }
+
+  .card-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.3;
+    margin-bottom: 5px;
+  }
+
+  .card-note {
+    font-size: 0.66rem;
+    color: var(--muted);
+    line-height: 1.55;
+    margin-bottom: 7px;
+  }
+
+  .card-link {
+    font-size: 0.6rem;
+    color: var(--gold);
+    text-decoration: none;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--gold-light);
+    padding-bottom: 1px;
+    transition: color 0.13s;
+  }
+  .card-link:hover { color: var(--brown); }
+
+  .no-results {
+    padding: 40px 20px;
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.7rem;
+    letter-spacing: 1px;
+    grid-column: 1 / -1;
+  }
+
+  /* ── MARKER ── */
+  .custom-marker {
+    width: 28px; height: 28px;
+    border-radius: 50% 50% 50% 0;
+    transform: rotate(-45deg);
+    border: 2px solid white;
+    box-shadow: 0 2px 7px rgba(0,0,0,0.32);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    cursor: pointer;
+  }
+  .custom-marker span { transform: rotate(45deg); display: block; line-height: 1; }
+
+  /* ── POPUP ── */
+  .leaflet-popup-content-wrapper {
+    border-radius: 3px;
+    font-family: 'IBM Plex Mono', monospace;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.18);
+    border: 1px solid var(--border);
+    background: var(--white);
+    padding: 0;
+    overflow: hidden;
+  }
+
+  .leaflet-popup-content {
+    margin: 0 !important;
+    width: 230px !important;
+  }
+
+  .popup-img {
+    width: 100%;
+    height: 128px;
+    object-fit: cover;
+    display: block;
+  }
+
+  .popup-body { padding: 11px 13px 13px; }
+
+  .popup-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3px;
+    margin-bottom: 6px;
+  }
+
+  .popup-tag {
+    font-size: 0.53rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 2px 6px;
+    border-radius: 1px;
+    color: white;
+  }
+
+  .popup-city {
+    font-size: 0.56rem;
+    color: var(--muted);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 2px;
+  }
+
+  .popup-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 5px;
+    line-height: 1.3;
+  }
+
+  .popup-note {
+    font-size: 0.62rem;
+    color: var(--muted);
+    line-height: 1.5;
+    margin-bottom: 7px;
+  }
+
+  .popup-link {
+    font-size: 0.58rem;
+    color: var(--gold);
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-bottom: 1px solid var(--gold-light);
+  }
+
+  .leaflet-popup-close-button {
+    top: 5px !important;
+    right: 6px !important;
+    color: white !important;
+    font-size: 16px !important;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+  }
+
+  .leaflet-popup-tip-container { display: none; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 720px) {
+    html, body { overflow: auto; height: auto; }
+    .main { flex-direction: column; height: auto; overflow: visible; }
+    #map { height: 55vw; min-height: 260px; flex: none; }
+    .sidebar { width: 100%; min-width: 0; border-left: none; border-top: 1px solid var(--border); max-height: 50vh; }
+    .main.is-list { flex-direction: column; }
+    .main.is-list .sidebar { max-height: none; overflow-y: auto; }
+    .main.is-list .sidebar-scroll { grid-template-columns: 1fr; }
+    .controls { padding: 8px 14px; }
+    .header-inner { padding: 11px 14px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-chess-bg"></div>
+  <div class="header-inner">
+    <span class="king-icon">♚</span>
+    <div class="header-title">
+      <h1>Chess Scenes</h1>
+      <div class="subtitle">IRL chess, mapped worldwide</div>
+    </div>
+  </div>
+</header>
+
+<div class="controls" id="controls">
+  <span class="filter-label">Filter</span>
+  <div id="filter-buttons"></div>
+  <div class="controls-right">
+    <span id="count-badge"></span>
+    <div class="view-toggle">
+      <button class="view-btn active" id="btn-map" title="Map view">⊞</button>
+      <button class="view-btn" id="btn-list" title="Grid view">☰</button>
+    </div>
+  </div>
+</div>
+
+<div class="main" id="main">
+  <div id="map"></div>
+  <div class="sidebar" id="sidebar">
+    <div class="sidebar-header">Locations</div>
+    <div class="sidebar-scroll" id="list-items"></div>
+  </div>
+</div>
+
+<script>
+// ─── LABEL CONFIG ─────────────────────────────────────────────────────────────
+const LABEL_CONFIG = {
+  'chess board':    { color: '#2d6a4f', icon: '♟', display: 'Board' },
+  'chess shop':     { color: '#1d4e89', icon: '♛', display: 'Shop' },
+  'chess memorial': { color: '#6b2d6b', icon: '♔', display: 'Memorial' },
+  'chess bar':      { color: '#8b2500', icon: '♞', display: 'Bar' },
+  'chess club':     { color: '#5c4a00', icon: '♜', display: 'Club' },
+  'chess meetup':   { color: '#0a5c6b', icon: '♝', display: 'Meetup' },
+};
+
+// Fallback for unknown labels
+function labelColor(l) { return (LABEL_CONFIG[l] || {}).color || '#666'; }
+function labelIcon(l)  { return (LABEL_CONFIG[l] || {}).icon  || '♟'; }
+function labelDisplay(l) { return (LABEL_CONFIG[l] || {}).display || l.replace('chess ', ''); }
+
+// ─── PARSE DATA FROM HTML COMMENT ─────────────────────────────────────────────
+function parseLocations() {
+  // Walk comment nodes to find the data block
+  const walk = document.createTreeWalker(document.documentElement, NodeFilter.SHOW_COMMENT);
+  let node, raw = '';
+  while ((node = walk.nextNode())) {
+    if (node.nodeValue.includes('LOCATION DATA')) { raw = node.nodeValue; break; }
+  }
+  if (!raw) return [];
+
+  const locations = [];
+  // Split on double newlines to get candidate blocks
+  const blocks = raw.split(/\n[ \t]*\n/);
+
+  for (const block of blocks) {
+    const lines = block.split('\n').map(l => l.trim()).filter(Boolean);
+    // Must have a name: line to be a valid entry
+    if (!lines.some(l => /^name:/i.test(l))) continue;
+
+    const obj = {};
+    for (const line of lines) {
+      const m = line.match(/^(\w+)\s*:\s*(.+)/);
+      if (!m) continue;
+      obj[m[1].toLowerCase()] = m[2].trim();
+    }
+    if (!obj.name || !obj.coordinates) continue;
+
+    const [lat, lng] = obj.coordinates.split(',').map(Number);
+    if (isNaN(lat) || isNaN(lng)) continue;
+
+    // Parse multi-value labels
+    const rawLabels = obj.labels || obj.label || '';
+    const labels = rawLabels.split(',').map(s => s.trim()).filter(Boolean);
+
+    locations.push({
+      name: obj.name,
+      labels,
+      lat, lng,
+      note: obj.note || '',
+      link: (obj.link && obj.link.startsWith('http')) ? obj.link : '',
+      image: obj.image || '',
+      city: obj.city || '',
+    });
+  }
+  return locations;
+}
+
+const LOCATIONS = parseLocations();
+
+// ─── COLLECT ALL UNIQUE LABELS ────────────────────────────────────────────────
+const ALL_LABELS = [];
+const seenLabels = new Set();
+for (const loc of LOCATIONS) {
+  for (const l of loc.labels) {
+    if (!seenLabels.has(l)) { seenLabels.add(l); ALL_LABELS.push(l); }
+  }
+}
+
+// ─── STATE ────────────────────────────────────────────────────────────────────
+// activeLabels = Set of active filter labels. Empty = show all.
+const activeLabels = new Set();
+let currentView = 'map'; // 'map' | 'list'
+let markerObjects = []; // { marker, locIndex }
+
+// ─── MAP SETUP ────────────────────────────────────────────────────────────────
+const map = L.map('map', { zoomControl: true }).setView([30, 10], 2);
+
+L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+  attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
+  subdomains: 'abcd', maxZoom: 19
+}).addTo(map);
+
+// ─── BUILD FILTER BUTTONS ─────────────────────────────────────────────────────
+function buildFilters() {
+  const container = document.getElementById('filter-buttons');
+  container.style.display = 'flex';
+  container.style.gap = '7px';
+  container.style.flexWrap = 'wrap';
+  container.style.alignItems = 'center';
+
+  for (const label of ALL_LABELS) {
+    const cfg = LABEL_CONFIG[label] || {};
+    const btn = document.createElement('button');
+    btn.className = 'filter-btn';
+    btn.dataset.label = label;
+    btn.innerHTML = `<span class="dot" style="background:${cfg.color || '#888'}"></span>${labelDisplay(label)}`;
+    btn.addEventListener('click', () => toggleFilter(label, btn));
+    container.appendChild(btn);
+  }
+}
+
+function toggleFilter(label, btn) {
+  if (activeLabels.has(label)) {
+    activeLabels.delete(label);
+    btn.classList.remove('active');
+  } else {
+    activeLabels.add(label);
+    btn.classList.add('active');
+  }
+  render(false); // don't re-fit map on filter toggle
+}
+
+// ─── FILTER LOGIC ─────────────────────────────────────────────────────────────
+function getFiltered() {
+  if (activeLabels.size === 0) return LOCATIONS;
+  return LOCATIONS.filter(loc => loc.labels.some(l => activeLabels.has(l)));
+}
+
+// ─── MARKER ICON ──────────────────────────────────────────────────────────────
+function makeIcon(labels) {
+  // Use the first label for the marker color/icon
+  const primary = labels[0] || '';
+  const color = labelColor(primary);
+  const icon = labelIcon(primary);
+  return L.divIcon({
+    className: '',
+    html: `<div class="custom-marker" style="background:${color}"><span>${icon}</span></div>`,
+    iconSize: [28, 28],
+    iconAnchor: [9, 28],
+    popupAnchor: [5, -24],
+  });
+}
+
+// ─── POPUP HTML ───────────────────────────────────────────────────────────────
+function buildPopup(loc) {
+  const tags = loc.labels.map(l =>
+    `<span class="popup-tag" style="background:${labelColor(l)}">${labelDisplay(l)}</span>`
+  ).join('');
+
+  return `
+    ${loc.image ? `<img class="popup-img" src="${loc.image}" alt="${loc.name}" loading="lazy">` : ''}
+    <div class="popup-body">
+      <div class="popup-tags">${tags}</div>
+      ${loc.city ? `<div class="popup-city">${loc.city}</div>` : ''}
+      <div class="popup-name">${loc.name}</div>
+      ${loc.note ? `<div class="popup-note">${loc.note}</div>` : ''}
+      ${loc.link ? `<a href="${loc.link}" target="_blank" rel="noopener" class="popup-link">Open in Maps ↗</a>` : ''}
+    </div>`;
+}
+
+// ─── CARD HTML ────────────────────────────────────────────────────────────────
+function buildCard(loc, idx) {
+  const tags = loc.labels.map(l =>
+    `<span class="card-tag" style="background:${labelColor(l)}">${labelDisplay(l)}</span>`
+  ).join('');
+
+  const card = document.createElement('div');
+  card.className = 'location-card';
+  card.dataset.idx = idx;
+  card.innerHTML = `
+    <div class="card-tags">${tags}</div>
+    ${loc.city ? `<div class="card-city">${loc.city}</div>` : ''}
+    <div class="card-name">${loc.name}</div>
+    ${loc.note ? `<div class="card-note">${loc.note}</div>` : ''}
+    ${loc.link ? `<a href="${loc.link}" target="_blank" rel="noopener" class="card-link" onclick="event.stopPropagation()">Open in Maps ↗</a>` : ''}
+  `;
+  return card;
+}
+
+// ─── RENDER ───────────────────────────────────────────────────────────────────
+function render(fitBounds = true) {
+  const filtered = getFiltered();
+
+  // Update count
+  document.getElementById('count-badge').textContent =
+    `${filtered.length} place${filtered.length !== 1 ? 's' : ''}`;
+
+  // Clear old markers
+  markerObjects.forEach(({ marker }) => map.removeLayer(marker));
+  markerObjects = [];
+
+  // Clear cards
+  const listEl = document.getElementById('list-items');
+  listEl.innerHTML = '';
+
+  if (filtered.length === 0) {
+    listEl.innerHTML = '<div class="no-results">No locations match the current filter.</div>';
+    return;
+  }
+
+  filtered.forEach((loc, i) => {
+    // Marker
+    const marker = L.marker([loc.lat, loc.lng], { icon: makeIcon(loc.labels) })
+      .addTo(map)
+      .bindPopup(buildPopup(loc), { maxWidth: 250 });
+
+    marker.on('popupopen', () => highlightCard(i));
+    marker.on('click', () => {
+      if (currentView === 'map') highlightCard(i);
+    });
+
+    markerObjects.push({ marker, locIndex: i });
+
+    // Card
+    const card = buildCard(loc, i);
+    card.addEventListener('click', () => {
+      if (currentView === 'map') {
+        map.setView([loc.lat, loc.lng], 15, { animate: true });
+        marker.openPopup();
+      }
+      highlightCard(i);
+    });
+    listEl.appendChild(card);
+  });
+
+  // Fit map to markers
+  if (fitBounds && currentView === 'map') {
+    const bounds = L.latLngBounds(filtered.map(l => [l.lat, l.lng]));
+    map.fitBounds(bounds, { padding: [40, 40], maxZoom: 16 });
+  }
+}
+
+function highlightCard(i) {
+  document.querySelectorAll('.location-card').forEach(c => c.classList.remove('highlighted'));
+  const card = document.querySelector(`.location-card[data-idx="${i}"]`);
+  if (card) {
+    card.classList.add('highlighted');
+    card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+}
+
+// ─── VIEW TOGGLE ──────────────────────────────────────────────────────────────
+const mainEl = document.getElementById('main');
+
+document.getElementById('btn-map').addEventListener('click', () => {
+  currentView = 'map';
+  mainEl.classList.remove('is-list');
+  document.getElementById('btn-map').classList.add('active');
+  document.getElementById('btn-list').classList.remove('active');
+  // Leaflet needs a tick to recalculate size after display change
+  setTimeout(() => map.invalidateSize(), 50);
+});
+
+document.getElementById('btn-list').addEventListener('click', () => {
+  currentView = 'list';
+  mainEl.classList.add('is-list');
+  document.getElementById('btn-list').classList.add('active');
+  document.getElementById('btn-map').classList.remove('active');
+});
+
+// ─── INIT ─────────────────────────────────────────────────────────────────────
+buildFilters();
+render(true);
+</script>
+</body>
+</html>
