@@ -232,12 +232,6 @@ coordinates:
 note: There are chess parties in the pool.
 link: https://www.google.com/maps/place/Sz%C3%A9chenyi+Thermal+Bath/data=!4m2!3m1!1s0x4741db8605675577:0xcbc0c308b68d2412
 
-name: Piemineklis Mihailam Tālam
-labels: chess memorial
-coordinates:
-note: Memorial to Mihails Tāls. People probably play around here somewhere.
-link: https://www.google.com/maps/place/Piemineklis+Mihailam+T%C4%81lam/data=!4m2!3m1!1s0x46eecfd215e41333:0x700681fddf9502a5
-
 name: Chess boards – 2 giant chessboards
 labels: chess board
 coordinates: 39.461046, -0.358592
@@ -324,18 +318,6 @@ name: Chess boards
 labels: chess board
 coordinates: 43.6105556, 3.8815278
 link: https://www.google.com/maps/search/43.6105556,3.8815278
-
-name: Stoliki szachowe
-labels: chess board
-coordinates:
-link: https://www.google.com/maps/place/Stoliki+szachowe/data=!4m2!3m1!1s0x47165bbb10c0f11d:0xd888543c25c91f16
-
-name: IT Chess Club
-labels: chess club
-coordinates:
-note: Open every Thursday 6pm–10pm.
-link: https://www.google.com/maps/place/IT+Chess+Club/data=!4m2!3m1!1s0xa43455271a17dba7:0xed17fc5f3aec278b
-days: Thursday
 
 name: Magyar Sakkvilág
 labels: chess shop
@@ -660,28 +642,12 @@ note: Club nights Tuesday, Thursday and Saturday at 4pm.
 link: https://www.google.com/maps/place/ASD+DLF+Firenze+Scacchi/data=!4m2!3m1!1s0x132a57fab4076b09:0x7a02f77f8574d28
 days: Tuesday, Thursday, Saturday
 
-name: Outdoor chess tables
-labels: chess board
-coordinates:
-link: https://www.google.com/maps/place/Outdoor+chess+tables/data=!4m2!3m1!1s0x47165b3216cfdf1d:0x95308ca6f1b22c42
-
-name: Szachy Chess
-labels: chess shop
-coordinates:
-link: https://www.google.com/maps/place/Szachy+Chess/data=!4m2!3m1!1s0x47165b4502874903:0x76854b37dea3292
-
 name: Annankatu 26
 labels: chess club
 coordinates:
 note: Club nights Monday and Thursday at 6pm.
 link: https://www.google.com/maps/place/Annankatu+26/data=!4m2!3m1!1s0x46920bcb6d21bed1:0x8c27d7e78ebd5870
 days: Monday, Thursday
-
-name: Shakkiareena
-labels: chess board
-coordinates:
-note: Giant chess boards!
-link: https://www.google.com/maps/place/Shakkiareena/data=!4m2!3m1!1s0x46920b4531c4f2d3:0x32c231bef410d19c
 
 name: Restaurant Uuno Pinza - Jätkäsaari
 labels: chess bar
@@ -694,19 +660,6 @@ labels: chess board
 coordinates:
 note: Chess board in the lobby where people play against the staff, one move at a time.
 link: https://www.google.com/maps/place/Rikhardinkatu+Library/data=!4m2!3m1!1s0x46920bccb1550df1:0x9a512d59365fdb81
-
-name: Dropped pin – Public giant chess board
-labels: chess board
-coordinates: 60.1782309, 24.9304052
-note: Public giant chess board.
-link: https://www.google.com/maps/search/60.1782309,24.9304052
-
-name: Helsinki Street Chess
-labels: chess club
-coordinates:
-note: Tournament on Tuesdays at 8pm.
-link: https://www.google.com/maps/place/Helsinki+Street+Chess/data=!4m2!3m1!1s0x46920bb5a0298e73:0x6e2d5c6d8e2f7ab4
-days: Tuesday
 
 name: Circolo scacchistico Esteban Canal
 labels: chess club
