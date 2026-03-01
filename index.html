@@ -1709,7 +1709,8 @@ function parseLocations() {
   return locations;
 }
 
-const LOCATIONS = parseLocations();
+// Randomise the list of places
+const LOCATIONS = parseLocations().sort(() => Math.random() - 0.5);
 
 // ─── COLLECT ALL UNIQUE LABELS ────────────────────────────────────────────────
 const ALL_LABELS = [];
