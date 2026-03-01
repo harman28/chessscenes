@@ -161,12 +161,6 @@ coordinates: 52.490554, 5.505707
 note: Pair of outdoor chess tables at a playground.
 gmap: https://www.google.com/maps/search/52.490554,5.505707
 
-name: Chess Park
-labels: chess board
-coordinates:
-note: Not in active use. The hotel probably rents out pieces for the giant board.
-gmap: https://www.google.com/maps/place/Chess+Park/data=!4m2!3m1!1s0x3b05a5a93169df59:0x69fcb5af03a64dcc
-
 name: Chess Tables
 labels: chess board
 coordinates:
