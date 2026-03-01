@@ -1612,13 +1612,14 @@ document.addEventListener('keydown', e => {
 
 // Wire up toggle button groups (multi-select → hidden input)
 document.querySelectorAll('.toggle-group').forEach(group => {
-  const hidden = document.getElementById(group.id.replace('-toggles', '-hidden'));
+  const hiddenName = group.dataset.name;
+  const hidden = group.closest('form').querySelector(`input[name="${hiddenName}"]`);
   group.querySelectorAll('.toggle-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       btn.classList.toggle('active');
       const selected = [...group.querySelectorAll('.toggle-btn.active')]
         .map(b => b.dataset.value);
-      hidden.value = selected.join(', ');
+      if (hidden) hidden.value = selected.join(', ');
     });
   });
 });
