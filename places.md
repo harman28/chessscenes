@@ -539,12 +539,6 @@ note: Chess on Tuesday evenings.
 link: https://www.google.com/maps/place/Wijkcentrum+De+Daalder/data=!4m2!3m1!1s0x47cf56de6ca38521:0xcbcd443988f96daa
 days: Tuesday
 
-name: Myo Cafe
-labels: chess bar
-coordinates:
-note: Two outdoor boards nearby.
-link: https://www.google.com/maps/place/Myo+Cafe/data=!4m2!3m1!1s0x484490116556a9a7:0x372c5658c3ba6032
-
 name: Bar del Fico Ristorante
 labels: chess bar
 coordinates:
