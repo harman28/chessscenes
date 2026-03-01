@@ -607,6 +607,20 @@ note: Bobby Fischer museum 55km south of Reykjavík. Includes the 1972 Fischer-S
 
 -->
 
+<!--=============================================================================
+  ABOUT PAGE CONTENT
+  Edit this section to update the About text. Plain markdown paragraphs.
+  Separate paragraphs with a blank line. Basic markdown supported:
+  **bold**, *italic*, [link text](url)
+==============================================================================-->
+<script type="text/markdown" id="about-content">
+For the past several years now, I have been bookmarking all 'chess scenes' I come across or hear about online.
+
+A Chess Scene is a setting in which one might be able to play a game of chess. I suppose organized chess clubs and tournaments are always chess scenes, but I am more keen on outdoor chess tables, giant boards, chess museums, memorials, and best of all, chess bars. Chess is a social game, so I'm looking for social settings where newcomers are made somewhat welcome.
+
+All entries are curated manually. If you know a place that should be here, please submit it.
+</script>
+
 <style>
   :root {
     --cream: #f5f0e8;
@@ -677,18 +691,96 @@ note: Bobby Fischer museum 55km south of Reykjavík. Includes the 1972 Fischer-S
     margin-top: 2px;
   }
 
-  /* ── CITY FILTER (list view only) ── */
-  .city-controls {
-    display: none;
-    background: #1e1a0e;
-    border-top: 1px solid rgba(255,255,255,0.05);
-    padding: 7px 28px;
-    gap: 10px;
-    align-items: center;
-    flex-shrink: 0;
+  /* ── ABOUT BUTTON in header ── */
+  .header-about-btn {
+    margin-left: auto;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.35);
+    color: rgba(255,255,255,0.8);
+    padding: 6px 14px;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.15s;
   }
 
-  body.is-list .city-controls { display: flex; }
+  .header-about-btn:hover {
+    background: rgba(255,255,255,0.1);
+    border-color: var(--gold);
+    color: var(--gold);
+  }
+
+  /* ── ABOUT MODAL ── */
+  .about-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(10, 8, 4, 0.75);
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  .about-backdrop.open { display: flex; }
+
+  .about-modal {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    width: 100%;
+    max-width: 520px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 12px 48px rgba(0,0,0,0.4);
+  }
+
+  .about-modal .modal-header {
+    background: var(--ink);
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+  }
+
+  .about-modal .modal-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem;
+    color: var(--cream);
+    font-weight: 700;
+  }
+
+  .about-modal .modal-close {
+    background: none;
+    border: none;
+    color: rgba(255,255,255,0.5);
+    font-size: 1.2rem;
+    cursor: pointer;
+    line-height: 1;
+    padding: 2px 4px;
+    transition: color 0.13s;
+  }
+
+  .about-modal .modal-close:hover { color: white; }
+
+  .about-modal .modal-body {
+    padding: 24px 24px 28px;
+  }
+
+  .about-modal .modal-body p {
+    font-size: 0.68rem;
+    color: var(--muted);
+    line-height: 1.75;
+    margin-bottom: 14px;
+    letter-spacing: 0.2px;
+  }
+
+  .about-modal .modal-body p:last-child { margin-bottom: 0; }
 
   .city-select {
     background: transparent;
@@ -1353,11 +1445,16 @@ note: Bobby Fischer museum 55km south of Reykjavík. Includes the 1972 Fischer-S
       <h1>Chess Scenes</h1>
       <div class="subtitle">IRL Chess but on a map</div>
     </div>
+    <button class="suggest-btn header-about-btn" id="btn-about">About</button>
   </div>
 </header>
 
 <div class="controls" id="controls">
-  <span class="filter-label">Filter</span>
+  <span class="filter-label">City</span>
+  <select class="city-select" id="city-select">
+    <option value="">All</option>
+  </select>
+  <span class="filter-label" style="margin-left:8px">Filter</span>
   <div id="filter-buttons"></div>
   <div class="controls-right">
     <span id="count-badge"></span>
@@ -1367,13 +1464,6 @@ note: Bobby Fischer museum 55km south of Reykjavík. Includes the 1972 Fischer-S
       <button class="view-btn" id="btn-list" title="Grid view">☰</button>
     </div>
   </div>
-</div>
-
-<div class="city-controls" id="city-controls">
-  <span class="filter-label">City</span>
-  <select class="city-select" id="city-select">
-    <option value="">All cities</option>
-  </select>
 </div>
 
 <div class="day-controls" id="day-controls">
@@ -1442,6 +1532,18 @@ note: Bobby Fischer museum 55km south of Reykjavík. Includes the 1972 Fischer-S
   </div>
 </div>
 
+<!-- About Modal -->
+<div class="about-backdrop" id="about-backdrop">
+  <div class="about-modal">
+    <div class="modal-header">
+      <h2>♚ About Chess Scenes</h2>
+      <button class="modal-close" id="about-close">✕</button>
+    </div>
+    <div class="modal-body" id="about-body">
+    </div>
+  </div>
+</div>
+
 <div class="main" id="main">
   <div id="map"></div>
   <div class="sidebar" id="sidebar">
@@ -1451,6 +1553,27 @@ note: Bobby Fischer museum 55km south of Reykjavík. Includes the 1972 Fischer-S
 </div>
 
 <script>
+// ─── ABOUT CONTENT ────────────────────────────────────────────────────────────
+(function renderAbout() {
+  const src = document.getElementById('about-content');
+  const body = document.getElementById('about-body');
+  if (!src || !body) return;
+
+  const md = src.textContent;
+
+  // Split into paragraphs on blank lines
+  const paragraphs = md.split(/\n\s*\n/).map(p => p.trim()).filter(Boolean);
+
+  body.innerHTML = paragraphs.map(p => {
+    // Basic inline markdown: **bold**, *italic*, [text](url)
+    const html = p
+      .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+      .replace(/\*(.+?)\*/g, '<em>$1</em>')
+      .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
+    return `<p>${html}</p>`;
+  }).join('');
+})();
+
 // ─── LABEL CONFIG ─────────────────────────────────────────────────────────────
 const LABEL_CONFIG = {
   'chess board':    { color: '#2d6a4f', icon: '♟', display: 'Board' },
@@ -1561,6 +1684,13 @@ function buildCityFilter() {
   sel.addEventListener('change', () => {
     activeCity = sel.value;
     render(false);
+    if (activeCity && currentView === 'map') {
+      const cityLocs = LOCATIONS.filter(l => l.city === activeCity);
+      if (cityLocs.length > 0) {
+        const bounds = L.latLngBounds(cityLocs.map(l => [l.lat, l.lng]));
+        map.fitBounds(bounds, { padding: [60, 60], maxZoom: 14, animate: true });
+      }
+    }
   });
 }
 
@@ -1825,10 +1955,6 @@ backdrop.addEventListener('click', e => {
   if (e.target === backdrop) backdrop.classList.remove('open');
 });
 
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') backdrop.classList.remove('open');
-});
-
 // Wire up toggle button groups (multi-select → hidden input)
 document.querySelectorAll('.toggle-group').forEach(group => {
   const hiddenName = group.dataset.name;
@@ -1887,6 +2013,28 @@ form.addEventListener('submit', async e => {
     msgEl.textContent = 'Something went wrong. Please try again or reach out directly.';
     submitBtn.disabled = false;
     submitBtn.textContent = 'Submit for review';
+  }
+});
+
+// ─── ABOUT MODAL ──────────────────────────────────────────────────────────────
+const aboutBackdrop = document.getElementById('about-backdrop');
+
+document.getElementById('btn-about').addEventListener('click', () => {
+  aboutBackdrop.classList.add('open');
+});
+
+document.getElementById('about-close').addEventListener('click', () => {
+  aboutBackdrop.classList.remove('open');
+});
+
+aboutBackdrop.addEventListener('click', e => {
+  if (e.target === aboutBackdrop) aboutBackdrop.classList.remove('open');
+});
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    backdrop.classList.remove('open');
+    aboutBackdrop.classList.remove('open');
   }
 });
 
