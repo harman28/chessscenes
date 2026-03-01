@@ -45,49 +45,10 @@ coordinates:
 note: Might be a chess table here but I'm really not sure
 link: https://www.google.com/maps/place/V%C3%A1no%C4%8Dn%C3%AD+Trhy+na+%C5%A0es%C5%A5aku/data=!4m2!3m1!1s0x470b95007bcaa4f3:0xee225a24c2d2c168
 
-name: Gambit Cafe&Bar
-labels: chess bar
-coordinates:
-note: Lots of chess events, casual chess on Wednesdays
-link: https://www.google.com/maps/place/Gambit+Cafe%26Bar/data=!4m2!3m1!1s0x470b950035457b29:0xbee0bb0cfc3a7b6b
-days: Wednesday
-
-name: Wilhelm Steinitz' commemorative plaque
-labels: chess memorial
-coordinates:
-note: Commemorative plaque for the first chess world champion.
-link: https://www.google.com/maps/place/Wilhelm+Steinitz',+the+first+chess+world+champion's+commemorative+plaque/data=!4m2!3m1!1s0x470b95f5d8bc8f3d:0xe412bc3bd6b6b444
-
-name: B4 | CAFÉ PUB
-labels: chess bar
-coordinates:
-link: https://www.google.com/maps/place/B4+%7C+CAF%C3%89+PUB/data=!4m2!3m1!1s0x470b959bff609865:0x8f30083f05fa09da
-
-name: Naturfreundehaus
-labels: chess meetup
-coordinates:
-note: Chess on the 1st and 3rd Saturday of the month, 3pm.
-link: https://www.google.com/maps/place/Naturfreundehaus/data=!4m2!3m1!1s0x47bf250fd1afc9d9:0x2d154958bf90c4f
-days: Saturday
-
 name: Schach- und Mühletische
 labels: chess board
 coordinates:
 link: https://www.google.com/maps/place/Schach-+und+M%C3%BChletische/data=!4m2!3m1!1s0x47bf25306d0f1337:0x29c91d3bcecec3d6
-
-name: Playground
-labels: chess meetup
-coordinates:
-note: Barcelona Chess Meetup meets here on Sundays in the Summer. Meet at the NorthWest gate at 5pm.
-link: https://www.google.com/maps/place/Playground/data=!4m2!3m1!1s0x12a4a36fb070aba7:0xc343311540d5a6b4
-days: Sunday
-
-name: Mehman Khanna Halal | Barcelona
-labels: chess meetup
-coordinates:
-note: Barcelona Chess Meetup meets here on Sundays in the Winter.
-link: https://www.google.com/maps/place/Mehman+Khanna+Halal+%7C+Barcelona/data=!4m2!3m1!1s0x12a4a36d9f9f1517:0x8e6289a1446950dc
-days: Sunday
 
 name: De Nieuwe Bibliotheek
 labels: chess board
@@ -418,12 +379,6 @@ labels: chess board
 coordinates:
 link: https://www.google.com/maps/place/Chess+tables+outside/data=!4m2!3m1!1s0x4741dd4899f24dc9:0xfc45ea1fadfa3bda
 
-name: StrangerChess
-labels: chess club
-coordinates:
-note: 7pm.
-link: https://www.google.com/maps/place/StrangerChess/data=!4m2!3m1!1s0x47a85161b51f0f59:0xe606b5e5c59ad757
-
 name: ASD Spezia per gli Scacchi
 labels: chess club
 coordinates:
@@ -677,12 +632,6 @@ note: Chess on Wednesdays.
 link: https://www.google.com/maps/place/Madison+Avenue+Pub/data=!4m2!3m1!1s0x882b3497d377a433:0xf9a18f8f711ee0c4
 days: Wednesday
 
-name: The Good Knight
-labels: chess bar
-coordinates:
-note: Just a chess bar.
-link: https://www.google.com/maps/place/The+Good+Knight/data=!4m2!3m1!1s0x46416f595815fb39:0x8b0371b4e7a9f52f
-
 name: Wijkcentrum De Daalder
 labels: chess meetup
 coordinates:
@@ -931,6 +880,7 @@ labels: chess board
 coordinates:
 link: https://www.google.com/maps/place/Kennedy+Park/data=!4m2!3m1!1s0x9105c81e30b6695f:0x1015ccad533f5be5
 
+
 name: Chess Forum
 labels: chess shop
 coordinates:
@@ -940,11 +890,6 @@ name: Washington Square West Chess Tables
 labels: chess board
 coordinates:
 link: https://www.google.com/maps/place/Washington+Square+West+Chess+Tables/data=!4m2!3m1!1s0x89c259e5006d3d5d:0xe7754edf46e4c674
-
-name: Babylon
-labels: chess bar
-coordinates:
-link: https://www.google.com/maps/place/Babylon/data=!4m2!3m1!1s0x47a84e1dd8daaaab:0x319941efa11046b4
 
 name: Vögeligärtli
 labels: chess board
