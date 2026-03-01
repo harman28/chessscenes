@@ -111,7 +111,6 @@ gmap: https://maps.app.goo.gl/PizEC9TRQ4kt8QyK6
 name: Max Euwe Centrum
 labels: chess museum
 city: Amsterdam
-gmap: https://maps.app.goo.gl/16FAWhAHgR3zogcG7
 coordinates: 52.362777166541285, 4.882811878673435
 note: Free chess museum and library.
 days: Tuesday, Wednesday, Thursday, Friday, Saturday
@@ -1528,6 +1527,16 @@ All entries are curated manually. If you know a place that should be here, pleas
         <div class="form-row">
           <label>Notes</label>
           <textarea name="note" placeholder="Any useful details — times, what to expect, etc."></textarea>
+        </div>
+        <div class="form-row" style="display:flex;gap:10px">
+          <div style="flex:1">
+            <label>Your name</label>
+            <input type="text" name="submitter_name" placeholder="Optional">
+          </div>
+          <div style="flex:1">
+            <label>Your email</label>
+            <input type="email" name="submitter_email" placeholder="Optional">
+          </div>
         </div>
         <!-- Honeypot anti-spam -->
         <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
