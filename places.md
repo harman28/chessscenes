@@ -161,12 +161,6 @@ coordinates: 52.490554, 5.505707
 note: Pair of outdoor chess tables at a playground.
 link: https://www.google.com/maps/search/52.490554,5.505707
 
-name: Freiluftschach
-labels: chess board
-coordinates:
-note: Giant boards visible in a playground.
-link: https://www.google.com/maps/place/Freiluftschach/data=!4m2!3m1!1s0x47b18923b3cbdb01:0xdf349863a302ab28
-
 name: Chess Park
 labels: chess board
 coordinates:
@@ -239,12 +233,6 @@ name: Captain Lakshmi Park
 labels: chess board
 coordinates:
 link: https://www.google.com/maps/place/Captain+Lakshmi+Park/data=!4m2!3m1!1s0x3b05bb2d3715c377:0xd0bdb4b5c1f412b0
-
-name: Chess boards – Summer only
-labels: chess board
-coordinates: 53.563365, 9.982212
-note: Chess but only in the summers.
-link: https://www.google.com/maps/search/53.563365,9.982212
 
 name: Dropped pin
 labels: chess board
