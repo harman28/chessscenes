@@ -460,6 +460,229 @@ link: https://www.google.com/maps/place/Blitz+Society/data=!4m2!3m1!1s0x47e6716d
     margin-top: 2px;
   }
 
+  /* ── CITY FILTER (list view only) ── */
+  .city-controls {
+    display: none;
+    background: #1e1a0e;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    padding: 7px 28px;
+    gap: 10px;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  body.is-list .city-controls { display: flex; }
+
+  .city-select {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.2);
+    color: rgba(255,255,255,0.7);
+    padding: 4px 28px 4px 10px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.63rem;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 2px;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='rgba(255,255,255,0.4)'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 9px center;
+    transition: border-color 0.13s;
+  }
+
+  .city-select:focus { outline: none; border-color: var(--gold); }
+  .city-select option { background: #1a1208; color: white; text-transform: none; }
+
+  /* ── SUBMISSION MODAL ── */
+  .modal-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(10, 8, 4, 0.75);
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  .modal-backdrop.open { display: flex; }
+
+  .modal {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    width: 100%;
+    max-width: 480px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 12px 48px rgba(0,0,0,0.4);
+  }
+
+  .modal-header {
+    background: var(--ink);
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+  }
+
+  .modal-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem;
+    color: var(--cream);
+    font-weight: 700;
+  }
+
+  .modal-close {
+    background: none;
+    border: none;
+    color: rgba(255,255,255,0.5);
+    font-size: 1.2rem;
+    cursor: pointer;
+    line-height: 1;
+    padding: 2px 4px;
+    transition: color 0.13s;
+  }
+  .modal-close:hover { color: white; }
+
+  .modal-body { padding: 22px 22px 26px; }
+
+  .modal-body p {
+    font-size: 0.65rem;
+    color: var(--muted);
+    line-height: 1.6;
+    margin-bottom: 18px;
+    letter-spacing: 0.3px;
+  }
+
+  .form-row { margin-bottom: 14px; }
+
+  .form-row label {
+    display: block;
+    font-size: 0.58rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 5px;
+  }
+
+  .form-row label .req { color: var(--gold); }
+
+  .form-row input,
+  .form-row textarea,
+  .form-row select {
+    width: 100%;
+    background: var(--cream);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    padding: 8px 10px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--ink);
+    transition: border-color 0.13s;
+  }
+
+  .form-row input:focus,
+  .form-row textarea:focus,
+  .form-row select:focus {
+    outline: none;
+    border-color: var(--gold);
+  }
+
+  .form-row textarea { resize: vertical; min-height: 70px; }
+
+  .form-row select { appearance: none; cursor: pointer; }
+
+  .toggle-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-top: 2px;
+  }
+
+  .toggle-btn {
+    background: var(--cream);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    padding: 5px 10px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.5px;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.13s;
+    user-select: none;
+  }
+
+  .toggle-btn:hover {
+    border-color: var(--gold);
+    color: var(--ink);
+  }
+
+  .toggle-btn.active {
+    background: var(--ink);
+    border-color: var(--ink);
+    color: var(--gold);
+  }
+
+  .form-hint {
+    font-size: 0.55rem;
+    color: var(--border);
+    letter-spacing: 0.5px;
+    text-transform: none;
+    font-weight: normal;
+  }
+
+  .form-submit {
+    width: 100%;
+    background: var(--ink);
+    color: var(--gold);
+    border: none;
+    padding: 11px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 2px;
+    margin-top: 6px;
+    transition: background 0.13s;
+  }
+
+  .form-submit:hover { background: var(--brown); }
+  .form-submit:disabled { opacity: 0.45; cursor: not-allowed; }
+
+  .form-msg {
+    margin-top: 12px;
+    font-size: 0.63rem;
+    padding: 8px 10px;
+    border-radius: 2px;
+    display: none;
+  }
+  .form-msg.success { display: block; background: #e8f5e9; color: #2d6a4f; border: 1px solid #a5d6a7; }
+  .form-msg.error   { display: block; background: #fdecea; color: #8b2500; border: 1px solid #f5a79c; }
+  .form-msg.warn    { display: block; background: #fff8e1; color: #5c4a00; border: 1px solid #ffe082; }
+
+  /* ── SUBMIT BUTTON in header ── */
+  .suggest-btn {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.2);
+    color: rgba(255,255,255,0.55);
+    padding: 4px 11px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.13s;
+    white-space: nowrap;
+  }
+  .suggest-btn:hover { color: white; border-color: rgba(255,255,255,0.45); }
+
   /* ── DAY FILTER ROW (list view only) ── */
   .day-controls {
     display: none; /* hidden by default; shown only in list view */
@@ -921,6 +1144,7 @@ link: https://www.google.com/maps/place/Blitz+Society/data=!4m2!3m1!1s0x47e6716d
   <div id="filter-buttons"></div>
   <div class="controls-right">
     <span id="count-badge"></span>
+    <button class="suggest-btn" id="btn-suggest">+ Suggest a place</button>
     <div class="view-toggle">
       <button class="view-btn active" id="btn-map" title="Map view">⊞</button>
       <button class="view-btn" id="btn-list" title="Grid view">☰</button>
@@ -928,9 +1152,76 @@ link: https://www.google.com/maps/place/Blitz+Society/data=!4m2!3m1!1s0x47e6716d
   </div>
 </div>
 
+<div class="city-controls" id="city-controls">
+  <span class="filter-label">City</span>
+  <select class="city-select" id="city-select">
+    <option value="">All cities</option>
+  </select>
+</div>
+
 <div class="day-controls" id="day-controls">
   <span class="filter-label">Day</span>
   <div id="day-buttons"></div>
+</div>
+
+<!-- Submission Modal -->
+<div class="modal-backdrop" id="modal-backdrop">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>♟ Suggest a Place</h2>
+      <button class="modal-close" id="modal-close">✕</button>
+    </div>
+    <div class="modal-body">
+      <p>Know a chess bar, club, or outdoor board that should be on the map? Submit it below and we'll review it before adding it to the site.</p>
+      <form id="suggest-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+        <div class="form-row">
+          <label>Place name <span class="req">*</span></label>
+          <input type="text" name="name" required placeholder="e.g. Café de la Paix">
+        </div>
+        <div class="form-row">
+          <label>City <span class="req">*</span></label>
+          <input type="text" name="city" required placeholder="e.g. Paris">
+        </div>
+        <div class="form-row">
+          <label>Type <span class="req">*</span></label>
+          <div class="toggle-group" id="type-toggles" data-name="labels">
+            <button type="button" class="toggle-btn" data-value="chess bar">♞ Bar</button>
+            <button type="button" class="toggle-btn" data-value="chess club">♜ Club</button>
+            <button type="button" class="toggle-btn" data-value="chess meetup">♝ Meetup</button>
+            <button type="button" class="toggle-btn" data-value="chess board">♟ Outdoor Board</button>
+            <button type="button" class="toggle-btn" data-value="chess shop">♛ Shop</button>
+            <button type="button" class="toggle-btn" data-value="chess memorial">♔ Memorial</button>
+          </div>
+          <input type="hidden" name="labels" id="labels-hidden">
+        </div>
+        <div class="form-row">
+          <label>Google Maps link</label>
+          <input type="url" name="link" placeholder="https://maps.app.goo.gl/…">
+        </div>
+        <div class="form-row">
+          <label>Days active <span class="form-hint">— leave blank if every day</span></label>
+          <div class="toggle-group" id="day-toggles" data-name="days">
+            <button type="button" class="toggle-btn" data-value="Monday">Mon</button>
+            <button type="button" class="toggle-btn" data-value="Tuesday">Tue</button>
+            <button type="button" class="toggle-btn" data-value="Wednesday">Wed</button>
+            <button type="button" class="toggle-btn" data-value="Thursday">Thu</button>
+            <button type="button" class="toggle-btn" data-value="Friday">Fri</button>
+            <button type="button" class="toggle-btn" data-value="Saturday">Sat</button>
+            <button type="button" class="toggle-btn" data-value="Sunday">Sun</button>
+          </div>
+          <input type="hidden" name="days" id="days-hidden">
+        </div>
+        <div class="form-row">
+          <label>Notes</label>
+          <textarea name="note" placeholder="Any useful details — times, what to expect, etc."></textarea>
+        </div>
+        <!-- Honeypot anti-spam -->
+        <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
+        <button type="submit" class="form-submit" id="form-submit">Submit for review</button>
+        <div class="form-msg" id="form-msg"></div>
+      </form>
+    </div>
+  </div>
 </div>
 
 <div class="main" id="main">
@@ -1026,6 +1317,7 @@ for (const loc of LOCATIONS) {
 // ─── STATE ────────────────────────────────────────────────────────────────────
 const activeLabels = new Set();
 const activeDays   = new Set();
+let activeCity = '';
 let currentView = 'map';
 let markerObjects = [];
 
@@ -1036,6 +1328,22 @@ L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
   attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
   subdomains: 'abcd', maxZoom: 19
 }).addTo(map);
+
+// ─── BUILD CITY FILTER ────────────────────────────────────────────────────────
+function buildCityFilter() {
+  const cities = [...new Set(LOCATIONS.map(l => l.city).filter(Boolean))].sort();
+  const sel = document.getElementById('city-select');
+  for (const city of cities) {
+    const opt = document.createElement('option');
+    opt.value = city;
+    opt.textContent = city;
+    sel.appendChild(opt);
+  }
+  sel.addEventListener('change', () => {
+    activeCity = sel.value;
+    render(false);
+  });
+}
 
 // ─── BUILD LABEL FILTER BUTTONS ───────────────────────────────────────────────
 function buildFilters() {
@@ -1088,6 +1396,9 @@ function locMatchesFilters(loc) {
     // null days = always active, passes any day filter
     if (loc.days !== null && !loc.days.some(d => activeDays.has(d))) return false;
   }
+
+  // City filter
+  if (activeCity && loc.city !== activeCity) return false;
 
   return true;
 }
@@ -1229,7 +1540,15 @@ function setView(view) {
     document.body.classList.remove('is-list');
     document.getElementById('btn-map').classList.add('active');
     document.getElementById('btn-list').classList.remove('active');
-    setTimeout(() => map.invalidateSize(), 50);
+    setTimeout(() => {
+      map.invalidateSize();
+      // Pan to city-filtered locations if a city is selected
+      const filtered = getFiltered();
+      if (filtered.length > 0) {
+        const bounds = L.latLngBounds(filtered.map(l => [l.lat, l.lng]));
+        map.fitBounds(bounds, { padding: [40, 40], maxZoom: 16 });
+      }
+    }, 50);
   } else {
     mainEl.classList.add('is-list');
     document.body.classList.add('is-list');
@@ -1241,7 +1560,118 @@ function setView(view) {
 document.getElementById('btn-map').addEventListener('click', () => setView('map'));
 document.getElementById('btn-list').addEventListener('click', () => setView('list'));
 
+// ─── MODAL & SUBMISSION ───────────────────────────────────────────────────────
+const RATE_LIMIT_KEY = 'chess_scenes_submit';
+const RATE_LIMIT_MAX = 3;        // max submissions
+const RATE_LIMIT_WINDOW = 86400000; // per 24 hours (ms)
+
+function getRateLimitState() {
+  try {
+    const raw = localStorage.getItem(RATE_LIMIT_KEY);
+    return raw ? JSON.parse(raw) : { count: 0, windowStart: Date.now() };
+  } catch { return { count: 0, windowStart: Date.now() }; }
+}
+
+function canSubmit() {
+  const state = getRateLimitState();
+  if (Date.now() - state.windowStart > RATE_LIMIT_WINDOW) return true; // window expired
+  return state.count < RATE_LIMIT_MAX;
+}
+
+function recordSubmission() {
+  const state = getRateLimitState();
+  if (Date.now() - state.windowStart > RATE_LIMIT_WINDOW) {
+    localStorage.setItem(RATE_LIMIT_KEY, JSON.stringify({ count: 1, windowStart: Date.now() }));
+  } else {
+    localStorage.setItem(RATE_LIMIT_KEY, JSON.stringify({ count: state.count + 1, windowStart: state.windowStart }));
+  }
+}
+
+const backdrop = document.getElementById('modal-backdrop');
+const form     = document.getElementById('suggest-form');
+const msgEl    = document.getElementById('form-msg');
+const submitBtn = document.getElementById('form-submit');
+
+document.getElementById('btn-suggest').addEventListener('click', () => {
+  msgEl.className = 'form-msg';
+  msgEl.textContent = '';
+  backdrop.classList.add('open');
+});
+
+document.getElementById('modal-close').addEventListener('click', () => {
+  backdrop.classList.remove('open');
+});
+
+backdrop.addEventListener('click', e => {
+  if (e.target === backdrop) backdrop.classList.remove('open');
+});
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') backdrop.classList.remove('open');
+});
+
+// Wire up toggle button groups (multi-select → hidden input)
+document.querySelectorAll('.toggle-group').forEach(group => {
+  const hidden = document.getElementById(group.id.replace('-toggles', '-hidden'));
+  group.querySelectorAll('.toggle-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      btn.classList.toggle('active');
+      const selected = [...group.querySelectorAll('.toggle-btn.active')]
+        .map(b => b.dataset.value);
+      hidden.value = selected.join(', ');
+    });
+  });
+});
+
+form.addEventListener('submit', async e => {
+  e.preventDefault();
+
+  if (!canSubmit()) {
+    msgEl.className = 'form-msg warn';
+    msgEl.textContent = 'You\'ve reached the submission limit for today. Please try again tomorrow.';
+    return;
+  }
+
+  // Honeypot check
+  if (form.querySelector('[name="_gotcha"]').value) return;
+
+  // Require at least one type
+  if (!document.getElementById('labels-hidden').value) {
+    msgEl.className = 'form-msg error';
+    msgEl.textContent = 'Please select at least one type.';
+    msgEl.style.display = 'block';
+    return;
+  }
+
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Sending…';
+
+  try {
+    const res = await fetch(form.action, {
+      method: 'POST',
+      body: new FormData(form),
+      headers: { 'Accept': 'application/json' }
+    });
+
+    if (res.ok) {
+      recordSubmission();
+      msgEl.className = 'form-msg success';
+      msgEl.textContent = 'Thanks! Your suggestion has been submitted for review.';
+      form.reset();
+      submitBtn.textContent = 'Submitted ✓';
+    } else {
+      throw new Error('Server error');
+    }
+  } catch {
+    msgEl.className = 'form-msg error';
+    msgEl.textContent = 'Something went wrong. Please try again or reach out directly.';
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Submit for review';
+  }
+});
+
 // ─── INIT ─────────────────────────────────────────────────────────────────────
+buildCityFilter();
 buildFilters();
 buildDayFilters();
 render(true);
