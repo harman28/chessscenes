@@ -20,7 +20,8 @@
     labels:       Comma-separated labels, e.g: chess bar, chess club
     coordinates:  lat, lng  (required)
     note:         Short description shown on cards and popups
-    link:         URL to Google Maps or similar
+    gmap:         URL to Google Maps or similar
+    link:         URL to website, Facebook, Instagram, etc.
     image:        URL to a photo shown in the map popup (jpg, png, etc.)
     city:         City name (optional, shown on card)
     days:         Comma-separated days active, e.g: Monday, Wednesday
@@ -44,20 +45,20 @@ labels: chess memorial
 city: Amsterdam
 coordinates: 52.3755148120896, 4.882690917303496
 note: Defunct chess bar.
-link: https://maps.app.goo.gl/AtdP5dHQVRihL9yt8
+gmap: https://maps.app.goo.gl/AtdP5dHQVRihL9yt8
 
 name: Former Max Euwe Schaakhuis
 labels: chess memorial
 city: Amsterdam
 coordinates: 52.368472045937146, 4.8712247131282576
-link: https://maps.app.goo.gl/NkxYzuvTdSqDzWNh9
+gmap: https://maps.app.goo.gl/NkxYzuvTdSqDzWNh9
 
 name: Zwart op Wit
 labels: chess club
 city: Amsterdam
 coordinates: 52.37107776390779, 4.866202094898311
 note: Meets every Monday evening at 8pm in the basement of games cafe 2 Klaveren.
-link: https://maps.app.goo.gl/2iYpS9ALfHsJLAwYA
+gmap: https://maps.app.goo.gl/2iYpS9ALfHsJLAwYA
 days: Monday
 
 name: Schaakvereniging Amsterdam West
@@ -65,7 +66,7 @@ labels: chess club
 city: Amsterdam
 coordinates: 52.371848184945364, 4.868834031296687
 note: Meets every Thursday evening at 8pm in Bilderdijkpark.
-link: https://maps.app.goo.gl/HE7btnNk4Bit5ywy8
+gmap: https://maps.app.goo.gl/HE7btnNk4Bit5ywy8
 days: Thursday
 
 name: Schaakvereniging Caissa
@@ -73,7 +74,7 @@ labels: chess club
 city: Amsterdam
 coordinates: 52.353211646390925, 4.883298807309834
 note: Meets every Tuesday evening at 8pm in Huize Lydia.
-link: https://maps.app.goo.gl/cnJ446iJsELTRz7XA
+gmap: https://maps.app.goo.gl/cnJ446iJsELTRz7XA
 days: Thursday
 
 name: Schaakvereniging EsPion
@@ -81,7 +82,7 @@ labels: chess club
 city: Amsterdam
 coordinates: 52.345217583410495, 4.9085327618301156
 note: Meets every Monday evening at Gaaspstraat 8.
-link: https://maps.app.goo.gl/dZG9V7rcx1a9q3rLA
+gmap: https://maps.app.goo.gl/dZG9V7rcx1a9q3rLA
 days: Monday
 
 name: De Queer Schaakclub
@@ -89,7 +90,7 @@ labels: chess club
 city: Amsterdam
 coordinates: 52.354412053333895, 4.854522492054707
 note: Meets every Wednesday evening at Speelzaal KLUP.
-link: https://maps.app.goo.gl/4hLHEWU5ktfCiWCXA
+gmap: https://maps.app.goo.gl/4hLHEWU5ktfCiWCXA
 days: Wednesday
 
 name: De Volewijckers
@@ -97,7 +98,7 @@ labels: chess club
 city: Amsterdam
 coordinates: https://maps.app.goo.gl/mqUyi83fLoGxKCwi8
 note: Chess club De Volewijckers plays every Wednesday evening in the think sports center Het Zwanenmeer.
-link: https://maps.app.goo.gl/mqUyi83fLoGxKCwi8
+gmap: https://maps.app.goo.gl/mqUyi83fLoGxKCwi8
 days: Wednesday
 
 name: Cafe de Laurierboom
@@ -105,11 +106,12 @@ labels: chess bar
 city: Amsterdam
 coordinates: 52.372347065141824, 4.880934681011202
 note: Chess mecca of Amsterdam. Tournaments on barblitz.co. Casual chess always.
-link: https://maps.app.goo.gl/PizEC9TRQ4kt8QyK6
+gmap: https://maps.app.goo.gl/PizEC9TRQ4kt8QyK6
 
 name: Max Euwe Centrum
 labels: chess museum
 city: Amsterdam
+gmap: https://maps.app.goo.gl/16FAWhAHgR3zogcG7
 coordinates: 52.362777166541285, 4.882811878673435
 note: Free chess museum and library.
 days: Tuesday, Wednesday, Thursday, Friday, Saturday
@@ -119,14 +121,14 @@ labels: chess memorial, chess board
 city: Amsterdam
 coordinates: 52.362969674148395, 4.88370529837886
 note: Square named after former Dutch World Champion. 5 outdoor chess tables and a memorial.
-link: https://maps.app.goo.gl/BdbA8DiMEQxf37us9
+gmap: https://maps.app.goo.gl/BdbA8DiMEQxf37us9
 
 name: Chess & Beer
 labels: chess meetup
 city: Amsterdam
 coordinates: 52.363208136727685, 4.882977053882178
 note: Casual chess meetup every second Sunday afternoon in Cafe De Balie.
-link: https://maps.app.goo.gl/bkpboKbMJeadL65F6
+gmap: https://maps.app.goo.gl/bkpboKbMJeadL65F6
 days: Sunday
 
 name: Vondelbunker Chess
@@ -134,7 +136,7 @@ labels: chess meetup
 city: Amsterdam
 coordinates: 52.36093601496312, 4.87757042744756
 note: Underground chess on Sunday afternoons. Irregular.
-link: https://maps.app.goo.gl/zVaGJ4eQ19HZ6h6z8
+gmap: https://maps.app.goo.gl/zVaGJ4eQ19HZ6h6z8
 days: Sunday
 
 name: Het Paard
@@ -142,7 +144,7 @@ labels: chess shop
 city: Amsterdam
 coordinates: 52.38410008633985, 4.885394165335662
 note: Notable chess shop.
-link: https://maps.app.goo.gl/ycLy5MS6BBYACa3z9
+gmap: https://maps.app.goo.gl/ycLy5MS6BBYACa3z9
 
 name: Chess Art
 labels: chess memorial, chess board
@@ -156,70 +158,70 @@ labels: chess board
 city: Amsterdam
 coordinates: 52.38471574220395, 4.8855323401516735
 note: Abandoned outdoor chess tables.
-link: https://maps.app.goo.gl/Pt2zN4pDBFiQ8ddx8
+gmap: https://maps.app.goo.gl/Pt2zN4pDBFiQ8ddx8
 
 name: Chess Table
 labels: chess board
 city: Amsterdam
 coordinates: 52.367397288232056, 4.876081661186785
 note: Abandoned outdoor chess tables.
-link: https://maps.app.goo.gl/cDYhY7noTk7SDkwYA
+gmap: https://maps.app.goo.gl/cDYhY7noTk7SDkwYA
 
 name: Chess Table
 labels: chess board
 city: Amsterdam
 coordinates: 52.35418582496915, 4.919973076573896
 note: Just a chess table in the middle of a playground.
-link: https://maps.app.goo.gl/bz97grhNwenNmFBLA
+gmap: https://maps.app.goo.gl/bz97grhNwenNmFBLA
 
 name: Giant Chess Board
 labels: chess board
 city: Amsterdam
 coordinates: 52.36404452205097, 4.866087393855511
 note: Giant board at the corner of the playground. Pieces locked in the steel boxes.
-link: https://maps.app.goo.gl/N9mAaZdBsfyAJDEW6
+gmap: https://maps.app.goo.gl/N9mAaZdBsfyAJDEW6
 
 name: Schaaktafels
 labels: chess board, chess meetup
 city: Utrecht
 coordinates: 52.097663330948684, 5.022259352304256
 note: Chess tables in Maximapark. Meetup on Sunday mornings.
-link: https://maps.app.goo.gl/Dx121rmGCnhm935N8
+gmap: https://maps.app.goo.gl/Dx121rmGCnhm935N8
 
 name: Schaakcafe Utrecht
 labels: chess club, chess bar, chess meetup
 city: Utrecht
 coordinates: 52.09976268371182, 5.103186467326744
 note: Every Friday afternoon from 13:30 onwards till 17:00.
-link: https://maps.app.goo.gl/j7A7ARS1a3TbcKLk6
+gmap: https://maps.app.goo.gl/j7A7ARS1a3TbcKLk6
 
 name: Giant Chess Board
 labels: chess board
 city: Amsterdam
 coordinates: 52.36404452205097, 4.866087393855511
 note: Giant board at the corner of the playground. Pieces locked in the steel boxes.
-link: https://maps.app.goo.gl/N9mAaZdBsfyAJDEW6
+gmap: https://maps.app.goo.gl/N9mAaZdBsfyAJDEW6
 
 name: Giant Chess Board
 labels: chess board
 city: Leiden
 coordinates: 52.16364644160096, 4.484094054330104
 note: Giant chess board next to the museum
-link: https://maps.app.goo.gl/BcBadmCYz656qFpC9
+gmap: https://maps.app.goo.gl/BcBadmCYz656qFpC9
 
 name: Giant Chess Board
 labels: chess board
 city: Gouda
 coordinates: 52.014704997613464, 4.710622070431268
 note: Mini-giant board, next to a small church.
-link: https://maps.app.goo.gl/rSX32znHBznR2ZHd8
+gmap: https://maps.app.goo.gl/rSX32znHBznR2ZHd8
 
 name: Stichting En Passant
 labels: chess club, chess bar
 city: The Hague
 coordinates: 52.07432068089482, 4.311602878673388
 note: Chess on weekends.
-link: https://maps.app.goo.gl/2A2fRFpQfjugkGRg9
+gmap: https://maps.app.goo.gl/2A2fRFpQfjugkGRg9
 days: Friday, Saturday, Sunday
 
 name: KopieKoffie
@@ -227,7 +229,7 @@ labels: chess meetup
 city: Delft
 coordinates: 52.00047872546669, 4.3460540624039785
 note: Chess on Sundays at 3.30pm.
-link: https://maps.app.goo.gl/zz2rpLMpYdpqykU98
+gmap: https://maps.app.goo.gl/zz2rpLMpYdpqykU98
 days: Sunday
 
 name: Buurtcentrum Gentbrugge
@@ -235,7 +237,7 @@ labels: chess meetup
 city: Ghent
 coordinates: 51.04301894619833, 3.7440072254320547
 note: Chess Sunday 10am to 1pm
-link: https://www.google.com/maps/place/Buurtcentrum+Gentbrugge/data=!4m2!3m1!1s0x47c376ac3bdee5a9:0xf8a369ab94002198
+gmap: https://www.google.com/maps/place/Buurtcentrum+Gentbrugge/data=!4m2!3m1!1s0x47c376ac3bdee5a9:0xf8a369ab94002198
 days: Sunday
 
 name: Le Pantin
@@ -243,21 +245,21 @@ labels: chess bar
 city: Brussels
 coordinates: 50.82892801179286, 4.371377076665836
 note: Blitz tournament Tuesdays at 7pm.
-link: https://www.google.com/maps/place/Le+Pantin/data=!4m2!3m1!1s0x47c3c4931d8affd3:0xca234321219fd876
+gmap: https://www.google.com/maps/place/Le+Pantin/data=!4m2!3m1!1s0x47c3c4931d8affd3:0xca234321219fd876
 
 name: Le STROF
 labels: chess bar
 coordinates: 50.843288815803355, 4.351961345144561
 city: Brussels
 note: Genuine chess bar.
-link: https://www.google.com/maps/place/Le+STROF/data=!4m2!3m1!1s0x47c3c5c725189a65:0xb28bd2bfe00ee30d
+gmap: https://www.google.com/maps/place/Le+STROF/data=!4m2!3m1!1s0x47c3c5c725189a65:0xb28bd2bfe00ee30d
 
 name: Toots Jazz Club
 labels: chess bar
 coordinates: 50.847190853915144, 4.353162974733196
 city: Brussels
 note: Blitz event Tuesdays at 7.30pm. Get there early.
-link: https://www.google.com/maps/place/Toots+Jazz+Club/data=!4m2!3m1!1s0x47c3c57b380641c5:0x20518f8f20b019ae
+gmap: https://www.google.com/maps/place/Toots+Jazz+Club/data=!4m2!3m1!1s0x47c3c57b380641c5:0x20518f8f20b019ae
 days: Tuesday
 
 name: Myo Cafe
@@ -265,14 +267,14 @@ city: Cork
 labels: chess bar
 coordinates: 51.90139232178871, -8.476166258928927
 note: Two outdoor chess tables by the river. Pieces available too.
-link: https://www.google.com/maps/place/Myo+Cafe/data=!4m2!3m1!1s0x484490116556a9a7:0x372c5658c3ba6032
+gmap: https://www.google.com/maps/place/Myo+Cafe/data=!4m2!3m1!1s0x484490116556a9a7:0x372c5658c3ba6032
 
 name: St John's Square
 labels: chess meetup
 city: London
 coordinates: 51.52335201368471, -0.09390159873636143
 note: Chess on Saturday at 12pm.
-link: https://www.google.com/maps/place/St+John's+Square/data=!4m2!3m1!1s0x48761b51aeec49ad:0xb0b1c14fb1973add
+gmap: https://www.google.com/maps/place/St+John's+Square/data=!4m2!3m1!1s0x48761b51aeec49ad:0xb0b1c14fb1973add
 days: Saturday
 
 name: Granary Square
@@ -280,7 +282,7 @@ labels: chess meetup
 city: London
 coordinates: 51.53733210186295, -0.11475202081671028
 note: Chess on Wednesday at 6.30pm.
-link: https://www.google.com/maps/place/Granary+Square/data=!4m2!3m1!1s0x48761b3d9035396b:0x87d7405a11148df9
+gmap: https://www.google.com/maps/place/Granary+Square/data=!4m2!3m1!1s0x48761b3d9035396b:0x87d7405a11148df9
 days: Wednesday
 
 name: Old Brewery
@@ -288,21 +290,21 @@ labels: chess bar
 coordinates: 51.48613189677573, -0.0011239949974221996
 city: London
 note: Chess here on Sundays 12–5.
-link: https://www.google.com/maps/place/Old+Brewery/data=!4m2!3m1!1s0x48760284d129d219:0xfc03125988dcf0bd
+gmap: https://www.google.com/maps/place/Old+Brewery/data=!4m2!3m1!1s0x48760284d129d219:0xfc03125988dcf0bd
 days: Sunday
 
 name: Giant Chess Board
 labels: chess board
 city: London
 coordinates: 51.51438397011346, -0.2056662758887658
-link: https://maps.app.goo.gl/EtMV8xhohTBEa94s6
+gmap: https://maps.app.goo.gl/EtMV8xhohTBEa94s6
 
 name: Club d'Echecs Luxembourg 1915
 city: Luxembourg
 labels: chess club
 coordinates: 49.60455003720618, 6.1320267369725014
 note: Chess on Tuesday and Friday at 8pm at Café chez Maria
-link: https://www.google.com/maps/place/Club+d'Echecs+Luxembourg+1915/data=!4m2!3m1!1s0x479548d6c89dd013:0xbcdef2a3c4fbabdb
+gmap: https://www.google.com/maps/place/Club+d'Echecs+Luxembourg+1915/data=!4m2!3m1!1s0x479548d6c89dd013:0xbcdef2a3c4fbabdb
 days: Tuesday, Friday
 
 name: Satranc 2000
@@ -310,7 +312,7 @@ city: Cologne
 labels: chess meetup
 coordinates: 50.945800573829075, 6.932950523082612
 note: Chess on the 1st and 3rd Saturday of the month, 3pm at Naturfreundehaus.
-link: https://www.google.com/maps/place/Naturfreundehaus/data=!4m2!3m1!1s0x47bf250fd1afc9d9:0x2d154958bf90c4f
+gmap: https://www.google.com/maps/place/Naturfreundehaus/data=!4m2!3m1!1s0x47bf250fd1afc9d9:0x2d154958bf90c4f
 days: Saturday
 
 name: Copenhagen Chess
@@ -318,7 +320,7 @@ city: Copenhagen
 labels: chess meetup
 coordinates: 55.68314648081195, 12.540781316342184
 note: Casual chess on Wednesday and Saturday afternoons.
-link: https://www.google.com/maps/place/Copenhagen+Chess/data=!4m2!3m1!1s0x465253bb1578f14b:0xe54306844d593f1b
+gmap: https://www.google.com/maps/place/Copenhagen+Chess/data=!4m2!3m1!1s0x465253bb1578f14b:0xe54306844d593f1b
 days: Wednesday, Saturday
 
 name: Svarta Hästen Stureplan
@@ -327,21 +329,21 @@ city: Stockholm
 coordinates: 59.33737559447111, 18.07269906268197
 note: Chess and wine bar.
 days: Wednesday, Thursday, Friday, Saturday, Sunday
-link: https://www.google.com/maps/place/Svarta+H%C3%A4sten+Stureplan/data=!4m2!3m1!1s0x465f9dbc578f796f:0x53a5b5f15a5796ae
+gmap: https://www.google.com/maps/place/Svarta+H%C3%A4sten+Stureplan/data=!4m2!3m1!1s0x465f9dbc578f796f:0x53a5b5f15a5796ae
 
 name: Giant Chess Boards
 labels: chess board
 city: Helsinki
 coordinates: 60.179185605757226, 24.930856681254557
 note: 2 giant boards in the park, visible on Google Maps.
-link: https://maps.app.goo.gl/hCPLvTgb6QKbResG7
+gmap: https://maps.app.goo.gl/hCPLvTgb6QKbResG7
 
 name: Helsinki Street Chess
 labels: chess meetup
 city: Helsinki
 coordinates: 60.18117017406913, 24.953056370908044
 note: Meetup at Street Bar Kallio. Tournament on Tuesdays at 8pm.
-link: https://maps.app.goo.gl/Yw6smBXttpah1s2d9
+gmap: https://maps.app.goo.gl/Yw6smBXttpah1s2d9
 days: Tuesday
 
 name: Shakkiareena
@@ -349,7 +351,7 @@ labels: chess board
 city: Helsinki
 coordinates: 60.155401931105175, 24.952306440644836
 note: No fewer than 6 giant boards all placed together in the park.
-link: https://maps.app.goo.gl/eNv5sY1ubrTUYJFS8
+gmap: https://maps.app.goo.gl/eNv5sY1ubrTUYJFS8
 
 name: The Good Knight
 city: Oslo
@@ -357,149 +359,149 @@ labels: chess bar
 coordinates: 59.93430513100195, 10.863946284474302
 days: Monday, Tuesday, Wednesday, Thursday, Friday, Saturday
 note: Just a chess bar.
-link: https://www.google.com/maps/place/The+Good+Knight/data=!4m2!3m1!1s0x46416f595815fb39:0x8b0371b4e7a9f52f
+gmap: https://www.google.com/maps/place/The+Good+Knight/data=!4m2!3m1!1s0x46416f595815fb39:0x8b0371b4e7a9f52f
 
 name: Mikhail Tal Memorial
 labels: chess memorial
 coordinates: 56.95224843029699, 24.118113305282236
 city: Riga
 note: Memorial to the The Magician from Riga. People probably play around here somewhere.
-link: https://www.google.com/maps/place/Piemineklis+Mihailam+T%C4%81lam/data=!4m2!3m1!1s0x46eecfd215e41333:0x700681fddf9502a5
+gmap: https://www.google.com/maps/place/Piemineklis+Mihailam+T%C4%81lam/data=!4m2!3m1!1s0x46eecfd215e41333:0x700681fddf9502a5
 
 name: Stoliki szachowe
 labels: chess board
 city: Krakow
 coordinates: 50.05554539373102, 19.929222551372316
 note: Public chess table.
-link: https://www.google.com/maps/place/Stoliki+szachowe/data=!4m2!3m1!1s0x47165bbb10c0f11d:0xd888543c25c91f16
+gmap: https://www.google.com/maps/place/Stoliki+szachowe/data=!4m2!3m1!1s0x47165bbb10c0f11d:0xd888543c25c91f16
 
 name: IT Chess Club
 labels: chess club
 city: Krakow
 coordinates: 50.06538174286009, 19.938302207956834
 note: Open every Thursday 6pm–10pm.
-link: https://www.google.com/maps/place/IT+Chess+Club/data=!4m2!3m1!1s0xa43455271a17dba7:0xed17fc5f3aec278b
+gmap: https://www.google.com/maps/place/IT+Chess+Club/data=!4m2!3m1!1s0xa43455271a17dba7:0xed17fc5f3aec278b
 days: Thursday
 
 name: Outdoor chess tables
 labels: chess board
 city: Krakow
 coordinates: 50.0483782559322, 19.93769373249697
-link: https://www.google.com/maps/place/Outdoor+chess+tables/data=!4m2!3m1!1s0x47165b3216cfdf1d:0x95308ca6f1b22c42
+gmap: https://www.google.com/maps/place/Outdoor+chess+tables/data=!4m2!3m1!1s0x47165b3216cfdf1d:0x95308ca6f1b22c42
 
 name: Szachy Chess
 labels: chess shop
 coordinates: 50.044782947590235, 19.956383620829392
 city: Krakow
-link: https://www.google.com/maps/place/Szachy+Chess/data=!4m2!3m1!1s0x47165b4502874903:0x76854b37dea3292
+gmap: https://www.google.com/maps/place/Szachy+Chess/data=!4m2!3m1!1s0x47165b4502874903:0x76854b37dea3292
 
 name: Magyar Sakkvilág
 labels: chess shop
 city: Budapest
 coordinates: 47.50992895357972, 19.048004361369802
-link: https://www.google.com/maps/place/Magyar+Sakkvil%C3%A1g/data=!4m2!3m1!1s0x4741dc0f47790081:0xcc1e61f903166191
+gmap: https://www.google.com/maps/place/Magyar+Sakkvil%C3%A1g/data=!4m2!3m1!1s0x4741dc0f47790081:0xcc1e61f903166191
 
 name: Széchenyi Thermal Bath
 labels: chess meetup
 coordinates: 47.52187052808351, 19.08920309012298
 city: Budapest
 note: There are chess parties in the pool dude.
-link: https://www.google.com/maps/place/Sz%C3%A9chenyi+Thermal+Bath/data=!4m2!3m1!1s0x4741db8605675577:0xcbc0c308b68d2412
+gmap: https://www.google.com/maps/place/Sz%C3%A9chenyi+Thermal+Bath/data=!4m2!3m1!1s0x4741db8605675577:0xcbc0c308b68d2412
 
 name: Chess tables
 labels: chess board
 city: Budapest
 coordinates: 47.48935509701126, 19.03029740873186
-link: https://www.google.com/maps/place/Chess+tables/data=!4m2!3m1!1s0x4741dd8ea76ae0a9:0x86476e2393ddf8c7
+gmap: https://www.google.com/maps/place/Chess+tables/data=!4m2!3m1!1s0x4741dd8ea76ae0a9:0x86476e2393ddf8c7
 
 name: Chess tables outside
 labels: chess board
 city: Budapest
 coordinates: 47.49590715236488, 19.092070301353363
-link: https://www.google.com/maps/place/Chess+tables+outside/data=!4m2!3m1!1s0x4741dd4899f24dc9:0xfc45ea1fadfa3bda
+gmap: https://www.google.com/maps/place/Chess+tables+outside/data=!4m2!3m1!1s0x4741dd4899f24dc9:0xfc45ea1fadfa3bda
 
 name: La Şahişti
 city: Bucharest
 labels: chess board
 coordinates: 44.43650603622561, 26.089504320816676
 note: Chess tables in a park.
-link: https://www.google.com/maps/place/Chessmen's+Place/data=!4m2!3m1!1s0x40b1ffa5febbaf99:0x2ec0281cb27f7c62
+gmap: https://www.google.com/maps/place/Chessmen's+Place/data=!4m2!3m1!1s0x40b1ffa5febbaf99:0x2ec0281cb27f7c62
 
 name: Chess Cafe Panellinion
 city: Athens
 labels: chess bar
 coordinates: 37.983379614919265, 23.735013859093844
-link: https://www.google.com/maps/place/Chess+Cafe+Panellinion/data=!4m2!3m1!1s0x14a1bd37420f2a3d:0x3ba4fc770f053eaf
+gmap: https://www.google.com/maps/place/Chess+Cafe+Panellinion/data=!4m2!3m1!1s0x14a1bd37420f2a3d:0x3ba4fc770f053eaf
 
 name: K.O.T.E.S. (Booze Cooperativa)
 city: Athens
 labels: chess bar
 coordinates: 37.97987903677038, 23.737572814567116
 note: Underground shady vibes place. Chess scenes with smoking allowed indoors.
-link: https://www.google.com/maps/place/K.O.T.E.S.+(Booze+Cooperativa)/data=!4m2!3m1!1s0x14a1bd3cbd1072b3:0xa33e9f068a311ad
+gmap: https://www.google.com/maps/place/K.O.T.E.S.+(Booze+Cooperativa)/data=!4m2!3m1!1s0x14a1bd3cbd1072b3:0xa33e9f068a311ad
 
 name: Chess boards – Giant boards.
 labels: chess board
 city: Athens
 coordinates: 37.942749, 23.694164
 note: Two giant boards in Stavros Niarchos Park.
-link: https://www.google.com/maps/search/37.942749,23.694164
+gmap: https://www.google.com/maps/search/37.942749,23.694164
 
 name: Place de Jeux du Parc des Bastions
 city: Geneva
 labels: chess board
 coordinates: 46.20099869676137, 6.145186805050561
 note: A dozen giant chessboards in this public square.
-link: https://www.google.com/maps/place/Place+de+Jeux+du+Parc+des+Bastions/data=!4m2!3m1!1s0x478c64d2343f71d7:0xdc48c5964f050e5a
+gmap: https://www.google.com/maps/place/Place+de+Jeux+du+Parc+des+Bastions/data=!4m2!3m1!1s0x478c64d2343f71d7:0xdc48c5964f050e5a
 
 name: Giant Chess Board
 city: Basel
 labels: chess board
 coordinates: 47.560883, 7.580881
 note: Giant chess board visible on Google Maps but likely abandoned.
-link: https://www.google.com/maps/search/47.560883,7.580881
+gmap: https://www.google.com/maps/search/47.560883,7.580881
 
 name: Giant Chess Board
 city: Basel
 labels: chess board
 coordinates: 47.56259076255942, 7.601930664350891
 note: Giant chess board visible on Google Maps but likely abandoned.
-link: https://maps.app.goo.gl/mujnCTs6HNquwWSN6
+gmap: https://maps.app.goo.gl/mujnCTs6HNquwWSN6
 
 name: Schachplatz
 city: Zurich
 labels: chess board
 coordinates: 47.41039571611907, 8.544505546359469
 note: Two giant chess boards in a public square.
-link: https://www.google.com/maps/place/Schachplatz/data=!4m2!3m1!1s0x47900b0012d6fadd:0xbd2ec9f717d9030d
+gmap: https://www.google.com/maps/place/Schachplatz/data=!4m2!3m1!1s0x47900b0012d6fadd:0xbd2ec9f717d9030d
 
 name: Manuel's
 city: Zurich
 labels: chess bar
 coordinates: 47.373871923010626, 8.535365789077455
 note: A cigar shop, but it seems like people play chess there.
-link: https://www.google.com/maps/place/Manuel's/data=!4m2!3m1!1s0x47900a0439288977:0x80704c7d49f2ef25
+gmap: https://www.google.com/maps/place/Manuel's/data=!4m2!3m1!1s0x47900a0439288977:0x80704c7d49f2ef25
 
 name: StrangerChess
 labels: chess meetup
 coordinates: 52.525077432725524, 13.411217636212005
 city: Berlin
 note: 7pm.
-link: https://www.google.com/maps/place/StrangerChess/data=!4m2!3m1!1s0x47a85161b51f0f59:0xe606b5e5c59ad757
+gmap: https://www.google.com/maps/place/StrangerChess/data=!4m2!3m1!1s0x47a85161b51f0f59:0xe606b5e5c59ad757
 
 name: Babylon
 labels: chess meetup
 coordinates: 52.52627849017091, 13.4128913345676
 city: Berlin
 note: Chess every night at 7pm.
-link: https://www.google.com/maps/place/Babylon/data=!4m2!3m1!1s0x47a84e1dd8daaaab:0x319941efa11046b4
+gmap: https://www.google.com/maps/place/Babylon/data=!4m2!3m1!1s0x47a84e1dd8daaaab:0x319941efa11046b4
 
 name: Gambit Cafe&Bar
 labels: chess bar
 city: Prague
 coordinates: 50.09660180414321, 14.462408325506006
 note: Lots of chess events, casual chess on Wednesdays
-link: https://www.google.com/maps/place/Gambit+Cafe%26Bar/data=!4m2!3m1!1s0x470b950035457b29:0xbee0bb0cfc3a7b6b
+gmap: https://www.google.com/maps/place/Gambit+Cafe%26Bar/data=!4m2!3m1!1s0x470b950035457b29:0xbee0bb0cfc3a7b6b
 days: Wednesday
 
 name: B4 | CAFÉ PUB
@@ -507,21 +509,21 @@ labels: chess bar
 coordinates: 50.093351027794796, 14.426911206310468
 city: Prague
 note: Chess-themed pub
-link: https://www.google.com/maps/place/B4+%7C+CAF%C3%89+PUB/data=!4m2!3m1!1s0x470b959bff609865:0x8f30083f05fa09da
+gmap: https://www.google.com/maps/place/B4+%7C+CAF%C3%89+PUB/data=!4m2!3m1!1s0x470b959bff609865:0x8f30083f05fa09da
 
 name: Wilhelm Steinitz' commemorative plaque
 city: Prague
 labels: chess memorial
 coordinates: 50.09081803049813, 14.415753217273151
 note: Commemorative plaque for the first chess world champion.
-link: https://www.google.com/maps/place/Wilhelm+Steinitz',+the+first+chess+world+champion's+commemorative+plaque/data=!4m2!3m1!1s0x470b95f5d8bc8f3d:0xe412bc3bd6b6b444
+gmap: https://www.google.com/maps/place/Wilhelm+Steinitz',+the+first+chess+world+champion's+commemorative+plaque/data=!4m2!3m1!1s0x470b95f5d8bc8f3d:0xe412bc3bd6b6b444
 
 name: Barcelona Chess Meetup
 labels: chess meetup
 city: Barcelona
 coordinates: 41.38916982601849, 2.187669756717959
 note: Barcelona Chess Meetup meets here on the playground on Sundays in the Summer. Meet at the NorthWest gate at 5pm.
-link: https://www.google.com/maps/place/Playground/data=!4m2!3m1!1s0x12a4a36fb070aba7:0xc343311540d5a6b4
+gmap: https://www.google.com/maps/place/Playground/data=!4m2!3m1!1s0x12a4a36fb070aba7:0xc343311540d5a6b4
 days: Sunday
 
 name: Barcelona Chess Meetup
@@ -529,7 +531,7 @@ city: Barcelona
 labels: chess meetup
 coordinates: 41.382486761448384, 2.180746607742904
 note: Barcelona Chess Meetup meets at Mehman Khanna Halal on Sundays in the Winter.
-link: https://www.google.com/maps/place/Mehman+Khanna+Halal+%7C+Barcelona/data=!4m2!3m1!1s0x12a4a36d9f9f1517:0x8e6289a1446950dc
+gmap: https://www.google.com/maps/place/Mehman+Khanna+Halal+%7C+Barcelona/data=!4m2!3m1!1s0x12a4a36d9f9f1517:0x8e6289a1446950dc
 days: Sunday
 
 name: Piazza degli Scacchi
@@ -537,26 +539,26 @@ labels: chess memorial
 city: Marostica
 coordinates: 45.75087995062626, 11.655548131331718
 note: A human-scale chess game (Partita a Scacchi) is acted out in medieval costume on the second weekend of September in even-numbered years.
-link: https://www.google.com/maps/place/Piazza+degli+Scacchi/data=!4m2!3m1!1s0x4778cfd5352dbd85:0x431c53b90c66ae66
+gmap: https://www.google.com/maps/place/Piazza+degli+Scacchi/data=!4m2!3m1!1s0x4778cfd5352dbd85:0x431c53b90c66ae66
 
 name: Blitz Society
 labels: chess bar
 city: Paris
 coordinates: 48.85309115846211, 2.331505957041081
-link: https://www.google.com/maps/place/Blitz+Society/data=!4m2!3m1!1s0x47e6716dc5a5bb15:0xf1333a977c5f335f
+gmap: https://www.google.com/maps/place/Blitz+Society/data=!4m2!3m1!1s0x47e6716dc5a5bb15:0xf1333a977c5f335f
 
 name: Chess Club Barrikadnaya
 labels: chess bar
 city: Moscow
 coordinates: 55.76114107694813, 37.58216496066147
 note: Basement chess bar in Kudrinskaya Square.
-link: https://maps.app.goo.gl/dF1hzyujAuhYBb7JA
+gmap: https://maps.app.goo.gl/dF1hzyujAuhYBb7JA
 
 name: Chess Museum
 labels: chess museum
 city: Moscow
 coordinates: 55.74875901248655, 37.603847376803884
-link: https://maps.app.goo.gl/ndDHypzCEUYLa9N88
+gmap: https://maps.app.goo.gl/ndDHypzCEUYLa9N88
 note: Free museum housed with the Central Chess Club. 4000 artifacts, including the 1984 Karpov-Kasparov set. Open only 2-6pm on two weekdays.
 days: Tuesday, Thursday
 
@@ -564,7 +566,7 @@ name: Oktyabr'skiy Shakhmatnyy Klub
 labels: chess club
 city: Moscow
 coordinates: 55.73538745080846, 37.62239074303898
-link: https://maps.app.goo.gl/tv2TPHQXcrNwxF7m6
+gmap: https://maps.app.goo.gl/tv2TPHQXcrNwxF7m6
 note: Old school club with multiple blitz tournaments a week. Weekdays 6pm, Weekends 12pm.
 days: Wednesday, Friday, Saturday, Sunday
 
@@ -572,7 +574,7 @@ name: Belaya Lad'ya | White Rook
 labels: chess board
 city: Moscow
 coordinates: 55.71928944783564, 37.59262720012194
-link: https://maps.app.goo.gl/e2FYnwBkZpQxGh8B6
+gmap: https://maps.app.goo.gl/e2FYnwBkZpQxGh8B6
 note: Free outdoor chess club in Gorky Park. Locals have been playing here since the 1970s.
 
 name: Gökyay Foundation Chess Museum
@@ -580,14 +582,14 @@ labels: chess museum
 city: Ankara
 coordinates: 39.93503033190269, 32.863972812485365
 note: World's largest chess set collection — 723 sets from 110 countries
-link: https://www.gokyaysatrancvakfi.org.tr/en/chess-museum
+gmap: https://www.gokyaysatrancvakfi.org.tr/en/chess-museum
 days: Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday
 
 name: Taflfélag Reykjavíkur
 labels: chess club
 city: Reykjavik
 coordinates: 64.12913467393767, -21.865893888356133
-link: https://maps.app.goo.gl/Z7Qvpvgcy5XqQ1jYA
+gmap: https://maps.app.goo.gl/Z7Qvpvgcy5XqQ1jYA
 note: Rapid Tuesdays and Blitz Thursdays, walk-in before 7:30 PM. Entry 1000 ISK.
 days: Tuesday, Thursday
 
@@ -595,14 +597,14 @@ name: Café Rosenberg
 labels: chess bar
 city: Reykjavik
 coordinates: 64.14889736203068, -21.942259303799343
-link: https://maps.app.goo.gl/W63tHknTbCMrJfBdA
+gmap: https://maps.app.goo.gl/W63tHknTbCMrJfBdA
 note: Cosy café with chess boards on the tables. Formerly known as Stofan Café.
 
 name: Fischer Center
 labels: chess museum
 city: Selfoss
 coordinates: 63.93753060295892, -20.996162528950407
-link: https://maps.app.goo.gl/m3jpLzEMDB3dhFnC9
+gmap: https://maps.app.goo.gl/m3jpLzEMDB3dhFnC9
 note: Bobby Fischer museum 55km south of Reykjavík. Includes the 1972 Fischer-Spassky match table, Fischer memorabilia, a chess library, and an on-site chess club. Open daily 1–5 PM, ~1000 ISK entry.
 
 -->
@@ -1504,7 +1506,11 @@ All entries are curated manually. If you know a place that should be here, pleas
         </div>
         <div class="form-row">
           <label>Google Maps link</label>
-          <input type="url" name="link" placeholder="https://maps.app.goo.gl/…">
+          <input type="url" name="gmap" placeholder="https://maps.app.goo.gl/…">
+        </div>
+        <div class="form-row">
+          <label>Link <span class="form-hint">— website, Facebook, Instagram, etc.</span></label>
+          <input type="url" name="link" placeholder="https://…">
         </div>
         <div class="form-row">
           <label>Days active <span class="form-hint">— leave blank if every day</span></label>
@@ -1637,6 +1643,7 @@ function parseLocations() {
       days,       // null = always; array = specific days
       lat, lng,
       note: obj.note || '',
+      gmap: (obj.gmap && obj.gmap.startsWith('http')) ? obj.gmap : '',
       link: (obj.link && obj.link.startsWith('http')) ? obj.link : '',
       image: obj.image || '',
       city: obj.city || '',
@@ -1797,7 +1804,8 @@ function buildPopup(loc) {
       <div class="popup-name">${loc.name}</div>
       ${loc.note ? `<div class="popup-note">${loc.note}</div>` : ''}
       ${dayHtml}
-      ${loc.link ? `<a href="${loc.link}" target="_blank" rel="noopener" class="popup-link">Open in Maps ↗</a>` : ''}
+      ${loc.gmap ? `<a href="${loc.gmap}" target="_blank" rel="noopener" class="popup-link">Open in Maps ↗</a>` : ''}
+      ${loc.link ? `<a href="${loc.link}" target="_blank" rel="noopener" class="popup-link" style="margin-left:8px">Website ↗</a>` : ''}
     </div>`;
 }
 
@@ -1820,7 +1828,8 @@ function buildCard(loc, idx) {
     <div class="card-name">${loc.name}</div>
     ${loc.note ? `<div class="card-note">${loc.note}</div>` : ''}
     ${dayHtml}
-    ${loc.link ? `<a href="${loc.link}" target="_blank" rel="noopener" class="card-link" onclick="event.stopPropagation()">Open in Maps ↗</a>` : ''}
+    ${loc.gmap ? `<a href="${loc.gmap}" target="_blank" rel="noopener" class="card-link" onclick="event.stopPropagation()">Open in Maps ↗</a>` : ''}
+    ${loc.link ? `<a href="${loc.link}" target="_blank" rel="noopener" class="card-link" onclick="event.stopPropagation()" style="margin-left:8px">Website ↗</a>` : ''}
   `;
   return card;
 }
