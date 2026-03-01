@@ -1895,6 +1895,17 @@ buildCityFilter();
 buildFilters();
 buildDayFilters();
 render(true);
+
+if (navigator.geolocation) {
+  navigator.geolocation.getCurrentPosition(
+    ({ coords }) => {
+      map.setView([coords.latitude, coords.longitude], 6, { animate: true });
+    },
+    () => { /* denied or unavailable — keep default world view */ },
+    { timeout: 5000 }
+  );
+}
+
 </script>
 </body>
 </html>
