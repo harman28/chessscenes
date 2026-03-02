@@ -1627,7 +1627,7 @@ All entries are curated manually. If you know a place that should be here, pleas
 
   /* ── MARKER ── */
   .custom-marker {
-    width: 28px; height: 28px;
+    width: 20px; height: 20px;
     border-radius: 50% 50% 50% 0;
     transform: rotate(-45deg);
     border: 2px solid white;
@@ -1983,7 +1983,7 @@ let currentView = 'map';
 let markerObjects = [];
 
 // ─── MAP SETUP ────────────────────────────────────────────────────────────────
-const map = L.map('map', { zoomControl: true }).setView([30, 10], 2);
+const map = L.map('map', { zoomControl: true }).setView([52, 10], 4);
 
 L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
   attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
@@ -2083,9 +2083,9 @@ function makeIcon(labels) {
   return L.divIcon({
     className: '',
     html: `<div class="custom-marker" style="background:${color}"><span>${icon}</span></div>`,
-    iconSize: [28, 28],
-    iconAnchor: [9, 28],
-    popupAnchor: [5, -24],
+    iconSize: [20, 20],
+    iconAnchor: [10, 20],
+    popupAnchor: [5, -16],
   });
 }
 
@@ -2185,7 +2185,7 @@ function render(fitBounds = true) {
     listEl.appendChild(card);
   });
 
-  if (fitBounds && currentView === 'map') {
+  if (fitBounds && currentView === 'map' && (activeLabels.size > 0 || activeDays.size > 0 || activeCity)) {
     const bounds = L.latLngBounds(filtered.map(l => [l.lat, l.lng]));
     map.fitBounds(bounds, { padding: [40, 40], maxZoom: 16 });
   }
