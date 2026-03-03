@@ -1858,6 +1858,20 @@ Follow on [Instagram](https://www.instagram.com/chessscenes).
     border-bottom: 1px solid var(--gold-light);
   }
 
+  .popup-links-row {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    align-items: center; margin-top: 6px;
+  }
+  .popup-share-btn {
+    background: none; border: none;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.56rem; color: var(--muted);
+    letter-spacing: 0.5px; cursor: pointer; padding: 0;
+    transition: color 0.13s;
+  }
+  .popup-share-btn:hover { color: var(--ink); }
+  .popup-share-btn.copied { color: #2d6a4f; }
+
   .leaflet-popup-close-button {
     top: 5px !important;
     right: 6px !important;
@@ -2438,6 +2452,7 @@ function parseLocations() {
       link: (obj.link && obj.link.startsWith('http')) ? obj.link : '',
       image: obj.image || '',
       city: obj.city || '',
+      id: obj.id || '',
     });
   }
   return locations;
@@ -2445,6 +2460,26 @@ function parseLocations() {
 
 // Randomise the list of places
 const LOCATIONS = parseLocations().sort(() => Math.random() - 0.5);
+
+// ─── SLUGS ────────────────────────────────────────────────────────────────────
+function toSlug(str) {
+  return str.toLowerCase()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
+function makeSlug(loc) {
+  if (loc.id) return loc.id;
+  const city = toSlug(loc.city || '');
+  const name = toSlug(loc.name);
+  return city ? city + '-' + name : name;
+}
+// Build lookup map — first match wins on collision
+const SLUG_MAP = new Map();
+for (const loc of LOCATIONS) {
+  loc.slug = makeSlug(loc);
+  if (!SLUG_MAP.has(loc.slug)) SLUG_MAP.set(loc.slug, loc);
+}
 
 // ─── COLLECT ALL UNIQUE LABELS ────────────────────────────────────────────────
 const ALL_LABELS = [];
@@ -2619,8 +2654,11 @@ function buildPopup(loc) {
       <div class="popup-name">${loc.name}</div>
       ${loc.note ? `<div class="popup-note">${loc.note}</div>` : ''}
       ${dayHtml}
-      ${loc.gmap ? `<a href="${loc.gmap}" target="_blank" rel="noopener" class="popup-link">Open in Maps ↗</a>` : ''}
-      ${loc.link ? `<a href="${loc.link}" target="_blank" rel="noopener" class="popup-link" style="margin-left:8px">Website ↗</a>` : ''}
+      <div class="popup-links-row">
+        ${loc.gmap ? `<a href="${loc.gmap}" target="_blank" rel="noopener" class="popup-link">Maps ↗</a>` : ''}
+        ${loc.link ? `<a href="${loc.link}" target="_blank" rel="noopener" class="popup-link">Website ↗</a>` : ''}
+        <button class="popup-share-btn" onclick="shareVenue(event,'${loc.slug}',this)">🔗 Share</button>
+      </div>
     </div>`;
 }
 
@@ -3073,6 +3111,47 @@ buildCityFilter();
 buildFilters();
 buildDayFilters();
 render(true);
+
+// ─── DEEP LINKING ─────────────────────────────────────────────────────────────
+function shareVenue(e, slug, btn) {
+  e.stopPropagation();
+  const url = location.origin + location.pathname + '#' + slug;
+  history.replaceState(null, '', '#' + slug);
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(url).then(() => {
+      btn.textContent = '✓ Copied';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = '🔗 Share'; btn.classList.remove('copied'); }, 2000);
+    });
+  }
+}
+window.shareVenue = shareVenue;
+
+map.on('popupopen', e => {
+  const latlng = e.popup._source && e.popup._source.getLatLng();
+  if (!latlng) return;
+  const loc = LOCATIONS.find(l => l.lat === latlng.lat && l.lng === latlng.lng);
+  if (loc) history.replaceState(null, '', '#' + loc.slug);
+});
+
+map.on('popupclose', () => {
+  history.replaceState(null, '', location.pathname);
+});
+
+(function handleInitialHash() {
+  const hash = location.hash.slice(1);
+  if (!hash) return;
+  const loc = SLUG_MAP.get(hash);
+  if (!loc) return;
+  setTimeout(() => {
+    panToLocation(loc.lat, loc.lng);
+    const found = markerObjects.find(m => {
+      const ll = m.marker.getLatLng();
+      return ll.lat === loc.lat && ll.lng === loc.lng;
+    });
+    if (found) found.marker.openPopup();
+  }, 400);
+})();
 
 if (navigator.geolocation) {
   navigator.geolocation.getCurrentPosition(
