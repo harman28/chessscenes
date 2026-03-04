@@ -2339,15 +2339,15 @@ Follow on [Instagram](https://www.instagram.com/chessscenes).
       <form id="suggest-form" action="https://formspree.io/f/mwvnjbby" method="POST">
         <div class="form-row">
           <label>Place name <span class="req">*</span></label>
-          <input type="text" name="name" required placeholder="e.g. Café de la Paix">
+          <input type="text" name="name" required placeholder="e.g. Café de Laurierboom">
         </div>
         <div class="form-row">
           <label>City <span class="req">*</span></label>
-          <input type="text" name="city" required placeholder="e.g. Paris">
+          <input type="text" name="city" required placeholder="e.g. Amsterdam">
         </div>
         <div class="form-row">
           <label>Coordinates <span class="form-hint">— drop a pin or enter manually</span></label>
-          <input type="text" name="coordinates" id="form-coords" class="form-coords-input" placeholder="e.g. 48.8566, 2.3522" readonly>
+          <input type="text" name="coordinates" id="form-coords" class="form-coords-input" placeholder="e.g. 52.37262, 4.88093" readonly>
           <div class="pin-drop-row">
             <button type="button" class="pin-drop-btn" id="btn-pin-drop">📍 Drop a pin on the map</button>
             <span class="pin-drop-coords" id="pin-drop-coords"></span>
@@ -2820,7 +2820,7 @@ function buildCard(loc, idx) {
 function render(fitBounds = true) {
   const filtered = getFiltered();
 
-  const countText = `${filtered.length} place${filtered.length !== 1 ? 's' : ''}`;
+  const countText = `${filtered.length} scene${filtered.length !== 1 ? 's' : ''}`;
   document.getElementById('count-badge').textContent = countText;
   const mobileBadge = document.getElementById('count-badge-mobile');
   if (mobileBadge) mobileBadge.textContent = countText;
