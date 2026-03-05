@@ -67,7 +67,7 @@ coordinates: 52.368472045937146, 4.8712247131282576
 image: https://i.imgur.com/DH33XAh.jpeg
 gmap: https://maps.app.goo.gl/NkxYzuvTdSqDzWNh9
 
-name: Giant Chess Board
+name: Giant Chess Board Frederiksplein
 city: Amsterdam
 coordinates: 52.360153, 4.900031
 labels: chess board
@@ -206,15 +206,15 @@ note: 5 chessboards in a step formation, one with carved pieces. One board is at
 image: https://i.imgur.com/e8Y9KwR.jpeg
 coordinates: 52.38502130682298, 4.882785843172775
 
-name: Chess Table
+name: Chess Table Haarlemmerplein
 labels: chess board
 city: Amsterdam
-coordinates: 52.38471574220395, 4.8855323401516735
+coordinates: 52.38455850979478, 4.88430921004085
 note: Abandoned outdoor chess tables.
 image: https://i.imgur.com/8qnVOnL.png
 gmap: https://maps.app.goo.gl/Pt2zN4pDBFiQ8ddx8
 
-name: Chess Table
+name: Chess Table Da Costastraat
 labels: chess board
 city: Amsterdam
 coordinates: 52.367397288232056, 4.876081661186785
@@ -222,7 +222,7 @@ note: Abandoned outdoor chess tables.
 gmap: https://maps.app.goo.gl/cDYhY7noTk7SDkwYA
 image: https://i.imgur.com/SzOpMcl.png
 
-name: Chess Table
+name: Chess Table Krugerplein
 labels: chess board
 city: Amsterdam
 coordinates: 52.35418582496915, 4.919973076573896
@@ -621,7 +621,7 @@ coordinates: 47.560883, 7.580881
 note: Giant chess board visible on Google Maps but likely abandoned.
 gmap: https://www.google.com/maps/search/47.560883,7.580881
 
-name: Giant Chess Board
+name: Giant Chess Board Spielplatz Landhof
 city: Basel
 labels: chess board
 coordinates: 47.56259076255942, 7.601930664350891
@@ -2598,10 +2598,15 @@ function makeSlug(loc) {
 }
 // Build lookup map — first match wins on collision
 const SLUG_MAP = new Map();
-for (const loc of LOCATIONS) {
-  loc.slug = makeSlug(loc);
-  if (!SLUG_MAP.has(loc.slug)) SLUG_MAP.set(loc.slug, loc);
+
+function rebuildSlugMap() {
+  SLUG_MAP.clear();
+  for (const loc of LOCATIONS) {
+    loc.slug = makeSlug(loc);
+    if (!SLUG_MAP.has(loc.slug)) SLUG_MAP.set(loc.slug, loc);
+  }
 }
+rebuildSlugMap();
 
 // ─── COLLECT ALL UNIQUE LABELS ────────────────────────────────────────────────
 const ALL_LABELS = [];
@@ -3293,6 +3298,7 @@ fetch(SHEET_CSV)
     }).filter(Boolean).sort(() => Math.random() - 0.5);
     if (parsed.length > 0) {
       LOCATIONS = parsed;
+      rebuildSlugMap();
       console.log(`Loaded ${parsed.length} venues from Google Sheets`);
     } else {
       console.warn('Sheet parsed 0 venues, using HTML fallback');
