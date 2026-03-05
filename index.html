@@ -3229,12 +3229,29 @@ document.addEventListener('keydown', e => {
 });
 
 // ─── INIT ─────────────────────────────────────────────────────────────────────
-// Google Sheet that hosts the chess scenes data, via a cloudflare worker proxy
-const SHEET_CSV = 'https://chess-scenes-proxy.thatharmansinghworkers.workers.dev';
 
 // Garbage URL to test fallback to HTML data
 // const SHEET_CSV = 'https://this-does-not-exist.workers.dev';
 
+// Google Sheet that hosts the chess scenes data, via a cloudflare worker proxy
+const SHEET_CSV = 'https://chess-scenes-proxy.thatharmansinghworkers.workers.dev';
+
+// This is the code that's in the cloudflare worker:
+// export default {
+//   async fetch(request) {
+//     const SHEET_URL = 'https://docs.google.com/spreadsheets/d/1oLquAhTNOBbKQnX-B3LcnA3hcRLXggjFBQZ2LGZqaLg/export?format=csv&gid=984630877';
+
+//     const response = await fetch(SHEET_URL);
+//     const csv = await response.text();
+
+//     return new Response(csv, {
+//       headers: {
+//         'Content-Type': 'text/csv',
+//         'Access-Control-Allow-Origin': '*',
+//       },
+//     });
+//   },
+// };
 
 fetch(SHEET_CSV)
   .then(r => r.text())
