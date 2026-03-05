@@ -3232,7 +3232,7 @@ document.addEventListener('keydown', e => {
 // const SHEET_CSV = 'https://docs.google.com/spreadsheets/d/1oLquAhTNOBbKQnX-B3LcnA3hcRLXggjFBQZ2LGZqaLg/gviz/tq?tqx=out:csv&sheet=Sheet1';
 
 // Google Sheet that hosts the chess scenes data
-const SHEET_CSV = 'https://corsproxy.io/?' + encodeURIComponent('https://docs.google.com/spreadsheets/d/1oLquAhTNOBbKQnX-B3LcnA3hcRLXggjFBQZ2LGZqaLg/export?format=csv&gid=984630877');
+const SHEET_CSV = 'https://api.allorigins.win/raw?url=' + encodeURIComponent('https://docs.google.com/spreadsheets/d/1oLquAhTNOBbKQnX-B3LcnA3hcRLXggjFBQZ2LGZqaLg/export?format=csv&gid=984630877');
 
 fetch(SHEET_CSV)
   .then(r => r.text())
