@@ -3237,6 +3237,10 @@ const SHEET_CSV = 'https://api.allorigins.win/raw?url=' + encodeURIComponent('ht
 fetch(SHEET_CSV)
   .then(r => r.text())
   .then(csv => {
+    if (!csv.trim().startsWith('name,')) {
+      console.warn('Sheet returned unexpected content, using HTML fallback');
+      return;
+    }
     const [headerLine, ...rows] = csv.trim().split('\n');
     const headers = headerLine.split(',').map(h => h.replace(/^"|"$/g, '').trim());
     const parsed = rows.map(row => {
@@ -3266,8 +3270,12 @@ fetch(SHEET_CSV)
         id: obj.id || '',
       };
     }).filter(Boolean).sort(() => Math.random() - 0.5);
-    LOCATIONS = parsed;
-    console.log(`Loaded ${LOCATIONS.length} venues from Google Sheets`);
+    if (parsed.length > 0) {
+      LOCATIONS = parsed;
+      console.log(`Loaded ${parsed.length} venues from Google Sheets`);
+    } else {
+      console.warn('Sheet parsed 0 venues, using HTML fallback');
+    }
   })
   .catch(err => {
     console.warn('Sheet fetch failed, using HTML fallback:', err);
