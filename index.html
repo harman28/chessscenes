@@ -3234,58 +3234,11 @@ document.addEventListener('keydown', e => {
 // Google Sheet that hosts the chess scenes data
 const SHEET_CSV = 'https://api.allorigins.win/raw?url=' + encodeURIComponent('https://docs.google.com/spreadsheets/d/1oLquAhTNOBbKQnX-B3LcnA3hcRLXggjFBQZ2LGZqaLg/export?format=csv&gid=984630877');
 
-fetch(SHEET_CSV)
-  .then(r => r.text())
-  .then(csv => {
-    if (!csv.trim().startsWith('name,')) {
-      console.warn('Sheet returned unexpected content, using HTML fallback');
-      return;
-    }
-    const [headerLine, ...rows] = csv.trim().split('\n');
-    const headers = headerLine.split(',').map(h => h.replace(/^"|"$/g, '').trim());
-    const parsed = rows.map(row => {
-      const cols = [];
-      let cur = '', inQuote = false;
-      for (const ch of row) {
-        if (ch === '"') inQuote = !inQuote;
-        else if (ch === ',' && !inQuote) { cols.push(cur); cur = ''; }
-        else cur += ch;
-      }
-      cols.push(cur);
-      const obj = {};
-      headers.forEach((h, i) => obj[h] = (cols[i] || '').trim());
-      if (!obj.name || !obj.coordinates) return null;
-      const [lat, lng] = obj.coordinates.split(',').map(Number);
-      if (isNaN(lat) || isNaN(lng)) return null;
-      return {
-        name: obj.name,
-        labels: (obj.labels || '').split(',').map(s => s.trim()).filter(Boolean),
-        days: obj.days ? obj.days.split(',').map(s => s.trim()).filter(Boolean) : null,
-        lat, lng,
-        note: obj.note || '',
-        gmap: (obj.gmap || '').startsWith('http') ? obj.gmap : '',
-        link: (obj.link || '').startsWith('http') ? obj.link : '',
-        image: obj.image || '',
-        city: obj.city || '',
-        id: obj.id || '',
-      };
-    }).filter(Boolean).sort(() => Math.random() - 0.5);
-    if (parsed.length > 0) {
-      LOCATIONS = parsed;
-      console.log(`Loaded ${parsed.length} venues from Google Sheets`);
-    } else {
-      console.warn('Sheet parsed 0 venues, using HTML fallback');
-    }
-  })
-  .catch(err => {
-    console.warn('Sheet fetch failed, using HTML fallback:', err);
-  })
-  .finally(() => {
-    buildCityFilter();
-    buildFilters();
-    buildDayFilters();
-    render(true);
-  });
+// ─── INIT ─────────────────────────────────────────────────────────────────────
+buildCityFilter();
+buildFilters();
+buildDayFilters();
+render(true);
 
 // ─── DEEP LINKING ─────────────────────────────────────────────────────────────
 function shareVenue(e, slug, btn) {
