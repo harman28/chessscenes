@@ -2835,40 +2835,40 @@ function render(fitBounds = true) {
   }
 
   filtered.forEach((loc, i) => {
-    const marker = L.marker([loc.lat, loc.lng], { icon: makeIcon(loc.labels) })
-      .addTo(map)
-      .bindPopup(buildPopup(loc), { maxWidth: 250 });
+    setTimeout(() => {
+      const marker = L.marker([loc.lat, loc.lng], { icon: makeIcon(loc.labels) })
+        .addTo(map)
+        .bindPopup(buildPopup(loc), { maxWidth: 250 });
 
-    marker.on('popupopen', () => highlightCard(i));
-    marker.on('click', () => { if (currentView === 'map') highlightCard(i); });
+      marker.on('popupopen', () => highlightCard(i));
+      marker.on('click', () => { if (currentView === 'map') highlightCard(i); });
 
-    markerObjects.push({ marker, locIndex: i });
+      markerObjects.push({ marker, locIndex: i });
 
-    const card = buildCard(loc, i);
-    card.addEventListener('click', () => {
-      if (currentView === 'map') {
-        panToLocation(loc.lat, loc.lng);
-        marker.openPopup();
-        // Collapse bottom sheet on mobile when a pin is tapped
-        if (window.innerWidth <= 720) setSheetOpen(false);
-      }
-      highlightCard(i);
-    });
-    listEl.appendChild(card);
-
-    // Also add a clone to the mobile sheet
-    if (mobileSheetScroll) {
-      const cardClone = buildCard(loc, i);
-      cardClone.addEventListener('click', () => {
+      const card = buildCard(loc, i);
+      card.addEventListener('click', () => {
         if (currentView === 'map') {
           panToLocation(loc.lat, loc.lng);
           marker.openPopup();
-          setSheetOpen(false);
+          if (window.innerWidth <= 720) setSheetOpen(false);
         }
         highlightCard(i);
       });
-      mobileSheetScroll.appendChild(cardClone);
-    }
+      listEl.appendChild(card);
+
+      if (mobileSheetScroll) {
+        const cardClone = buildCard(loc, i);
+        cardClone.addEventListener('click', () => {
+          if (currentView === 'map') {
+            panToLocation(loc.lat, loc.lng);
+            marker.openPopup();
+            setSheetOpen(false);
+          }
+          highlightCard(i);
+        });
+        mobileSheetScroll.appendChild(cardClone);
+      }
+    }, i * 30);
   });
 
   if (fitBounds && currentView === 'map' && (activeLabels.size > 0 || activeDays.size > 0 || activeCity)) {
