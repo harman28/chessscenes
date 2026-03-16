@@ -2880,9 +2880,6 @@ function render(fitBounds = true) {
     const bounds = L.latLngBounds(filtered.map(l => [l.lat, l.lng]));
     map.fitBounds(bounds, { padding: [40, 40], maxZoom: 16 });
   }
-
-  const totalDelay = filtered.length * 30 + 50;
-  setTimeout(handleInitialHash, totalDelay);
 }
 
 function highlightCard(i) {
@@ -3343,21 +3340,20 @@ map.on('popupclose', () => {
   history.replaceState(null, '', location.pathname);
 });
 
-let _initialHashHandled = false;
-function handleInitialHash() {
-  if (_initialHashHandled) return;
-  _initialHashHandled = true;
+(function handleInitialHash() {
   const hash = location.hash.slice(1);
   if (!hash) return;
   const loc = SLUG_MAP.get(hash);
   if (!loc) return;
-  panToLocation(loc.lat, loc.lng);
-  const found = markerObjects.find(m => {
-    const ll = m.marker.getLatLng();
-    return ll.lat === loc.lat && ll.lng === loc.lng;
-  });
-  if (found) found.marker.openPopup();
-}
+  setTimeout(() => {
+    panToLocation(loc.lat, loc.lng);
+    const found = markerObjects.find(m => {
+      const ll = m.marker.getLatLng();
+      return ll.lat === loc.lat && ll.lng === loc.lng;
+    });
+    if (found) found.marker.openPopup();
+  }, 400);
+})();
 
 if (navigator.geolocation) {
   navigator.geolocation.getCurrentPosition(
