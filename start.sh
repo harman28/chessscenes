@@ -1,8 +1,8 @@
 #!/bin/bash
 set -e
-cd backend
+cd "$(dirname "$0")/backend"
 
-# If DB has no places yet, run the migration from the bundled CSV
+# Auto-migrate if DB is empty
 python3 - <<'EOF'
 import os, sys
 sys.path.insert(0, ".")
@@ -21,4 +21,4 @@ with app.app_context():
         print("Migration done")
 EOF
 
-gunicorn "app:create_app()" --bind "0.0.0.0:${PORT:-8000}" --chdir backend
+exec gunicorn "app:create_app()" --bind "0.0.0.0:${PORT:-8000}"
