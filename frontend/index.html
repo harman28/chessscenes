@@ -167,7 +167,13 @@ const TODAY_NAME = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday',
 const TODAY_SHORT = DAY_SHORT[TODAY_NAME];
 const DAY_LABELS_SHORT = { mon:'Mon', tue:'Tue', wed:'Wed', thu:'Thu', fri:'Fri', sat:'Sat', sun:'Sun' };
 
-function labelCfg(type) { return LABEL_CONFIG[type] || { color: '#666', icon: '♟', display: type?.replace('chess_','') || '?' }; }
+function labelCfg(type) {
+  const first = (type || '').split(',')[0].trim();
+  return LABEL_CONFIG[first] || { color: '#666', icon: '♟', display: first.replace('chess_','') || '?' };
+}
+function typeList(type) {
+  return (type || '').split(',').map(t => t.trim()).filter(Boolean);
+}
 
 // ── Map ──────────────────────────────────────────────────────────────────────
 const map = L.map('map', { zoomControl: true }).setView([30, 10], 2);
@@ -205,7 +211,7 @@ async function loadAndRender() {
 function getFiltered() {
   return allPlaces.filter(p => {
     if (!showUnverified && !p.verified) return false;
-    if (activeType && p.type !== activeType) return false;
+    if (activeType && !typeList(p.type).includes(activeType)) return false;
     if (activeCity && p.city.toLowerCase() !== activeCity.toLowerCase()) return false;
     if (activeDay && p.schedule_days) {
       if (!p.schedule_days.split(',').map(s=>s.trim()).includes(activeDay)) return false;
@@ -265,7 +271,7 @@ function buildPopup(p) {
   return `
     ${p.image_url ? `<img class="popup-img" src="${p.image_url}" alt="${p.name}" loading="lazy">` : ''}
     <div class="popup-body">
-      <div class="popup-tags"><span class="popup-tag" style="background:${cfg.color}">${cfg.display}</span></div>
+      <div class="popup-tags">${typeList(p.type).map(t => { const c = labelCfg(t); return `<span class="popup-tag" style="background:${c.color}">${c.display}</span>`; }).join('')}</div>
       ${p.city ? `<div class="popup-city">${p.city}</div>` : ''}
       <a href="place.html#${p.slug}" class="popup-name popup-name-link">${p.name}</a>
       ${!p.verified ? `<div class="popup-unverified">⏳ Unverified</div>` : ''}
@@ -288,7 +294,7 @@ function buildCard(p, i) {
   card.innerHTML = `
     ${imgHtml}
     <div class="card-body">
-      <div class="card-tags"><span class="card-tag" style="background:${cfg.color}">${cfg.display}</span></div>
+      <div class="card-tags">${typeList(p.type).map(t => { const c = labelCfg(t); return `<span class="card-tag" style="background:${c.color}">${c.display}</span>`; }).join('')}</div>
       ${p.city ? `<div class="card-city">${p.city}</div>` : ''}
       <div class="card-name">${p.name}</div>
       ${!p.verified ? `<div class="card-unverified">⏳ Unverified</div>` : ''}
@@ -338,7 +344,7 @@ function buildCityFilter() {
 
 function buildTypeFilters() {
   const container = document.getElementById('filter-buttons');
-  const types = [...new Set(allPlaces.map(p => p.type).filter(Boolean))];
+  const types = [...new Set(allPlaces.flatMap(p => typeList(p.type)))];
   types.sort((a,b) => Object.keys(LABEL_CONFIG).indexOf(a) - Object.keys(LABEL_CONFIG).indexOf(b));
   types.forEach(t => {
     const cfg = labelCfg(t);

@@ -33,8 +33,8 @@ if (!slug) {
 function render(p) {
   document.title = `${p.name} — Chess Scenes`;
 
-  const color = TYPE_COLORS[p.type] || "#555";
-  const label = TYPE_LABELS[p.type] || p.type || "";
+  const types = (p.type || "").split(",").map(t => t.trim()).filter(Boolean);
+  const color = TYPE_COLORS[types[0]] || "#555";
   const days = p.schedule_days
     ? p.schedule_days.split(",").map(d => d.trim()).filter(d => DAY_LABELS[d])
     : [];
@@ -48,7 +48,7 @@ function render(p) {
     <div class="place-layout">
       <div class="place-content">
         <div class="place-meta">
-          <span class="place-type-tag" style="background:${color}">${label}</span>
+          ${types.map(t => `<span class="place-type-tag" style="background:${TYPE_COLORS[t] || "#555"}">${TYPE_LABELS[t] || t}</span>`).join("")}
           ${!p.verified ? `<span class="place-unverified">⏳ Unverified</span>` : ""}
         </div>
         <div class="place-city">${p.city}${p.country ? `, ${p.country}` : ""}</div>
