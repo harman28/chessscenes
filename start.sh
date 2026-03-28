@@ -1,5 +1,6 @@
 #!/bin/bash
 set -e
+export PATH="/app/.venv/bin:$PATH"
 cd "$(dirname "$0")/backend"
 
 # Auto-migrate if DB is empty
