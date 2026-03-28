@@ -41,6 +41,23 @@ def create_app():
         if not db.session.get(Setting, "show_unverified"):
             db.session.add(Setting(key="show_unverified", value="true"))
             db.session.commit()
+        from models import Place
+        if db.session.query(Place).count() == 0:
+            db.session.add(Place(
+                name="Cafe de Laurierboom",
+                slug="cafe-de-laurierboom",
+                city="Amsterdam",
+                country="Netherlands",
+                lat=52.372347065141824,
+                lng=4.880934681011202,
+                type="chess_bar",
+                description="Chess mecca of Amsterdam. Tournaments on barblitz.co. Casual chess always.",
+                maps_url="https://maps.app.goo.gl/PizEC9TRQ4kt8QyK6",
+                image_url="https://i.imgur.com/9NRex3f.jpeg",
+                verified=True,
+                active=True,
+            ))
+            db.session.commit()
 
     # Serve frontend static files
     @app.route("/", defaults={"path": ""})
