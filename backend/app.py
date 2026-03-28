@@ -61,13 +61,18 @@ def _auto_migrate(app):
     import csv as csvlib, re
     from models import Place
     with app.app_context():
-        if db.session.query(Place).count() > 0:
+        count = db.session.query(Place).count()
+        if count > 0 and not os.environ.get("FORCE_MIGRATE"):
             return
+        if count > 0:
+            db.session.query(Place).delete()
+            db.session.commit()
         print("Auto-migrating from CSV...")
         COLUMN_MAP = {
             "name": "name", "city": "city", "country": "country",
             "lat": "lat", "latitude": "lat", "lng": "lng", "lon": "lng", "longitude": "lng",
-            "type": "type", "description": "description", "desc": "description",
+            "type": "type", "labels": "type",
+            "description": "description", "desc": "description", "note": "description",
             "schedule_notes": "schedule_notes", "notes": "schedule_notes", "schedule": "schedule_notes",
             "schedule_days": "schedule_days", "days": "schedule_days",
             "website": "website", "url": "website", "link": "website",
@@ -83,6 +88,16 @@ def _auto_migrate(app):
         with open(csv_path, newline="", encoding="utf-8-sig") as f:
             for row in csvlib.DictReader(f):
                 norm = {COLUMN_MAP[k.strip().lower()]: v.strip() for k, v in row.items() if k.strip().lower() in COLUMN_MAP}
+                # Parse "lat, lng" from coordinates column if present
+                coords = row.get("coordinates", "").strip()
+                if coords and not norm.get("lat"):
+                    parts = coords.split(",")
+                    if len(parts) == 2:
+                        try:
+                            norm["lat"] = parts[0].strip()
+                            norm["lng"] = parts[1].strip()
+                        except Exception:
+                            pass
                 name = norm.get("name")
                 if not name:
                     continue

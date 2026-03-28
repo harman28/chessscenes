@@ -236,15 +236,18 @@ function render(animate = false) {
         html: `<div class="custom-marker${p.verified ? '' : ' unverified'}" style="background:${cfg.color}"><span>${cfg.icon}</span></div>`,
         iconSize: [20,20], iconAnchor: [10,20], popupAnchor: [5,-16]
       });
-      const marker = L.marker([p.lat, p.lng], { icon })
-        .bindPopup(buildPopup(p), { maxWidth: 260 });
-      marker.on('popupopen', () => highlightCard(i));
-      clusterGroup.addLayer(marker);
-      markerObjects.push({ marker, idx: i });
+      let marker = null;
+      if (p.lat && p.lng) {
+        marker = L.marker([p.lat, p.lng], { icon })
+          .bindPopup(buildPopup(p), { maxWidth: 260 });
+        marker.on('popupopen', () => highlightCard(i));
+        clusterGroup.addLayer(marker);
+        markerObjects.push({ marker, idx: i });
+      }
 
       const card = buildCard(p, i);
       card.addEventListener('click', () => {
-        if (currentView === 'list') {
+        if (currentView === 'list' || !marker) {
           window.location.href = `place.html#${p.slug}`;
         } else {
           panTo(p.lat, p.lng);
