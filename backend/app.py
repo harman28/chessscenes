@@ -41,7 +41,6 @@ def create_app():
         if not db.session.get(Setting, "show_unverified"):
             db.session.add(Setting(key="show_unverified", value="true"))
             db.session.commit()
-    _auto_migrate(app)
 
     # Serve frontend static files
     @app.route("/", defaults={"path": ""})
@@ -52,80 +51,6 @@ def create_app():
         return send_from_directory(FRONTEND_DIR, "index.html")
 
     return app
-
-
-def _auto_migrate(app):
-    csv_path = os.path.join(os.path.dirname(__file__), "chessscenesdatapublic.csv")
-    if not os.path.exists(csv_path):
-        return
-    import csv as csvlib, re
-    from models import Place
-    with app.app_context():
-        count = db.session.query(Place).count()
-        if count > 0 and not os.environ.get("FORCE_MIGRATE"):
-            return
-        if count > 0:
-            db.session.query(Place).delete()
-            db.session.commit()
-        print("Auto-migrating from CSV...")
-        COLUMN_MAP = {
-            "name": "name", "city": "city", "country": "country",
-            "lat": "lat", "latitude": "lat", "lng": "lng", "lon": "lng", "longitude": "lng",
-            "type": "type", "labels": "type",
-            "description": "description", "desc": "description", "note": "description",
-            "schedule_notes": "schedule_notes", "notes": "schedule_notes", "schedule": "schedule_notes",
-            "schedule_days": "schedule_days", "days": "schedule_days",
-            "website": "website", "url": "website", "link": "website",
-            "image_url": "image_url", "image": "image_url", "photo": "image_url",
-            "maps_url": "maps_url", "gmap": "maps_url", "gmaps": "maps_url",
-            "verified": "verified",
-        }
-        def slugify(text):
-            text = text.lower().strip()
-            text = re.sub(r"[^\w\s-]", "", text)
-            return re.sub(r"[\s_-]+", "-", text)
-        inserted = 0
-        with open(csv_path, newline="", encoding="utf-8-sig") as f:
-            for row in csvlib.DictReader(f):
-                norm = {COLUMN_MAP[k.strip().lower()]: v.strip() for k, v in row.items() if k.strip().lower() in COLUMN_MAP}
-                # Parse "lat, lng" from coordinates column if present
-                coords = row.get("coordinates", "").strip()
-                if coords and not norm.get("lat"):
-                    parts = coords.split(",")
-                    if len(parts) == 2:
-                        try:
-                            norm["lat"] = parts[0].strip()
-                            norm["lng"] = parts[1].strip()
-                        except Exception:
-                            pass
-                name = norm.get("name")
-                if not name:
-                    continue
-                base = slugify(name)
-                slug, i = base, 2
-                while db.session.query(Place).filter_by(slug=slug).first():
-                    slug = f"{base}-{i}"; i += 1
-                try:
-                    db.session.add(Place(
-                        name=name, slug=slug,
-                        city=norm.get("city", ""), country=norm.get("country", ""),
-                        lat=float(norm["lat"]) if norm.get("lat") else None,
-                        lng=float(norm["lng"]) if norm.get("lng") else None,
-                        type=norm.get("type", ""), description=norm.get("description", ""),
-                        schedule_notes=norm.get("schedule_notes", ""),
-                        schedule_days=norm.get("schedule_days", ""),
-                        website=norm.get("website", ""),
-                        maps_url=norm.get("maps_url") or None,
-                        image_url=norm.get("image_url", ""),
-                        verified=norm.get("verified", "1").lower() in ("1", "true", "yes"),
-                        active=True,
-                    ))
-                    db.session.flush()
-                    inserted += 1
-                except Exception as e:
-                    db.session.rollback()
-        db.session.commit()
-        print(f"Auto-migration done. Inserted {inserted} places.")
 
 
 if __name__ == "__main__":
