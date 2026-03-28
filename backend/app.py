@@ -55,18 +55,62 @@ def create_app():
 
 
 def _auto_migrate(app):
-    from models import Place
     csv_path = os.path.join(os.path.dirname(__file__), "chessscenesdatapublic.csv")
     if not os.path.exists(csv_path):
         return
+    import csv as csvlib, re
+    from models import Place
     with app.app_context():
         if db.session.query(Place).count() > 0:
             return
         print("Auto-migrating from CSV...")
-        import subprocess, sys
-        subprocess.run([sys.executable, os.path.join(os.path.dirname(__file__), "migrate.py"),
-                        "--csv", csv_path], check=True)
-        print("Auto-migration done.")
+        COLUMN_MAP = {
+            "name": "name", "city": "city", "country": "country",
+            "lat": "lat", "latitude": "lat", "lng": "lng", "lon": "lng", "longitude": "lng",
+            "type": "type", "description": "description", "desc": "description",
+            "schedule_notes": "schedule_notes", "notes": "schedule_notes", "schedule": "schedule_notes",
+            "schedule_days": "schedule_days", "days": "schedule_days",
+            "website": "website", "url": "website", "link": "website",
+            "image_url": "image_url", "image": "image_url", "photo": "image_url",
+            "maps_url": "maps_url", "gmap": "maps_url", "gmaps": "maps_url",
+            "verified": "verified",
+        }
+        def slugify(text):
+            text = text.lower().strip()
+            text = re.sub(r"[^\w\s-]", "", text)
+            return re.sub(r"[\s_-]+", "-", text)
+        inserted = 0
+        with open(csv_path, newline="", encoding="utf-8-sig") as f:
+            for row in csvlib.DictReader(f):
+                norm = {COLUMN_MAP[k.strip().lower()]: v.strip() for k, v in row.items() if k.strip().lower() in COLUMN_MAP}
+                name = norm.get("name")
+                if not name:
+                    continue
+                base = slugify(name)
+                slug, i = base, 2
+                while db.session.query(Place).filter_by(slug=slug).first():
+                    slug = f"{base}-{i}"; i += 1
+                try:
+                    db.session.add(Place(
+                        name=name, slug=slug,
+                        city=norm.get("city", ""), country=norm.get("country", ""),
+                        lat=float(norm["lat"]) if norm.get("lat") else None,
+                        lng=float(norm["lng"]) if norm.get("lng") else None,
+                        type=norm.get("type", ""), description=norm.get("description", ""),
+                        schedule_notes=norm.get("schedule_notes", ""),
+                        schedule_days=norm.get("schedule_days", ""),
+                        website=norm.get("website", ""),
+                        maps_url=norm.get("maps_url") or None,
+                        image_url=norm.get("image_url", ""),
+                        verified=norm.get("verified", "1").lower() in ("1", "true", "yes"),
+                        active=True,
+                    ))
+                    db.session.flush()
+                    inserted += 1
+                except Exception as e:
+                    db.session.rollback()
+        db.session.commit()
+        print(f"Auto-migration done. Inserted {inserted} places.")
 
 
 if __name__ == "__main__":
