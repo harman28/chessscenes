@@ -1,0 +1,3370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chess Scenes</title>
+<meta property="og:title" content="Chess Scenes">
+<meta property="og:description" content="A map of places to play chess IRL — bars, clubs, outdoor boards, meetups and more.">
+<meta property="og:url" content="https://chessscenes.com/">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://chessscenes.com/banner.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://chessscenes.com/banner.png">
+<meta name="twitter:title" content="Chess Scenes">
+<meta name="twitter:description" content="A map of places to play chess IRL — bars, clubs, outdoor boards, meetups and more.">
+<link rel="icon" type="image/x-icon" href="https://chessscenes.com/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<!--=============================================================================
+  LOCATION DATA
+  Edit this section to add or update places.
+
+  Each entry is a block of key: value lines separated by blank lines.
+
+  Supported keys:
+    name:         Display name (required)
+    labels:       Comma-separated labels, e.g: chess bar, chess club
+    coordinates:  lat, lng  (required)
+    note:         Short description shown on cards and popups
+    gmap:         URL to Google Maps or similar
+    link:         URL to website, Facebook, Instagram, etc.
+    image:        URL to a photo shown in the map popup (jpg, png, etc.)
+    city:         City name (optional, shown on card)
+    days:         Comma-separated days active, e.g: Monday, Wednesday
+                  Omit entirely if active every day (or day-irrelevant)
+
+  Known labels and their colors/icons:
+    chess board   → green   ♟  (outdoor boards, giant sets)
+    chess shop    → blue    ♛  (retailers)
+    chess memorial → purple ♔  (historic sites, defunct venues)
+    chess bar     → red     ♞  (bars/cafes with chess culture)
+    chess club    → brown   ♜  (organised clubs)
+    chess meetup  → teal    ♝  (informal recurring meetups)
+    chess museum  → gold    ♔  (dedicated heritage institutions) 
+
+  Add a new location by copying a block below and editing the values.
+  Leave a blank line between entries.
+==============================================================================
+
+name: Former Cafe Gambit
+labels: chess memorial
+city: Amsterdam
+coordinates: 52.3755148120896, 4.882690917303496
+note: Defunct chess bar. When it closed in 2005, the chess club needed a new home, and moved to Laurierboom. The SGA teams are still called Laurierboom-Gambiet.
+image: https://i.imgur.com/y5eCRZY.jpeg
+gmap: https://maps.app.goo.gl/AtdP5dHQVRihL9yt8
+
+name: Former Max Euwe Schaakhuis
+labels: chess memorial
+city: Amsterdam
+coordinates: 52.368472045937146, 4.8712247131282576
+image: https://i.imgur.com/DH33XAh.jpeg
+gmap: https://maps.app.goo.gl/NkxYzuvTdSqDzWNh9
+
+name: Giant Chess Board Frederiksplein
+city: Amsterdam
+coordinates: 52.360153, 4.900031
+labels: chess board
+gmap: 
+link: https://www.nporadio5.nl/fragmenten/de-avond-van-5/019cadda-7dca-72ec-857d-344be0d7499d/2026-03-02-xl-schaakbord-in-amsterdam-is-terug
+note: The same board that used to be on Max Euweplein and Museumplein has now found a new home on Frederiksplein.
+
+name: Zwart op Wit
+labels: chess club
+city: Amsterdam
+coordinates: 52.37107776390779, 4.866202094898311
+note: Meets every Monday evening at 8pm in the basement of games cafe 2 Klaveren.
+gmap: https://maps.app.goo.gl/2iYpS9ALfHsJLAwYA
+link: https://www.zwartopwit.org/
+image: https://i.imgur.com/8jibVQ6.jpeg
+days: Monday
+
+name: Schaakvereniging Amsterdam West
+labels: chess club
+city: Amsterdam
+coordinates: 52.371848184945364, 4.868834031296687
+note: Meets every Thursday evening at 8pm in Bilderdijkpark.
+gmap: https://maps.app.goo.gl/HE7btnNk4Bit5ywy8
+link: https://www.svamsterdamwest.nl/
+image: https://i.imgur.com/inhlo0q.jpeg
+days: Thursday
+
+name: Schaakvereniging Caissa
+labels: chess club
+city: Amsterdam
+coordinates: 52.353211646390925, 4.883298807309834
+note: Meets every Tuesday evening at 8pm in Huize Lydia.
+gmap: https://maps.app.goo.gl/cnJ446iJsELTRz7XA
+link: http://www.caissa-amsterdam.nl/
+image: https://i.imgur.com/S7Sk0IW.jpeg
+days: Tuesday
+
+name: Pegasus Amstelveen
+labels: chess club
+city: Amsterdam
+coordinates: 52.29261026509864, 4.874458229848144
+note: Club nights every Tuesday from 19:45 at La Plaza room in the Groenelaan residential care centre.
+gmap: https://maps.app.goo.gl/3msMbTPckGVqGh9d9
+link: https://www.pegasusamstelveen.nl
+image: https://i.imgur.com/RHugkLY.jpeg
+days: Tuesday
+
+name: Schaakvereniging EsPion
+labels: chess club
+city: Amsterdam
+coordinates: 52.345217583410495, 4.9085327618301156
+note: Meets every Monday evening at Gaaspstraat 8.
+gmap: https://maps.app.goo.gl/dZG9V7rcx1a9q3rLA
+link: https://www.espion.nl/
+image: https://i.imgur.com/nlSMpwC.jpeg
+days: Monday
+
+name: De Queer Schaakclub
+labels: chess club
+city: Amsterdam
+coordinates: 52.354412053333895, 4.854522492054707
+note: Meets every Wednesday evening at Speelzaal KLUP.
+gmap: https://maps.app.goo.gl/4hLHEWU5ktfCiWCXA
+link: https://dequeerschaakclub.nl/
+image: https://i.imgur.com/G6UwvNd.jpeg
+days: Wednesday
+
+name: De Volewijckers
+labels: chess club
+city: Amsterdam
+coordinates: 52.39556134116533, 4.949915403855151
+note: Chess club De Volewijckers plays every Wednesday evening in the think sports center Het Zwanenmeer.
+gmap: https://maps.app.goo.gl/mqUyi83fLoGxKCwi8
+link: https://www.schaakverenigingdevolewijckers.nl/
+days: Wednesday
+
+name: Cafe de Laurierboom
+labels: chess bar
+city: Amsterdam
+coordinates: 52.372347065141824, 4.880934681011202
+note: Chess mecca of Amsterdam. Tournaments on barblitz.co. Casual chess always.
+gmap: https://maps.app.goo.gl/PizEC9TRQ4kt8QyK6
+image: https://i.imgur.com/9NRex3f.jpeg
+
+name: Max Euwe Centrum
+labels: chess museum
+city: Amsterdam
+coordinates: 52.362777166541285, 4.882811878673435
+link: https://maxeuwe.nl/
+gmap: https://maps.app.goo.gl/5GeJKV1nBEopb1M29
+image: https://i.imgur.com/inTkxpx.jpeg
+note: Free chess museum and library. Hosts an annual chess festival in August.
+days: Tuesday, Wednesday, Thursday, Friday, Saturday
+
+name: Max Euweplein
+labels: chess memorial, chess board
+city: Amsterdam
+coordinates: 52.362969674148395, 4.88370529837886
+gmap: https://maps.app.goo.gl/BdbA8DiMEQxf37us9
+image: https://i.imgur.com/AcuubuT.jpeg
+note: Square named after former Dutch World Champion. 5 outdoor chess tables and a memorial.
+
+name: Chess & Beer
+labels: chess meetup
+city: Amsterdam
+coordinates: 52.363208136727685, 4.882977053882178
+note: Casual chess meetup every second Sunday afternoon in Cafe De Balie.
+gmap: https://maps.app.goo.gl/bkpboKbMJeadL65F6
+link: https://www.meetup.com/amsterdam-chess-and-beer/
+image: https://i.imgur.com/RTWaMou.png
+days: Sunday
+
+name: Vondelbunker Chess
+labels: chess meetup
+city: Amsterdam
+coordinates: 52.36093601496312, 4.87757042744756
+note: Underground chess on Sunday afternoons. Irregular.
+gmap: https://maps.app.goo.gl/zVaGJ4eQ19HZ6h6z8
+link: https://radar.squat.net/en/event/amsterdam/vondelbunker/2026-05-17/bunker-chess-club
+image: https://i.imgur.com/zgYqQLp.png
+days: Sunday
+
+name: Schaak en Go | Het Paard
+labels: chess shop
+city: Amsterdam
+coordinates: 52.38410008633985, 4.885394165335662
+note: Notable chess shop.
+gmap: https://maps.app.goo.gl/ycLy5MS6BBYACa3z9
+link: https://www.schaakengo.nl/
+image: https://i.imgur.com/B6nE55x.jpeg
+
+name: Chess Art
+labels: chess memorial, chess board
+city: Amsterdam
+note: 5 chessboards in a step formation, one with carved pieces. One board is at a comfortable playing height.
+image: https://i.imgur.com/e8Y9KwR.jpeg
+coordinates: 52.38502130682298, 4.882785843172775
+
+name: Chess Table Haarlemmerplein
+labels: chess board
+city: Amsterdam
+coordinates: 52.38455850979478, 4.88430921004085
+note: Abandoned outdoor chess tables.
+image: https://i.imgur.com/8qnVOnL.png
+gmap: https://maps.app.goo.gl/Pt2zN4pDBFiQ8ddx8
+
+name: Chess Table Da Costastraat
+labels: chess board
+city: Amsterdam
+coordinates: 52.367397288232056, 4.876081661186785
+note: Abandoned outdoor chess tables.
+gmap: https://maps.app.goo.gl/cDYhY7noTk7SDkwYA
+image: https://i.imgur.com/SzOpMcl.png
+
+name: Chess Table Krugerplein
+labels: chess board
+city: Amsterdam
+coordinates: 52.35418582496915, 4.919973076573896
+note: Just a chess table in the middle of a playground.
+image: https://i.imgur.com/aRMNNzO.jpeg
+gmap: https://maps.app.goo.gl/bz97grhNwenNmFBLA
+
+name: Giant Chess Board
+labels: chess board
+city: Amsterdam
+coordinates: 52.36404452205097, 4.866087393855511
+note: Giant board at the corner of the playground. Pieces locked in the steel boxes.
+gmap: https://maps.app.goo.gl/N9mAaZdBsfyAJDEW6
+
+name: Schaaktafels
+labels: chess board, chess meetup
+city: Utrecht
+coordinates: 52.097663330948684, 5.022259352304256
+note: Chess tables in Maximapark. Meetup on Sunday mornings.
+image: https://i.imgur.com/F9H8Txk.jpeg
+gmap: https://maps.app.goo.gl/Dx121rmGCnhm935N8
+
+name: Schaakcafe Utrecht
+labels: chess club, chess bar, chess meetup
+city: Utrecht
+coordinates: 52.09976268371182, 5.103186467326744
+note: Every Friday afternoon from 13:30 onwards till 17:00.
+gmap: https://maps.app.goo.gl/j7A7ARS1a3TbcKLk6
+link: https://www.schakeninutrecht.nl/schaakcafe/
+image: https://i.imgur.com/wlhqWob.jpeg
+days: Friday
+
+name: Giant Chess Board
+labels: chess board
+city: Leiden
+coordinates: 52.16364644160096, 4.484094054330104
+note: Giant chess board next to the museum
+gmap: https://maps.app.goo.gl/BcBadmCYz656qFpC9
+image: https://i.imgur.com/vH61HxZ.jpeg
+
+name: Giant Chess Board
+labels: chess board
+city: Gouda
+coordinates: 52.01329852045659, 4.7121186275069
+note: Mini-giant board, next to a small church.
+gmap: https://maps.app.goo.gl/rSX32znHBznR2ZHd8
+image: https://i.imgur.com/W0EJPEd.jpeg
+
+name: Stichting En Passant
+labels: chess club, chess bar
+city: The Hague
+coordinates: 52.07432068089482, 4.311602878673388
+note: Chess on weekends.
+gmap: https://maps.app.goo.gl/2A2fRFpQfjugkGRg9
+link: https://www.stichtingenpassant.nl/
+image: https://i.imgur.com/fVrdQDp.jpeg
+days: Friday, Saturday, Sunday
+
+name: KopieKoffie
+labels: chess meetup
+city: Delft
+coordinates: 52.00047872546669, 4.3460540624039785
+note: Chess on Sundays at 3.30pm.
+gmap: https://maps.app.goo.gl/zz2rpLMpYdpqykU98
+link: https://kopiekoffie.nl/blog/events/schaken-bij-kopiekoffie/
+image: https://i.imgur.com/pC1qmvK.jpeg
+days: Sunday
+
+name: Buurtcentrum Gentbrugge
+labels: chess meetup
+city: Ghent
+coordinates: 51.04301894619833, 3.7440072254320547
+note: Chess Sunday 10am to 1pm
+gmap: https://www.google.com/maps/place/Buurtcentrum+Gentbrugge/data=!4m2!3m1!1s0x47c376ac3bdee5a9:0xf8a369ab94002198
+days: Sunday
+
+name: Le Pantin
+labels: chess bar
+city: Brussels
+coordinates: 50.82892801179286, 4.371377076665836
+note: Blitz tournament Tuesdays at 7pm.
+gmap: https://www.google.com/maps/place/Le+Pantin/data=!4m2!3m1!1s0x47c3c4931d8affd3:0xca234321219fd876
+
+name: Le STROF
+labels: chess bar
+coordinates: 50.843288815803355, 4.351961345144561
+city: Brussels
+note: Genuine chess bar.
+gmap: https://maps.app.goo.gl/kBUo2cUEoKhSqQjj8
+image: https://i.imgur.com/HKitDLE.jpeg
+
+name: Toots Jazz Club
+labels: chess bar
+coordinates: 50.847190853915144, 4.353162974733196
+city: Brussels
+note: Blitz event Tuesdays at 7.30pm. Get there early.
+gmap: https://www.google.com/maps/place/Toots+Jazz+Club/data=!4m2!3m1!1s0x47c3c57b380641c5:0x20518f8f20b019ae
+link: https://www.toots.brussels/en/about#Schedule
+image: https://i.imgur.com/mZdGqic.png
+days: Tuesday
+
+name: Myo Cafe
+city: Cork
+labels: chess bar
+coordinates: 51.90139232178871, -8.476166258928927
+note: Two outdoor chess tables by the river. Pieces available too.
+image: https://i.imgur.com/D3vKRv1.png
+gmap: https://www.google.com/maps/place/Myo+Cafe/data=!4m2!3m1!1s0x484490116556a9a7:0x372c5658c3ba6032
+
+name: Inverness Chess Club
+city: Inverness
+labels: chess club
+coordinates: 57.48214272931229, -4.209761144520218
+note: Meeting on Wednesdays throughout the year from approximately 7pm.
+image: https://i.imgur.com/HeO3LOZ.png
+link: https://www.chess.com/club/inverness-chess-club
+gmap: https://maps.app.goo.gl/pEnxjNFKwKCCVLVq9
+
+name: Pub Chess - Beer Emporium
+labels: chess meetup, chess bar
+city: Bristol
+coordinates: 51.451754394632815, -2.594361810503718
+image: https://i.imgur.com/BoEvktV.png
+gmap https://maps.app.goo.gl/bGCnwx4rahiWhpSd9
+link: https://bristolchess.co.uk/pub-chess/
+note: Wednesday evenings, 7.30pm onwards in the basement of this cellar bar. Casual chess with a range of abilities (beginner-2200+ FIDE).
+days: Wednesday
+
+name: St John's Square
+labels: chess meetup
+city: London
+coordinates: 51.52335201368471, -0.09390159873636143
+note: Chess on Saturday at 12pm.
+gmap: https://www.google.com/maps/place/St+John's+Square/data=!4m2!3m1!1s0x48761b51aeec49ad:0xb0b1c14fb1973add
+link: https://www.fourcorner.club/
+image: https://i.imgur.com/vh8AamS.png
+days: Saturday
+
+name: Granary Square
+labels: chess meetup
+city: London
+coordinates: 51.53733210186295, -0.11475202081671028
+note: Chess on Wednesday at 6.30pm.
+gmap: https://www.google.com/maps/place/Granary+Square/data=!4m2!3m1!1s0x48761b3d9035396b:0x87d7405a11148df9
+link: https://www.fourcorner.club/
+image: https://i.imgur.com/0miHkMa.png
+days: Wednesday
+
+name: Old Brewery
+labels: chess bar
+coordinates: 51.48613189677573, -0.0011239949974221996
+city: London
+note: Chess here on Sundays 12–5.
+gmap: https://www.google.com/maps/place/Old+Brewery/data=!4m2!3m1!1s0x48760284d129d219:0xfc03125988dcf0bd
+days: Sunday
+
+name: Giant Chess Board
+labels: chess board
+city: London
+coordinates: 51.51438397011346, -0.2056662758887658
+gmap: https://maps.app.goo.gl/EtMV8xhohTBEa94s6
+
+name: Knight Club Chess
+labels: chess meetup
+city: London
+coordinates: 51.521067650364216, -0.07191309853313257
+gmap: https://maps.app.goo.gl/2jf9mLGNZdcXxkZu7
+link: https://www.instagram.com/knightclubchess/
+image: https://i.imgur.com/nTrsgyJ.png
+note: Chess with food and music, Tuesdays from 6.30pm.
+
+name: Club d'Echecs Luxembourg 1915
+city: Luxembourg
+labels: chess club
+coordinates: 49.60455003720618, 6.1320267369725014
+note: Chess on Tuesday and Friday at 8pm at Café chez Maria
+gmap: https://www.google.com/maps/place/Club+d'Echecs+Luxembourg+1915/data=!4m2!3m1!1s0x479548d6c89dd013:0xbcdef2a3c4fbabdb
+link: https://www.1915.lu/
+image: https://i.imgur.com/PzyJ2JD.jpeg
+days: Tuesday, Friday
+
+name: Satranc 2000
+city: Cologne
+labels: chess meetup
+coordinates: 50.945800573829075, 6.932950523082612
+note: Chess on the 1st and 3rd Saturday of the month, 3pm at Naturfreundehaus.
+gmap: https://www.google.com/maps/place/Naturfreundehaus/data=!4m2!3m1!1s0x47bf250fd1afc9d9:0x2d154958bf90c4f
+link: https://satranc2000.de/
+days: Saturday
+
+name: Copenhagen Chess
+city: Copenhagen
+labels: chess meetup
+coordinates: 55.68314648081195, 12.540781316342184
+note: Casual chess on Wednesday and Saturday afternoons.
+gmap: https://maps.app.goo.gl/tiGxk11qaV8b5V3LA
+link: https://www.copenhagenchess.dk/chesssalon/
+image: https://i.imgur.com/royRACC.jpeg
+days: Wednesday, Saturday
+
+name: Svarta Hästen Stureplan
+labels: chess bar
+city: Stockholm
+coordinates: 59.33737559447111, 18.07269906268197
+note: Chess and wine bar.
+gmap: https://www.google.com/maps/place/Svarta+H%C3%A4sten+Stureplan/data=!4m2!3m1!1s0x465f9dbc578f796f:0x53a5b5f15a5796ae
+link: https://svartahasten.se/stockholm/
+image: https://i.imgur.com/uvPGdsK.png
+days: Wednesday, Thursday, Friday, Saturday, Sunday
+
+name: Svarta Hästen Göteborg
+labels: chess bar
+city: Göteborg
+coordinates: 57.70302453865925, 11.974560866385719
+note: Chess and wine bar.
+gmap: https://maps.app.goo.gl/Y1Lzc8oFC26jH6Ac6
+link: https://svartahasten.se/stockholm/
+image: https://i.imgur.com/i8fSEaO.png
+days: Wednesday, Thursday, Friday, Saturday, Sunday
+
+name: Giant Chess Boards
+labels: chess board
+city: Helsinki
+coordinates: 60.179185605757226, 24.930856681254557
+note: 2 giant boards in the park, visible on Google Maps.
+gmap: https://maps.app.goo.gl/hCPLvTgb6QKbResG7
+image: https://i.imgur.com/ko76Sy8.jpeg
+
+name: Helsinki Street Chess
+labels: chess meetup
+city: Helsinki
+coordinates: 60.18117017406913, 24.953056370908044
+note: Meetup at Street Bar Kallio. Tournament on Tuesdays at 8pm.
+gmap: https://maps.app.goo.gl/Yw6smBXttpah1s2d9
+link: https://www.helsinkistreetchess.fi/en/
+image: https://i.imgur.com/MkmskPd.jpeg
+days: Tuesday
+
+name: Shakkiareena
+labels: chess board
+city: Helsinki
+coordinates: 60.155401931105175, 24.952306440644836
+note: No fewer than 6 giant boards all placed together in the park.
+gmap: https://maps.app.goo.gl/eNv5sY1ubrTUYJFS8
+
+name: The Good Knight
+city: Oslo
+labels: chess bar
+coordinates: 59.93430513100195, 10.863946284474302
+days: Monday, Tuesday, Wednesday, Thursday, Friday, Saturday
+note: Just a chess bar.
+gmap: https://www.google.com/maps/place/The+Good+Knight/data=!4m2!3m1!1s0x46416f595815fb39:0x8b0371b4e7a9f52f
+link: https://goodknight.no/english/
+image: https://i.imgur.com/mJ3GzQo.jpeg
+
+name: Mikhail Tal Memorial
+labels: chess memorial
+coordinates: 56.95224843029699, 24.118113305282236
+city: Riga
+note: Memorial to the The Magician from Riga. People probably play around here somewhere.
+gmap: https://maps.app.goo.gl/bhuTsNx8jHCsNoxB8
+image: https://i.imgur.com/0YOjhni.jpeg
+
+name: Victory Pub
+labels: chess bar
+coordinates: 56.9491292197756, 24.10680258386118
+city: Riga
+note: Regular pub that's popular with chess players.
+gmap: https://maps.app.goo.gl/zernt6XdWfiSj9Vw5
+image: https://i.imgur.com/KbP6Cr1.jpeg
+
+name: Stoliki szachowe
+labels: chess board
+city: Krakow
+coordinates: 50.05554539373102, 19.929222551372316
+note: Public chess table.
+gmap: https://www.google.com/maps/place/Stoliki+szachowe/data=!4m2!3m1!1s0x47165bbb10c0f11d:0xd888543c25c91f16
+
+name: IT Chess Club
+labels: chess club
+city: Krakow
+coordinates: 50.06538174286009, 19.938302207956834
+note: Open every Thursday 6pm–10pm.
+gmap: https://maps.app.goo.gl/3qYdGR9WQ3ybuM5y8
+image: https://i.imgur.com/OMFUbnf.jpeg
+days: Thursday
+
+name: Outdoor chess tables
+labels: chess board
+city: Krakow
+coordinates: 50.0483782559322, 19.93769373249697
+gmap: https://www.google.com/maps/place/Outdoor+chess+tables/data=!4m2!3m1!1s0x47165b3216cfdf1d:0x95308ca6f1b22c42
+
+name: Szachy Chess
+labels: chess shop
+coordinates: 50.044782947590235, 19.956383620829392
+city: Krakow
+gmap: https://maps.app.goo.gl/GQEJ5SSvKhbF3wZR7
+image: https://i.imgur.com/oPDq6QO.jpeg
+
+name: Magyar Sakkvilág
+labels: chess shop
+city: Budapest
+coordinates: 47.50992895357972, 19.048004361369802
+gmap: https://www.google.com/maps/place/Magyar+Sakkvil%C3%A1g/data=!4m2!3m1!1s0x4741dc0f47790081:0xcc1e61f903166191
+link: https://www.sakkvilag.hu/
+days: Monday, Tuesday, Wednesday, Thursday, Friday
+
+name: Széchenyi Thermal Bath
+labels: chess meetup
+coordinates: 47.52187052808351, 19.08920309012298
+city: Budapest
+note: There are chess parties in the pool dude.
+gmap: https://www.google.com/maps/place/Sz%C3%A9chenyi+Thermal+Bath/data=!4m2!3m1!1s0x4741db8605675577:0xcbc0c308b68d2412
+link: https://www.reddit.com/r/europe/comments/sz045n/chess_game_sz%C3%A9chenyi_thermal_bath_budapest_1973/
+
+name: Chess tables
+labels: chess board
+city: Budapest
+coordinates: 47.48935509701126, 19.03029740873186
+gmap: https://www.google.com/maps/place/Chess+tables/data=!4m2!3m1!1s0x4741dd8ea76ae0a9:0x86476e2393ddf8c7
+
+name: Chess tables outside
+labels: chess board
+city: Budapest
+coordinates: 47.49590715236488, 19.092070301353363
+gmap: https://www.google.com/maps/place/Chess+tables+outside/data=!4m2!3m1!1s0x4741dd4899f24dc9:0xfc45ea1fadfa3bda
+
+name: Chess tables in Kalemegdan Park
+labels: chess board
+city: Belgrade
+coordinates: 44.820448791066056, 20.451379740634025
+gmap: https://maps.app.goo.gl/NaUSztKEe7bXwuC18
+
+name: Chess tables in Park Shetalishte
+labels: chess board
+city: Vrnjačka Banja
+note: 2 chess tables, a giant board, and a large sculpture of a white queen.
+image: https://i.imgur.com/gMPXsI7.png
+coordinates: 43.62041105399323, 20.893932914785726
+gmap: https://maps.app.goo.gl/7Twj3AByN1YJb9b8A
+
+name: La Şahişti
+city: Bucharest
+labels: chess board
+coordinates: 44.43650603622561, 26.089504320816676
+note: Chess tables in a park.
+gmap: https://www.google.com/maps/place/Chessmen's+Place/data=!4m2!3m1!1s0x40b1ffa5febbaf99:0x2ec0281cb27f7c62
+
+name: Astra Park
+city: Sibiu
+labels: chess board
+coordinates: 45.79333250518202, 24.14757860633809
+note: Chess tables in a park.
+gmap: https://maps.app.goo.gl/Kk7AUyELN7HG13iD7
+link: https://mesageruldesibiu.ro/mese-noi-de-sah-in-parcuri-din-oras/
+image: https://i.imgur.com/PTAe0Rb.png
+
+name: Chess Cafe Panellinion
+city: Athens
+labels: chess bar
+coordinates: 37.983379614919265, 23.735013859093844
+gmap: https://maps.app.goo.gl/X3rYEuuMTX55Brh4A
+link: https://www.facebook.com/kafeneionpanellinion
+image: https://i.imgur.com/RTacSkI.jpeg
+days: Monday, Tuesday, Wednesday, Thursday, Friday, Saturday
+
+name: K.O.T.E.S. (Booze Cooperativa)
+city: Athens
+labels: chess bar
+coordinates: 37.97987903677038, 23.737572814567116
+note: Underground shady vibes place. Chess scenes with smoking allowed indoors.
+gmap: https://maps.app.goo.gl/JbpB5QNbkMa7Rq5D6
+link: https://boozecooperativa.com/
+image: https://i.imgur.com/sBAfJSM.jpeg
+
+name: Chess boards – Giant boards.
+labels: chess board
+city: Athens
+coordinates: 37.942749, 23.694164
+note: Two giant boards in Stavros Niarchos Park.
+gmap: https://www.google.com/maps/search/37.942749,23.694164
+
+name: Place de Jeux du Parc des Bastions
+city: Geneva
+labels: chess board
+coordinates: 46.20099869676137, 6.145186805050561
+note: A dozen giant chessboards in this public square.
+gmap: https://maps.app.goo.gl/QGXxXWTzirgCpTqo6
+image: https://i.imgur.com/wM5EpAh.jpeg
+
+name: Giant Chess Board
+city: Basel
+labels: chess board
+coordinates: 47.560883, 7.580881
+note: Giant chess board visible on Google Maps but likely abandoned.
+gmap: https://www.google.com/maps/search/47.560883,7.580881
+
+name: Giant Chess Board Spielplatz Landhof
+city: Basel
+labels: chess board
+coordinates: 47.56259076255942, 7.601930664350891
+note: Giant chess board visible on Google Maps but likely abandoned.
+gmap: https://maps.app.goo.gl/mujnCTs6HNquwWSN6
+
+name: Schachplatz
+city: Zurich
+labels: chess board
+coordinates: 47.41039571611907, 8.544505546359469
+note: Two giant chess boards in a public square.
+gmap: https://www.google.com/maps/place/Schachplatz/data=!4m2!3m1!1s0x47900b0012d6fadd:0xbd2ec9f717d9030d
+
+name: Manuel's
+city: Zurich
+labels: chess bar
+coordinates: 47.373871923010626, 8.535365789077455
+note: A cigar shop, but it seems like people play chess there.
+gmap: https://maps.app.goo.gl/cGgJpJiBfRqp2tMbA
+link: https://www.manuels.ch/
+image: https://i.imgur.com/kxR71Zz.png
+
+name: StrangerChess
+labels: chess meetup
+coordinates: 52.525077432725524, 13.411217636212005
+city: Berlin
+note: 7pm.
+gmap: https://maps.app.goo.gl/DhJ74d1DbhHdKbRA9
+link: https://www.strangerchess.com/
+
+name: Babylon
+labels: chess meetup
+coordinates: 52.52627849017091, 13.4128913345676
+city: Berlin
+note: Chess every night at 7pm.
+gmap: https://www.google.com/maps/place/Babylon/data=!4m2!3m1!1s0x47a84e1dd8daaaab:0x319941efa11046b4
+
+name: Freiluftschach
+labels: chess board
+city: Hamburg
+coordinates: 53.59617584637264, 10.027491971539598
+note: Giant boards visible in a playground.
+gmap: https://maps.app.goo.gl/3fMyXMvG7cbidzsj6
+
+name: SP Barrio 96
+labels: chess meetup
+city: Hamburg
+coordinates: 53.55603891318741, 10.019902234044634
+note: Open chess on Fridays at 6pm at St. George Cultural Shop.
+gmap: https://maps.app.goo.gl/6fPU998hb7YtBymK9
+link: https://www.instagram.com/kulturladenstgeorg/
+days: Friday
+
+name: Chess in the Park
+labels: chess meetup
+city: Hamburg
+coordinates: 53.5633833950215, 9.981354184092764
+note: Weekends from 3pm, only in good weather.
+gmap: https://maps.app.goo.gl/6fPU998hb7YtBymK9
+link: https://spbarrio96.jimdofree.com/barrio-abteilungen/schach/
+days: Saturday, Sunday
+
+name: Gambit Cafe&Bar
+labels: chess bar
+city: Prague
+coordinates: 50.09660180414321, 14.462408325506006
+note: Lots of chess events, casual chess on Wednesdays
+gmap: https://maps.app.goo.gl/VfFvkV2e7F4EW16r5
+link: https://www.facebook.com/profile.php?id=100095139379673
+days: Wednesday
+
+name: B4 | CAFÉ PUB
+labels: chess bar
+coordinates: 50.093351027794796, 14.426911206310468
+city: Prague
+note: Chess-themed pub
+gmap: https://maps.app.goo.gl/xfaqhZaqjr8Nb2eR9
+image: https://i.imgur.com/SakElIu.jpeg
+
+name: Wilhelm Steinitz' commemorative plaque
+city: Prague
+labels: chess memorial
+coordinates: 50.09081803049813, 14.415753217273151
+note: Commemorative plaque for the first chess world champion.
+gmap: https://maps.app.goo.gl/4w7yCAT59NrDuXj76
+image: https://i.imgur.com/cB1sBgt.jpeg
+
+name: Barcelona Chess Meetup - Summer
+labels: chess meetup
+city: Barcelona
+coordinates: 41.38888000091078, 2.1847193669265765
+note: Barcelona Chess Meetup meets here on the playground on Sundays in the Summer. Meet at the NorthWest gate at 5pm.
+gmap: https://maps.app.goo.gl/1yjK7rRhyfdd7BVH8
+link: https://www.meetup.com/barcelona-chess-meetup/
+days: Sunday
+
+name: Barcelona Chess Meetup - Winter
+city: Barcelona
+labels: chess meetup
+coordinates: 41.382486761448384, 2.180746607742904
+note: Barcelona Chess Meetup meets at Mehman Khanna Halal on Sundays in the Winter.
+gmap: https://maps.app.goo.gl/yQzXtmvsEd72yJACA
+link: https://www.meetup.com/barcelona-chess-meetup/
+days: Sunday
+
+name: Piazza degli Scacchi
+labels: chess memorial
+city: Marostica
+coordinates: 45.75087995062626, 11.655548131331718
+note: A human-scale chess game (Partita a Scacchi) is acted out in medieval costume on the second weekend of September in even-numbered years.
+gmap: https://maps.app.goo.gl/VGYFXJq6GbisYtgK9
+link: https://www.marosticascacchi.it/en
+
+name: Chess'nBar
+labels: chess bar
+city: Lille
+coordinates: 50.63514925268105, 3.0641911117252705
+gmap: https://maps.app.goo.gl/V2rZfVNBo7CULBPv6
+link: https://linktr.ee/chessnbar
+note: Chessboard-themed cocktail bar.
+image: https://i.imgur.com/hn3Kpyl.png
+days: Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday
+
+name: La Vieille Bourse
+labels: chess board
+city: Lille
+coordinates: 50.63738135669567, 3.0642415553027313
+gmap: https://maps.app.goo.gl/ihLYF6L7tiBCtR8P7
+image: https://i.imgur.com/JVCHn4o.jpeg
+note: 2 public boards set up by antique book sellers in a stunning Renaissance-era stock exchange building. Very popular, and the winner gets to keep playing.
+link: https://thegoodlifefrance.com/the-book-market-lille-in-photos/
+days: Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday
+
+name: Blitz Society
+labels: chess bar
+city: Paris
+coordinates: 48.85309115846211, 2.331505957041081
+gmap: https://maps.app.goo.gl/H8ZzLB3MDc71Qkan7
+link: https://www.blitzsociety.fr/
+image: https://i.imgur.com/plComlJ.jpeg
+
+name: Jardin du Luxembourg
+labels: chess board
+city: Paris
+coordinates: 48.84780050702621, 2.334064131663044
+gmap: https://maps.app.goo.gl/9JWeRehqug963QuS9
+link: https://matthewsadler.me.uk/news/chess-jardin-du-luxembourg/
+image: https://i.imgur.com/oM9097f.jpeg
+
+name: Chess Club Barrikadnaya
+labels: chess bar
+city: Moscow
+coordinates: 55.76114107694813, 37.58216496066147
+note: Basement chess bar in Kudrinskaya Square.
+gmap: https://maps.app.goo.gl/dF1hzyujAuhYBb7JA
+link: https://chessclub.live/
+
+name: Chess Museum
+labels: chess museum
+city: Moscow
+coordinates: 55.74875901248655, 37.603847376803884
+gmap: https://maps.app.goo.gl/ndDHypzCEUYLa9N88
+link: https://centralchessclub.ru/en/chess-museum/
+note: Free museum housed with the Central Chess Club. 4000 artifacts, including the 1984 Karpov-Kasparov set. Open only 2-6pm on two weekdays.
+days: Tuesday, Thursday
+image: https://i.imgur.com/vcpibXX.jpeg
+
+name: Oktyabr'skiy Shakhmatnyy Klub
+labels: chess club
+city: Moscow
+coordinates: 55.73538745080846, 37.62239074303898
+gmap: https://maps.app.goo.gl/tv2TPHQXcrNwxF7m6
+link: https://www.octoberchess.narod.ru/
+note: Old school club with multiple blitz tournaments a week. Weekdays 6pm, Weekends 12pm.
+days: Wednesday, Friday, Saturday, Sunday
+
+name: Belaya Lad'ya | White Rook
+labels: chess board
+city: Moscow
+coordinates: 55.71928944783564, 37.59262720012194
+gmap: https://maps.app.goo.gl/e2FYnwBkZpQxGh8B6
+note: Free outdoor chess club in Gorky Park. Locals have been playing here since the 1970s.
+image: https://i.imgur.com/PsB7vrP.jpeg
+
+name: Gökyay Foundation Chess Museum
+labels: chess museum
+city: Ankara
+coordinates: 39.93503033190269, 32.863972812485365
+note: World's largest chess set collection — 723 sets from 110 countries
+gmap: https://www.gokyaysatrancvakfi.org.tr/en/chess-museum
+link: https://www.gokyaysatrancvakfi.org.tr/
+days: Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday
+
+name: Taflfélag Reykjavíkur
+labels: chess club
+city: Reykjavik
+coordinates: 64.12913467393767, -21.865893888356133
+gmap: https://maps.app.goo.gl/Z7Qvpvgcy5XqQ1jYA
+link: https://taflfelag.is/
+note: Rapid Tuesdays and Blitz Thursdays, walk-in before 7:30 PM. Entry 1000 ISK.
+days: Tuesday, Thursday
+image: https://i.imgur.com/vi58ZsJ.jpeg
+
+name: Café Rosenberg
+labels: chess bar
+city: Reykjavik
+coordinates: 64.14889736203068, -21.942259303799343
+gmap: https://maps.app.goo.gl/W63tHknTbCMrJfBdA
+note: Cosy café with chess boards on the tables. Formerly known as Stofan Café.
+
+name: Fischer Center
+labels: chess museum
+city: Selfoss
+coordinates: 63.93753060295892, -20.996162528950407
+gmap: https://maps.app.goo.gl/m3jpLzEMDB3dhFnC9
+link: https://www.fischersetur.is/index.cfm?lang=en&page=pages/start_en3
+note: Bobby Fischer museum 55km south of Reykjavík. Includes the 1972 Fischer-Spassky match table, Fischer memorabilia, a chess library, and an on-site chess club. Open daily 1–5 PM, ~1000 ISK entry.
+image: https://i.imgur.com/yn6UC6x.jpeg
+
+name: Phoenix ChessBase India Chess Club
+labels: chess meetup
+city: Mumbai
+coordinates: 19.086495635882248, 72.88900112214328
+note: Every Saturday 5-7pm in Atrium 5 of Phoenix Market City
+gmap: https://maps.app.goo.gl/ekHvhjeBnpRAiXDG6
+link: https://www.instagram.com/phoenixchessbaseindia/
+image: https://i.imgur.com/hlwC5nk.png
+days: Saturday
+
+name: Ambit Chess Club
+labels: chess meetup
+city: Mumbai
+coordinates: 19.000380890749213, 72.82886972537088
+note: First & Third Saturdays every month in the cafeteria of Ambit House
+gmap: https://maps.app.goo.gl/qNQCoeZNyRmfCgnx9
+link: https://www.instagram.com/ambitchessclub/
+image: https://i.imgur.com/KPfFSay.png
+days: Saturday
+
+name: Temple of Chess
+labels: chess museum
+city: Mumbai
+coordinates: 19.080475612489852, 72.89697989483837
+note: A sacred space for chess lovers.
+gmap: https://maps.app.goo.gl/Su6T3JeFWVV9C65h9
+link: https://www.instagram.com/templeofchess/
+image: https://i.imgur.com/PaSY0uX.png
+
+name: Espresso Defense Chess Club
+labels: chess meetup
+city: Delhi
+coordinates: 28.482056602784372, 77.10249052945669
+note: Meet-ups every Sunday in Cut Copy Paste Cafe. Tournament every month. 
+gmap: https://maps.app.goo.gl/io9PVCJAMTtdHTKJ6
+link: https://www.instagram.com/espressodefense_chessclub/
+image: https://i.imgur.com/4J8DJaw.png
+days: Sunday
+
+name: Pune Chess Hangouts
+labels: chess meetup
+city: Pune
+coordinates: 18.547238694641234, 73.89931733856604
+note: Meet-ups (almost) every Saturday/Sunday in various locations in Pune.
+gmap: https://maps.app.goo.gl/gVQ8mXxzTSJPgfF3A
+link: https://www.instagram.com/punechesshangouts/
+image: https://i.imgur.com/9FgHLGD.png
+days: Saturday, Sunday
+
+name: Captain Lakshmi Park
+city: Thiruvananthapuram
+labels: chess board
+coordinates: 8.509345858565455, 76.95854981299458
+gmap: https://maps.app.goo.gl/5484DzfHDrzTVuVw8
+link: https://www.youtube.com/watch?v=DZS7ZMBWTwQ
+image: https://i.imgur.com/oPDq6QO.jpeg
+note: Giant chess board in a small children's park.
+
+name: Chess Park
+labels: chess board
+city: Thiruvananthapuram
+coordinates: 8.392533212213735, 76.97198396170717
+note: Giant boards right outside Leela Kovalam. The hotel possibly rents out pieces.
+gmap: https://maps.app.goo.gl/bFETy2pvFec3N1Wz5
+
+name: Club de Ajedrez Plaza Solidaridad
+labels: chess board
+city: Mexico City
+coordinates: 19.436041030717842, -99.14648867580858
+note: Public chess club in the historic centre. Open daily from 11am. Boards for sale, coffee and bread on site. Casual play and regulars most afternoons.
+gmap: https://maps.app.goo.gl/ujGLrTxCZ6xxd6K9A
+
+name: Kennedy Park Chess Tables
+labels: chess board
+city: Lima
+coordinates: -12.121718968149583, -77.03036460345295
+note: Outdoor chess tables in the heart of Miraflores. Locals play daily, especially afternoons and evenings.
+gmap: https://maps.app.goo.gl/QDvDyFZtCdMfd6sg6
+image: https://i.imgur.com/5rOJSFp.jpeg
+
+name: Club de Ajedrez Plaza de Armas
+labels: chess board
+city: Santiago
+coordinates: -33.43769810220488, -70.65000065706114
+note: Outdoor chess club at the southeast corner of Plaza de Armas. Open daily 1:30–9pm. ~$1 entry for the day. Respectful rotation expected when it's busy.
+gmap: https://maps.app.goo.gl/NpxR8c6ctBrhkPcH8
+image: https://i.imgur.com/gxJ2AQU.jpeg
+
+name: Chess & Checkers House
+labels: chess board
+city: New York
+coordinates: 40.771782597253825, -73.96770372010965
+note: Chess tables in Central Park. Bring your own pieces.
+gmap: https://maps.app.goo.gl/qobnUTf1dm3nw2xu8
+link: https://www.centralparknyc.org/locations/chess-checkers-house
+image: https://i.imgur.com/dojAAhL.png
+
+name: Bryant Park
+labels: chess board, chess meetup
+city: New York
+coordinates: 40.75351277356923, -73.982928360229
+note: Free chess sets and an attendant from April to October, 11am–7pm. Strong regulars play fast time controls, very welcoming to visitors.
+gmap: https://maps.app.goo.gl/x7viQroYSMpuDK9t9
+
+name: 767 Third Public Plaza
+labels: chess board, chess memorial
+city: New York
+coordinates: 40.7546371516274, -73.97131867177298
+gmap: https://maps.app.goo.gl/UJ4BFuRTphyaf7Bu9
+link: https://www.atlasobscura.com/places/767-third-avenue
+note: Giant chessboard with a mechanical arm that recreates famous games on the wall.
+
+name: Union Square Chess Tables
+labels: chess board
+city: New York
+coordinates: 40.73516443032688, -73.99111614976105
+gmap: https://maps.app.goo.gl/moUX7KwwWaeYLp6UA
+note: Outdoor tables with chess hustlers. Expect $10/game if you sit down to play.
+image: https://i.imgur.com/HBCgYUd.jpeg
+
+name: Washington Square West Chess Tables
+labels: chess board
+city: New York
+coordinates: 40.73124524424309, -73.99853445923263
+gmap: https://maps.app.goo.gl/TUtnyBahjCcU4GBv8
+note: Around 20 embedded boards in the southwest corner of Washington Square Park. No pieces provided — locals and hustlers bring their own.
+
+name: Chess Forum
+labels: chess shop, chess club
+city: New York
+coordinates: 40.72951024457357, -73.99789640368869
+note: Village chess institution. Shop, lessons, and casual play daily noon–midnight.
+gmap: https://maps.app.goo.gl/sCfJpUiuibwHjhGZA
+link: https://www.chessforum.com/
+image: https://i.imgur.com/7GU8xtO.jpeg
+
+name: Marshall Chess Club
+labels: chess club
+city: New York
+coordinates: 40.73461199374135, -73.99541509982312
+gmap: https://maps.app.goo.gl/tpnqB5VcbhfmPZ6f7
+link: https://www.marshallchessclub.org/
+note: One of the oldest chess clubs in the US, founded by Frank Marshall. Rated tournaments almost daily. Open to non-members. Closed Tuesdays.
+days: Monday, Wednesday, Thursday, Friday, Saturday, Sunday
+
+name: Fred Wilson Chess Books
+labels: chess shop
+city: New York
+coordinates: 40.73775642144115, -73.98689574096615
+link: https://fredwilsonchess.com/
+gmap: https://maps.app.goo.gl/mj9iKVBM8F4adNc77
+note: 50-year-old chess bookshop tucked into the 7th floor of a Union Square office building. Hundreds of chess books, owned by the legendary Fred Wilson.
+
+name: Clark Park
+labels: chess board
+city: Philadelphia
+coordinates: 39.94872469389093, -75.21137709132012
+gmap: https://maps.app.goo.gl/WUTCA3fF1F4m3wBS9
+note: Chess players in the farmer's market.
+
+name: Madison Avenue Pub
+labels: chess bar, chess meetup
+city: Toronto
+coordinates: 43.67218701621396, -79.40447771811816
+gmap: https://maps.app.goo.gl/eojJQJ9ojTHVpRkn9
+link: https://www.instagram.com/pubchesstoronto/
+image: https://i.imgur.com/K2Duxur.png
+note: Chess nights on Wednesdays.
+days: Wednesday
+
+name: Left Field Brewery
+labels: chess bar, chess meetup
+city: Toronto
+coordinates: 43.63931990195616, -79.41920352720463
+gmap: https://maps.app.goo.gl/f4mSJetuP3zpznZu9
+link: https://www.instagram.com/pubchesstoronto
+image: https://i.imgur.com/Soe31Z7.png
+note: Tuesdays at 8pm.
+days: Tuesday
+
+name: Charlotte Chess Center
+labels: chess club
+city: Charlotte
+coordinates: 35.10361921002537, -80.83246739443595
+gmap: https://maps.app.goo.gl/ANM17dTDtJa8ayAw5
+link: https://www.charlottechesscenter.org/
+
+name: Smith's Olde Bar — Checkmate Monday
+labels: chess bar, chess meetup
+city: Atlanta
+coordinates: 33.7976384, -84.3688347
+note: Atlanta Checkmate Club hosts Checkmate Monday 7–11pm. Free tournament at 8pm. Casual play all night.
+gmap: https://maps.app.goo.gl/9Sb9chJwJkLjZpZL7
+link: https://www.atlantacheckmateclub.com/
+days: Monday
+
+name: The Family Dog — Chess Knight
+labels: chess bar, chess meetup
+city: Atlanta
+coordinates: 33.7925986, -84.3524467
+note: Atlanta Checkmate Club hosts Chess Knight at the Dog, Tuesdays 6–10pm. Free tournament at 8pm.
+gmap: https://maps.app.goo.gl/MMvWmtqKMgmMJguS6
+link: https://www.atlantacheckmateclub.com/
+days: Tuesday
+
+name: Ladybird Grove & Mess Hall — Chess Knight
+labels: chess bar, chess meetup
+city: Atlanta
+coordinates: 33.7595612, -84.3642300
+note: Atlanta Checkmate Club hosts Ladybird Chess Knight, Wednesdays 7–11pm. Free tournament at 9pm.
+gmap: https://maps.app.goo.gl/hWYiJT735J8TbkuJA
+link: https://www.atlantacheckmateclub.com/
+days: Wednesday
+
+name: Park Tavern — Chess Knight at the Park
+labels: chess bar, chess meetup
+city: Atlanta
+coordinates: 33.7822253, -84.3692889
+note: Atlanta Checkmate Club hosts Chess Knight at the Park, Fridays 7–11pm. Free tournament at 9pm.
+gmap: https://maps.app.goo.gl/bx8GSfgNrPQVYnMbA
+link: https://www.atlantacheckmateclub.com/
+days: Friday
+
+name: X3 Sports Inman Park — Chess Boxing
+labels: chess meetup
+city: Atlanta
+coordinates: 33.7620831, -84.3599142
+note: Atlanta Checkmate Club hosts a Chess Boxing class Mondays 5:30–6:30pm. First class free, $20 drop-in after. All levels welcome.
+gmap: https://maps.app.goo.gl/ZHty9BfZJkDq9J6M7
+days: Monday
+
+name: Saint Louis Chess Club
+labels: chess club
+city: St. Louis
+coordinates: 38.6448452, -90.2613486
+note: One of the premier chess clubs in the US. Open daily 10am–9pm, walk-ins welcome.
+gmap: https://maps.app.goo.gl/xJ3NVgLMpMDv66gE8
+link: https://saintlouischessclub.org/
+
+name: Chess Pocket Park
+labels: chess board, chess meetup
+city: St. Louis
+coordinates: 38.6508180, -90.1978139
+note: Small public chess park with tournaments every Saturday from 8am. All levels welcome.
+gmap: https://maps.app.goo.gl/hFwzKDTJNQs5ysMC9
+days: Saturday
+
+name: Lincoln Park Chess Pavilion
+labels: chess board
+city: Chicago
+coordinates: 41.9113159, -87.6249466
+note: Beautiful open-air chess pavilion on the lakefront with boards built into the concrete benches. Open daily 6am–10pm. Bring your own pieces.
+gmap: https://maps.app.goo.gl/KdmziogNka8Q8y8D9
+link: https://www.chicagoparkdistrict.com/parks-facilities/chess-pavilion-artwork
+image: https://i.imgur.com/8mX5BTx.jpeg
+
+name: Chess Center Ueno
+labels: chess club
+city: Tokyo
+coordinates: 35.71642322549234, 139.7845822369384
+note: International crowd, welcoming to all levels. Open Thursday 5–10pm, Saturday and Sunday noon–5pm.
+gmap: https://maps.app.goo.gl/7Uq41TELjCx4FZeP9
+days: Thursday, Saturday, Sunday
+
+name: Open Air Chess Board @ V&A Waterfront
+labels: chess board
+city: Cape Town
+coordinates: -33.90592370132705, 18.42147567851916
+note: Giant outdoor chess set at the V&A Waterfront. Open 24 hours. Smaller boards also built into the surrounding tables.
+gmap: https://maps.app.goo.gl/k7ZMTSkWcH759Ngz7
+image: https://i.imgur.com/gVw1rI4.jpeg
+
+name: Hyde Park Chess Board
+labels: chess board
+city: Sydney
+coordinates: -33.870543134965814, 151.21088583870988
+note: Giant outdoor chess set in Hyde Park, open daily 8:30am–4:30pm. Two smaller standard boards nearby.
+gmap: https://maps.app.goo.gl/X6LiB8f41hVSsZ218
+image: https://i.imgur.com/DxNbrgv.jpeg
+
+-->
+
+<!--=============================================================================
+  ABOUT PAGE CONTENT
+  Edit this section to update the About text. Plain markdown paragraphs.
+  Separate paragraphs with a blank line. Basic markdown supported:
+  **bold**, *italic*, [link text](url)
+==============================================================================-->
+<script type="text/markdown" id="about-content">
+For the past few years, I've been bookmarking chess scenes I come across or hear about. 
+
+A Chess Scene is any real-world setting with an element of casual chess. So chess clubs and tournaments, sure, but more interestingly also outdoor tables, giant public boards, meetups, museums, memorials, and best of all, chess bars. The goal is simple: any night of the week, you should be able to find a chess game. Chess is a social game when played IRL, so I'm looking for social settings where newcomers are made somewhat welcome.
+
+All entries are curated manually. If you know a place that should be here, please submit it.
+
+Follow on [Instagram](https://www.instagram.com/chessscenes).
+</script>
+
+<style>
+  :root {
+    --cream: #f5f0e8;
+    --ink: #1a1208;
+    --gold: #c9a84c;
+    --gold-light: #e8d98a;
+    --brown: #4a3520;
+    --muted: #7a6a55;
+    --white: #fdfaf4;
+    --border: #d4c5a9;
+    --bg-light: #ede8de;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    height: 100%;
+    overflow: hidden;
+  }
+
+  body {
+    background: var(--cream);
+    color: var(--ink);
+    font-family: 'IBM Plex Mono', monospace;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: var(--ink);
+    position: relative;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  .header-chess-bg {
+    position: absolute;
+    inset: 0;
+    opacity: 0.045;
+    background-image: repeating-conic-gradient(var(--cream) 0% 25%, transparent 0% 50%);
+    background-size: 28px 28px;
+  }
+
+  .header-inner {
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 14px 28px;
+    gap: 12px;
+  }
+
+  .king-icon { font-size: 1.7rem; line-height: 1; user-select: none; }
+
+  .header-title h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+    font-weight: 900;
+    color: var(--cream);
+    letter-spacing: -0.3px;
+  }
+
+  .header-title .subtitle {
+    font-size: 0.6rem;
+    color: var(--gold);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+
+  /* ── ABOUT BUTTON in header ── */
+  .header-about-btn {
+    margin-left: auto;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.35);
+    color: rgba(255,255,255,0.8);
+    padding: 6px 14px;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.15s;
+  }
+
+  .header-about-btn:hover {
+    background: rgba(255,255,255,0.1);
+    border-color: var(--gold);
+    color: var(--gold);
+  }
+
+  /* ── ABOUT MODAL ── */
+  .about-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(10, 8, 4, 0.75);
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  .about-backdrop.open { display: flex; }
+
+  .about-modal {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    width: 100%;
+    max-width: 520px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 12px 48px rgba(0,0,0,0.4);
+  }
+
+  .about-modal .modal-header {
+    background: var(--ink);
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+  }
+
+  .about-modal .modal-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem;
+    color: var(--cream);
+    font-weight: 700;
+  }
+
+  .about-modal .modal-close {
+    background: none;
+    border: none;
+    color: rgba(255,255,255,0.5);
+    font-size: 1.2rem;
+    cursor: pointer;
+    line-height: 1;
+    padding: 2px 4px;
+    transition: color 0.13s;
+  }
+
+  .about-modal .modal-close:hover { color: white; }
+
+  .about-modal .modal-body {
+    padding: 24px 24px 28px;
+  }
+
+  .about-modal .modal-body p {
+    font-size: 0.68rem;
+    color: var(--muted);
+    line-height: 1.75;
+    margin-bottom: 14px;
+    letter-spacing: 0.2px;
+  }
+
+  .about-modal .modal-body p:last-child { margin-bottom: 0; }
+
+  .city-select {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.2);
+    color: rgba(255,255,255,0.7);
+    padding: 4px 28px 4px 10px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.63rem;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 2px;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='rgba(255,255,255,0.4)'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 9px center;
+    transition: border-color 0.13s;
+  }
+
+  .city-select:focus { outline: none; border-color: var(--gold); }
+  .city-select option { background: #1a1208; color: white; text-transform: none; }
+
+  /* ── SUBMISSION MODAL ── */
+  .modal-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(10, 8, 4, 0.75);
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  .modal-backdrop.open { display: flex; }
+
+  .modal {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    width: 100%;
+    max-width: 480px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 12px 48px rgba(0,0,0,0.4);
+  }
+
+  .modal-header {
+    background: var(--ink);
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+  }
+
+  .modal-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem;
+    color: var(--cream);
+    font-weight: 700;
+  }
+
+  .modal-close {
+    background: none;
+    border: none;
+    color: rgba(255,255,255,0.5);
+    font-size: 1.2rem;
+    cursor: pointer;
+    line-height: 1;
+    padding: 2px 4px;
+    transition: color 0.13s;
+  }
+  .modal-close:hover { color: white; }
+
+  .modal-body { padding: 22px 22px 26px; }
+
+  .modal-body p {
+    font-size: 0.65rem;
+    color: var(--muted);
+    line-height: 1.6;
+    margin-bottom: 18px;
+    letter-spacing: 0.3px;
+  }
+
+  .form-row { margin-bottom: 14px; }
+
+  .form-row label {
+    display: block;
+    font-size: 0.58rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 5px;
+  }
+
+  .form-row label .req { color: var(--gold); }
+
+  .form-row input,
+  .form-row textarea,
+  .form-row select {
+    width: 100%;
+    background: var(--cream);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    padding: 8px 10px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--ink);
+    transition: border-color 0.13s;
+  }
+
+  .form-row input:focus,
+  .form-row textarea:focus,
+  .form-row select:focus {
+    outline: none;
+    border-color: var(--gold);
+  }
+
+  .form-row textarea { resize: vertical; min-height: 70px; }
+
+  .form-row select { appearance: none; cursor: pointer; }
+
+  .toggle-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-top: 2px;
+  }
+
+  .toggle-btn {
+    background: var(--cream);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    padding: 5px 10px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.5px;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.13s;
+    user-select: none;
+  }
+
+  .toggle-btn:hover {
+    border-color: var(--gold);
+    color: var(--ink);
+  }
+
+  .toggle-btn.active {
+    background: var(--ink);
+    border-color: var(--ink);
+    color: var(--gold);
+  }
+
+  .form-hint {
+    font-size: 0.55rem;
+    color: var(--border);
+    letter-spacing: 0.5px;
+    text-transform: none;
+    font-weight: normal;
+  }
+
+  .form-submit {
+    width: 100%;
+    background: var(--ink);
+    color: var(--gold);
+    border: none;
+    padding: 11px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 2px;
+    margin-top: 6px;
+    transition: background 0.13s;
+  }
+
+  .form-submit:hover { background: var(--brown); }
+  .form-submit:disabled { opacity: 0.45; cursor: not-allowed; }
+
+  .form-msg {
+    margin-top: 12px;
+    font-size: 0.63rem;
+    padding: 8px 10px;
+    border-radius: 2px;
+    display: none;
+  }
+  .form-msg.success { display: block; background: #e8f5e9; color: #2d6a4f; border: 1px solid #a5d6a7; }
+  .form-msg.error   { display: block; background: #fdecea; color: #8b2500; border: 1px solid #f5a79c; }
+  .form-msg.warn    { display: block; background: #fff8e1; color: #5c4a00; border: 1px solid #ffe082; }
+
+  /* ── SUBMIT BUTTON in header ── */
+  .suggest-btn {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.2);
+    color: rgba(255,255,255,0.55);
+    padding: 4px 11px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.13s;
+    white-space: nowrap;
+  }
+  .suggest-btn:hover { color: white; border-color: rgba(255,255,255,0.45); }
+
+  /* ── DAY FILTER ROW (list view on desktop; always on mobile via filter sheet) ── */
+  .day-controls {
+    display: none;
+    background: #252010;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    padding: 7px 28px;
+    gap: 7px;
+    align-items: center;
+    flex-wrap: wrap;
+    flex-shrink: 0;
+  }
+
+  .day-controls .filter-btn { font-size: 0.6rem; }
+
+  .day-controls .filter-btn.active {
+    background: #e8a020;
+    border-color: #e8a020;
+    color: var(--ink);
+  }
+
+  body.is-list .day-controls { display: flex; }
+
+  /* ── CARD DAY BADGES ── */
+  .card-days {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3px;
+    margin-top: 6px;
+  }
+
+  .card-day {
+    font-size: 0.53rem;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    padding: 2px 6px;
+    border-radius: 1px;
+    background: rgba(0,0,0,0.07);
+    color: var(--muted);
+    border: 1px solid var(--border);
+  }
+
+  .card-day.is-today {
+    background: #e8a020;
+    color: white;
+    border-color: #e8a020;
+  }
+
+  /* ── POPUP DAY BADGES ── */
+  .popup-days {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3px;
+    margin-top: 5px;
+  }
+
+  .popup-day {
+    font-size: 0.5rem;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    padding: 1px 5px;
+    border-radius: 1px;
+    background: rgba(0,0,0,0.07);
+    color: var(--muted);
+    border: 1px solid var(--border);
+  }
+
+  .popup-day.is-today {
+    background: #e8a020;
+    color: white;
+    border-color: #e8a020;
+  }
+
+  /* ── CONTROLS ── */
+  .controls {
+    background: var(--ink);
+    border-top: 1px solid rgba(255,255,255,0.07);
+    padding: 8px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    flex-shrink: 0;
+  }
+
+  .controls-top-row {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    flex-wrap: wrap;
+  }
+
+  .controls-left {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    flex-wrap: wrap;
+    flex: 1;
+  }
+
+  .controls-bottom-row {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    flex-wrap: wrap;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    padding-top: 7px;
+  }
+
+  .filter-label {
+    font-size: 0.58rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-right: 3px;
+    white-space: nowrap;
+  }
+
+  .filter-btn {
+    border: 1px solid rgba(255,255,255,0.16);
+    background: transparent;
+    color: rgba(255,255,255,0.5);
+    padding: 4px 10px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.63rem;
+    letter-spacing: 0.8px;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: all 0.13s;
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    white-space: nowrap;
+    user-select: none;
+  }
+
+  .filter-btn .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .filter-btn:hover {
+    color: rgba(255,255,255,0.85);
+    border-color: rgba(255,255,255,0.35);
+  }
+
+  .filter-btn.active {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: var(--ink);
+  }
+
+  .controls-right {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  #count-badge {
+    font-size: 0.58rem;
+    color: rgba(255,255,255,0.35);
+    letter-spacing: 1px;
+    white-space: nowrap;
+  }
+
+  .view-toggle { display: flex; gap: 3px; }
+
+  .view-btn {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.18);
+    color: rgba(255,255,255,0.45);
+    width: 30px; height: 30px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.13s;
+    border-radius: 2px;
+  }
+
+  .view-btn.active {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: var(--ink);
+  }
+
+  /* ── MAIN LAYOUT ── */
+  .main {
+    flex: 1;
+    display: flex;
+    min-height: 0;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* ── MAP ── */
+  #map {
+    flex: 1;
+    min-width: 0;
+    z-index: 1;
+  }
+
+  /* ── SIDEBAR ── */
+  .sidebar {
+    width: 340px;
+    min-width: 340px;
+    background: var(--white);
+    border-left: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transition: width 0.2s ease, min-width 0.2s ease;
+  }
+
+  .sidebar.collapsed {
+    width: 0;
+    min-width: 0;
+    border-left: none;
+  }
+
+  .sidebar-toggle {
+    position: absolute;
+    right: 340px; top: 50%;
+    transform: translateY(-50%);
+    width: 20px; height: 48px;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-right: none;
+    border-radius: 4px 0 0 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.65rem;
+    color: var(--muted);
+    transition: right 0.2s ease, background 0.13s, color 0.13s;
+    z-index: 10;
+  }
+
+  .sidebar-toggle:hover { background: var(--bg-light); color: var(--ink); }
+  .sidebar-toggle.collapsed { right: 0; }
+
+  .sidebar-header {
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.58rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    background: var(--bg-light);
+    flex-shrink: 0;
+  }
+
+  .sidebar-scroll {
+    overflow-y: auto;
+    flex: 1;
+  }
+
+  .sidebar-scroll::-webkit-scrollbar { width: 3px; }
+  .sidebar-scroll::-webkit-scrollbar-thumb { background: var(--border); }
+
+  /* ── LIST VIEW ── */
+  .main.is-list #map { display: none; }
+  .main.is-list .sidebar {
+    width: 100%;
+    min-width: 0;
+    border-left: none;
+    background: var(--cream);
+    overflow-y: auto;
+  }
+  .main.is-list .sidebar-header { display: none; }
+  .main.is-list .sidebar-scroll {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+    gap: 14px;
+    padding: 22px;
+    align-content: start;
+    overflow: visible;
+  }
+
+  /* ── CARDS ── */
+  .location-card {
+    padding: 13px 16px;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    transition: background 0.1s;
+    position: relative;
+  }
+
+  .location-card::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: transparent;
+    transition: background 0.13s;
+  }
+
+  .location-card:hover { background: var(--bg-light); }
+  .location-card:hover::before { background: var(--gold); }
+  .location-card.highlighted { background: #fef9ee; }
+  .location-card.highlighted::before { background: var(--gold); }
+
+  /* List-view card overrides */
+  .main.is-list .location-card {
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    background: var(--white);
+    box-shadow: 0 1px 6px rgba(0,0,0,0.06);
+    padding: 15px 17px;
+  }
+
+  .main.is-list .location-card::before {
+    border-radius: 3px 0 0 3px;
+  }
+
+  .card-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-bottom: 7px;
+  }
+
+  .card-tag {
+    font-size: 0.55rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 2px 7px;
+    border-radius: 1px;
+    font-weight: 500;
+    color: white;
+    white-space: nowrap;
+  }
+
+  .card-city {
+    font-size: 0.58rem;
+    color: var(--muted);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 3px;
+  }
+
+  .card-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.3;
+    margin-bottom: 5px;
+  }
+
+  .card-note {
+    font-size: 0.66rem;
+    color: var(--muted);
+    line-height: 1.55;
+    margin-bottom: 7px;
+  }
+
+  .card-link {
+    font-size: 0.6rem;
+    color: var(--gold);
+    text-decoration: none;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--gold-light);
+    padding-bottom: 1px;
+    transition: color 0.13s;
+  }
+  .card-link:hover { color: var(--brown); }
+
+  .no-results {
+    padding: 40px 20px;
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.7rem;
+    letter-spacing: 1px;
+    grid-column: 1 / -1;
+  }
+
+  /* ── MARKER ── */
+  .custom-marker {
+    width: 20px; height: 20px;
+    border-radius: 50% 50% 50% 0;
+    transform: rotate(-45deg);
+    border: 2px solid white;
+    box-shadow: 0 2px 7px rgba(0,0,0,0.32);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    cursor: pointer;
+  }
+  .custom-marker span { transform: rotate(45deg); display: block; line-height: 1; }
+
+  /* ── POPUP ── */
+  .leaflet-popup-content-wrapper {
+    border-radius: 3px;
+    font-family: 'IBM Plex Mono', monospace;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.18);
+    border: 1px solid var(--border);
+    background: var(--white);
+    padding: 0;
+    overflow: hidden;
+  }
+
+  .leaflet-popup-content {
+    margin: 0 !important;
+    width: 230px !important;
+  }
+
+  .popup-img {
+    width: 100%;
+    height: 128px;
+    object-fit: cover;
+    display: block;
+  }
+
+  .popup-body { padding: 11px 13px 13px; }
+
+  .popup-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3px;
+    margin-bottom: 6px;
+  }
+
+  .popup-tag {
+    font-size: 0.53rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 2px 6px;
+    border-radius: 1px;
+    color: white;
+  }
+
+  .popup-city {
+    font-size: 0.56rem;
+    color: var(--muted);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 2px;
+  }
+
+  .popup-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 5px;
+    line-height: 1.3;
+  }
+
+  .popup-note {
+    font-size: 0.62rem;
+    color: var(--muted);
+    line-height: 1.5;
+    margin-bottom: 7px;
+  }
+
+  .popup-link {
+    font-size: 0.58rem;
+    color: var(--gold);
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-bottom: 1px solid var(--gold-light);
+  }
+
+  .popup-links-row {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    align-items: center; margin-top: 6px;
+  }
+  .popup-share-btn {
+    background: none; border: none;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.56rem; color: var(--muted);
+    letter-spacing: 0.5px; cursor: pointer; padding: 0;
+    transition: color 0.13s;
+  }
+  .popup-share-btn:hover { color: var(--ink); }
+  .popup-share-btn.copied { color: #2d6a4f; }
+
+  .leaflet-popup-close-button {
+    top: 5px !important;
+    right: 6px !important;
+    color: white !important;
+    font-size: 16px !important;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+  }
+
+  .leaflet-popup-tip-container { display: none; }
+
+  /* ── MOBILE FILTER SHEET ── */
+  .mobile-filter-sheet {
+    display: none;
+    position: fixed; inset: 0; z-index: 2000;
+  }
+  .mobile-filter-sheet.open { display: block; }
+  .mobile-filter-overlay {
+    position: absolute; inset: 0;
+    background: rgba(0,0,0,0.55);
+  }
+  .mobile-filter-panel {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    background: var(--ink);
+    border-radius: 14px 14px 0 0;
+    padding: 6px 18px 36px;
+    max-height: 88vh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .mobile-filter-handle {
+    width: 36px; height: 4px;
+    background: rgba(255,255,255,0.18);
+    border-radius: 2px;
+    margin: 10px auto 16px;
+  }
+  .mobile-filter-section { margin-bottom: 20px; }
+  .mobile-filter-section-title {
+    font-size: 0.54rem; letter-spacing: 2px;
+    text-transform: uppercase; color: var(--gold);
+    margin-bottom: 10px;
+  }
+  .mobile-filter-section .city-select {
+    width: 100%;
+    background-color: rgba(255,255,255,0.07);
+    border-color: rgba(255,255,255,0.18);
+    padding: 10px 28px 10px 10px;
+    font-size: 0.68rem;
+  }
+  .mobile-filter-section .filter-btns {
+    display: flex; gap: 7px; flex-wrap: wrap;
+  }
+  .mobile-filter-section .filter-btn { font-size: 0.6rem; padding: 7px 11px; }
+  .mobile-filter-section .filter-btn[data-day] { padding: 7px 10px; }
+  .mobile-filter-done {
+    width: 100%; padding: 13px;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: var(--cream);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.62rem; letter-spacing: 1.5px; text-transform: uppercase;
+    cursor: pointer; border-radius: 3px; margin-top: 4px;
+  }
+
+  /* ── MOBILE FLOATING FILTER BUTTON ── */
+  .mobile-fab-filter {
+    display: none;
+    position: absolute; top: 12px; right: 12px; z-index: 500;
+    background: var(--ink);
+    border: 1px solid rgba(255,255,255,0.22);
+    border-radius: 20px;
+    padding: 8px 14px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.6rem; letter-spacing: 1.2px; text-transform: uppercase;
+    color: rgba(255,255,255,0.85);
+    cursor: pointer;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    align-items: center; gap: 7px;
+    white-space: nowrap;
+  }
+  .mobile-fab-filter .fab-filter-count {
+    background: var(--gold); color: var(--ink);
+    border-radius: 10px; padding: 1px 6px;
+    font-size: 0.55rem;
+    display: none;
+  }
+  .mobile-fab-filter .fab-filter-count.visible { display: inline; }
+
+  /* ── MOBILE FLOATING SUGGEST BUTTON ── */
+  .mobile-fab-suggest {
+    display: none;
+    position: absolute; bottom: 96px; right: 14px; z-index: 500;
+    background: var(--ink);
+    border: none; border-radius: 24px;
+    padding: 11px 18px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.6rem; letter-spacing: 1px; text-transform: uppercase;
+    color: var(--cream);
+    cursor: pointer;
+    box-shadow: 0 3px 14px rgba(0,0,0,0.35);
+    white-space: nowrap;
+  }
+
+  /* ── DESKTOP SUGGEST FAB ── */
+  .desktop-fab-suggest {
+    position: fixed; bottom: 28px; right: 28px; z-index: 800;
+    background: var(--ink);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 24px;
+    padding: 12px 20px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.62rem; letter-spacing: 1.2px; text-transform: uppercase;
+    color: var(--cream);
+    cursor: pointer;
+    box-shadow: 0 3px 16px rgba(0,0,0,0.3);
+    white-space: nowrap;
+    transition: background 0.13s, box-shadow 0.13s;
+  }
+  .desktop-fab-suggest:hover {
+    background: var(--brown);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+  }
+
+  /* ── MOBILE BOTTOM SHEET ── */
+  .mobile-bottom-sheet {
+    display: none;
+    position: absolute; left: 0; right: 0; bottom: 0;
+    z-index: 400;
+    background: var(--white);
+    border-radius: 14px 14px 0 0;
+    box-shadow: 0 -3px 20px rgba(0,0,0,0.13);
+    flex-direction: column;
+    height: calc(100% - 52px);
+    transform: translateY(calc(100% - 68px));
+    transition: transform 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+    will-change: transform;
+  }
+  .mobile-bottom-sheet.sheet-open {
+    transform: translateY(0);
+  }
+  .mobile-sheet-handle-row {
+    padding: 10px 16px 6px;
+    flex-shrink: 0; cursor: grab;
+    display: flex; flex-direction: column; align-items: center; gap: 7px;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg-light);
+    border-radius: 14px 14px 0 0;
+  }
+  .mobile-sheet-handle {
+    width: 36px; height: 4px;
+    background: var(--border); border-radius: 2px;
+  }
+  .mobile-sheet-meta {
+    width: 100%;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .mobile-sheet-title {
+    font-size: 0.56rem; letter-spacing: 2px;
+    text-transform: uppercase; color: var(--muted);
+  }
+  .mobile-sheet-count {
+    font-size: 0.54rem; color: var(--muted);
+  }
+  .mobile-sheet-scroll {
+    overflow-y: auto; flex: 1;
+    -webkit-overflow-scrolling: touch;
+  }
+  .mobile-sheet-scroll::-webkit-scrollbar { display: none; }
+
+  /* ── PIN DROP ── */
+  .pin-drop-hint {
+    display: none;
+    position: absolute; bottom: 90px; left: 50%;
+    transform: translateX(-50%);
+    background: var(--ink); color: var(--cream);
+    padding: 10px 18px; border-radius: 4px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.6rem; letter-spacing: 1px; text-transform: uppercase;
+    z-index: 1000; pointer-events: none;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.35);
+    white-space: nowrap;
+  }
+  .pin-drop-hint.visible { display: block; }
+  #map.pin-drop-mode { cursor: crosshair !important; }
+  #map.pin-drop-mode .leaflet-container { cursor: crosshair !important; }
+  .pin-drop-row {
+    margin-top: 6px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+  }
+  .pin-drop-btn {
+    background: transparent;
+    border: 1px solid var(--gold); color: var(--gold);
+    padding: 5px 10px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.6rem; letter-spacing: 1px; text-transform: uppercase;
+    cursor: pointer; border-radius: 2px; transition: all 0.13s;
+  }
+  .pin-drop-btn:hover { background: var(--gold); color: var(--ink); }
+  .pin-drop-coords {
+    font-size: 0.6rem; color: var(--gold); letter-spacing: 0.5px;
+  }
+  .form-coords-input {
+    background: var(--bg-light) !important;
+    color: var(--muted) !important;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 720px) {
+    html, body { height: 100%; overflow: hidden; }
+
+    .controls { display: none; }
+    .day-controls { display: none !important; }
+    .header-inner { padding: 11px 14px; }
+
+    /* Map fills the screen */
+    .main {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+    }
+    #map { flex: 1; width: 100%; height: 100%; }
+
+    /* Desktop sidebar hidden; replaced by bottom sheet */
+    .sidebar { display: none; }
+
+    /* Show mobile-only elements */
+    .mobile-fab-filter { display: flex; }
+    .mobile-fab-suggest { display: block; }
+    .mobile-bottom-sheet { display: flex; }
+
+    /* List view on mobile */
+    .main.is-list { flex-direction: column; overflow-y: auto; }
+    .main.is-list #map { display: none; }
+    .main.is-list .mobile-bottom-sheet { display: none; }
+    .main.is-list .mobile-fab-filter { display: none; }
+    .main.is-list .mobile-fab-suggest { display: none; }
+    .main.is-list .sidebar {
+      display: flex;
+      width: 100%; min-width: 0;
+      border-left: none;
+      background: var(--cream);
+      flex: 1;
+      max-height: none;
+      overflow-y: auto;
+    }
+    .main.is-list .sidebar-header { display: none; }
+    .main.is-list .sidebar-scroll {
+      grid-template-columns: 1fr;
+      padding: 14px;
+    }
+
+    /* Show a slim controls bar for list mode on mobile */
+    .mobile-list-controls {
+      background: var(--ink);
+      padding: 8px 14px;
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+      border-top: 1px solid rgba(255,255,255,0.07);
+    }
+    body.is-list .mobile-list-controls { display: flex; }
+  }
+
+  @media (min-width: 721px) {
+    .mobile-filter-sheet,
+    .mobile-fab-filter,
+    .mobile-fab-suggest,
+    .mobile-bottom-sheet,
+    .mobile-list-controls { display: none !important; }
+
+    /* Shift desktop FAB left when sidebar is open */
+    .desktop-fab-suggest {
+      right: calc(340px + 20px);
+      transition: right 0.2s ease, background 0.13s, box-shadow 0.13s;
+    }
+    .sidebar.collapsed ~ .desktop-fab-suggest,
+    body:has(.sidebar.collapsed) .desktop-fab-suggest {
+      right: 28px;
+    }
+  }
+
+  @media (max-width: 720px) {
+    .desktop-fab-suggest { display: none; }
+    .sidebar-toggle { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-chess-bg"></div>
+  <div class="header-inner">
+    <span class="king-icon">♚</span>
+    <div class="header-title">
+      <h1>Chess Scenes</h1>
+      <div class="subtitle">Chess but in real life.</div>
+    </div>
+    <button class="suggest-btn header-about-btn" id="btn-about">About</button>
+  </div>
+</header>
+
+<div class="controls" id="controls">
+  <div class="controls-top-row">
+    <div class="controls-left">
+      <span class="filter-label">City</span>
+      <select class="city-select" id="city-select">
+        <option value="">All</option>
+      </select>
+      <span class="filter-label" style="margin-left:12px">Day</span>
+      <div id="day-buttons" style="display:flex;gap:5px;flex-wrap:wrap;align-items:center;"></div>
+    </div>
+    <div class="controls-right">
+      <span id="count-badge"></span>
+      <div class="view-toggle">
+        <button class="view-btn active" id="btn-map" title="Map view">⊞</button>
+        <button class="view-btn" id="btn-list" title="Grid view">☰</button>
+      </div>
+    </div>
+  </div>
+  <div class="controls-bottom-row">
+    <span class="filter-label">Type</span>
+    <div id="filter-buttons"></div>
+  </div>
+</div>
+
+<div class="day-controls" id="day-controls" style="display:none"></div>
+
+<!-- Submission Modal -->
+<div class="modal-backdrop" id="modal-backdrop">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>♟ Suggest a Place</h2>
+      <button class="modal-close" id="modal-close">✕</button>
+    </div>
+    <div class="modal-body">
+      <p>Know a chess bar, club, or outdoor board that should be on the map? Submit it below and we'll review it before adding it to the site.</p>
+      <form id="suggest-form" action="https://formspree.io/f/mwvnjbby" method="POST">
+        <div class="form-row">
+          <label>Place name <span class="req">*</span></label>
+          <input type="text" name="name" required placeholder="e.g. Café de Laurierboom">
+        </div>
+        <div class="form-row">
+          <label>City <span class="req">*</span></label>
+          <input type="text" name="city" required placeholder="e.g. Amsterdam">
+        </div>
+        <div class="form-row">
+          <label>Coordinates <span class="form-hint">— drop a pin or enter manually</span></label>
+          <input type="text" name="coordinates" id="form-coords" class="form-coords-input" placeholder="e.g. 52.37262, 4.88093" readonly>
+          <div class="pin-drop-row">
+            <button type="button" class="pin-drop-btn" id="btn-pin-drop">📍 Drop a pin on the map</button>
+            <span class="pin-drop-coords" id="pin-drop-coords"></span>
+          </div>
+        </div>
+        <div class="form-row">
+          <label>Type <span class="req">*</span></label>
+          <div class="toggle-group" id="type-toggles" data-name="labels">
+            <button type="button" class="toggle-btn" data-value="chess bar">♞ Bar</button>
+            <button type="button" class="toggle-btn" data-value="chess club">♜ Club</button>
+            <button type="button" class="toggle-btn" data-value="chess meetup">♝ Meetup</button>
+            <button type="button" class="toggle-btn" data-value="chess board">♟ Outdoor Board</button>
+            <button type="button" class="toggle-btn" data-value="chess shop">♛ Shop</button>
+            <button type="button" class="toggle-btn" data-value="chess memorial">♔ Memorial</button>
+            <button type="button" class="toggle-btn" data-value="chess museum">♔ Museum</button>
+          </div>
+          <input type="hidden" name="labels" id="labels-hidden">
+        </div>
+        <div class="form-row">
+          <label>Google Maps link</label>
+          <input type="url" name="gmap" placeholder="https://maps.app.goo.gl/…">
+        </div>
+        <div class="form-row">
+          <label>Link <span class="form-hint">— website, Facebook, Instagram, etc.</span></label>
+          <input type="url" name="link" placeholder="https://…">
+        </div>
+        <div class="form-row">
+          <label>Days active <span class="form-hint">— leave blank if every day</span></label>
+          <div class="toggle-group" id="day-toggles" data-name="days">
+            <button type="button" class="toggle-btn" data-value="Monday">Mon</button>
+            <button type="button" class="toggle-btn" data-value="Tuesday">Tue</button>
+            <button type="button" class="toggle-btn" data-value="Wednesday">Wed</button>
+            <button type="button" class="toggle-btn" data-value="Thursday">Thu</button>
+            <button type="button" class="toggle-btn" data-value="Friday">Fri</button>
+            <button type="button" class="toggle-btn" data-value="Saturday">Sat</button>
+            <button type="button" class="toggle-btn" data-value="Sunday">Sun</button>
+          </div>
+          <input type="hidden" name="days" id="days-hidden">
+        </div>
+        <div class="form-row">
+          <label>Notes</label>
+          <textarea name="note" placeholder="Any useful details — times, what to expect, etc."></textarea>
+        </div>
+        <div class="form-row" style="display:flex;gap:10px">
+          <div style="flex:1">
+            <label>Your name</label>
+            <input type="text" name="submitter_name" placeholder="Optional">
+          </div>
+          <div style="flex:1">
+            <label>Your email</label>
+            <input type="email" name="submitter_email" placeholder="Optional">
+          </div>
+        </div>
+        <!-- Honeypot anti-spam -->
+        <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
+        <button type="submit" class="form-submit" id="form-submit">Submit for review</button>
+        <div class="form-msg" id="form-msg"></div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- About Modal -->
+<div class="about-backdrop" id="about-backdrop">
+  <div class="about-modal">
+    <div class="modal-header">
+      <h2>♚ About Chess Scenes</h2>
+      <button class="modal-close" id="about-close">✕</button>
+    </div>
+    <div class="modal-body" id="about-body">
+    </div>
+  </div>
+</div>
+
+<div class="main" id="main">
+  <div id="map">
+    <!-- Mobile floating buttons (only visible on mobile) -->
+    <button class="mobile-fab-filter" id="mobile-fab-filter">
+      ⚙ Filters
+      <span class="fab-filter-count" id="fab-filter-count"></span>
+    </button>
+    <div class="pin-drop-hint" id="pin-drop-hint">Tap anywhere to drop a pin</div>
+  </div>
+
+  <!-- Mobile Bottom Sheet (location list) -->
+  <div class="mobile-bottom-sheet" id="mobile-bottom-sheet">
+    <div class="mobile-sheet-handle-row" id="sheet-handle-row">
+      <div class="mobile-sheet-handle"></div>
+      <div class="mobile-sheet-meta">
+        <span class="mobile-sheet-title">Locations</span>
+        <span class="mobile-sheet-count" id="mobile-sheet-count"></span>
+      </div>
+    </div>
+    <div class="mobile-sheet-scroll" id="mobile-sheet-scroll"></div>
+  </div>
+
+  <div class="sidebar" id="sidebar">
+    <div class="sidebar-header">Locations</div>
+    <div class="sidebar-scroll" id="list-items"></div>
+  </div>
+  <button class="sidebar-toggle" id="sidebar-toggle" title="Toggle sidebar">◀</button>
+</div>
+
+<!-- Desktop Suggest FAB -->
+<button class="desktop-fab-suggest" id="btn-suggest">+ Suggest a place</button>
+
+<!-- Mobile Suggest FAB -->
+<button class="mobile-fab-suggest" id="mobile-fab-suggest">+ Suggest</button>
+
+<!-- Mobile list-mode controls bar -->
+<div class="mobile-list-controls" id="mobile-list-controls">
+  <span id="count-badge-mobile" style="font-size:0.58rem;color:rgba(255,255,255,0.35);letter-spacing:1px;"></span>
+  <div style="display:flex;gap:8px;align-items:center;">
+    <button class="suggest-btn" id="btn-suggest-mobile">+ Suggest</button>
+    <div class="view-toggle">
+      <button class="view-btn" id="btn-map-mobile" title="Map view">⊞</button>
+      <button class="view-btn active" id="btn-list-mobile" title="Grid view">☰</button>
+    </div>
+  </div>
+</div>
+
+<!-- Mobile Filter Sheet -->
+<div class="mobile-filter-sheet" id="mobile-filter-sheet">
+  <div class="mobile-filter-overlay" id="mobile-filter-overlay"></div>
+  <div class="mobile-filter-panel">
+    <div class="mobile-filter-handle"></div>
+    <div class="mobile-filter-section">
+      <div class="mobile-filter-section-title">City</div>
+      <select class="city-select" id="city-select-mobile">
+        <option value="">All</option>
+      </select>
+    </div>
+    <div class="mobile-filter-section">
+      <div class="mobile-filter-section-title">Type</div>
+      <div class="filter-btns" id="filter-buttons-mobile"></div>
+    </div>
+    <div class="mobile-filter-section">
+      <div class="mobile-filter-section-title">Day</div>
+      <div class="filter-btns" id="day-buttons-mobile"></div>
+    </div>
+    <button class="mobile-filter-done" id="mobile-filter-done">Done</button>
+  </div>
+</div>
+
+<script>
+// ─── ABOUT CONTENT ────────────────────────────────────────────────────────────
+(function renderAbout() {
+  const src = document.getElementById('about-content');
+  const body = document.getElementById('about-body');
+  if (!src || !body) return;
+
+  const md = src.textContent;
+
+  // Split into paragraphs on blank lines
+  const paragraphs = md.split(/\n\s*\n/).map(p => p.trim()).filter(Boolean);
+
+  body.innerHTML = paragraphs.map(p => {
+    // Basic inline markdown: **bold**, *italic*, [text](url)
+    const html = p
+      .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+      .replace(/\*(.+?)\*/g, '<em>$1</em>')
+      .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
+    return `<p>${html}</p>`;
+  }).join('');
+})();
+
+// ─── LABEL CONFIG ─────────────────────────────────────────────────────────────
+const LABEL_CONFIG = {
+  'chess board':    { color: '#2d6a4f', icon: '♟', display: 'Board' },
+  'chess shop':     { color: '#1d4e89', icon: '♛', display: 'Shop' },
+  'chess memorial': { color: '#6b2d6b', icon: '♔', display: 'Memorial' },
+  'chess bar':      { color: '#8b2500', icon: '♞', display: 'Bar' },
+  'chess club':     { color: '#5c4a00', icon: '♜', display: 'Club' },
+  'chess meetup':   { color: '#0a5c6b', icon: '♝', display: 'Meetup' },
+  'chess museum':   { color: '#c9a84c', icon: '♔', display: 'Museum' },
+};
+
+const DAYS_ORDER = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+
+// Fallback for unknown labels
+function labelColor(l) { return (LABEL_CONFIG[l] || {}).color || '#666'; }
+function labelIcon(l)  { return (LABEL_CONFIG[l] || {}).icon  || '♟'; }
+function labelDisplay(l) { return (LABEL_CONFIG[l] || {}).display || l.replace('chess ', ''); }
+
+// Today's weekday name
+const TODAY = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'][new Date().getDay()];
+
+// ─── PARSE DATA FROM HTML COMMENT ─────────────────────────────────────────────
+function parseLocations() {
+  const walk = document.createTreeWalker(document.documentElement, NodeFilter.SHOW_COMMENT);
+  let node, raw = '';
+  while ((node = walk.nextNode())) {
+    if (node.nodeValue.includes('LOCATION DATA')) { raw = node.nodeValue; break; }
+  }
+  if (!raw) return [];
+
+  const locations = [];
+  const blocks = raw.split(/\n[ \t]*\n/);
+
+  for (const block of blocks) {
+    const lines = block.split('\n').map(l => l.trim()).filter(Boolean);
+    if (!lines.some(l => /^name:/i.test(l))) continue;
+
+    const obj = {};
+    for (const line of lines) {
+      const m = line.match(/^(\w+)\s*:\s*(.+)/);
+      if (!m) continue;
+      obj[m[1].toLowerCase()] = m[2].trim();
+    }
+    if (!obj.name || !obj.coordinates) continue;
+
+    const [lat, lng] = obj.coordinates.split(',').map(Number);
+    if (isNaN(lat) || isNaN(lng)) continue;
+
+    const rawLabels = obj.labels || obj.label || '';
+    const labels = rawLabels.split(',').map(s => s.trim()).filter(Boolean);
+
+    // Parse days — null means "no restriction / always active"
+    const rawDays = obj.days || obj.day || '';
+    const days = rawDays
+      ? rawDays.split(',').map(s => s.trim()).filter(Boolean)
+      : null;
+
+    locations.push({
+      name: obj.name,
+      labels,
+      days,       // null = always; array = specific days
+      lat, lng,
+      note: obj.note || '',
+      gmap: (obj.gmap && obj.gmap.startsWith('http')) ? obj.gmap : '',
+      link: (obj.link && obj.link.startsWith('http')) ? obj.link : '',
+      image: obj.image || '',
+      city: obj.city || '',
+      id: obj.id || '',
+    });
+  }
+  return locations;
+}
+
+// Randomise the list of places
+let LOCATIONS = parseLocations().sort(() => Math.random() - 0.5); // fallback: HTML data
+
+// ─── SLUGS ────────────────────────────────────────────────────────────────────
+function toSlug(str) {
+  return str.toLowerCase()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
+function makeSlug(loc) {
+  if (loc.id) return loc.id;
+  const city = toSlug(loc.city || '');
+  const name = toSlug(loc.name);
+  return city ? city + '-' + name : name;
+}
+// Build lookup map — first match wins on collision
+const SLUG_MAP = new Map();
+
+function rebuildSlugMap() {
+  SLUG_MAP.clear();
+  for (const loc of LOCATIONS) {
+    loc.slug = makeSlug(loc);
+    if (!SLUG_MAP.has(loc.slug)) SLUG_MAP.set(loc.slug, loc);
+  }
+}
+rebuildSlugMap();
+
+// ─── COLLECT ALL UNIQUE LABELS ────────────────────────────────────────────────
+const ALL_LABELS = [];
+const seenLabels = new Set();
+for (const loc of LOCATIONS) {
+  for (const l of loc.labels) {
+    if (!seenLabels.has(l)) { seenLabels.add(l); ALL_LABELS.push(l); }
+  }
+}
+
+// ─── STATE ────────────────────────────────────────────────────────────────────
+const activeLabels = new Set();
+const activeDays   = new Set();
+let activeCity = '';
+let currentView = 'map';
+let markerObjects = [];
+
+// ─── MAP SETUP ────────────────────────────────────────────────────────────────
+const map = L.map('map', { zoomControl: true }).setView([52, 10], 4);
+
+L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+  attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
+  subdomains: 'abcd', maxZoom: 19
+}).addTo(map);
+
+// ─── BUILD CITY FILTER ────────────────────────────────────────────────────────
+function buildCityFilter() {
+  const cities = [...new Set(LOCATIONS.map(l => l.city).filter(Boolean))].sort();
+
+  function populateCitySelect(sel) {
+    for (const city of cities) {
+      const opt = document.createElement('option');
+      opt.value = city; opt.textContent = city;
+      sel.appendChild(opt);
+    }
+  }
+
+  const selDesktop = document.getElementById('city-select');
+  const selMobile  = document.getElementById('city-select-mobile');
+
+  populateCitySelect(selDesktop);
+  populateCitySelect(selMobile);
+
+  function onCityChange(val) {
+    activeCity = val;
+    selDesktop.value = val;
+    selMobile.value  = val;
+    render(false);
+    if (activeCity && currentView === 'map') {
+      const cityLocs = LOCATIONS.filter(l => l.city === activeCity);
+      if (cityLocs.length > 0) {
+        const bounds = L.latLngBounds(cityLocs.map(l => [l.lat, l.lng]));
+        map.fitBounds(bounds, { padding: [60, 60], maxZoom: 14, animate: true });
+      }
+    }
+  }
+
+  selDesktop.addEventListener('change', () => onCityChange(selDesktop.value));
+  selMobile.addEventListener('change',  () => onCityChange(selMobile.value));
+}
+
+// ─── BUILD LABEL FILTER BUTTONS ───────────────────────────────────────────────
+function buildFilters() {
+  function populateFilterBtns(container) {
+    container.style.cssText = 'display:flex;gap:7px;flex-wrap:wrap;align-items:center';
+    for (const label of ALL_LABELS) {
+      const cfg = LABEL_CONFIG[label] || {};
+      const btn = document.createElement('button');
+      btn.className = 'filter-btn';
+      btn.dataset.label = label;
+      btn.innerHTML = `<span class="dot" style="background:${cfg.color || '#888'}"></span>${labelDisplay(label)}`;
+      btn.addEventListener('click', () => {
+        activeLabels.has(label) ? activeLabels.delete(label) : activeLabels.add(label);
+        // Sync active state across all label buttons with this data-label
+        document.querySelectorAll(`.filter-btn[data-label="${label}"]`).forEach(b =>
+          b.classList.toggle('active', activeLabels.has(label))
+        );
+        updateFabFilterCount();
+        render(false);
+      });
+      container.appendChild(btn);
+    }
+  }
+  populateFilterBtns(document.getElementById('filter-buttons'));
+  populateFilterBtns(document.getElementById('filter-buttons-mobile'));
+}
+
+// ─── BUILD DAY FILTER BUTTONS ─────────────────────────────────────────────────
+function buildDayFilters() {
+  function populateDayBtns(container) {
+    container.style.cssText = 'display:flex;gap:5px;flex-wrap:wrap;align-items:center';
+    for (const day of DAYS_ORDER) {
+      const btn = document.createElement('button');
+      btn.className = 'filter-btn' + (day === TODAY ? ' today-btn' : '');
+      btn.dataset.day = day;
+      btn.innerHTML = day === TODAY ? `${day} ·` : day;
+      btn.title = day === TODAY ? `Today is ${day}` : day;
+      btn.addEventListener('click', () => {
+        activeDays.has(day) ? activeDays.delete(day) : activeDays.add(day);
+        document.querySelectorAll(`.filter-btn[data-day="${day}"]`).forEach(b =>
+          b.classList.toggle('active', activeDays.has(day))
+        );
+        updateFabFilterCount();
+        render(false);
+      });
+      container.appendChild(btn);
+    }
+  }
+  populateDayBtns(document.getElementById('day-buttons'));
+  populateDayBtns(document.getElementById('day-buttons-mobile'));
+}
+
+// ─── FILTER LOGIC ─────────────────────────────────────────────────────────────
+function locMatchesFilters(loc) {
+  // Label filter: if any active labels, location must match at least one
+  if (activeLabels.size > 0 && !loc.labels.some(l => activeLabels.has(l))) return false;
+
+  // Day filter: if any active days selected, location must be active on at least one
+  if (activeDays.size > 0) {
+    // null days = always active, passes any day filter
+    if (loc.days !== null && !loc.days.some(d => activeDays.has(d))) return false;
+  }
+
+  // City filter
+  if (activeCity && loc.city !== activeCity) return false;
+
+  return true;
+}
+
+function getFiltered() {
+  return LOCATIONS.filter(locMatchesFilters);
+}
+
+// ─── MARKER ICON ──────────────────────────────────────────────────────────────
+function makeIcon(labels) {
+  const primary = labels[0] || '';
+  const color = labelColor(primary);
+  const icon = labelIcon(primary);
+  return L.divIcon({
+    className: '',
+    html: `<div class="custom-marker" style="background:${color}"><span>${icon}</span></div>`,
+    iconSize: [20, 20],
+    iconAnchor: [10, 20],
+    popupAnchor: [5, -16],
+  });
+}
+
+// ─── DAY BADGE HTML ───────────────────────────────────────────────────────────
+function dayBadgesHtml(days, cssClass) {
+  if (!days) return '';
+  return days.map(d => {
+    const cls = d === TODAY ? `${cssClass} is-today` : cssClass;
+    return `<span class="${cls}">${d}</span>`;
+  }).join('');
+}
+
+// ─── POPUP HTML ───────────────────────────────────────────────────────────────
+function buildPopup(loc) {
+  const tags = loc.labels.map(l =>
+    `<span class="popup-tag" style="background:${labelColor(l)}">${labelDisplay(l)}</span>`
+  ).join('');
+
+  const dayHtml = loc.days
+    ? `<div class="popup-days">${dayBadgesHtml(loc.days, 'popup-day')}</div>`
+    : '';
+
+  return `
+    ${loc.image ? `<img class="popup-img" src="${loc.image}" alt="${loc.name}" loading="lazy">` : ''}
+    <div class="popup-body">
+      <div class="popup-tags">${tags}</div>
+      ${loc.city ? `<div class="popup-city">${loc.city}</div>` : ''}
+      <div class="popup-name">${loc.name}</div>
+      ${loc.note ? `<div class="popup-note">${loc.note}</div>` : ''}
+      ${dayHtml}
+      <div class="popup-links-row">
+        ${loc.gmap ? `<a href="${loc.gmap}" target="_blank" rel="noopener" class="popup-link">Maps ↗</a>` : ''}
+        ${loc.link ? `<a href="${loc.link}" target="_blank" rel="noopener" class="popup-link">Website ↗</a>` : ''}
+        <button class="popup-share-btn" onclick="shareVenue(event,'${loc.slug}',this)">🔗 Share</button>
+      </div>
+    </div>`;
+}
+
+// ─── CARD HTML ────────────────────────────────────────────────────────────────
+function buildCard(loc, idx) {
+  const tags = loc.labels.map(l =>
+    `<span class="card-tag" style="background:${labelColor(l)}">${labelDisplay(l)}</span>`
+  ).join('');
+
+  const dayHtml = loc.days
+    ? `<div class="card-days">${dayBadgesHtml(loc.days, 'card-day')}</div>`
+    : '';
+
+  const card = document.createElement('div');
+  card.className = 'location-card';
+  card.dataset.idx = idx;
+  card.innerHTML = `
+    <div class="card-tags">${tags}</div>
+    ${loc.city ? `<div class="card-city">${loc.city}</div>` : ''}
+    <div class="card-name">${loc.name}</div>
+    ${loc.note ? `<div class="card-note">${loc.note}</div>` : ''}
+    ${dayHtml}
+    ${loc.gmap ? `<a href="${loc.gmap}" target="_blank" rel="noopener" class="card-link" onclick="event.stopPropagation()">Open in Maps ↗</a>` : ''}
+    ${loc.link ? `<a href="${loc.link}" target="_blank" rel="noopener" class="card-link" onclick="event.stopPropagation()" style="margin-left:8px">Website ↗</a>` : ''}
+  `;
+  return card;
+}
+
+// ─── RENDER ───────────────────────────────────────────────────────────────────
+function render(fitBounds = true) {
+  const filtered = getFiltered();
+
+  const countText = `${filtered.length} scene${filtered.length !== 1 ? 's' : ''}`;
+  document.getElementById('count-badge').textContent = countText;
+  const mobileBadge = document.getElementById('count-badge-mobile');
+  if (mobileBadge) mobileBadge.textContent = countText;
+  const sheetCount = document.getElementById('mobile-sheet-count');
+  if (sheetCount) sheetCount.textContent = countText;
+
+  markerObjects.forEach(({ marker }) => map.removeLayer(marker));
+  markerObjects = [];
+
+  const listEl = document.getElementById('list-items');
+  listEl.innerHTML = '';
+  const mobileSheetScroll = document.getElementById('mobile-sheet-scroll');
+  if (mobileSheetScroll) mobileSheetScroll.innerHTML = '';
+
+  if (filtered.length === 0) {
+    listEl.innerHTML = '<div class="no-results">No locations match the current filters.</div>';
+    if (mobileSheetScroll) mobileSheetScroll.innerHTML = '<div class="no-results">No locations match the current filters.</div>';
+    return;
+  }
+
+  filtered.forEach((loc, i) => {
+    setTimeout(() => {
+      const marker = L.marker([loc.lat, loc.lng], { icon: makeIcon(loc.labels) })
+        .addTo(map)
+        .bindPopup(buildPopup(loc), { maxWidth: 250 });
+
+      marker.on('popupopen', () => highlightCard(i));
+      marker.on('click', () => { if (currentView === 'map') highlightCard(i); });
+
+      markerObjects.push({ marker, locIndex: i });
+
+      const card = buildCard(loc, i);
+      card.addEventListener('click', () => {
+        if (currentView === 'map') {
+          panToLocation(loc.lat, loc.lng);
+          marker.openPopup();
+          if (window.innerWidth <= 720) setSheetOpen(false);
+        }
+        highlightCard(i);
+      });
+      listEl.appendChild(card);
+
+      if (mobileSheetScroll) {
+        const cardClone = buildCard(loc, i);
+        cardClone.addEventListener('click', () => {
+          if (currentView === 'map') {
+            panToLocation(loc.lat, loc.lng);
+            marker.openPopup();
+            setSheetOpen(false);
+          }
+          highlightCard(i);
+        });
+        mobileSheetScroll.appendChild(cardClone);
+      }
+    }, i * 30);
+  });
+
+  if (fitBounds && currentView === 'map' && (activeLabels.size > 0 || activeDays.size > 0 || activeCity)) {
+    const bounds = L.latLngBounds(filtered.map(l => [l.lat, l.lng]));
+    map.fitBounds(bounds, { padding: [40, 40], maxZoom: 16 });
+  }
+}
+
+function highlightCard(i) {
+  document.querySelectorAll('.location-card').forEach(c => c.classList.remove('highlighted'));
+  document.querySelectorAll(`.location-card[data-idx="${i}"]`).forEach(card => {
+    card.classList.add('highlighted');
+    // Scroll card to the middle of its scroll container
+    const scroller = card.closest('.sidebar-scroll, .mobile-sheet-scroll');
+    if (scroller) {
+      const scrollerRect = scroller.getBoundingClientRect();
+      const cardRect = card.getBoundingClientRect();
+      const offset = cardRect.top - scrollerRect.top - (scrollerRect.height / 2) + (cardRect.height / 2);
+      scroller.scrollBy({ top: offset, behavior: 'smooth' });
+    } else {
+      card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  });
+}
+
+// ─── VIEW TOGGLE ──────────────────────────────────────────────────────────────
+const mainEl = document.getElementById('main');
+
+// Pan to a location, offsetting for the sidebar (desktop) or bottom sheet (mobile)
+function panToLocation(lat, lng) {
+  map.setView([lat, lng], 15, { animate: false });
+  if (window.innerWidth <= 720) {
+    // On mobile, bottom sheet covers ~40% of screen height when peeking
+    // Offset upward so pin sits in the visible map area
+    const sheetHeight = document.getElementById('mobile-bottom-sheet').offsetHeight;
+    const visibleMapHeight = map.getSize().y - 68; // 68 = peeking handle height
+    const offsetPx = -(sheetHeight * 0.5 - 68);
+    map.panBy([0, offsetPx], { animate: true });
+  } else {
+    // On desktop, sidebar is 340px on the right — offset left
+    map.panBy([-170, 0], { animate: true });
+  }
+}
+
+function setView(view) {
+  currentView = view;
+  if (view === 'map') {
+    mainEl.classList.remove('is-list');
+    document.body.classList.remove('is-list');
+    document.getElementById('btn-map').classList.add('active');
+    document.getElementById('btn-list').classList.remove('active');
+    const btnMapMobile = document.getElementById('btn-map-mobile');
+    const btnListMobile = document.getElementById('btn-list-mobile');
+    if (btnMapMobile) btnMapMobile.classList.add('active');
+    if (btnListMobile) btnListMobile.classList.remove('active');
+    setTimeout(() => {
+      map.invalidateSize();
+      const filtered = getFiltered();
+      if (filtered.length > 0) {
+        const bounds = L.latLngBounds(filtered.map(l => [l.lat, l.lng]));
+        map.fitBounds(bounds, { padding: [40, 40], maxZoom: 16 });
+      }
+    }, 50);
+  } else {
+    mainEl.classList.add('is-list');
+    document.body.classList.add('is-list');
+    document.getElementById('btn-list').classList.add('active');
+    document.getElementById('btn-map').classList.remove('active');
+    const btnMapMobile = document.getElementById('btn-map-mobile');
+    const btnListMobile = document.getElementById('btn-list-mobile');
+    if (btnMapMobile) btnMapMobile.classList.remove('active');
+    if (btnListMobile) btnListMobile.classList.add('active');
+  }
+}
+
+document.getElementById('btn-map').addEventListener('click', () => setView('map'));
+document.getElementById('btn-list').addEventListener('click', () => setView('list'));
+
+const btnMapMobile = document.getElementById('btn-map-mobile');
+const btnListMobile = document.getElementById('btn-list-mobile');
+if (btnMapMobile) btnMapMobile.addEventListener('click', () => setView('map'));
+if (btnListMobile) btnListMobile.addEventListener('click', () => setView('list'));
+
+// ─── MOBILE BOTTOM SHEET ──────────────────────────────────────────────────────
+let sheetIsOpen = false;
+
+function setSheetOpen(open) {
+  sheetIsOpen = open;
+  const sheet = document.getElementById('mobile-bottom-sheet');
+  if (sheet) sheet.classList.toggle('sheet-open', open);
+}
+
+(function initSheet() {
+  const sheet = document.getElementById('mobile-bottom-sheet');
+  const handleRow = document.getElementById('sheet-handle-row');
+  if (!sheet || !handleRow) return;
+
+  let startY = 0, startTranslate = 0, dragging = false, movedPx = 0;
+
+  function getTranslateY() {
+    const m = new DOMMatrix(getComputedStyle(sheet).transform);
+    return m.m42;
+  }
+
+  handleRow.addEventListener('touchstart', e => {
+    dragging = true;
+    movedPx = 0;
+    startY = e.touches[0].clientY;
+    startTranslate = getTranslateY();
+    sheet.style.transition = 'none';
+  }, { passive: true });
+
+  handleRow.addEventListener('touchmove', e => {
+    if (!dragging) return;
+    const dy = e.touches[0].clientY - startY;
+    movedPx = Math.abs(dy);
+    const maxT = sheet.offsetHeight - 68;
+    const newT = Math.max(0, Math.min(maxT, startTranslate + dy));
+    sheet.style.transform = `translateY(${newT}px)`;
+  }, { passive: true });
+
+  handleRow.addEventListener('touchend', e => {
+    if (!dragging) return;
+    dragging = false;
+    sheet.style.transition = '';
+
+    if (movedPx < 8) {
+      // Treat as a tap — toggle regardless of current state
+      e.preventDefault();
+      setSheetOpen(!sheetIsOpen);
+    } else {
+      // Dragged — snap to nearest state
+      setSheetOpen(getTranslateY() < sheet.offsetHeight * 0.45);
+    }
+  });
+
+  // Collapse sheet when tapping the map (but don't interfere with pins)
+  map.on('click', () => {
+    if (window.innerWidth <= 720 && sheetIsOpen) setSheetOpen(false);
+  });
+})();
+
+// ─── MOBILE FILTER SHEET ──────────────────────────────────────────────────────
+function updateFabFilterCount() {
+  const total = activeLabels.size + activeDays.size + (activeCity ? 1 : 0);
+  const badge = document.getElementById('fab-filter-count');
+  if (badge) {
+    badge.textContent = total;
+    badge.classList.toggle('visible', total > 0);
+  }
+}
+
+const mobileFilterSheet = document.getElementById('mobile-filter-sheet');
+const mobileFabFilter   = document.getElementById('mobile-fab-filter');
+const mobileFilterDone  = document.getElementById('mobile-filter-done');
+const mobileFilterOverlay = document.getElementById('mobile-filter-overlay');
+
+if (mobileFabFilter) mobileFabFilter.addEventListener('click', () => mobileFilterSheet.classList.add('open'));
+if (mobileFilterDone) mobileFilterDone.addEventListener('click', () => mobileFilterSheet.classList.remove('open'));
+if (mobileFilterOverlay) mobileFilterOverlay.addEventListener('click', () => mobileFilterSheet.classList.remove('open'));
+
+// ─── MOBILE SUGGEST FAB ───────────────────────────────────────────────────────
+const mobileFabSuggest = document.getElementById('mobile-fab-suggest');
+const btnSuggestMobile = document.getElementById('btn-suggest-mobile');
+function openSuggestModal() {
+  msgEl.className = 'form-msg';
+  msgEl.textContent = '';
+  backdrop.classList.add('open');
+}
+if (mobileFabSuggest) mobileFabSuggest.addEventListener('click', openSuggestModal);
+if (btnSuggestMobile) btnSuggestMobile.addEventListener('click', openSuggestModal);
+
+// ─── PIN DROP ─────────────────────────────────────────────────────────────────
+let pinDropMode = false;
+let pinDropMarker = null;
+
+document.getElementById('btn-pin-drop').addEventListener('click', () => {
+  // Close modal
+  backdrop.classList.remove('open');
+  pinDropMode = true;
+  document.getElementById('map').classList.add('pin-drop-mode');
+  document.getElementById('pin-drop-hint').classList.add('visible');
+});
+
+map.on('click', function(e) {
+  if (!pinDropMode) return;
+  pinDropMode = false;
+  document.getElementById('map').classList.remove('pin-drop-mode');
+  document.getElementById('pin-drop-hint').classList.remove('visible');
+
+  const { lat, lng } = e.latlng;
+  const coordStr = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+
+  // Place marker
+  if (pinDropMarker) pinDropMarker.remove();
+  pinDropMarker = L.circleMarker([lat, lng], {
+    radius: 7, color: '#c9a84c', fillColor: '#c9a84c',
+    fillOpacity: 1, weight: 3
+  }).addTo(map);
+
+  // Fill form
+  document.getElementById('form-coords').value = coordStr;
+  document.getElementById('pin-drop-coords').textContent = coordStr;
+
+  // Re-open modal
+  backdrop.classList.add('open');
+});
+
+// ─── MODAL & SUBMISSION ───────────────────────────────────────────────────────
+const RATE_LIMIT_KEY = 'chess_scenes_submit';
+const RATE_LIMIT_MAX = 3;        // max submissions
+const RATE_LIMIT_WINDOW = 86400000; // per 24 hours (ms)
+
+function getRateLimitState() {
+  try {
+    const raw = localStorage.getItem(RATE_LIMIT_KEY);
+    return raw ? JSON.parse(raw) : { count: 0, windowStart: Date.now() };
+  } catch { return { count: 0, windowStart: Date.now() }; }
+}
+
+function canSubmit() {
+  const state = getRateLimitState();
+  if (Date.now() - state.windowStart > RATE_LIMIT_WINDOW) return true; // window expired
+  return state.count < RATE_LIMIT_MAX;
+}
+
+function recordSubmission() {
+  const state = getRateLimitState();
+  if (Date.now() - state.windowStart > RATE_LIMIT_WINDOW) {
+    localStorage.setItem(RATE_LIMIT_KEY, JSON.stringify({ count: 1, windowStart: Date.now() }));
+  } else {
+    localStorage.setItem(RATE_LIMIT_KEY, JSON.stringify({ count: state.count + 1, windowStart: state.windowStart }));
+  }
+}
+
+const backdrop = document.getElementById('modal-backdrop');
+const form     = document.getElementById('suggest-form');
+const msgEl    = document.getElementById('form-msg');
+const submitBtn = document.getElementById('form-submit');
+
+// ─── SIDEBAR TOGGLE (DESKTOP) ────────────────────────────────────────────────
+const sidebarToggleBtn = document.getElementById('sidebar-toggle');
+const sidebarEl = document.getElementById('sidebar');
+let sidebarCollapsed = false;
+
+if (sidebarToggleBtn) {
+  sidebarToggleBtn.addEventListener('click', () => {
+    sidebarCollapsed = !sidebarCollapsed;
+    sidebarEl.classList.toggle('collapsed', sidebarCollapsed);
+    sidebarToggleBtn.classList.toggle('collapsed', sidebarCollapsed);
+    sidebarToggleBtn.textContent = sidebarCollapsed ? '▶' : '◀';
+    setTimeout(() => map.invalidateSize(), 210);
+  });
+}
+
+document.getElementById('btn-suggest').addEventListener('click', openSuggestModal);
+
+document.getElementById('modal-close').addEventListener('click', () => {
+  backdrop.classList.remove('open');
+});
+
+backdrop.addEventListener('click', e => {
+  if (e.target === backdrop) backdrop.classList.remove('open');
+});
+
+// Wire up toggle button groups (multi-select → hidden input)
+document.querySelectorAll('.toggle-group').forEach(group => {
+  const hiddenName = group.dataset.name;
+  const hidden = group.closest('form').querySelector(`input[name="${hiddenName}"]`);
+  group.querySelectorAll('.toggle-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      btn.classList.toggle('active');
+      const selected = [...group.querySelectorAll('.toggle-btn.active')]
+        .map(b => b.dataset.value);
+      if (hidden) hidden.value = selected.join(', ');
+    });
+  });
+});
+
+form.addEventListener('submit', async e => {
+  e.preventDefault();
+
+  if (!canSubmit()) {
+    msgEl.className = 'form-msg warn';
+    msgEl.textContent = 'You\'ve reached the submission limit for today. Please try again tomorrow.';
+    return;
+  }
+
+  // Honeypot check
+  if (form.querySelector('[name="_gotcha"]').value) return;
+
+  // Require at least one type
+  if (!document.getElementById('labels-hidden').value) {
+    msgEl.className = 'form-msg error';
+    msgEl.textContent = 'Please select at least one type.';
+    msgEl.style.display = 'block';
+    return;
+  }
+
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Sending…';
+
+  try {
+    const res = await fetch(form.action, {
+      method: 'POST',
+      body: new FormData(form),
+      headers: { 'Accept': 'application/json' }
+    });
+
+    if (res.ok) {
+      recordSubmission();
+      msgEl.className = 'form-msg success';
+      msgEl.textContent = 'Thanks! Your suggestion has been submitted for review.';
+      form.reset();
+      submitBtn.textContent = 'Submitted ✓';
+      // Keep pin drop marker visible as a "pending" marker for the session
+      if (pinDropMarker) {
+        const submittedName = form.querySelector('[name="name"]') 
+          ? form.querySelector('[name="name"]').value || 'Suggested place'
+          : 'Suggested place';
+        pinDropMarker.setStyle({ color: '#c9a84c', fillColor: '#c9a84c', fillOpacity: 0.85 });
+        pinDropMarker.bindPopup(`<div style="font-family:'IBM Plex Mono',monospace;font-size:0.65rem;padding:4px 2px"><span style="color:#c9a84c">⏳ Pending review</span></div>`);
+        pinDropMarker = null; // Don't clear it on next drop
+      }
+      document.getElementById('form-coords').value = '';
+      document.getElementById('pin-drop-coords').textContent = '';
+    } else {
+      throw new Error('Server error');
+    }
+  } catch {
+    msgEl.className = 'form-msg error';
+    msgEl.textContent = 'Something went wrong. Please try again or reach out directly.';
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Submit for review';
+  }
+});
+
+// ─── ABOUT MODAL ──────────────────────────────────────────────────────────────
+const aboutBackdrop = document.getElementById('about-backdrop');
+
+document.getElementById('btn-about').addEventListener('click', () => {
+  aboutBackdrop.classList.add('open');
+});
+
+document.getElementById('about-close').addEventListener('click', () => {
+  aboutBackdrop.classList.remove('open');
+});
+
+aboutBackdrop.addEventListener('click', e => {
+  if (e.target === aboutBackdrop) aboutBackdrop.classList.remove('open');
+});
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    backdrop.classList.remove('open');
+    aboutBackdrop.classList.remove('open');
+  }
+});
+
+// ─── INIT ─────────────────────────────────────────────────────────────────────
+
+// Garbage URL to test fallback to HTML data
+// const SHEET_CSV = 'https://this-does-not-exist.workers.dev';
+
+// Google Sheet that hosts the chess scenes data, via a cloudflare worker proxy
+const SHEET_CSV = 'https://chess-scenes-proxy.thatharmansinghworkers.workers.dev';
+
+// This is the code that's in the cloudflare worker hosted on this URL: 
+// https://dash.cloudflare.com/8309e352b7dc6283dce2bf3985ac066b/workers/services/edit/chess-scenes-proxy/production
+// 
+// export default {
+//   async fetch(request) {
+//     const SHEET_URL = 'https://docs.google.com/spreadsheets/d/1oLquAhTNOBbKQnX-B3LcnA3hcRLXggjFBQZ2LGZqaLg/export?format=csv&gid=984630877';
+
+//     const response = await fetch(SHEET_URL);
+//     const csv = await response.text();
+
+//     return new Response(csv, {
+//       headers: {
+//         'Content-Type': 'text/csv',
+//         'Access-Control-Allow-Origin': '*',
+//       },
+//     });
+//   },
+// };
+
+fetch(SHEET_CSV)
+  .then(r => r.text())
+  .then(csv => {
+    if (!csv.trim().startsWith('name,')) {
+      console.warn('Sheet returned unexpected content, using HTML fallback');
+      return;
+    }
+    const [headerLine, ...rows] = csv.trim().split('\n');
+    const headers = headerLine.split(',').map(h => h.replace(/^"|"$/g, '').trim());
+    const parsed = rows.map(row => {
+      const cols = [];
+      let cur = '', inQuote = false;
+      for (const ch of row) {
+        if (ch === '"') inQuote = !inQuote;
+        else if (ch === ',' && !inQuote) { cols.push(cur); cur = ''; }
+        else cur += ch;
+      }
+      cols.push(cur);
+      const obj = {};
+      headers.forEach((h, i) => obj[h] = (cols[i] || '').trim());
+      if (!obj.name || !obj.coordinates) return null;
+      const [lat, lng] = obj.coordinates.split(',').map(Number);
+      if (isNaN(lat) || isNaN(lng)) return null;
+      return {
+        name: obj.name,
+        labels: (obj.labels || '').split(',').map(s => s.trim()).filter(Boolean),
+        days: obj.days ? obj.days.split(',').map(s => s.trim()).filter(Boolean) : null,
+        lat, lng,
+        note: obj.note || '',
+        gmap: (obj.gmap || '').startsWith('http') ? obj.gmap : '',
+        link: (obj.link || '').startsWith('http') ? obj.link : '',
+        image: obj.image || '',
+        city: obj.city || '',
+        id: obj.id || '',
+      };
+    }).filter(Boolean).sort(() => Math.random() - 0.5);
+    if (parsed.length > 0) {
+      LOCATIONS = parsed;
+      rebuildSlugMap();
+      console.log(`Loaded ${parsed.length} venues from Google Sheets`);
+    } else {
+      console.warn('Sheet parsed 0 venues, using HTML fallback');
+    }
+  })
+  .catch(err => {
+    console.warn('Sheet fetch failed, using HTML fallback:', err);
+  })
+  .finally(() => {
+    buildCityFilter();
+    buildFilters();
+    buildDayFilters();
+    render(true);
+  });
+
+// ─── DEEP LINKING ─────────────────────────────────────────────────────────────
+function shareVenue(e, slug, btn) {
+  e.stopPropagation();
+  const url = location.origin + location.pathname + '#' + slug;
+  history.replaceState(null, '', '#' + slug);
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(url).then(() => {
+      btn.textContent = '✓ Copied';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = '🔗 Share'; btn.classList.remove('copied'); }, 2000);
+    });
+  }
+}
+window.shareVenue = shareVenue;
+
+map.on('popupopen', e => {
+  const latlng = e.popup._source && e.popup._source.getLatLng();
+  if (!latlng) return;
+  const loc = LOCATIONS.find(l => l.lat === latlng.lat && l.lng === latlng.lng);
+  if (loc) history.replaceState(null, '', '#' + loc.slug);
+});
+
+map.on('popupclose', () => {
+  history.replaceState(null, '', location.pathname);
+});
+
+(function handleInitialHash() {
+  const hash = location.hash.slice(1);
+  if (!hash) return;
+  const loc = SLUG_MAP.get(hash);
+  if (!loc) return;
+  setTimeout(() => {
+    panToLocation(loc.lat, loc.lng);
+    const found = markerObjects.find(m => {
+      const ll = m.marker.getLatLng();
+      return ll.lat === loc.lat && ll.lng === loc.lng;
+    });
+    if (found) found.marker.openPopup();
+  }, 400);
+})();
+
+if (navigator.geolocation) {
+  navigator.geolocation.getCurrentPosition(
+    ({ coords }) => {
+      map.setView([coords.latitude, coords.longitude], 6, { animate: true });
+    },
+    () => { /* denied or unavailable — keep default world view */ },
+    { timeout: 5000 }
+  );
+}
+
+</script>
+</body>
+</html>

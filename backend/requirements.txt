@@ -1,6 +1,6 @@
 flask
-flask-cors
 flask-sqlalchemy
 pyjwt
 werkzeug
 python-dotenv
+gunicorn

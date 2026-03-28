@@ -1,11 +1,14 @@
-from flask import Flask, request, Response
+import os
+from flask import Flask, request, Response, send_from_directory
 from config import Config
 from extensions import db
 from models import Setting
 
+FRONTEND_DIR = os.path.join(os.path.dirname(__file__), "..", "frontend")
+
 
 def create_app():
-    app = Flask(__name__)
+    app = Flask(__name__, static_folder=None)
     app.config.from_object(Config)
 
     @app.after_request
@@ -38,6 +41,14 @@ def create_app():
         if not db.session.get(Setting, "show_unverified"):
             db.session.add(Setting(key="show_unverified", value="true"))
             db.session.commit()
+
+    # Serve frontend static files
+    @app.route("/", defaults={"path": ""})
+    @app.route("/<path:path>")
+    def serve_frontend(path):
+        if path and os.path.exists(os.path.join(FRONTEND_DIR, path)):
+            return send_from_directory(FRONTEND_DIR, path)
+        return send_from_directory(FRONTEND_DIR, "index.html")
 
     return app
 

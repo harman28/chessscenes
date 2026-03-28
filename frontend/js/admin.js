@@ -43,6 +43,7 @@ function setupTabs() {
       document.querySelectorAll(".tab-panel").forEach(p => p.classList.remove("active"));
       btn.classList.add("active");
       document.getElementById(`tab-${btn.dataset.tab}`).classList.add("active");
+      if (btn.dataset.tab === "spreadsheet") renderSpreadsheet(allPlaces);
     });
   });
 
@@ -160,6 +161,64 @@ function placeRow(p) {
     </tr>`;
 }
 
+// ── Spreadsheet view ──────────────────────────────────────────────────────────
+
+function renderSpreadsheet(places) {
+  const el = document.getElementById("spreadsheet-list");
+  if (!places.length) { el.innerHTML = `<p class="empty">No places.</p>`; return; }
+  el.innerHTML = `
+    <table class="admin-table spreadsheet-table">
+      <thead><tr>
+        <th>ID</th><th>Name</th><th>City</th><th>Country</th><th>Type</th>
+        <th>Lat</th><th>Lng</th><th>Schedule</th>
+        <th>Website</th><th>Maps</th><th>Image</th><th>Ver</th><th>Active</th><th></th>
+      </tr></thead>
+      <tbody>${places.map(spreadsheetRow).join("")}</tbody>
+    </table>`;
+  el.querySelectorAll(".edit-place-btn").forEach(btn =>
+    btn.addEventListener("click", () => openPlaceForm(+btn.dataset.id)));
+  el.querySelectorAll(".delete-place-btn").forEach(btn =>
+    btn.addEventListener("click", async () => {
+      if (!confirm("Delete this place?")) return;
+      await api.admin.places.delete(+btn.dataset.id);
+      await loadPlaces();
+      renderSpreadsheet(allPlaces);
+    }));
+}
+
+function spreadsheetRow(p) {
+  const esc = s => (s || "").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  return `
+    <tr class="${!p.active ? "row-inactive" : ""}">
+      <td class="ss-id">${p.id}</td>
+      <td class="ss-name">${esc(p.name)}</td>
+      <td>${esc(p.city)}</td>
+      <td>${esc(p.country)}</td>
+      <td><span class="tag">${p.type || "—"}</span></td>
+      <td class="ss-num">${p.lat != null ? p.lat.toFixed(4) : "—"}</td>
+      <td class="ss-num">${p.lng != null ? p.lng.toFixed(4) : "—"}</td>
+      <td class="ss-notes">${esc(p.schedule_notes || "—")}</td>
+      <td class="ss-url">${p.website ? `<a href="${esc(p.website)}" target="_blank">↗</a>` : "—"}</td>
+      <td class="ss-url">${p.maps_url ? `<a href="${esc(p.maps_url)}" target="_blank">↗</a>` : "—"}</td>
+      <td class="ss-url">${p.image_url ? `<a href="${esc(p.image_url)}" target="_blank">↗</a>` : "—"}</td>
+      <td class="ss-bool">${p.verified ? "✓" : "✗"}</td>
+      <td class="ss-bool">${p.active ? "✓" : "✗"}</td>
+      <td class="row-actions">
+        <button class="btn btn-small edit-place-btn" data-id="${p.id}">Edit</button>
+        <button class="btn btn-small btn-red delete-place-btn" data-id="${p.id}">Del</button>
+      </td>
+    </tr>`;
+}
+
+document.getElementById("spreadsheet-search").addEventListener("input", (e) => {
+  const q = e.target.value.toLowerCase();
+  renderSpreadsheet(allPlaces.filter(p =>
+    p.name.toLowerCase().includes(q) ||
+    p.city.toLowerCase().includes(q) ||
+    (p.type || "").toLowerCase().includes(q)
+  ));
+});
+
 document.getElementById("places-search").addEventListener("input", (e) => {
   const q = e.target.value.toLowerCase();
   renderPlaces(allPlaces.filter(p =>
@@ -195,7 +254,7 @@ function setPin(lat, lng) {
 function openPlaceForm(id = null) {
   const place = id ? allPlaces.find(p => p.id === id) : null;
   fillPlaceForm(place);
-  document.getElementById("place-form-modal").classList.remove("hidden");
+  document.getElementById("place-form-modal").classList.add("open");
   setTimeout(() => {
     initPinMap();
     pinMap.invalidateSize();
@@ -214,7 +273,7 @@ function fillPlaceForm(place) {
   f.reset();
   document.getElementById("place-form-id").value = place?.id || "";
   ["name","city","country","lat","lng","type","description",
-   "schedule_notes","website","image_url"].forEach(field => {
+   "schedule_notes","website","maps_url","image_url"].forEach(field => {
     const el = f.elements[field];
     if (el) el.value = place?.[field] ?? "";
   });
@@ -229,7 +288,7 @@ function fillPlaceForm(place) {
 }
 
 document.getElementById("place-form-modal").addEventListener("click", (e) => {
-  if (e.target === e.currentTarget) e.currentTarget.classList.add("hidden");
+  if (e.target === e.currentTarget) e.currentTarget.classList.remove("open");
 });
 
 document.getElementById("place-form").addEventListener("submit", async (e) => {
@@ -248,6 +307,7 @@ document.getElementById("place-form").addEventListener("submit", async (e) => {
     schedule_days:  ["mon","tue","wed","thu","fri","sat","sun"]
       .filter(d => f.elements[`day_${d}`]?.checked).join(","),
     website:        f.elements.website.value,
+    maps_url:       f.elements.maps_url.value,
     image_url:      f.elements.image_url.value,
     verified:       f.elements.verified.checked,
     active:         f.elements.active.checked,
@@ -257,7 +317,7 @@ document.getElementById("place-form").addEventListener("submit", async (e) => {
   } else {
     await api.admin.places.create(data);
   }
-  document.getElementById("place-form-modal").classList.add("hidden");
+  document.getElementById("place-form-modal").classList.remove("open");
   await loadPlaces();
 });
 

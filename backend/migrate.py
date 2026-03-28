@@ -29,6 +29,7 @@ COLUMN_MAP = {
     "schedule_days": "schedule_days", "days": "schedule_days",
     "website": "website", "url": "website", "link": "website",
     "image_url": "image_url", "image": "image_url", "photo": "image_url",
+    "maps_url": "maps_url", "gmap": "maps_url", "gmaps": "maps_url", "google_maps": "maps_url",
     "verified": "verified",
 }
 
@@ -93,6 +94,7 @@ def run(csv_path, db_path):
                         schedule_days=norm.get("schedule_days", ""),
                         website=norm.get("website", ""),
                         image_url=norm.get("image_url", ""),
+                        maps_url=norm.get("maps_url", "") or None,
                         verified=verified,
                         active=True,
                     )

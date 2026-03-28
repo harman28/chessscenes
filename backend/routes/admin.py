@@ -34,7 +34,8 @@ def create_place():
         type=data.get("type"), description=data.get("description"),
         schedule_notes=data.get("schedule_notes"),
         schedule_days=data.get("schedule_days"),
-        website=data.get("website"), image_url=data.get("image_url"),
+        website=data.get("website"), maps_url=data.get("maps_url"),
+        image_url=data.get("image_url"),
         verified=data.get("verified", True),
         active=data.get("active", True),
     )
@@ -49,7 +50,7 @@ def update_place(place_id):
     place = db.get_or_404(Place, place_id)
     data = request.get_json() or {}
     fields = ["name", "city", "country", "lat", "lng", "type", "description",
-              "schedule_notes", "schedule_days", "website", "image_url",
+              "schedule_notes", "schedule_days", "website", "maps_url", "image_url",
               "verified", "active"]
     for f in fields:
         if f in data:

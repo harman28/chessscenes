@@ -164,6 +164,8 @@ const LABEL_CONFIG = {
 const DAYS_ORDER = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
 const DAY_SHORT  = { Monday:'mon',Tuesday:'tue',Wednesday:'wed',Thursday:'thu',Friday:'fri',Saturday:'sat',Sunday:'sun' };
 const TODAY_NAME = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'][new Date().getDay()];
+const TODAY_SHORT = DAY_SHORT[TODAY_NAME];
+const DAY_LABELS_SHORT = { mon:'Mon', tue:'Tue', wed:'Wed', thu:'Thu', fri:'Fri', sat:'Sat', sun:'Sun' };
 
 function labelCfg(type) { return LABEL_CONFIG[type] || { color: '#666', icon: '♟', display: type?.replace('chess_','') || '?' }; }
 
@@ -242,9 +244,13 @@ function render(animate = false) {
 
       const card = buildCard(p, i);
       card.addEventListener('click', () => {
-        panTo(p.lat, p.lng);
-        marker.openPopup();
-        highlightCard(i);
+        if (currentView === 'list') {
+          window.location.href = `place.html#${p.slug}`;
+        } else {
+          panTo(p.lat, p.lng);
+          marker.openPopup();
+          highlightCard(i);
+        }
       });
       listEl.appendChild(card);
     }, animate ? i * 20 : 0);
@@ -258,7 +264,7 @@ function buildPopup(p) {
     <div class="popup-body">
       <div class="popup-tags"><span class="popup-tag" style="background:${cfg.color}">${cfg.display}</span></div>
       ${p.city ? `<div class="popup-city">${p.city}</div>` : ''}
-      <div class="popup-name">${p.name}</div>
+      <a href="place.html#${p.slug}" class="popup-name popup-name-link">${p.name}</a>
       ${!p.verified ? `<div class="popup-unverified">⏳ Unverified</div>` : ''}
       ${p.description ? `<div class="popup-note">${p.description}</div>` : ''}
       <div class="popup-links-row">
@@ -273,14 +279,20 @@ function buildCard(p, i) {
   const card = document.createElement('div');
   card.className = 'location-card';
   card.dataset.idx = i;
+  const imgHtml = p.image_url
+    ? `<img class="card-img" src="${p.image_url}" alt="${p.name}" loading="lazy">`
+    : `<div class="card-img card-img-placeholder" style="background:${cfg.color}"><span>♟</span></div>`;
   card.innerHTML = `
-    ${p.image_url ? `<img class="card-img" src="${p.image_url}" alt="${p.name}" loading="lazy">` : ''}
-    <div class="card-tags"><span class="card-tag" style="background:${cfg.color}">${cfg.display}</span></div>
-    ${p.city ? `<div class="card-city">${p.city}</div>` : ''}
-    <div class="card-name">${p.name}</div>
-    ${!p.verified ? `<div class="card-unverified">⏳ Unverified</div>` : ''}
-    ${p.description ? `<div class="card-note">${p.description}</div>` : ''}
-    ${p.website ? `<a href="${p.website}" target="_blank" class="card-link" onclick="event.stopPropagation()">Website ↗</a>` : ''}
+    ${imgHtml}
+    <div class="card-body">
+      <div class="card-tags"><span class="card-tag" style="background:${cfg.color}">${cfg.display}</span></div>
+      ${p.city ? `<div class="card-city">${p.city}</div>` : ''}
+      <div class="card-name">${p.name}</div>
+      ${!p.verified ? `<div class="card-unverified">⏳ Unverified</div>` : ''}
+      ${p.description ? `<div class="card-note">${p.description}</div>` : ''}
+      ${p.schedule_days ? `<div class="card-days">${p.schedule_days.split(',').map(d=>d.trim()).filter(d=>DAY_LABELS_SHORT[d]).map(d=>`<span class="card-day${d===TODAY_SHORT?' card-day-today':''}">${DAY_LABELS_SHORT[d]}</span>`).join('')}</div>` : ''}
+      ${p.website ? `<a href="${p.website}" target="_blank" class="card-link" onclick="event.stopPropagation()">Website ↗</a>` : ''}
+    </div>
   `;
   return card;
 }

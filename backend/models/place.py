@@ -17,6 +17,7 @@ class Place(db.Model):
     schedule_days  = db.Column(db.String) # comma-sep e.g. "mon,wed,fri"
     website       = db.Column(db.String)
     image_url     = db.Column(db.String)
+    maps_url      = db.Column(db.String)
     verified      = db.Column(db.Boolean, nullable=False, default=False)
     active        = db.Column(db.Boolean, nullable=False, default=True)
     created_at    = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
@@ -40,6 +41,7 @@ class Place(db.Model):
             "schedule_days":   self.schedule_days,
             "website":         self.website,
             "image_url":       self.image_url,
+            "maps_url":        self.maps_url,
             "verified":        self.verified,
             "active":          self.active,
             "created_at":      self.created_at.isoformat() if self.created_at else None,
