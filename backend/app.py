@@ -41,6 +41,7 @@ def create_app():
         if not db.session.get(Setting, "show_unverified"):
             db.session.add(Setting(key="show_unverified", value="true"))
             db.session.commit()
+    _auto_migrate(app)
 
     # Serve frontend static files
     @app.route("/", defaults={"path": ""})
@@ -51,6 +52,21 @@ def create_app():
         return send_from_directory(FRONTEND_DIR, "index.html")
 
     return app
+
+
+def _auto_migrate(app):
+    from models import Place
+    csv_path = os.path.join(os.path.dirname(__file__), "chessscenesdatapublic.csv")
+    if not os.path.exists(csv_path):
+        return
+    with app.app_context():
+        if db.session.query(Place).count() > 0:
+            return
+        print("Auto-migrating from CSV...")
+        import subprocess, sys
+        subprocess.run([sys.executable, os.path.join(os.path.dirname(__file__), "migrate.py"),
+                        "--csv", csv_path], check=True)
+        print("Auto-migration done.")
 
 
 if __name__ == "__main__":
