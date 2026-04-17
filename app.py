@@ -82,7 +82,7 @@ def seed_directory():
     db = sqlite3.connect(DATABASE)
     db.row_factory = sqlite3.Row
     count = db.execute('SELECT COUNT(*) FROM venue_directory').fetchone()[0]
-    if count > 0:
+    if count >= 19:
         db.close()
         return
 
@@ -131,7 +131,7 @@ def seed_db():
     db = sqlite3.connect(DATABASE)
     db.row_factory = sqlite3.Row
     count = db.execute('SELECT COUNT(*) FROM communities').fetchone()[0]
-    if count > 0:
+    if count >= 16:
         db.close()
         return
 
