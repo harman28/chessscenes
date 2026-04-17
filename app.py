@@ -82,42 +82,33 @@ def seed_directory():
     db = sqlite3.connect(DATABASE)
     db.row_factory = sqlite3.Row
     count = db.execute('SELECT COUNT(*) FROM venue_directory').fetchone()[0]
-    if count >= 19:
+    if count >= 14:
         db.close()
         return
 
-    amsterdam_venues = [
-        ('Former Cafe Gambit', 'chess memorial', None, 52.3755, 4.8827, 'https://maps.app.goo.gl/AtdP5dHQVRihL9yt8', None, 'https://i.imgur.com/y5eCRZY.jpeg', 'Defunct chess bar. Closed in 2005.'),
-        ('Former Max Euwe Schaakhuis', 'chess memorial', None, 52.3685, 4.8712, 'https://maps.app.goo.gl/NkxYzuvTdSqDzWNh9', None, 'https://i.imgur.com/DH33XAh.jpeg', None),
-        ('Giant Chess Board Frederiksplein', 'chess board', None, 52.3602, 4.9000, None, 'https://www.nporadio5.nl/fragmenten/de-avond-van-5/019cadda-7dca-72ec-857d-344be0d7499d/2026-03-02-xl-schaakbord-in-amsterdam-is-terug', None, 'The board that used to be on Max Euweplein has found a new home on Frederiksplein.'),
-        ('Cafe de Laurierboom', 'chess bar', 'Laurierstraat 39', 52.3723, 4.8809, 'https://maps.app.goo.gl/PizEC9TRQ4kt8QyK6', None, 'https://i.imgur.com/9NRex3f.jpeg', 'Chess mecca of Amsterdam. Tournaments on barblitz.co.'),
-        ('Max Euwe Centrum', 'chess museum', 'Max Euweplein 30a', 52.3628, 4.8828, 'https://maps.app.goo.gl/5GeJKV1nBEopb1M29', 'https://maxeuwe.nl/', 'https://i.imgur.com/inTkxpx.jpeg', 'Free chess museum and library.'),
-        ('Max Euweplein', 'chess memorial', None, 52.3630, 4.8837, 'https://maps.app.goo.gl/BdbA8DiMEQxf37us9', None, 'https://i.imgur.com/AcuubuT.jpeg', 'Square named after former Dutch World Champion. 5 outdoor chess tables and a memorial.'),
-        ('Schaak en Go | Het Paard', 'chess shop', None, 52.3841, 4.8854, 'https://maps.app.goo.gl/ycLy5MS6BBYACa3z9', 'https://www.schaakengo.nl/', 'https://i.imgur.com/B6nE55x.jpeg', 'Notable chess shop.'),
-        ('Chess Art', 'chess memorial', None, 52.3850, 4.8828, None, None, 'https://i.imgur.com/e8Y9KwR.jpeg', '5 chessboards in a step formation, one with carved pieces.'),
-        ('Chess Table Haarlemmerplein', 'chess board', None, 52.3847, 4.8855, 'https://maps.app.goo.gl/Pt2zN4pDBFiQ8ddx8', None, 'https://i.imgur.com/8qnVOnL.png', 'Abandoned outdoor chess tables.'),
-        ('Chess Table Da Costastraat', 'chess board', None, 52.3674, 4.8761, 'https://maps.app.goo.gl/cDYhY7noTk7SDkwYA', None, 'https://i.imgur.com/SzOpMcl.png', 'Abandoned outdoor chess tables.'),
-        ('Chess Table Krugerplein', 'chess board', None, 52.3542, 4.9200, 'https://maps.app.goo.gl/bz97grhNwenNmFBLA', None, 'https://i.imgur.com/aRMNNzO.jpeg', 'Just a chess table in the middle of a playground.'),
-        ('Giant Chess Board', 'chess board', None, 52.3640, 4.8661, 'https://maps.app.goo.gl/N9mAaZpxfyAJDEW6', None, None, 'Giant board at the corner of the playground.'),
-        ('Amsterdam Spirit Chess Club', 'chess meetup', 'Haarlemmerdijk 106', 52.3831, 4.8865, 'https://maps.app.goo.gl/Hwt9yytsy1LJbFCa8', 'https://klabu.org/clubhouses/amsterdam', 'https://i.imgur.com/qrvUv5i.png', 'Every Sunday 15:00–18:00.'),
-        ('Chess & Beer', 'chess meetup', 'Kleine-Gartmanplantsoen 10', 52.3632, 4.8830, 'https://maps.app.goo.gl/bkpboKbMJeadL65F6', 'https://www.meetup.com/amsterdam-chess-and-beer/', 'https://i.imgur.com/RTWaMou.png', 'Casual chess meetup every second Sunday afternoon.'),
-        ('Vondelbunker Chess', 'chess meetup', 'Vondelpark, Amsterdam', 52.3609, 4.8776, 'https://maps.app.goo.gl/zVaGJ4eQ19HZ6h6z8', 'https://radar.squat.net/en/event/amsterdam/vondelbunker/2026-05-17/bunker-chess-club', 'https://i.imgur.com/zgYqQLp.png', 'Underground chess on Sunday afternoons. Irregular.'),
+    # All data taken directly from chessscenesdatapublic.csv — no invented values
+    venues = [
+        # name, labels, city, lat, lng, gmaps, link, image, note
+        ('Former Cafe Gambit',             'chess memorial',             'Amsterdam', 52.3755148120896,   4.882690917303496,  'https://maps.app.goo.gl/AtdP5dHQVRihL9yt8', None,                                                                                         'https://i.imgur.com/y5eCRZY.jpeg', 'Defunct chess bar. When it closed in 2005, the chess club needed a new home, and moved to Laurierboom.'),
+        ('Former Max Euwe Schaakhuis',     'chess memorial',             'Amsterdam', 52.368472045937146, 4.8712247131282576, 'https://maps.app.goo.gl/NkxYzuvTdSqDzWNh9', None,                                                                                         'https://i.imgur.com/DH33XAh.jpeg', None),
+        ('Giant Chess Board Frederiksplein','chess board',               'Amsterdam', 52.360153,          4.900031,           None,                                        'https://www.nporadio5.nl/fragmenten/de-avond-van-5/019cadda-7dca-72ec-857d-344be0d7499d/2026-03-02-xl-schaakbord-in-amsterdam-is-terug', None, 'The same board that used to be on Max Euweplein and Museumplein has now found a new home on Frederiksplein.'),
+        ('Max Euweplein',                  'chess memorial, chess board','Amsterdam', 52.362969674148395, 4.88370529837886,   'https://maps.app.goo.gl/BdbA8DiMEQxf37us9', None,                                                                                         'https://i.imgur.com/AcuubuT.jpeg', 'Square named after former Dutch World Champion. 5 outdoor chess tables and a memorial.'),
+        ('Schaak en Go | Het Paard',       'chess shop',                 'Amsterdam', 52.38410008633985,  4.885394165335662,  'https://maps.app.goo.gl/ycLy5MS6BBYACa3z9', 'https://www.schaakengo.nl/',                                                                 'https://i.imgur.com/B6nE55x.jpeg', 'Notable chess shop.'),
+        ('Chess Art',                      'chess memorial, chess board','Amsterdam', 52.38502130682298,  4.882785843172775,  None,                                        None,                                                                                         'https://i.imgur.com/e8Y9KwR.jpeg', '5 chessboards in a step formation, one with carved pieces. One board is at a comfortable playing height.'),
+        ('Chess Table Haarlemmerplein',    'chess board',                'Amsterdam', 52.38471574220395,  4.8855323401516735, 'https://maps.app.goo.gl/Pt2zN4pDBFiQ8ddx8', None,                                                                                         'https://i.imgur.com/8qnVOnL.png', 'Abandoned outdoor chess tables.'),
+        ('Chess Table Da Costastraat',     'chess board',                'Amsterdam', 52.367397288232056, 4.876081661186785,  'https://maps.app.goo.gl/cDYhY7noTk7SDkwYA', None,                                                                                         'https://i.imgur.com/SzOpMcl.png', 'Abandoned outdoor chess tables.'),
+        ('Chess Table Krugerplein',        'chess board',                'Amsterdam', 52.35418582496915,  4.919973076573896,  'https://maps.app.goo.gl/bz97grhNwenNmFBLA', None,                                                                                         'https://i.imgur.com/aRMNNzO.jpeg', 'Just a chess table in the middle of a playground.'),
+        ('Giant Chess Board',              'chess board',                'Amsterdam', 52.36404452205097,  4.866087393855511,  'https://maps.app.goo.gl/N9mAaZpxfyAJDEW6',  None,                                                                                         None,                               'Giant board at the corner of the playground. Pieces locked in the steel boxes.'),
+        # Utrecht
+        ('Schaakcafe Utrecht',             'chess club',                 'Utrecht',   52.09976268371182,  5.103186467326744,  'https://maps.app.goo.gl/j7A7ARS1a3TkKk6',   'https://www.schakeninutrecht.nl/schaakcafe/',                                                'https://i.imgur.com/wlhqWob.jpeg', 'Every Friday afternoon from 13:30 onwards till 17:00.'),
+        ('Schaaktafels',                   'chess board',                'Utrecht',   52.097663330948684, 5.022259352304256,  'https://maps.app.goo.gl/Dx121rmGCnhm935N8', None,                                                                                         'https://i.imgur.com/F9H8Txk.jpeg', 'Chess tables in Maximapark. Meetup on Sunday mornings.'),
+        # The Hague
+        ('Stichting En Passant',           'chess club',                 'The Hague', 52.07432068089482,  4.311602878673388,  'https://maps.app.goo.gl/2A2fRFpQfjugkGRg9', 'https://www.stichtingenpassant.nl/',                                                         'https://i.imgur.com/fVrdQDp.jpeg', 'Chess on weekends.'),
+        # Delft
+        ('KopieKoffie',                    'chess meetup',               'Delft',     52.00047872546669,  4.3460540624039785, 'https://maps.app.goo.gl/zz2rpLMpYdpqykU98', 'https://kopiekoffie.nl/blog/events/schaken-bij-kopiekoffie/',                                'https://i.imgur.com/pC1qmvK.jpeg', 'Chess on Sundays at 3.30pm.'),
     ]
 
-    for name, labels, address, lat, lng, gmaps, link, image, note in amsterdam_venues:
-        db.execute(
-            'INSERT INTO venue_directory (name, labels, address, city, lat, lng, gmaps, link, image, note) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-            (name, labels, address, 'Amsterdam', lat, lng, gmaps, link, image, note)
-        )
-
-    # NL venues outside Amsterdam
-    nl_venues = [
-        ('Schaakcafe Utrecht', 'chess club', 'Utrecht', 52.0998, 5.1032, 'https://maps.app.goo.gl/j7A7ARS1a3TkKk6', 'https://www.schakeninutrecht.nl/schaakcafe/', 'https://i.imgur.com/wlhqWob.jpeg', 'Every Friday afternoon from 13:30 to 17:00.'),
-        ('Schaaktafels Maximapark', 'chess board', 'Utrecht', 52.0977, 5.0223, 'https://maps.app.goo.gl/Dx121rmGCnhm935N8', None, 'https://i.imgur.com/F9H8Txk.jpeg', 'Chess tables in Maximapark. Meetup on Sunday mornings.'),
-        ('Stichting En Passant', 'chess club', 'The Hague', 52.0743, 4.3116, 'https://maps.app.goo.gl/2A2fRFpQfjugkGRg9', 'https://www.stichtingenpassant.nl/', 'https://i.imgur.com/fVrdQDp.jpeg', 'Chess on weekends.'),
-        ('KopieKoffie', 'chess meetup', 'Delft', 52.0005, 4.3461, 'https://maps.app.goo.gl/zz2rpLMpYdpqykU98', 'https://kopiekoffie.nl/blog/events/schaken-bij-kopiekoffie/', 'https://i.imgur.com/pC1qmvK.jpeg', 'Chess on Sundays at 3:30pm.'),
-    ]
-    for name, labels, city, lat, lng, gmaps, link, image, note in nl_venues:
+    for name, labels, city, lat, lng, gmaps, link, image, note in venues:
         db.execute(
             'INSERT INTO venue_directory (name, labels, address, city, lat, lng, gmaps, link, image, note) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
             (name, labels, None, city, lat, lng, gmaps, link, image, note)
@@ -125,7 +116,6 @@ def seed_directory():
 
     db.commit()
     db.close()
-
 
 def seed_db():
     db = sqlite3.connect(DATABASE)
@@ -436,10 +426,13 @@ def delete_event(id):
 def venue_directory():
     city = request.args.get('city', 'Amsterdam')
     db = get_db()
-    rows = db.execute(
-        'SELECT * FROM venue_directory WHERE city = ? AND lat IS NOT NULL AND lng IS NOT NULL',
-        (city,)
-    ).fetchall()
+    # Exclude venues whose names match active event venues to avoid duplicate pins
+    rows = db.execute('''
+        SELECT vd.* FROM venue_directory vd
+        WHERE vd.city = ?
+        AND vd.lat IS NOT NULL AND vd.lng IS NOT NULL
+        AND vd.name NOT IN (SELECT name FROM venues WHERE city = ?)
+    ''', (city, city)).fetchall()
     return jsonify([dict(r) for r in rows])
 
 
