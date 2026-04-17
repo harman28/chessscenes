@@ -110,6 +110,19 @@ def seed_directory():
             (name, labels, address, 'Amsterdam', lat, lng, gmaps, link, image, note)
         )
 
+    # NL venues outside Amsterdam
+    nl_venues = [
+        ('Schaakcafe Utrecht', 'chess club', 'Utrecht', 52.0998, 5.1032, 'https://maps.app.goo.gl/j7A7ARS1a3TkKk6', 'https://www.schakeninutrecht.nl/schaakcafe/', 'https://i.imgur.com/wlhqWob.jpeg', 'Every Friday afternoon from 13:30 to 17:00.'),
+        ('Schaaktafels Maximapark', 'chess board', 'Utrecht', 52.0977, 5.0223, 'https://maps.app.goo.gl/Dx121rmGCnhm935N8', None, 'https://i.imgur.com/F9H8Txk.jpeg', 'Chess tables in Maximapark. Meetup on Sunday mornings.'),
+        ('Stichting En Passant', 'chess club', 'The Hague', 52.0743, 4.3116, 'https://maps.app.goo.gl/2A2fRFpQfjugkGRg9', 'https://www.stichtingenpassant.nl/', 'https://i.imgur.com/fVrdQDp.jpeg', 'Chess on weekends.'),
+        ('KopieKoffie', 'chess meetup', 'Delft', 52.0005, 4.3461, 'https://maps.app.goo.gl/zz2rpLMpYdpqykU98', 'https://kopiekoffie.nl/blog/events/schaken-bij-kopiekoffie/', 'https://i.imgur.com/pC1qmvK.jpeg', 'Chess on Sundays at 3:30pm.'),
+    ]
+    for name, labels, city, lat, lng, gmaps, link, image, note in nl_venues:
+        db.execute(
+            'INSERT INTO venue_directory (name, labels, address, city, lat, lng, gmaps, link, image, note) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+            (name, labels, None, city, lat, lng, gmaps, link, image, note)
+        )
+
     db.commit()
     db.close()
 
@@ -136,6 +149,9 @@ def seed_db():
         ('Amsterdam Spirit Chess Club', 'https://i.imgur.com/qrvUv5i.png'),
         ('Barblitz Amsterdam', 'https://i.imgur.com/9NRex3f.jpeg'),
         ('Cafe de Laurierboom', 'https://i.imgur.com/9NRex3f.jpeg'),
+        ('Schaakcafe Utrecht', 'https://i.imgur.com/wlhqWob.jpeg'),
+        ('Stichting En Passant', 'https://i.imgur.com/fVrdQDp.jpeg'),
+        ('KopieKoffie', 'https://i.imgur.com/pC1qmvK.jpeg'),
     ]
     for name, image in communities:
         db.execute('INSERT INTO communities (name, image) VALUES (?, ?)', (name, image))
@@ -153,6 +169,9 @@ def seed_db():
         ('Vondelbunker',        'Vondelpark, Amsterdam',        'https://maps.app.goo.gl/zVaGJ4eQ19HZ6h6z8', 52.3609, 4.8776, 'Amsterdam'),
         ('KLABU Clubhouse',     'Haarlemmerdijk 106',           'https://maps.app.goo.gl/Hwt9yytsy1LJbFCa8', 52.3831, 4.8865, 'Amsterdam'),
         ('Cafe de Laurierboom', 'Laurierstraat 39',             'https://maps.app.goo.gl/PizEC9TRQ4kt8QyK6', 52.3723, 4.8809, 'Amsterdam'),
+        ('Schaakcafe Utrecht',  'Oudegracht 321, Utrecht',    'https://maps.app.goo.gl/j7A7ARS1a3TkKk6',    52.0998, 5.1032, 'Utrecht'),
+        ('Stichting En Passant','Prins Hendrikstraat 1',      'https://maps.app.goo.gl/2A2fRFpQfjugkGRg9',  52.0743, 4.3116, 'The Hague'),
+        ('KopieKoffie',         'Oude Delft 113, Delft',      'https://maps.app.goo.gl/zz2rpLMpYdpqykU98',  52.0005, 4.3461, 'Delft'),
     ]
     for name, address, gmaps, lat, lng, city in venues:
         db.execute('INSERT INTO venues (name, address, gmaps, lat, lng, city) VALUES (?, ?, ?, ?, ?, ?)', (name, address, gmaps, lat, lng, city))
@@ -173,6 +192,9 @@ def seed_db():
         (11, 11, 'Amsterdam Spirit Chess Club',    None, '15:00', '18:00', 'Casual',     'https://klabu.org/clubhouses/amsterdam',              None,                        ['Sunday']),
         (12, 12, 'Barblitz Amsterdam',             None,  None,   None,    'Blitz',      'https://barblitz.co',                                'Scraper needed — check barblitz.co for upcoming dates', []),
         (13, 12, 'Cafe de Laurierboom',            None, '15:00', None,    'Casual',     'https://maps.app.goo.gl/PizEC9TRQ4kt8QyK6',          'Hours vary: Wed–Thu until 01:00, Fri–Sat until 03:00, Sun–Tue until 01:00', ALL_DAYS),
+        (14, 13, 'Schaakcafe Utrecht',              None, '13:30', '17:00', 'Casual',     'https://www.schakeninutrecht.nl/schaakcafe/',          None,                                        ['Friday']),
+        (15, 14, 'Stichting En Passant',            None, '14:00', None,    'Club night', 'https://www.stichtingenpassant.nl/',                  'Chess on weekends.',                        ['Friday','Saturday','Sunday']),
+        (16, 15, 'KopieKoffie Chess',               None, '15:30', None,    'Casual',     'https://kopiekoffie.nl/blog/events/schaken-bij-kopiekoffie/', None,                               ['Sunday']),
     ]
     for community_id, venue_id, title, specific_date, time, time_end, format_tag, external_link, notes, days in events:
         cur = db.execute('''INSERT INTO events
@@ -435,4 +457,5 @@ if __name__ == '__main__':
     init_db()
     seed_db()
     seed_directory()
-    app.run(debug=True, host='0.0.0.0', port=5001)
+    port = int(os.environ.get('PORT', 5001))
+    app.run(debug=False, host='0.0.0.0', port=port)
