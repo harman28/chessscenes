@@ -81,10 +81,8 @@ def init_db():
 def seed_directory():
     db = sqlite3.connect(DATABASE)
     db.row_factory = sqlite3.Row
-    count = db.execute('SELECT COUNT(*) FROM venue_directory').fetchone()[0]
-    if count >= 14:
-        db.close()
-        return
+    db.execute('DELETE FROM venue_directory')
+    db.commit()
 
     # All data taken directly from chessscenesdatapublic.csv — no invented values
     venues = [
@@ -120,10 +118,12 @@ def seed_directory():
 def seed_db():
     db = sqlite3.connect(DATABASE)
     db.row_factory = sqlite3.Row
-    count = db.execute('SELECT COUNT(*) FROM communities').fetchone()[0]
-    if count >= 16:
-        db.close()
-        return
+    # Clear all seeded data to force clean reseed
+    db.execute('DELETE FROM event_recurrences')
+    db.execute('DELETE FROM events')
+    db.execute('DELETE FROM venues')
+    db.execute('DELETE FROM communities')
+    db.commit()
 
     communities = [
         ('Zwart op Wit', 'https://i.imgur.com/8jibVQ6.jpeg'),
