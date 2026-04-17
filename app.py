@@ -123,74 +123,82 @@ def seed_db():
     db.execute('DELETE FROM events')
     db.execute('DELETE FROM venues')
     db.execute('DELETE FROM communities')
+    db.execute("DELETE FROM sqlite_sequence WHERE name IN ('communities','venues','events','event_recurrences')")
     db.commit()
 
     communities = [
-        ('Zwart op Wit', 'https://i.imgur.com/8jibVQ6.jpeg'),
-        ('Schaakvereniging Amsterdam West', 'https://i.imgur.com/inhlo0q.jpeg'),
-        ('Schaakvereniging Caissa', 'https://i.imgur.com/S7Sk0IW.jpeg'),
-        ('Pegasus Amstelveen', 'https://i.imgur.com/RHugkLY.jpeg'),
-        ('Schaakvereniging EsPion', 'https://i.imgur.com/nlSMpwC.jpeg'),
-        ('De Queer Schaakclub', 'https://i.imgur.com/G6UwvNd.jpeg'),
-        ('De Volewijckers', None),
-        ('Max Euwe Centrum', 'https://i.imgur.com/inTkxpx.jpeg'),
-        ('Chess & Beer', 'https://i.imgur.com/RTWaMou.png'),
-        ('Vondelbunker Chess', 'https://i.imgur.com/zgYqQLp.png'),
-        ('Amsterdam Spirit Chess Club', 'https://i.imgur.com/qrvUv5i.png'),
-        ('Barblitz Amsterdam', 'https://i.imgur.com/9NRex3f.jpeg'),
-        ('Cafe de Laurierboom', 'https://i.imgur.com/9NRex3f.jpeg'),
-        ('Schaakcafe Utrecht', 'https://i.imgur.com/wlhqWob.jpeg'),
-        ('Stichting En Passant', 'https://i.imgur.com/fVrdQDp.jpeg'),
-        ('KopieKoffie', 'https://i.imgur.com/pC1qmvK.jpeg'),
+        ('Zwart op Wit',                  'https://i.imgur.com/8jibVQ6.jpeg'),
+        ('Schaakvereniging Amsterdam West','https://i.imgur.com/inhlo0q.jpeg'),
+        ('Schaakvereniging Caissa',        'https://i.imgur.com/S7Sk0IW.jpeg'),
+        ('Pegasus Amstelveen',             'https://i.imgur.com/RHugkLY.jpeg'),
+        ('Schaakvereniging EsPion',        'https://i.imgur.com/nlSMpwC.jpeg'),
+        ('De Queer Schaakclub',            'https://i.imgur.com/G6UwvNd.jpeg'),
+        ('De Volewijckers',                None),
+        ('Max Euwe Centrum',               'https://i.imgur.com/inTkxpx.jpeg'),
+        ('Chess & Beer',                   'https://i.imgur.com/RTWaMou.png'),
+        ('Vondelbunker Chess',             'https://i.imgur.com/zgYqQLp.png'),
+        ('Amsterdam Spirit Chess Club',    'https://i.imgur.com/qrvUv5i.png'),
+        ('Barblitz Amsterdam',             'https://i.imgur.com/9NRex3f.jpeg'),
+        ('Cafe de Laurierboom',            'https://i.imgur.com/9NRex3f.jpeg'),
+        ('Schaakcafe Utrecht',             'https://i.imgur.com/wlhqWob.jpeg'),
+        ('Stichting En Passant',           'https://i.imgur.com/fVrdQDp.jpeg'),
+        ('KopieKoffie',                    'https://i.imgur.com/pC1qmvK.jpeg'),
     ]
     for name, image in communities:
         db.execute('INSERT INTO communities (name, image) VALUES (?, ?)', (name, image))
 
     venues = [
-        ('2 Klaveren',          'Rozengracht 2',                'https://maps.app.goo.gl/2iYpS9ALfHsJLAwYA', 52.3711, 4.8662, 'Amsterdam'),
-        ('Bilderdijkpark',      'Bilderdijkpark, Amsterdam',    'https://maps.app.goo.gl/HE7btnNk4Bit5ywy8', 52.3718, 4.8688, 'Amsterdam'),
-        ('Huize Lydia',         'Churchilllaan 223',            'https://maps.app.goo.gl/cnJ446iJsELTRz7XA', 52.3532, 4.8833, 'Amsterdam'),
-        ('La Plaza, Groenelaan','Groenelaan, Amstelveen',       'https://maps.app.goo.gl/3msMbTPckGVqGh9d9', 52.2926, 4.8745, 'Amsterdam'),
-        ('Gaaspstraat 8',       'Gaaspstraat 8, Amsterdam',     'https://maps.app.goo.gl/dZG9V7rcx1a9q3rLA', 52.3452, 4.9085, 'Amsterdam'),
-        ('Speelzaal KLUP',      'Speelzaal KLUP, Amsterdam',    'https://maps.app.goo.gl/4hLHEWU5ktfCiWCXA', 52.3544, 4.8545, 'Amsterdam'),
-        ('Het Zwanenmeer',      'Het Zwanenmeer, Amsterdam',    'https://maps.app.goo.gl/mqUyi83fLoGxKCwi8', 52.3956, 4.9499, 'Amsterdam'),
-        ('Max Euwe Centrum',    'Max Euweplein 30a',            'https://maps.app.goo.gl/5GeJKV1nBEopb1M29', 52.3628, 4.8828, 'Amsterdam'),
-        ('Cafe De Balie',       'Kleine-Gartmanplantsoen 10',   'https://maps.app.goo.gl/bkpboKbMJeadL65F6', 52.3632, 4.8830, 'Amsterdam'),
-        ('Vondelbunker',        'Vondelpark, Amsterdam',        'https://maps.app.goo.gl/zVaGJ4eQ19HZ6h6z8', 52.3609, 4.8776, 'Amsterdam'),
-        ('KLABU Clubhouse',     'Haarlemmerdijk 106',           'https://maps.app.goo.gl/Hwt9yytsy1LJbFCa8', 52.3831, 4.8865, 'Amsterdam'),
-        ('Cafe de Laurierboom', 'Laurierstraat 39',             'https://maps.app.goo.gl/PizEC9TRQ4kt8QyK6', 52.3723, 4.8809, 'Amsterdam'),
-        ('Schaakcafe Utrecht',  'Oudegracht 321, Utrecht',    'https://maps.app.goo.gl/j7A7ARS1a3TkKk6',    52.0998, 5.1032, 'Utrecht'),
-        ('Stichting En Passant','Prins Hendrikstraat 1',      'https://maps.app.goo.gl/2A2fRFpQfjugkGRg9',  52.0743, 4.3116, 'The Hague'),
-        ('KopieKoffie',         'Oude Delft 113, Delft',      'https://maps.app.goo.gl/zz2rpLMpYdpqykU98',  52.0005, 4.3461, 'Delft'),
+        ('2 Klaveren',          'Rozengracht 2',              'https://maps.app.goo.gl/2iYpS9ALfHsJLAwYA', 52.3711, 4.8662, 'Amsterdam'),
+        ('Bilderdijkpark',      'Bilderdijkpark, Amsterdam',  'https://maps.app.goo.gl/HE7btnNk4Bit5ywy8', 52.3718, 4.8688, 'Amsterdam'),
+        ('Huize Lydia',         'Churchilllaan 223',          'https://maps.app.goo.gl/cnJ446iJsELTRz7XA', 52.3532, 4.8833, 'Amsterdam'),
+        ('La Plaza, Groenelaan','Groenelaan, Amstelveen',     'https://maps.app.goo.gl/3msMbTPckGVqGh9d9', 52.2926, 4.8745, 'Amsterdam'),
+        ('Gaaspstraat 8',       'Gaaspstraat 8, Amsterdam',   'https://maps.app.goo.gl/dZG9V7rcx1a9q3rLA', 52.3452, 4.9085, 'Amsterdam'),
+        ('Speelzaal KLUP',      'Speelzaal KLUP, Amsterdam',  'https://maps.app.goo.gl/4hLHEWU5ktfCiWCXA', 52.3544, 4.8545, 'Amsterdam'),
+        ('Het Zwanenmeer',      'Het Zwanenmeer, Amsterdam',  'https://maps.app.goo.gl/mqUyi83fLoGxKCwi8', 52.3956, 4.9499, 'Amsterdam'),
+        ('Max Euwe Centrum',    'Max Euweplein 30a',          'https://maps.app.goo.gl/5GeJKV1nBEopb1M29', 52.3628, 4.8828, 'Amsterdam'),
+        ('Cafe De Balie',       'Kleine-Gartmanplantsoen 10', 'https://maps.app.goo.gl/bkpboKbMJeadL65F6', 52.3632, 4.8830, 'Amsterdam'),
+        ('Vondelbunker',        'Vondelpark, Amsterdam',      'https://maps.app.goo.gl/zVaGJ4eQ19HZ6h6z8', 52.3609, 4.8776, 'Amsterdam'),
+        ('KLABU Clubhouse',     'Haarlemmerdijk 106',         'https://maps.app.goo.gl/Hwt9yytsy1LJbFCa8', 52.3831, 4.8865, 'Amsterdam'),
+        ('Cafe de Laurierboom', 'Laurierstraat 39',           'https://maps.app.goo.gl/PizEC9TRQ4kt8QyK6', 52.3723, 4.8809, 'Amsterdam'),
+        ('Schaakcafe Utrecht',  'Oudegracht 321, Utrecht',    'https://maps.app.goo.gl/j7A7ARS1a3TkKk6',   52.09976268371182, 5.103186467326744, 'Utrecht'),
+        ('Stichting En Passant','Den Haag',                   'https://maps.app.goo.gl/2A2fRFpQfjugkGRg9', 52.07432068089482, 4.311602878673388, 'The Hague'),
+        ('KopieKoffie',         'Oude Delft, Delft',          'https://maps.app.goo.gl/zz2rpLMpYdpqykU98', 52.00047872546669, 4.3460540624039785,'Delft'),
     ]
     for name, address, gmaps, lat, lng, city in venues:
         db.execute('INSERT INTO venues (name, address, gmaps, lat, lng, city) VALUES (?, ?, ?, ?, ?, ?)', (name, address, gmaps, lat, lng, city))
 
-    # (community_id, venue_id, title, specific_date, time, time_end, format_tag, external_link, notes, recurring_days)
+    def cid(name):
+        return db.execute('SELECT id FROM communities WHERE name=?', (name,)).fetchone()[0]
+
+    def vid(name):
+        return db.execute('SELECT id FROM venues WHERE name=?', (name,)).fetchone()[0]
+
     ALL_DAYS = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']
+
     events = [
-        (1,  1,  'Zwart op Wit Club Night',       None, '20:00', None,    'Club night', 'https://www.zwartopwit.org/',                         None,                        ['Monday']),
-        (5,  5,  'EsPion Club Night',              None, '20:00', None,    'Club night', 'https://www.espion.nl/',                              None,                        ['Monday']),
-        (3,  3,  'Caissa Club Night',              None, '20:00', None,    'Club night', 'http://www.caissa-amsterdam.nl/',                     None,                        ['Tuesday']),
-        (4,  4,  'Pegasus Club Night',             None, '19:45', None,    'Club night', 'https://www.pegasusamstelveen.nl',                    None,                        ['Tuesday']),
-        (6,  6,  'De Queer Schaakclub',            None, '20:00', None,    'Club night', 'https://dequeerschaakclub.nl/',                       None,                        ['Wednesday']),
-        (7,  7,  'De Volewijckers Club Night',     None, '20:00', None,    'Club night', 'https://www.schaakverenigingdevolewijckers.nl/',      None,                        ['Wednesday']),
-        (2,  2,  'Amsterdam West Club Night',      None, '20:00', None,    'Club night', 'https://www.svamsterdamwest.nl/',                     None,                        ['Thursday']),
-        (8,  8,  'Max Euwe Centrum Open Hours',    None, '10:00', '16:00', 'Open play',  'https://maxeuwe.nl/',                                'Open Tue–Sat',              ['Tuesday','Wednesday','Thursday','Friday','Saturday']),
-        (9,  9,  'Chess & Beer',                   None, '14:00', None,    'Casual',     'https://www.meetup.com/amsterdam-chess-and-beer/',   'Every second Sunday',       ['Sunday']),
-        (10, 10, 'Vondelbunker Chess',             None, '14:00', None,    'Casual',     'https://radar.squat.net/en/event/amsterdam/vondelbunker/2026-05-17/bunker-chess-club', 'Irregular — check link', ['Sunday']),
-        (11, 11, 'Amsterdam Spirit Chess Club',    None, '15:00', '18:00', 'Casual',     'https://klabu.org/clubhouses/amsterdam',              None,                        ['Sunday']),
-        (12, 12, 'Barblitz Amsterdam',             None,  None,   None,    'Blitz',      'https://barblitz.co',                                'Scraper needed — check barblitz.co for upcoming dates', []),
-        (13, 12, 'Cafe de Laurierboom',            None, '15:00', None,    'Casual',     'https://maps.app.goo.gl/PizEC9TRQ4kt8QyK6',          'Hours vary: Wed–Thu until 01:00, Fri–Sat until 03:00, Sun–Tue until 01:00', ALL_DAYS),
-        (14, 13, 'Schaakcafe Utrecht',              None, '13:30', '17:00', 'Casual',     'https://www.schakeninutrecht.nl/schaakcafe/',          None,                                        ['Friday']),
-        (15, 14, 'Stichting En Passant',            None, '14:00', None,    'Club night', 'https://www.stichtingenpassant.nl/',                  'Chess on weekends.',                        ['Friday','Saturday','Sunday']),
-        (16, 15, 'KopieKoffie Chess',               None, '15:30', None,    'Casual',     'https://kopiekoffie.nl/blog/events/schaken-bij-kopiekoffie/', None,                               ['Sunday']),
+        # (community_name, venue_name, title, specific_date, time, time_end, format_tag, external_link, notes, days)
+        ('Zwart op Wit',                  '2 Klaveren',          'Zwart op Wit Club Night',       None, '20:00', None,    'Club night', 'https://www.zwartopwit.org/',                         None,                        ['Monday']),
+        ('Schaakvereniging EsPion',        'Gaaspstraat 8',       'EsPion Club Night',              None, '20:00', None,    'Club night', 'https://www.espion.nl/',                              None,                        ['Monday']),
+        ('Schaakvereniging Caissa',        'Huize Lydia',         'Caissa Club Night',              None, '20:00', None,    'Club night', 'http://www.caissa-amsterdam.nl/',                     None,                        ['Tuesday']),
+        ('Pegasus Amstelveen',             'La Plaza, Groenelaan','Pegasus Club Night',             None, '19:45', None,    'Club night', 'https://www.pegasusamstelveen.nl',                    None,                        ['Tuesday']),
+        ('De Queer Schaakclub',            'Speelzaal KLUP',      'De Queer Schaakclub',            None, '20:00', None,    'Club night', 'https://dequeerschaakclub.nl/',                       None,                        ['Wednesday']),
+        ('De Volewijckers',                'Het Zwanenmeer',      'De Volewijckers Club Night',     None, '20:00', None,    'Club night', 'https://www.schaakverenigingdevolewijckers.nl/',      None,                        ['Wednesday']),
+        ('Schaakvereniging Amsterdam West','Bilderdijkpark',      'Amsterdam West Club Night',      None, '20:00', None,    'Club night', 'https://www.svamsterdamwest.nl/',                     None,                        ['Thursday']),
+        ('Max Euwe Centrum',               'Max Euwe Centrum',    'Max Euwe Centrum Open Hours',    None, '10:00', '16:00', 'Open play',  'https://maxeuwe.nl/',                                'Open Tue–Sat',              ['Tuesday','Wednesday','Thursday','Friday','Saturday']),
+        ('Chess & Beer',                   'Cafe De Balie',       'Chess & Beer',                   None, '14:00', None,    'Casual',     'https://www.meetup.com/amsterdam-chess-and-beer/',   'Every second Sunday',       ['Sunday']),
+        ('Vondelbunker Chess',             'Vondelbunker',        'Vondelbunker Chess',             None, '14:00', None,    'Casual',     'https://radar.squat.net/en/event/amsterdam/vondelbunker/2026-05-17/bunker-chess-club', 'Irregular — check link', ['Sunday']),
+        ('Amsterdam Spirit Chess Club',    'KLABU Clubhouse',     'Amsterdam Spirit Chess Club',    None, '15:00', '18:00', 'Casual',     'https://klabu.org/clubhouses/amsterdam',              None,                        ['Sunday']),
+        ('Barblitz Amsterdam',             'Cafe de Laurierboom', 'Barblitz Amsterdam',             None,  None,   None,    'Blitz',      'https://barblitz.co',                                'Scraper needed — check barblitz.co for upcoming dates', []),
+        ('Cafe de Laurierboom',            'Cafe de Laurierboom', 'Cafe de Laurierboom',            None, '15:00', None,    'Casual',     'https://maps.app.goo.gl/PizEC9TRQ4kt8QyK6',          'Hours vary: Wed–Thu until 01:00, Fri–Sat until 03:00, Sun–Tue until 01:00', ALL_DAYS),
+        ('Schaakcafe Utrecht',             'Schaakcafe Utrecht',  'Schaakcafe Utrecht',             None, '13:30', '17:00', 'Casual',     'https://www.schakeninutrecht.nl/schaakcafe/',         None,                        ['Friday']),
+        ('Stichting En Passant',           'Stichting En Passant','Stichting En Passant',           None, '14:00', None,    'Club night', 'https://www.stichtingenpassant.nl/',                  'Chess on weekends.',        ['Friday','Saturday','Sunday']),
+        ('KopieKoffie',                    'KopieKoffie',         'KopieKoffie Chess',              None, '15:30', None,    'Casual',     'https://kopiekoffie.nl/blog/events/schaken-bij-kopiekoffie/', None,              ['Sunday']),
     ]
-    for community_id, venue_id, title, specific_date, time, time_end, format_tag, external_link, notes, days in events:
+    for community_name, venue_name, title, specific_date, time, time_end, format_tag, external_link, notes, days in events:
         cur = db.execute('''INSERT INTO events
             (community_id, venue_id, title, specific_date, time, time_end, format_tag, external_link, notes, active)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 1)''',
-            (community_id, venue_id, title, specific_date, time, time_end, format_tag, external_link, notes))
+            (cid(community_name), vid(venue_name), title, specific_date, time, time_end, format_tag, external_link, notes))
         event_id = cur.lastrowid
         for day in days:
             db.execute('INSERT INTO event_recurrences (event_id, day) VALUES (?, ?)', (event_id, day))
