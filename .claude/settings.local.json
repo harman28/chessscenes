@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find '/Users/harmansingh/workplace/chess scenes project/chessscenes/frontend' -type f \\\\\\(-name *.html -o -name *.js -o -name *.css \\\\\\))",
+      "Bash(python3 app.py)"
+    ]
+  }
+}

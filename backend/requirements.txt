@@ -1,6 +1,0 @@
-flask
-flask-sqlalchemy
-pyjwt
-werkzeug
-python-dotenv
-gunicorn

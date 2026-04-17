@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chess Today</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --maroon: #6B1A2A;
+      --maroon-dark: #3a0e16;
+      --maroon-mid: #8a2a3c;
+      --cream: #f5e6e0;
+      --cream-dark: #e8d0c8;
+      --cream-muted: #c9a89e;
+    }
+    html, body { height: 100%; background: var(--maroon); color: var(--cream); font-family: 'DM Sans', sans-serif; font-weight: 300; }
+
+    /* Mobile */
+    #app { min-height: 100vh; }
+    .sidebar { padding: 48px 24px 64px; max-width: 480px; margin: 0 auto; }
+    #map-pane { display: none; }
+
+    /* Desktop */
+    @media (min-width: 768px) {
+      #app { display: flex; height: 100vh; overflow: hidden; }
+      .sidebar { width: 400px; flex-shrink: 0; max-width: none; margin: 0; padding: 40px 28px; overflow-y: auto; height: 100vh; }
+      #map-pane { display: block; flex: 1; height: 100vh; position: relative; }
+    }
+
+    /* Hero */
+    .hero {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(20px, 2.2vw, 26px);
+      font-weight: 400; line-height: 1.6; color: var(--cream); margin-bottom: 36px;
+    }
+    .hero-select {
+      appearance: none; -webkit-appearance: none; background: none; border: none;
+      border-bottom: 1.5px solid var(--cream-muted); color: var(--cream);
+      font-family: 'Playfair Display', serif; font-size: inherit; font-weight: 500;
+      padding: 0 18px 2px 0; cursor: pointer;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23c9a89e'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 2px center; outline: none;
+    }
+    .hero-select option { background: var(--maroon-dark); color: var(--cream); }
+
+    /* Day groups */
+    .day-group { margin-bottom: 28px; }
+    .day-heading { font-size: 11px; font-weight: 500; letter-spacing: 1px; text-transform: uppercase; color: var(--cream-muted); margin-bottom: 10px; }
+
+    /* Cards */
+    .events-list { display: flex; flex-direction: column; gap: 10px; }
+    .event-card {
+      background: var(--cream); border-radius: 14px; overflow: hidden; cursor: pointer;
+      transition: transform 0.1s ease, box-shadow 0.15s ease;
+    }
+    .event-card:active { transform: scale(0.985); }
+    .event-card.highlighted { box-shadow: 0 0 0 2.5px var(--cream); }
+    .card-top { display: flex; align-items: center; gap: 14px; padding: 13px 15px; }
+    .card-image {
+      width: 50px; height: 50px; border-radius: 8px; flex-shrink: 0;
+      background: var(--cream-dark); display: flex; align-items: center; justify-content: center;
+      font-size: 22px; color: var(--maroon); overflow: hidden;
+    }
+    .card-image img { width: 100%; height: 100%; object-fit: cover; }
+    .card-body { flex: 1; min-width: 0; }
+    .card-name { font-size: 15px; font-weight: 500; color: var(--maroon-dark); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .card-meta { font-size: 12px; color: var(--maroon-mid); margin-top: 2px; }
+    .card-tag { flex-shrink: 0; font-size: 11px; background: rgba(107,26,42,0.1); color: var(--maroon); padding: 4px 9px; border-radius: 20px; }
+    .card-detail { border-top: 0.5px solid var(--cream-dark); padding: 12px 15px 14px; display: none; }
+    .card-detail.open { display: block; }
+    .detail-row { display: flex; gap: 10px; font-size: 13px; color: #3a0e16; margin-bottom: 6px; line-height: 1.4; }
+    .detail-label { color: #9a5060; width: 48px; flex-shrink: 0; font-size: 12px; padding-top: 1px; }
+    .detail-note { font-size: 12px; color: #7a3a45; margin-top: 4px; font-style: italic; }
+    .detail-link { display: inline-block; margin-top: 10px; font-size: 13px; color: var(--maroon); text-decoration: none; border-bottom: 1px solid rgba(107,26,42,0.3); padding-bottom: 1px; }
+    .detail-links { display: flex; gap: 16px; }
+
+    /* Empty / loading */
+    .empty { text-align: center; padding: 48px 0; color: rgba(245,230,224,0.45); font-size: 15px; }
+    .empty strong { display: block; font-size: 28px; margin-bottom: 8px; }
+    .loading { text-align: center; padding: 48px 0; color: rgba(245,230,224,0.45); font-size: 14px; }
+
+    /* Map */
+    .leaflet-container { background: #e8e4df; }
+    .leaflet-control-zoom { border: none !important; }
+    .leaflet-control-zoom a { background: var(--maroon) !important; color: var(--cream) !important; border: none !important; }
+    .leaflet-control-attribution { display: none; }
+
+    /* Active pin — solid maroon teardrop */
+    .pin-active {
+      width: 30px; height: 30px;
+      background: var(--maroon);
+      border-radius: 50% 50% 50% 0;
+      transform: rotate(-45deg);
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 2px 2px 6px rgba(0,0,0,0.35);
+      border: 2px solid rgba(245,230,224,0.3);
+    }
+    .pin-active-inner {
+      transform: rotate(45deg);
+      font-size: 14px; color: var(--cream);
+      margin-top: -2px; margin-left: 1px;
+      line-height: 1;
+    }
+
+    /* Inactive pin — solid grey, smaller */
+    .pin-inactive {
+      width: 22px; height: 22px;
+      background: #888880;
+      border-radius: 50% 50% 50% 0;
+      transform: rotate(-45deg);
+      display: flex; align-items: center; justify-content: center;
+      border: 1.5px solid rgba(255,255,255,0.2);
+      box-shadow: 1px 1px 4px rgba(0,0,0,0.2);
+    }
+    .pin-inactive-inner {
+      transform: rotate(45deg);
+      font-size: 10px; color: #fff;
+      margin-top: -1px;
+      line-height: 1;
+    }
+
+    /* Map overlay card */
+    #map-card {
+      position: absolute;
+      bottom: 24px; left: 50%;
+      transform: translateX(-50%);
+      width: calc(100% - 48px);
+      max-width: 360px;
+      background: var(--cream);
+      border-radius: 14px;
+      overflow: hidden;
+      z-index: 1000;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+      display: none;
+      animation: slideUp 0.18s ease;
+    }
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateX(-50%) translateY(12px); }
+      to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+    }
+    #map-card .card-top { padding: 13px 15px; }
+    #map-card .card-detail { display: block; border-top: 0.5px solid var(--cream-dark); }
+    #map-card-close {
+      position: absolute; top: 10px; right: 12px;
+      font-size: 16px; color: var(--maroon-mid); cursor: pointer;
+      background: none; border: none; line-height: 1; padding: 2px;
+    }
+  </style>
+</head>
+<body>
+<div id="app">
+  <div class="sidebar">
+    <p class="hero">
+      They're probably playing chess
+      <select class="hero-select" id="date-select" onchange="onFilterChange()"></select>
+      in
+      <select class="hero-select" id="city-select" onchange="onFilterChange()">
+        <option value="Amsterdam">Amsterdam</option>
+      </select>
+      in these places.
+    </p>
+    <div id="events-container"><div class="loading">Loading…</div></div>
+  </div>
+
+  <div id="map-pane">
+    <!-- Map overlay card -->
+    <div id="map-card">
+      <button id="map-card-close" onclick="closeMapCard()">✕</button>
+      <div id="map-card-inner"></div>
+    </div>
+  </div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+const DAYS = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+let map = null;
+let activeMarkers = {};   // event id -> {marker}
+let inactiveMarkers = []; // array of markers
+let currentEvents = [];
+
+// ── Dropdown ──
+
+function todayIdx() { return new Date().getDay(); }
+function dayName(idx) { return DAYS[idx % 7]; }
+
+function buildDateOptions() {
+  const sel = document.getElementById('date-select');
+  const today = todayIdx();
+  const options = [{value:'today',label:'today'},{value:'tomorrow',label:'tomorrow'}];
+  for (let i = 2; i < 9; i++) options.push({value: dayName(today+i), label: 'on ' + dayName(today+i)});
+  sel.innerHTML = options.map(o=>`<option value="${o.value}">${o.label}</option>`).join('')
+    + '<option value="all">any day</option>';
+}
+
+function resolveDay(val) {
+  if (val==='today') return dayName(todayIdx());
+  if (val==='tomorrow') return dayName(todayIdx()+1);
+  if (val==='all') return null;
+  return val;
+}
+function resolveDate(val) {
+  const d = new Date();
+  if (val==='tomorrow') d.setDate(d.getDate()+1);
+  return d.toISOString().split('T')[0];
+}
+
+// ── Cities ──
+
+async function loadCities() {
+  const res = await fetch('/api/cities');
+  const cities = await res.json();
+  const sel = document.getElementById('city-select');
+  sel.innerHTML = cities.map(c=>`<option value="${c}">${c}</option>`).join('');
+}
+
+// ── Map ──
+
+function initMap() {
+  if (map || window.innerWidth < 768) return;
+  map = L.map('map-pane', {zoomControl: true, scrollWheelZoom: true});
+  const tileLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {maxZoom: 19});
+  tileLayer.once('load', () => loadInactivePins());
+  tileLayer.addTo(map);
+}
+
+function activePinIcon() {
+  return L.divIcon({
+    className: '',
+    html: `<div class="pin-active"><div class="pin-active-inner">♞</div></div>`,
+    iconSize: [30,30], iconAnchor: [10,30], popupAnchor: [5,-30],
+  });
+}
+
+function inactivePinIcon() {
+  return L.divIcon({
+    className: '',
+    html: `<div class="pin-inactive"><div class="pin-inactive-inner">♟</div></div>`,
+    iconSize: [22,22], iconAnchor: [7,22], popupAnchor: [4,-22],
+  });
+}
+
+async function loadInactivePins() {
+  if (!map) return;
+  const city = document.getElementById('city-select').value || 'Amsterdam';
+  const res = await fetch(`/api/venue-directory?city=${encodeURIComponent(city)}`);
+  const venues = await res.json();
+
+  inactiveMarkers.forEach(m => m.remove());
+  inactiveMarkers = [];
+
+  venues.forEach(v => {
+    if (!v.lat || !v.lng) return;
+    const marker = L.marker([v.lat, v.lng], {icon: inactivePinIcon(), zIndexOffset: 0}).addTo(map);
+    marker.on('click', () => showMapCard({
+      title: v.name,
+      subtitle: v.labels,
+      note: v.note,
+      image: v.image,
+      gmaps: v.gmaps,
+      link: v.link,
+    }));
+    inactiveMarkers.push(marker);
+  });
+}
+
+function updateActiveMarkers(events) {
+  if (!map) return;
+  Object.values(activeMarkers).forEach(({marker}) => marker.remove());
+  activeMarkers = {};
+
+  const bounds = [];
+  events.forEach(e => {
+    if (!e.venue_lat || !e.venue_lng) return;
+    const lat = parseFloat(e.venue_lat);
+    const lng = parseFloat(e.venue_lng);
+    if (isNaN(lat)||isNaN(lng)) return;
+
+    const marker = L.marker([lat,lng], {icon: activePinIcon(), zIndexOffset: 100}).addTo(map);
+    marker.on('click', () => {
+      showMapCard({
+        title: e.title,
+        subtitle: e.time ? (e.time_end ? e.time+'–'+e.time_end : e.time) + ' · ' + (e.venue_name||'') : e.venue_name,
+        note: e.notes,
+        image: e.community_image,
+        gmaps: e.venue_gmaps,
+        link: e.external_link,
+        eventId: e.id,
+      });
+      scrollToCard(e.id);
+    });
+    activeMarkers[e.id] = {marker, lat, lng};
+    bounds.push([lat,lng]);
+  });
+
+  if (bounds.length) map.fitBounds(bounds, {padding:[60,60], maxZoom:15});
+}
+
+function showMapCard({title, subtitle, note, image, gmaps, link, eventId}) {
+  const imgHtml = image
+    ? `<div class="card-image"><img src="${image}" alt="" onerror="this.parentElement.innerHTML='♟'"></div>`
+    : `<div class="card-image">♟</div>`;
+
+  const detailRows = [];
+  if (note) detailRows.push(`<div class="detail-note" style="margin-top:0;margin-bottom:6px">${note}</div>`);
+  const links = [];
+  if (gmaps) links.push(`<a class="detail-link" href="${gmaps}" target="_blank" rel="noopener">Open in maps ↗</a>`);
+  if (link)  links.push(`<a class="detail-link" href="${link}"  target="_blank" rel="noopener">More info ↗</a>`);
+  if (links.length) detailRows.push(`<div class="detail-links">${links.join('')}</div>`);
+
+  document.getElementById('map-card-inner').innerHTML = `
+    <div class="card-top">
+      ${imgHtml}
+      <div class="card-body">
+        <div class="card-name">${title}</div>
+        ${subtitle ? `<div class="card-meta">${subtitle}</div>` : ''}
+      </div>
+    </div>
+    ${detailRows.length ? `<div class="card-detail">${detailRows.join('')}</div>` : ''}`;
+
+  document.getElementById('map-card').style.display = 'block';
+
+  if (eventId) {
+    scrollToCard(eventId);
+    highlightCard(eventId);
+  }
+}
+
+function closeMapCard() {
+  document.getElementById('map-card').style.display = 'none';
+}
+
+function scrollToCard(id) {
+  const card = document.getElementById('card-'+id);
+  if (card) card.scrollIntoView({behavior:'smooth', block:'center'});
+}
+
+function highlightCard(id) {
+  document.querySelectorAll('.event-card').forEach(c => c.classList.remove('highlighted'));
+  const card = document.getElementById('card-'+id);
+  if (card) {
+    card.classList.add('highlighted');
+    setTimeout(() => card.classList.remove('highlighted'), 2000);
+  }
+}
+
+// ── Events ──
+
+async function onFilterChange() {
+  const val = document.getElementById('date-select').value;
+  const city = document.getElementById('city-select').value;
+  const container = document.getElementById('events-container');
+  container.innerHTML = '<div class="loading">Loading…</div>';
+  closeMapCard();
+
+  if (val==='all') {
+    const res = await fetch(`/api/events/all?city=${encodeURIComponent(city)}`);
+    const grouped = await res.json();
+    currentEvents = Object.values(grouped).flat();
+    renderGrouped(grouped);
+  } else {
+    const day = resolveDay(val);
+    const date = resolveDate(val);
+    const res = await fetch(`/api/events?city=${encodeURIComponent(city)}&day=${day}&date=${date}`);
+    currentEvents = await res.json();
+    renderList(currentEvents, container);
+  }
+  updateActiveMarkers(currentEvents);
+}
+
+function renderGrouped(grouped) {
+  const container = document.getElementById('events-container');
+  const days = Object.keys(grouped);
+  if (!days.length) { container.innerHTML = '<div class="empty"><strong>♟</strong>No events found</div>'; return; }
+  container.innerHTML = days.map(day => `
+    <div class="day-group">
+      <div class="day-heading">${day}</div>
+      <div class="events-list">${grouped[day].map(renderCard).join('')}</div>
+    </div>`).join('');
+}
+
+function renderList(events, container) {
+  if (!events.length) {
+    const val = document.getElementById('date-select').value;
+    container.innerHTML = `<div class="empty"><strong>♟</strong>No chess found ${val==='today'?'today':val==='tomorrow'?'tomorrow':val}</div>`;
+    return;
+  }
+  container.innerHTML = `<div class="events-list">${events.map(renderCard).join('')}</div>`;
+}
+
+function renderCard(e) {
+  const imgHtml = e.community_image
+    ? `<div class="card-image"><img src="${e.community_image}" alt="" onerror="this.parentElement.innerHTML='♟'"></div>`
+    : `<div class="card-image">♟</div>`;
+  const timeStr = e.time ? (e.time_end ? e.time+'–'+e.time_end : e.time) : null;
+  const meta = [timeStr, e.venue_name].filter(Boolean).join(' · ');
+  const tag = e.format_tag ? `<span class="card-tag">${e.format_tag}</span>` : '';
+  const rows = [];
+  if (e.venue_name) rows.push(`<div class="detail-row"><span class="detail-label">Where</span><span>${e.venue_name}${e.venue_address?', '+e.venue_address:''}</span></div>`);
+  if (e.time) {
+    const tr = e.time_end ? e.time+'–'+e.time_end : e.time;
+    const days = e.recurrence_days&&e.recurrence_days.length ? ', every '+e.recurrence_days.join(', ') : '';
+    rows.push(`<div class="detail-row"><span class="detail-label">When</span><span>${tr}${days}</span></div>`);
+  }
+  if (e.notes) rows.push(`<div class="detail-note">${e.notes}</div>`);
+  const links = [];
+  if (e.venue_gmaps) links.push(`<a class="detail-link" href="${e.venue_gmaps}" target="_blank" rel="noopener">Open in maps ↗</a>`);
+  if (e.external_link) links.push(`<a class="detail-link" href="${e.external_link}" target="_blank" rel="noopener">More info ↗</a>`);
+  if (links.length) rows.push(`<div class="detail-links">${links.join('')}</div>`);
+
+  return `<div class="event-card" id="card-${e.id}" onclick="onCardClick(this,${e.id})">
+    <div class="card-top">${imgHtml}<div class="card-body"><div class="card-name">${e.title}</div><div class="card-meta">${meta}</div></div>${tag}</div>
+    <div class="card-detail">${rows.join('')}</div>
+  </div>`;
+}
+
+function onCardClick(el, eventId) {
+  el.querySelector('.card-detail').classList.toggle('open');
+  if (activeMarkers[eventId]) {
+    const {marker, lat, lng} = activeMarkers[eventId];
+    map && map.panTo([lat,lng], {animate:true});
+    showMapCard({
+      title: el.querySelector('.card-name').textContent,
+      subtitle: el.querySelector('.card-meta').textContent,
+      eventId,
+      gmaps: currentEvents.find(e=>e.id===eventId)?.venue_gmaps,
+      link: currentEvents.find(e=>e.id===eventId)?.external_link,
+      image: currentEvents.find(e=>e.id===eventId)?.community_image,
+      note: currentEvents.find(e=>e.id===eventId)?.notes,
+    });
+  }
+}
+
+// ── Init ──
+
+buildDateOptions();
+loadCities().then(() => {
+  initMap();
+  onFilterChange();
+});
+
+window.addEventListener('resize', () => {
+  if (window.innerWidth>=768 && !map) { initMap(); updateActiveMarkers(currentEvents); }
+});
+</script>
+</body>
+</html>

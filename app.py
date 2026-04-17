@@ -1,0 +1,438 @@
+from flask import Flask, render_template, jsonify, request, g
+import sqlite3
+import os
+import jwt
+import datetime
+from functools import wraps
+
+app = Flask(__name__)
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'dev-secret-change-in-prod')
+DATABASE = 'chess.db'
+
+def get_db():
+    db = getattr(g, '_database', None)
+    if db is None:
+        db = g._database = sqlite3.connect(DATABASE)
+        db.row_factory = sqlite3.Row
+    return db
+
+@app.teardown_appcontext
+def close_connection(exception):
+    db = getattr(g, '_database', None)
+    if db is not None:
+        db.close()
+
+def init_db():
+    db = sqlite3.connect(DATABASE)
+    db.executescript('''
+        CREATE TABLE IF NOT EXISTS communities (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL,
+            image TEXT,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        );
+        CREATE TABLE IF NOT EXISTS venues (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL,
+            address TEXT,
+            gmaps TEXT,
+            lat REAL,
+            lng REAL,
+            city TEXT NOT NULL DEFAULT 'Amsterdam',
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        );
+        CREATE TABLE IF NOT EXISTS events (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            community_id INTEGER REFERENCES communities(id),
+            venue_id INTEGER REFERENCES venues(id),
+            title TEXT NOT NULL,
+            specific_date DATE,
+            time TEXT,
+            time_end TEXT,
+            format_tag TEXT,
+            external_link TEXT,
+            notes TEXT,
+            active INTEGER NOT NULL DEFAULT 1,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        );
+        CREATE TABLE IF NOT EXISTS venue_directory (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL,
+            labels TEXT,
+            address TEXT,
+            city TEXT NOT NULL DEFAULT 'Amsterdam',
+            lat REAL,
+            lng REAL,
+            gmaps TEXT,
+            link TEXT,
+            image TEXT,
+            note TEXT
+        );
+
+        CREATE TABLE IF NOT EXISTS event_recurrences (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            event_id INTEGER NOT NULL REFERENCES events(id) ON DELETE CASCADE,
+            day TEXT NOT NULL
+        );
+    ''')
+    db.commit()
+    db.close()
+
+def seed_directory():
+    db = sqlite3.connect(DATABASE)
+    db.row_factory = sqlite3.Row
+    count = db.execute('SELECT COUNT(*) FROM venue_directory').fetchone()[0]
+    if count > 0:
+        db.close()
+        return
+
+    amsterdam_venues = [
+        ('Former Cafe Gambit', 'chess memorial', None, 52.3755, 4.8827, 'https://maps.app.goo.gl/AtdP5dHQVRihL9yt8', None, 'https://i.imgur.com/y5eCRZY.jpeg', 'Defunct chess bar. Closed in 2005.'),
+        ('Former Max Euwe Schaakhuis', 'chess memorial', None, 52.3685, 4.8712, 'https://maps.app.goo.gl/NkxYzuvTdSqDzWNh9', None, 'https://i.imgur.com/DH33XAh.jpeg', None),
+        ('Giant Chess Board Frederiksplein', 'chess board', None, 52.3602, 4.9000, None, 'https://www.nporadio5.nl/fragmenten/de-avond-van-5/019cadda-7dca-72ec-857d-344be0d7499d/2026-03-02-xl-schaakbord-in-amsterdam-is-terug', None, 'The board that used to be on Max Euweplein has found a new home on Frederiksplein.'),
+        ('Cafe de Laurierboom', 'chess bar', 'Laurierstraat 39', 52.3723, 4.8809, 'https://maps.app.goo.gl/PizEC9TRQ4kt8QyK6', None, 'https://i.imgur.com/9NRex3f.jpeg', 'Chess mecca of Amsterdam. Tournaments on barblitz.co.'),
+        ('Max Euwe Centrum', 'chess museum', 'Max Euweplein 30a', 52.3628, 4.8828, 'https://maps.app.goo.gl/5GeJKV1nBEopb1M29', 'https://maxeuwe.nl/', 'https://i.imgur.com/inTkxpx.jpeg', 'Free chess museum and library.'),
+        ('Max Euweplein', 'chess memorial', None, 52.3630, 4.8837, 'https://maps.app.goo.gl/BdbA8DiMEQxf37us9', None, 'https://i.imgur.com/AcuubuT.jpeg', 'Square named after former Dutch World Champion. 5 outdoor chess tables and a memorial.'),
+        ('Schaak en Go | Het Paard', 'chess shop', None, 52.3841, 4.8854, 'https://maps.app.goo.gl/ycLy5MS6BBYACa3z9', 'https://www.schaakengo.nl/', 'https://i.imgur.com/B6nE55x.jpeg', 'Notable chess shop.'),
+        ('Chess Art', 'chess memorial', None, 52.3850, 4.8828, None, None, 'https://i.imgur.com/e8Y9KwR.jpeg', '5 chessboards in a step formation, one with carved pieces.'),
+        ('Chess Table Haarlemmerplein', 'chess board', None, 52.3847, 4.8855, 'https://maps.app.goo.gl/Pt2zN4pDBFiQ8ddx8', None, 'https://i.imgur.com/8qnVOnL.png', 'Abandoned outdoor chess tables.'),
+        ('Chess Table Da Costastraat', 'chess board', None, 52.3674, 4.8761, 'https://maps.app.goo.gl/cDYhY7noTk7SDkwYA', None, 'https://i.imgur.com/SzOpMcl.png', 'Abandoned outdoor chess tables.'),
+        ('Chess Table Krugerplein', 'chess board', None, 52.3542, 4.9200, 'https://maps.app.goo.gl/bz97grhNwenNmFBLA', None, 'https://i.imgur.com/aRMNNzO.jpeg', 'Just a chess table in the middle of a playground.'),
+        ('Giant Chess Board', 'chess board', None, 52.3640, 4.8661, 'https://maps.app.goo.gl/N9mAaZpxfyAJDEW6', None, None, 'Giant board at the corner of the playground.'),
+        ('Amsterdam Spirit Chess Club', 'chess meetup', 'Haarlemmerdijk 106', 52.3831, 4.8865, 'https://maps.app.goo.gl/Hwt9yytsy1LJbFCa8', 'https://klabu.org/clubhouses/amsterdam', 'https://i.imgur.com/qrvUv5i.png', 'Every Sunday 15:00–18:00.'),
+        ('Chess & Beer', 'chess meetup', 'Kleine-Gartmanplantsoen 10', 52.3632, 4.8830, 'https://maps.app.goo.gl/bkpboKbMJeadL65F6', 'https://www.meetup.com/amsterdam-chess-and-beer/', 'https://i.imgur.com/RTWaMou.png', 'Casual chess meetup every second Sunday afternoon.'),
+        ('Vondelbunker Chess', 'chess meetup', 'Vondelpark, Amsterdam', 52.3609, 4.8776, 'https://maps.app.goo.gl/zVaGJ4eQ19HZ6h6z8', 'https://radar.squat.net/en/event/amsterdam/vondelbunker/2026-05-17/bunker-chess-club', 'https://i.imgur.com/zgYqQLp.png', 'Underground chess on Sunday afternoons. Irregular.'),
+    ]
+
+    for name, labels, address, lat, lng, gmaps, link, image, note in amsterdam_venues:
+        db.execute(
+            'INSERT INTO venue_directory (name, labels, address, city, lat, lng, gmaps, link, image, note) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+            (name, labels, address, 'Amsterdam', lat, lng, gmaps, link, image, note)
+        )
+
+    db.commit()
+    db.close()
+
+
+def seed_db():
+    db = sqlite3.connect(DATABASE)
+    db.row_factory = sqlite3.Row
+    count = db.execute('SELECT COUNT(*) FROM communities').fetchone()[0]
+    if count > 0:
+        db.close()
+        return
+
+    communities = [
+        ('Zwart op Wit', 'https://i.imgur.com/8jibVQ6.jpeg'),
+        ('Schaakvereniging Amsterdam West', 'https://i.imgur.com/inhlo0q.jpeg'),
+        ('Schaakvereniging Caissa', 'https://i.imgur.com/S7Sk0IW.jpeg'),
+        ('Pegasus Amstelveen', 'https://i.imgur.com/RHugkLY.jpeg'),
+        ('Schaakvereniging EsPion', 'https://i.imgur.com/nlSMpwC.jpeg'),
+        ('De Queer Schaakclub', 'https://i.imgur.com/G6UwvNd.jpeg'),
+        ('De Volewijckers', None),
+        ('Max Euwe Centrum', 'https://i.imgur.com/inTkxpx.jpeg'),
+        ('Chess & Beer', 'https://i.imgur.com/RTWaMou.png'),
+        ('Vondelbunker Chess', 'https://i.imgur.com/zgYqQLp.png'),
+        ('Amsterdam Spirit Chess Club', 'https://i.imgur.com/qrvUv5i.png'),
+        ('Barblitz Amsterdam', 'https://i.imgur.com/9NRex3f.jpeg'),
+        ('Cafe de Laurierboom', 'https://i.imgur.com/9NRex3f.jpeg'),
+    ]
+    for name, image in communities:
+        db.execute('INSERT INTO communities (name, image) VALUES (?, ?)', (name, image))
+
+    venues = [
+        ('2 Klaveren',          'Rozengracht 2',                'https://maps.app.goo.gl/2iYpS9ALfHsJLAwYA', 52.3711, 4.8662, 'Amsterdam'),
+        ('Bilderdijkpark',      'Bilderdijkpark, Amsterdam',    'https://maps.app.goo.gl/HE7btnNk4Bit5ywy8', 52.3718, 4.8688, 'Amsterdam'),
+        ('Huize Lydia',         'Churchilllaan 223',            'https://maps.app.goo.gl/cnJ446iJsELTRz7XA', 52.3532, 4.8833, 'Amsterdam'),
+        ('La Plaza, Groenelaan','Groenelaan, Amstelveen',       'https://maps.app.goo.gl/3msMbTPckGVqGh9d9', 52.2926, 4.8745, 'Amsterdam'),
+        ('Gaaspstraat 8',       'Gaaspstraat 8, Amsterdam',     'https://maps.app.goo.gl/dZG9V7rcx1a9q3rLA', 52.3452, 4.9085, 'Amsterdam'),
+        ('Speelzaal KLUP',      'Speelzaal KLUP, Amsterdam',    'https://maps.app.goo.gl/4hLHEWU5ktfCiWCXA', 52.3544, 4.8545, 'Amsterdam'),
+        ('Het Zwanenmeer',      'Het Zwanenmeer, Amsterdam',    'https://maps.app.goo.gl/mqUyi83fLoGxKCwi8', 52.3956, 4.9499, 'Amsterdam'),
+        ('Max Euwe Centrum',    'Max Euweplein 30a',            'https://maps.app.goo.gl/5GeJKV1nBEopb1M29', 52.3628, 4.8828, 'Amsterdam'),
+        ('Cafe De Balie',       'Kleine-Gartmanplantsoen 10',   'https://maps.app.goo.gl/bkpboKbMJeadL65F6', 52.3632, 4.8830, 'Amsterdam'),
+        ('Vondelbunker',        'Vondelpark, Amsterdam',        'https://maps.app.goo.gl/zVaGJ4eQ19HZ6h6z8', 52.3609, 4.8776, 'Amsterdam'),
+        ('KLABU Clubhouse',     'Haarlemmerdijk 106',           'https://maps.app.goo.gl/Hwt9yytsy1LJbFCa8', 52.3831, 4.8865, 'Amsterdam'),
+        ('Cafe de Laurierboom', 'Laurierstraat 39',             'https://maps.app.goo.gl/PizEC9TRQ4kt8QyK6', 52.3723, 4.8809, 'Amsterdam'),
+    ]
+    for name, address, gmaps, lat, lng, city in venues:
+        db.execute('INSERT INTO venues (name, address, gmaps, lat, lng, city) VALUES (?, ?, ?, ?, ?, ?)', (name, address, gmaps, lat, lng, city))
+
+    # (community_id, venue_id, title, specific_date, time, time_end, format_tag, external_link, notes, recurring_days)
+    ALL_DAYS = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']
+    events = [
+        (1,  1,  'Zwart op Wit Club Night',       None, '20:00', None,    'Club night', 'https://www.zwartopwit.org/',                         None,                        ['Monday']),
+        (5,  5,  'EsPion Club Night',              None, '20:00', None,    'Club night', 'https://www.espion.nl/',                              None,                        ['Monday']),
+        (3,  3,  'Caissa Club Night',              None, '20:00', None,    'Club night', 'http://www.caissa-amsterdam.nl/',                     None,                        ['Tuesday']),
+        (4,  4,  'Pegasus Club Night',             None, '19:45', None,    'Club night', 'https://www.pegasusamstelveen.nl',                    None,                        ['Tuesday']),
+        (6,  6,  'De Queer Schaakclub',            None, '20:00', None,    'Club night', 'https://dequeerschaakclub.nl/',                       None,                        ['Wednesday']),
+        (7,  7,  'De Volewijckers Club Night',     None, '20:00', None,    'Club night', 'https://www.schaakverenigingdevolewijckers.nl/',      None,                        ['Wednesday']),
+        (2,  2,  'Amsterdam West Club Night',      None, '20:00', None,    'Club night', 'https://www.svamsterdamwest.nl/',                     None,                        ['Thursday']),
+        (8,  8,  'Max Euwe Centrum Open Hours',    None, '10:00', '16:00', 'Open play',  'https://maxeuwe.nl/',                                'Open Tue–Sat',              ['Tuesday','Wednesday','Thursday','Friday','Saturday']),
+        (9,  9,  'Chess & Beer',                   None, '14:00', None,    'Casual',     'https://www.meetup.com/amsterdam-chess-and-beer/',   'Every second Sunday',       ['Sunday']),
+        (10, 10, 'Vondelbunker Chess',             None, '14:00', None,    'Casual',     'https://radar.squat.net/en/event/amsterdam/vondelbunker/2026-05-17/bunker-chess-club', 'Irregular — check link', ['Sunday']),
+        (11, 11, 'Amsterdam Spirit Chess Club',    None, '15:00', '18:00', 'Casual',     'https://klabu.org/clubhouses/amsterdam',              None,                        ['Sunday']),
+        (12, 12, 'Barblitz Amsterdam',             None,  None,   None,    'Blitz',      'https://barblitz.co',                                'Scraper needed — check barblitz.co for upcoming dates', []),
+        (13, 12, 'Cafe de Laurierboom',            None, '15:00', None,    'Casual',     'https://maps.app.goo.gl/PizEC9TRQ4kt8QyK6',          'Hours vary: Wed–Thu until 01:00, Fri–Sat until 03:00, Sun–Tue until 01:00', ALL_DAYS),
+    ]
+    for community_id, venue_id, title, specific_date, time, time_end, format_tag, external_link, notes, days in events:
+        cur = db.execute('''INSERT INTO events
+            (community_id, venue_id, title, specific_date, time, time_end, format_tag, external_link, notes, active)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 1)''',
+            (community_id, venue_id, title, specific_date, time, time_end, format_tag, external_link, notes))
+        event_id = cur.lastrowid
+        for day in days:
+            db.execute('INSERT INTO event_recurrences (event_id, day) VALUES (?, ?)', (event_id, day))
+
+    db.commit()
+    db.close()
+
+# --- Auth ---
+
+def token_required(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        token = request.headers.get('Authorization', '').replace('Bearer ', '')
+        if not token:
+            return jsonify({'error': 'Token missing'}), 401
+        try:
+            jwt.decode(token, app.config['SECRET_KEY'], algorithms=['HS256'])
+        except jwt.ExpiredSignatureError:
+            return jsonify({'error': 'Token expired'}), 401
+        except jwt.InvalidTokenError:
+            return jsonify({'error': 'Invalid token'}), 401
+        return f(*args, **kwargs)
+    return decorated
+
+@app.route('/api/login', methods=['POST'])
+def login():
+    data = request.json
+    admin_password = os.environ.get('ADMIN_PASSWORD', 'chess')
+    if data.get('password') == admin_password:
+        token = jwt.encode({
+            'admin': True,
+            'exp': datetime.datetime.utcnow() + datetime.timedelta(days=7)
+        }, app.config['SECRET_KEY'], algorithm='HS256')
+        return jsonify({'token': token})
+    return jsonify({'error': 'Wrong password'}), 401
+
+# --- Public API ---
+
+def fetch_events(city, day=None, date=None):
+    db = get_db()
+    base = '''
+        SELECT DISTINCT e.id, e.title, e.specific_date, e.time,
+               e.time_end, e.format_tag, e.external_link, e.notes,
+               c.name as community_name, c.image as community_image,
+               v.name as venue_name, v.address as venue_address, v.gmaps as venue_gmaps, v.lat as venue_lat, v.lng as venue_lng,
+               GROUP_CONCAT(r.day, ',') as recurrence_days
+        FROM events e
+        LEFT JOIN communities c ON e.community_id = c.id
+        LEFT JOIN venues v ON e.venue_id = v.id
+        LEFT JOIN event_recurrences r ON r.event_id = e.id
+        WHERE e.active = 1 AND v.city = ?
+    '''
+    params = [city]
+    if day:
+        base += ''' AND (
+            e.id IN (SELECT event_id FROM event_recurrences WHERE day = ?)
+            OR e.specific_date = ?
+        )'''
+        params += [day, date or '']
+    base += ' GROUP BY e.id ORDER BY e.time ASC'
+    rows = db.execute(base, params).fetchall()
+    result = []
+    for r in rows:
+        d = dict(r)
+        d['recurrence_days'] = d['recurrence_days'].split(',') if d['recurrence_days'] else []
+        result.append(d)
+    return result
+
+@app.route('/api/events')
+def get_events():
+    city = request.args.get('city', 'Amsterdam')
+    day = request.args.get('day')
+    date = request.args.get('date')
+    return jsonify(fetch_events(city, day, date))
+
+@app.route('/api/events/all')
+def get_all_events():
+    city = request.args.get('city', 'Amsterdam')
+    days_order = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']
+    result = {}
+    for day in days_order:
+        events = fetch_events(city, day)
+        if events:
+            result[day] = events
+    return jsonify(result)
+
+@app.route('/api/cities')
+def get_cities():
+    db = get_db()
+    rows = db.execute('SELECT DISTINCT city FROM venues ORDER BY city').fetchall()
+    return jsonify([r['city'] for r in rows])
+
+# --- Admin API ---
+
+@app.route('/api/admin/communities', methods=['GET'])
+@token_required
+def admin_communities():
+    db = get_db()
+    rows = db.execute('SELECT * FROM communities ORDER BY name').fetchall()
+    return jsonify([dict(r) for r in rows])
+
+@app.route('/api/admin/communities', methods=['POST'])
+@token_required
+def create_community():
+    data = request.json
+    db = get_db()
+    cur = db.execute('INSERT INTO communities (name, image) VALUES (?, ?)',
+                     (data['name'], data.get('image')))
+    db.commit()
+    return jsonify({'id': cur.lastrowid}), 201
+
+@app.route('/api/admin/communities/<int:id>', methods=['PUT'])
+@token_required
+def update_community(id):
+    data = request.json
+    db = get_db()
+    db.execute('UPDATE communities SET name=?, image=? WHERE id=?',
+               (data['name'], data.get('image'), id))
+    db.commit()
+    return jsonify({'ok': True})
+
+@app.route('/api/admin/communities/<int:id>', methods=['DELETE'])
+@token_required
+def delete_community(id):
+    db = get_db()
+    db.execute('DELETE FROM communities WHERE id=?', (id,))
+    db.commit()
+    return jsonify({'ok': True})
+
+@app.route('/api/admin/venues', methods=['GET'])
+@token_required
+def admin_venues():
+    db = get_db()
+    rows = db.execute('SELECT * FROM venues ORDER BY city, name').fetchall()
+    return jsonify([dict(r) for r in rows])
+
+@app.route('/api/admin/venues', methods=['POST'])
+@token_required
+def create_venue():
+    data = request.json
+    db = get_db()
+    cur = db.execute('INSERT INTO venues (name, address, gmaps, lat, lng, city) VALUES (?, ?, ?, ?, ?, ?)',
+                     (data['name'], data.get('address'), data.get('gmaps'), data.get('lat'), data.get('lng'), data.get('city', 'Amsterdam')))
+    db.commit()
+    return jsonify({'id': cur.lastrowid}), 201
+
+@app.route('/api/admin/venues/<int:id>', methods=['PUT'])
+@token_required
+def update_venue(id):
+    data = request.json
+    db = get_db()
+    db.execute('UPDATE venues SET name=?, address=?, gmaps=?, lat=?, lng=?, city=? WHERE id=?',
+               (data['name'], data.get('address'), data.get('gmaps'), data.get('lat'), data.get('lng'), data.get('city', 'Amsterdam'), id))
+    db.commit()
+    return jsonify({'ok': True})
+
+@app.route('/api/admin/venues/<int:id>', methods=['DELETE'])
+@token_required
+def delete_venue(id):
+    db = get_db()
+    db.execute('DELETE FROM venues WHERE id=?', (id,))
+    db.commit()
+    return jsonify({'ok': True})
+
+@app.route('/api/admin/events', methods=['GET'])
+@token_required
+def admin_events():
+    db = get_db()
+    rows = db.execute('''
+        SELECT e.*, c.name as community_name, v.name as venue_name,
+               GROUP_CONCAT(r.day, ',') as recurrence_days
+        FROM events e
+        LEFT JOIN communities c ON e.community_id = c.id
+        LEFT JOIN venues v ON e.venue_id = v.id
+        LEFT JOIN event_recurrences r ON r.event_id = e.id
+        GROUP BY e.id
+        ORDER BY e.time ASC
+    ''').fetchall()
+    result = []
+    for r in rows:
+        d = dict(r)
+        d['recurrence_days'] = d['recurrence_days'].split(',') if d['recurrence_days'] else []
+        result.append(d)
+    return jsonify(result)
+
+@app.route('/api/admin/events', methods=['POST'])
+@token_required
+def create_event():
+    data = request.json
+    db = get_db()
+    cur = db.execute('''INSERT INTO events
+        (community_id, venue_id, title, specific_date, time, time_end, format_tag, external_link, notes, active)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''',
+        (data.get('community_id'), data.get('venue_id'), data['title'],
+         data.get('specific_date'), data.get('time'), data.get('time_end'),
+         data.get('format_tag'), data.get('external_link'), data.get('notes'),
+         data.get('active', 1)))
+    event_id = cur.lastrowid
+    for day in data.get('recurrence_days', []):
+        db.execute('INSERT INTO event_recurrences (event_id, day) VALUES (?, ?)', (event_id, day))
+    db.commit()
+    return jsonify({'id': event_id}), 201
+
+@app.route('/api/admin/events/<int:id>', methods=['PUT'])
+@token_required
+def update_event(id):
+    data = request.json
+    db = get_db()
+    db.execute('''UPDATE events SET
+        community_id=?, venue_id=?, title=?, specific_date=?,
+        time=?, time_end=?, format_tag=?, external_link=?, notes=?, active=?
+        WHERE id=?''',
+        (data.get('community_id'), data.get('venue_id'), data['title'],
+         data.get('specific_date'), data.get('time'), data.get('time_end'),
+         data.get('format_tag'), data.get('external_link'), data.get('notes'),
+         data.get('active', 1), id))
+    db.execute('DELETE FROM event_recurrences WHERE event_id=?', (id,))
+    for day in data.get('recurrence_days', []):
+        db.execute('INSERT INTO event_recurrences (event_id, day) VALUES (?, ?)', (id, day))
+    db.commit()
+    return jsonify({'ok': True})
+
+@app.route('/api/admin/events/<int:id>', methods=['DELETE'])
+@token_required
+def delete_event(id):
+    db = get_db()
+    db.execute('DELETE FROM event_recurrences WHERE event_id=?', (id,))
+    db.execute('DELETE FROM events WHERE id=?', (id,))
+    db.commit()
+    return jsonify({'ok': True})
+
+@app.route('/api/venue-directory')
+def venue_directory():
+    city = request.args.get('city', 'Amsterdam')
+    db = get_db()
+    rows = db.execute(
+        'SELECT * FROM venue_directory WHERE city = ? AND lat IS NOT NULL AND lng IS NOT NULL',
+        (city,)
+    ).fetchall()
+    return jsonify([dict(r) for r in rows])
+
+
+# --- Pages ---
+
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+@app.route('/admin')
+def admin():
+    return render_template('admin.html')
+
+if __name__ == '__main__':
+    init_db()
+    seed_db()
+    seed_directory()
+    app.run(debug=True, host='0.0.0.0', port=5001)

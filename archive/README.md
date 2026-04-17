@@ -1,2 +1,0 @@
-# chessscenes
-Chess Scenes.

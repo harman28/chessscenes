@@ -1,6 +1,2 @@
-flask
-flask-sqlalchemy
-pyjwt
-werkzeug
-python-dotenv
-gunicorn
+flask>=3.0
+pyjwt>=2.8

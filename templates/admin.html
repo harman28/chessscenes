@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin — Chess Today</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --maroon: #6B1A2A;
+      --maroon-dark: #3a0e16;
+      --cream: #f5e6e0;
+      --bg: #1a1a1a;
+      --surface: #242424;
+      --border: rgba(255,255,255,0.08);
+      --text: #e8e0dc;
+      --muted: #888;
+      --accent: #8a2a3c;
+    }
+    body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; font-weight: 300; font-size: 14px; }
+
+    /* Login */
+    #login-screen {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .login-box {
+      background: var(--surface);
+      border: 0.5px solid var(--border);
+      border-radius: 12px;
+      padding: 32px;
+      width: 320px;
+      text-align: center;
+    }
+    .login-box h1 { font-size: 18px; font-weight: 500; margin-bottom: 24px; }
+    .login-box input {
+      width: 100%; padding: 10px 14px; border-radius: 8px;
+      border: 0.5px solid var(--border); background: var(--bg);
+      color: var(--text); font-family: inherit; font-size: 14px; margin-bottom: 12px;
+    }
+    .login-box button {
+      width: 100%; padding: 10px; border-radius: 8px;
+      background: var(--maroon); border: none; color: var(--cream);
+      font-family: inherit; font-size: 14px; cursor: pointer;
+    }
+    .error { color: #e24b4a; font-size: 13px; margin-top: 8px; }
+
+    /* Main layout */
+    #admin-screen { display: none; }
+    .topbar {
+      display: flex; align-items: center; gap: 16px;
+      padding: 14px 24px;
+      border-bottom: 0.5px solid var(--border);
+    }
+    .topbar h1 { font-size: 15px; font-weight: 500; flex: 1; }
+    .topbar a { color: var(--muted); font-size: 13px; text-decoration: none; }
+
+    .tabs {
+      display: flex; gap: 0;
+      border-bottom: 0.5px solid var(--border);
+      padding: 0 24px;
+    }
+    .tab {
+      padding: 12px 16px; cursor: pointer; font-size: 13px; color: var(--muted);
+      border-bottom: 2px solid transparent; margin-bottom: -1px;
+    }
+    .tab.active { color: var(--cream); border-bottom-color: var(--maroon); }
+
+    .tab-content { display: none; padding: 24px; }
+    .tab-content.active { display: block; }
+
+    /* Table */
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; }
+    th { text-align: left; font-size: 11px; font-weight: 500; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; padding: 8px 12px; border-bottom: 0.5px solid var(--border); }
+    td { padding: 10px 12px; border-bottom: 0.5px solid var(--border); vertical-align: top; font-size: 13px; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: rgba(255,255,255,0.02); }
+
+    .thumb { width: 36px; height: 36px; border-radius: 6px; object-fit: cover; background: var(--surface); }
+    .badge { display: inline-block; font-size: 11px; padding: 2px 8px; border-radius: 12px; background: rgba(107,26,42,0.3); color: #e8b0b8; }
+    .inactive { opacity: 0.4; }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 6px 12px; border-radius: 7px; border: 0.5px solid var(--border);
+      background: none; color: var(--text); font-family: inherit; font-size: 12px;
+      cursor: pointer; transition: background 0.1s;
+    }
+    .btn:hover { background: rgba(255,255,255,0.05); }
+    .btn-primary { background: var(--maroon); border-color: var(--maroon); color: var(--cream); }
+    .btn-primary:hover { background: var(--accent); }
+    .btn-danger { color: #e24b4a; }
+    .btn-danger:hover { background: rgba(226,75,74,0.1); }
+    .row-actions { display: flex; gap: 6px; }
+
+    .add-row { padding: 16px 0 0; }
+
+    /* Modal */
+    .modal-bg {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.6);
+      display: flex; align-items: center; justify-content: center;
+      z-index: 100; padding: 24px;
+    }
+    .modal {
+      background: var(--surface); border: 0.5px solid var(--border);
+      border-radius: 14px; padding: 28px; width: 100%; max-width: 480px;
+      max-height: 90vh; overflow-y: auto;
+    }
+    .modal h2 { font-size: 16px; font-weight: 500; margin-bottom: 20px; }
+    .field { margin-bottom: 14px; }
+    .field label { display: block; font-size: 12px; color: var(--muted); margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.4px; }
+    .field input, .field select, .field textarea {
+      width: 100%; padding: 9px 12px; border-radius: 8px;
+      border: 0.5px solid var(--border); background: var(--bg);
+      color: var(--text); font-family: inherit; font-size: 14px;
+    }
+    .field textarea { resize: vertical; min-height: 64px; }
+    .field select option { background: #1a1a1a; }
+    .modal-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 20px; }
+    .toggle-row { display: flex; align-items: center; gap: 10px; }
+    .toggle-row input[type=checkbox] { width: auto; }
+  </style>
+</head>
+<body>
+
+<!-- Login -->
+<div id="login-screen">
+  <div class="login-box">
+    <h1>Chess Today Admin</h1>
+    <input type="password" id="password-input" placeholder="Password" onkeydown="if(event.key==='Enter')doLogin()">
+    <button onclick="doLogin()">Sign in</button>
+    <div class="error" id="login-error"></div>
+  </div>
+</div>
+
+<!-- Admin -->
+<div id="admin-screen">
+  <div class="topbar">
+    <h1>Chess Today — Admin</h1>
+    <a href="/">View site ↗</a>
+    <button class="btn" onclick="logout()">Sign out</button>
+  </div>
+
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab('events')">Events</div>
+    <div class="tab" onclick="switchTab('communities')">Communities</div>
+    <div class="tab" onclick="switchTab('venues')">Venues</div>
+  </div>
+
+  <!-- Events -->
+  <div class="tab-content active" id="tab-events">
+    <div class="add-row" style="padding-top:0; padding-bottom:16px;">
+      <button class="btn btn-primary" onclick="openModal('event')">+ New event</button>
+    </div>
+    <div class="table-wrap">
+      <table id="events-table">
+        <thead><tr><th>Title</th><th>Community</th><th>Venue</th><th>Day/Date</th><th>Time</th><th>Format</th><th>Status</th><th></th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Communities -->
+  <div class="tab-content" id="tab-communities">
+    <div class="add-row" style="padding-top:0; padding-bottom:16px;">
+      <button class="btn btn-primary" onclick="openModal('community')">+ New community</button>
+    </div>
+    <div class="table-wrap">
+      <table id="communities-table">
+        <thead><tr><th></th><th>Name</th><th></th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Venues -->
+  <div class="tab-content" id="tab-venues">
+    <div class="add-row" style="padding-top:0; padding-bottom:16px;">
+      <button class="btn btn-primary" onclick="openModal('venue')">+ New venue</button>
+    </div>
+    <div class="table-wrap">
+      <table id="venues-table">
+        <thead><tr><th>Name</th><th>Address</th><th>City</th><th></th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal-bg" id="modal" style="display:none" onclick="if(event.target===this)closeModal()">
+  <div class="modal" id="modal-inner"></div>
+</div>
+
+<script>
+let token = localStorage.getItem('ct_token') || '';
+let communities = [], venues = [], events = [];
+let editing = {};
+
+// --- Auth ---
+async function doLogin() {
+  const pw = document.getElementById('password-input').value;
+  const res = await fetch('/api/login', {
+    method: 'POST', headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({password: pw})
+  });
+  const data = await res.json();
+  if (data.token) {
+    token = data.token;
+    localStorage.setItem('ct_token', token);
+    showAdmin();
+  } else {
+    document.getElementById('login-error').textContent = 'Wrong password';
+  }
+}
+
+function logout() {
+  localStorage.removeItem('ct_token');
+  location.reload();
+}
+
+function authHeaders() {
+  return {'Content-Type':'application/json', 'Authorization': 'Bearer ' + token};
+}
+
+async function verifyToken() {
+  const res = await fetch('/api/admin/events', {headers: authHeaders()});
+  return res.ok;
+}
+
+function showAdmin() {
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('admin-screen').style.display = 'block';
+  loadAll();
+}
+
+// --- Data ---
+async function loadAll() {
+  [communities, venues, events] = await Promise.all([
+    fetch('/api/admin/communities', {headers: authHeaders()}).then(r => r.json()),
+    fetch('/api/admin/venues', {headers: authHeaders()}).then(r => r.json()),
+    fetch('/api/admin/events', {headers: authHeaders()}).then(r => r.json()),
+  ]);
+  renderEvents();
+  renderCommunities();
+  renderVenues();
+}
+
+// --- Render ---
+function renderEvents() {
+  const tbody = document.querySelector('#events-table tbody');
+  tbody.innerHTML = events.map(e => `
+    <tr class="${e.active ? '' : 'inactive'}">
+      <td>${e.title}</td>
+      <td>${e.community_name || '—'}</td>
+      <td>${e.venue_name || '—'}</td>
+      <td>${(e.recurrence_days && e.recurrence_days.length ? e.recurrence_days.join(', ') : '') || e.specific_date || '—'}</td>
+      <td>${e.time || '—'}</td>
+      <td>${e.format_tag ? `<span class="badge">${e.format_tag}</span>` : '—'}</td>
+      <td>${e.active ? 'Active' : 'Hidden'}</td>
+      <td><div class="row-actions">
+        <button class="btn" onclick="openModal('event', ${e.id})">Edit</button>
+        <button class="btn btn-danger" onclick="deleteRow('event', ${e.id})">Delete</button>
+      </div></td>
+    </tr>`).join('');
+}
+
+function renderCommunities() {
+  const tbody = document.querySelector('#communities-table tbody');
+  tbody.innerHTML = communities.map(c => `
+    <tr>
+      <td>${c.image ? `<img class="thumb" src="${c.image}" onerror="this.style.display='none'">` : '—'}</td>
+      <td>${c.name}</td>
+      <td><div class="row-actions">
+        <button class="btn" onclick="openModal('community', ${c.id})">Edit</button>
+        <button class="btn btn-danger" onclick="deleteRow('community', ${c.id})">Delete</button>
+      </div></td>
+    </tr>`).join('');
+}
+
+function renderVenues() {
+  const tbody = document.querySelector('#venues-table tbody');
+  tbody.innerHTML = venues.map(v => `
+    <tr>
+      <td>${v.name}</td>
+      <td>${v.address || '—'}</td>
+      <td>${v.city}</td>
+      <td><div class="row-actions">
+        <button class="btn" onclick="openModal('venue', ${v.id})">Edit</button>
+        <button class="btn btn-danger" onclick="deleteRow('venue', ${v.id})">Delete</button>
+      </div></td>
+    </tr>`).join('');
+}
+
+// --- Tabs ---
+function switchTab(name) {
+  document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', ['events','communities','venues'][i] === name));
+  document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+}
+
+// --- Modal ---
+function openModal(type, id) {
+  editing = {type, id};
+  const item = id ? (type === 'event' ? events : type === 'community' ? communities : venues).find(x => x.id === id) : null;
+  const modal = document.getElementById('modal-inner');
+  modal.innerHTML = type === 'event' ? eventForm(item) : type === 'community' ? communityForm(item) : venueForm(item);
+  document.getElementById('modal').style.display = 'flex';
+}
+
+function closeModal() {
+  document.getElementById('modal').style.display = 'none';
+}
+
+function eventForm(e) {
+  const communityOptions = communities.map(c => `<option value="${c.id}" ${e && e.community_id == c.id ? 'selected' : ''}>${c.name}</option>`).join('');
+  const venueOptions = venues.map(v => `<option value="${v.id}" ${e && e.venue_id == v.id ? 'selected' : ''}>${v.name} (${v.city})</option>`).join('');
+  const days = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+  const selDays = e && e.recurrence_days ? e.recurrence_days : [];
+  const dayCheckboxes = days.map(d => `<label style="display:inline-flex;align-items:center;gap:5px;margin-right:10px;margin-bottom:6px;font-size:13px;text-transform:none;letter-spacing:0;color:var(--text)"><input type="checkbox" class="day-cb" value="${d}" ${selDays.includes(d) ? 'checked' : ''}>${d}</label>`).join('');
+  const formats = ['Club night','Blitz','Rapid','Open play','Casual','Tournament'];
+  const formatOptions = formats.map(f => `<option value="${f}" ${e && e.format_tag === f ? 'selected' : ''}>${f}</option>`).join('');
+  return `
+    <h2>${e ? 'Edit event' : 'New event'}</h2>
+    <div class="field"><label>Title</label><input id="f-title" value="${e ? e.title : ''}"></div>
+    <div class="field"><label>Community</label><select id="f-community"><option value="">— none —</option>${communityOptions}</select></div>
+    <div class="field"><label>Venue</label><select id="f-venue"><option value="">— none —</option>${venueOptions}</select></div>
+    <div class="field"><label>Recurring days</label><div style="margin-top:4px;line-height:2">${dayCheckboxes}</div></div>
+    <div class="field"><label>Specific date (if one-off)</label><input type="date" id="f-date" value="${e && e.specific_date ? e.specific_date : ''}"></div>
+    <div class="field" style="display:flex;gap:12px"><div style="flex:1"><label>Start time</label><input id="f-time" placeholder="20:00" value="${e && e.time ? e.time : ''}"></div><div style="flex:1"><label>End time</label><input id="f-time-end" placeholder="22:00" value="${e && e.time_end ? e.time_end : ''}"></div></div>
+    <div class="field"><label>Format tag</label><select id="f-format"><option value="">— none —</option>${formatOptions}</select></div>
+    <div class="field"><label>External link</label><input id="f-link" value="${e && e.external_link ? e.external_link : ''}"></div>
+    <div class="field"><label>Notes</label><textarea id="f-notes">${e && e.notes ? e.notes : ''}</textarea></div>
+    <div class="field"><div class="toggle-row"><input type="checkbox" id="f-active" ${!e || e.active ? 'checked' : ''}><label for="f-active" style="text-transform:none;letter-spacing:0;font-size:13px;color:var(--text)">Active (show on site)</label></div></div>
+    <div class="modal-actions">
+      <button class="btn" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveEvent(${e ? e.id : 'null'})">Save</button>
+    </div>`;
+}
+
+function communityForm(c) {
+  return `
+    <h2>${c ? 'Edit community' : 'New community'}</h2>
+    <div class="field"><label>Name</label><input id="f-name" value="${c ? c.name : ''}"></div>
+    <div class="field"><label>Image URL</label><input id="f-image" value="${c && c.image ? c.image : ''}"></div>
+    <div class="modal-actions">
+      <button class="btn" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveCommunity(${c ? c.id : 'null'})">Save</button>
+    </div>`;
+}
+
+function venueForm(v) {
+  return `
+    <h2>${v ? 'Edit venue' : 'New venue'}</h2>
+    <div class="field"><label>Name</label><input id="f-name" value="${v ? v.name : ''}"></div>
+    <div class="field"><label>Address</label><input id="f-address" value="${v && v.address ? v.address : ''}"></div>
+    <div class="field"><label>City</label><input id="f-city" value="${v ? v.city : 'Amsterdam'}"></div>
+    <div class="field"><label>Google Maps link</label><input id="f-gmaps" value="${v && v.gmaps ? v.gmaps : ''}"></div>
+    <div class="field" style="display:flex;gap:12px"><div style="flex:1"><label>Latitude</label><input id="f-lat" placeholder="52.3728" value="${v && v.lat ? v.lat : ''}"></div><div style="flex:1"><label>Longitude</label><input id="f-lng" placeholder="4.8936" value="${v && v.lng ? v.lng : ''}"></div></div>
+    <div class="modal-actions">
+      <button class="btn" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveVenue(${v ? v.id : 'null'})">Save</button>
+    </div>`;
+}
+
+// --- Save / Delete ---
+function val(id) { const el = document.getElementById(id); return el ? el.value.trim() || null : null; }
+
+async function saveEvent(id) {
+  const data = {
+    title: val('f-title'),
+    community_id: val('f-community') || null,
+    venue_id: val('f-venue') || null,
+    recurrence_days: Array.from(document.querySelectorAll('.day-cb:checked')).map(cb => cb.value),
+    specific_date: val('f-date'),
+    time: val('f-time'),
+    time_end: val('f-time-end'),
+    format_tag: val('f-format'),
+    external_link: val('f-link'),
+    notes: val('f-notes'),
+    active: document.getElementById('f-active').checked ? 1 : 0,
+  };
+  const url = id ? `/api/admin/events/${id}` : '/api/admin/events';
+  await fetch(url, {method: id ? 'PUT' : 'POST', headers: authHeaders(), body: JSON.stringify(data)});
+  closeModal(); loadAll();
+}
+
+async function saveCommunity(id) {
+  const data = {name: val('f-name'), image: val('f-image')};
+  const url = id ? `/api/admin/communities/${id}` : '/api/admin/communities';
+  await fetch(url, {method: id ? 'PUT' : 'POST', headers: authHeaders(), body: JSON.stringify(data)});
+  closeModal(); loadAll();
+}
+
+async function saveVenue(id) {
+  const data = {name: val('f-name'), address: val('f-address'), city: val('f-city') || 'Amsterdam', gmaps: val('f-gmaps'), lat: val('f-lat') ? parseFloat(val('f-lat')) : null, lng: val('f-lng') ? parseFloat(val('f-lng')) : null};
+  const url = id ? `/api/admin/venues/${id}` : '/api/admin/venues';
+  await fetch(url, {method: id ? 'PUT' : 'POST', headers: authHeaders(), body: JSON.stringify(data)});
+  closeModal(); loadAll();
+}
+
+async function deleteRow(type, id) {
+  if (!confirm('Delete this item?')) return;
+  await fetch(`/api/admin/${type === 'event' ? 'events' : type === 'community' ? 'communities' : 'venues'}/${id}`,
+    {method: 'DELETE', headers: authHeaders()});
+  loadAll();
+}
+
+// --- Init ---
+if (token) {
+  verifyToken().then(ok => {
+    if (ok) showAdmin(); else token = '';
+  });
+}
+</script>
+</body>
+</html>
