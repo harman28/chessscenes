@@ -79,38 +79,41 @@ def init_db():
     db.close()
 
 def seed_directory():
+    import csv as csv_module
     db = sqlite3.connect(DATABASE)
     db.row_factory = sqlite3.Row
     db.execute('DELETE FROM venue_directory')
     db.commit()
 
-    # All data taken directly from chessscenesdatapublic.csv — no invented values
-    venues = [
-        # name, labels, city, lat, lng, gmaps, link, image, note
-        ('Former Cafe Gambit',             'chess memorial',             'Amsterdam', 52.3755148120896,   4.882690917303496,  'https://maps.app.goo.gl/AtdP5dHQVRihL9yt8', None,                                                                                         'https://i.imgur.com/y5eCRZY.jpeg', 'Defunct chess bar. When it closed in 2005, the chess club needed a new home, and moved to Laurierboom.'),
-        ('Former Max Euwe Schaakhuis',     'chess memorial',             'Amsterdam', 52.368472045937146, 4.8712247131282576, 'https://maps.app.goo.gl/NkxYzuvTdSqDzWNh9', None,                                                                                         'https://i.imgur.com/DH33XAh.jpeg', None),
-        ('Giant Chess Board Frederiksplein','chess board',               'Amsterdam', 52.360153,          4.900031,           None,                                        'https://www.nporadio5.nl/fragmenten/de-avond-van-5/019cadda-7dca-72ec-857d-344be0d7499d/2026-03-02-xl-schaakbord-in-amsterdam-is-terug', None, 'The same board that used to be on Max Euweplein and Museumplein has now found a new home on Frederiksplein.'),
-        ('Max Euweplein',                  'chess memorial, chess board','Amsterdam', 52.362969674148395, 4.88370529837886,   'https://maps.app.goo.gl/BdbA8DiMEQxf37us9', None,                                                                                         'https://i.imgur.com/AcuubuT.jpeg', 'Square named after former Dutch World Champion. 5 outdoor chess tables and a memorial.'),
-        ('Schaak en Go | Het Paard',       'chess shop',                 'Amsterdam', 52.38410008633985,  4.885394165335662,  'https://maps.app.goo.gl/ycLy5MS6BBYACa3z9', 'https://www.schaakengo.nl/',                                                                 'https://i.imgur.com/B6nE55x.jpeg', 'Notable chess shop.'),
-        ('Chess Art',                      'chess memorial, chess board','Amsterdam', 52.38502130682298,  4.882785843172775,  None,                                        None,                                                                                         'https://i.imgur.com/e8Y9KwR.jpeg', '5 chessboards in a step formation, one with carved pieces. One board is at a comfortable playing height.'),
-        ('Chess Table Haarlemmerplein',    'chess board',                'Amsterdam', 52.38471574220395,  4.8855323401516735, 'https://maps.app.goo.gl/Pt2zN4pDBFiQ8ddx8', None,                                                                                         'https://i.imgur.com/8qnVOnL.png', 'Abandoned outdoor chess tables.'),
-        ('Chess Table Da Costastraat',     'chess board',                'Amsterdam', 52.367397288232056, 4.876081661186785,  'https://maps.app.goo.gl/cDYhY7noTk7SDkwYA', None,                                                                                         'https://i.imgur.com/SzOpMcl.png', 'Abandoned outdoor chess tables.'),
-        ('Chess Table Krugerplein',        'chess board',                'Amsterdam', 52.35418582496915,  4.919973076573896,  'https://maps.app.goo.gl/bz97grhNwenNmFBLA', None,                                                                                         'https://i.imgur.com/aRMNNzO.jpeg', 'Just a chess table in the middle of a playground.'),
-        ('Giant Chess Board',              'chess board',                'Amsterdam', 52.36404452205097,  4.866087393855511,  'https://maps.app.goo.gl/N9mAaZpxfyAJDEW6',  None,                                                                                         None,                               'Giant board at the corner of the playground. Pieces locked in the steel boxes.'),
-        # Utrecht
-        ('Schaakcafe Utrecht',             'chess club',                 'Utrecht',   52.09976268371182,  5.103186467326744,  'https://maps.app.goo.gl/j7A7ARS1a3TkKk6',   'https://www.schakeninutrecht.nl/schaakcafe/',                                                'https://i.imgur.com/wlhqWob.jpeg', 'Every Friday afternoon from 13:30 onwards till 17:00.'),
-        ('Schaaktafels',                   'chess board',                'Utrecht',   52.097663330948684, 5.022259352304256,  'https://maps.app.goo.gl/Dx121rmGCnhm935N8', None,                                                                                         'https://i.imgur.com/F9H8Txk.jpeg', 'Chess tables in Maximapark. Meetup on Sunday mornings.'),
-        # The Hague
-        ('Stichting En Passant',           'chess club',                 'The Hague', 52.07432068089482,  4.311602878673388,  'https://maps.app.goo.gl/2A2fRFpQfjugkGRg9', 'https://www.stichtingenpassant.nl/',                                                         'https://i.imgur.com/fVrdQDp.jpeg', 'Chess on weekends.'),
-        # Delft
-        ('KopieKoffie',                    'chess meetup',               'Delft',     52.00047872546669,  4.3460540624039785, 'https://maps.app.goo.gl/zz2rpLMpYdpqykU98', 'https://kopiekoffie.nl/blog/events/schaken-bij-kopiekoffie/',                                'https://i.imgur.com/pC1qmvK.jpeg', 'Chess on Sundays at 3.30pm.'),
-    ]
+    csv_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'Chess Scenes (Public) - chess_scenes_venues.csv')
+    if not os.path.exists(csv_path):
+        db.close()
+        return
 
-    for name, labels, city, lat, lng, gmaps, link, image, note in venues:
-        db.execute(
-            'INSERT INTO venue_directory (name, labels, address, city, lat, lng, gmaps, link, image, note) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-            (name, labels, None, city, lat, lng, gmaps, link, image, note)
-        )
+    with open(csv_path, newline='', encoding='utf-8') as f:
+        reader = csv_module.DictReader(f)
+        for row in reader:
+            name   = row['name'].strip()
+            labels = row['labels'].strip() or None
+            city   = row['city'].strip()
+            note   = row['note'].strip() or None
+            gmaps  = row['gmap'].strip() or None
+            link   = row['link'].strip() or None
+            image  = row['image'].strip() or None
+            lat, lng = None, None
+            coords = row['coordinates'].strip()
+            if coords:
+                parts = coords.split(',')
+                if len(parts) == 2:
+                    try:
+                        lat = float(parts[0].strip())
+                        lng = float(parts[1].strip())
+                    except ValueError:
+                        pass
+            db.execute(
+                'INSERT INTO venue_directory (name, labels, address, city, lat, lng, gmaps, link, image, note) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+                (name, labels, None, city, lat, lng, gmaps, link, image, note)
+            )
 
     db.commit()
     db.close()
