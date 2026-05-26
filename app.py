@@ -288,7 +288,7 @@ def get_all_events():
 @app.route('/api/cities')
 def get_cities():
     db = get_db()
-    rows = db.execute('SELECT DISTINCT city FROM venues ORDER BY city').fetchall()
+    rows = db.execute('SELECT DISTINCT city FROM venue_directory ORDER BY city').fetchall()
     return jsonify([r['city'] for r in rows])
 
 # --- Admin API ---
