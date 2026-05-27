@@ -264,6 +264,7 @@ async function loadInactivePins() {
       image: v.image,
       gmaps: v.gmaps,
       link: v.link,
+      days: v.days,
     }));
     inactiveMarkers.push(marker);
   });
@@ -301,12 +302,22 @@ function updateActiveMarkers(events) {
   if (bounds.length) map.fitBounds(bounds, {padding:[60,60], maxZoom:15});
 }
 
-function showMapCard({title, subtitle, note, image, gmaps, link, eventId}) {
+function activityLine(labels, days) {
+  const l = (labels || '').toLowerCase();
+  const isLocation = l.includes('chess board') || l.includes('chess memorial') || l.includes('chess shop') || l.includes('chess museum');
+  if (days) return `Plays on ${days}`;
+  if (!isLocation) return 'Open venue — check their hours';
+  return null;
+}
+
+function showMapCard({title, subtitle, note, image, gmaps, link, days, eventId}) {
   const imgHtml = image
     ? `<div class="card-image"><img src="${image}" alt="" onerror="this.parentElement.innerHTML='♟'"></div>`
     : `<div class="card-image">♟</div>`;
 
   const detailRows = [];
+  const activity = activityLine(subtitle, days);
+  if (activity) detailRows.push(`<div class="detail-row"><span class="detail-label">When</span><span>${activity}</span></div>`);
   if (note) detailRows.push(`<div class="detail-note" style="margin-top:0;margin-bottom:6px">${note}</div>`);
   const links = [];
   if (gmaps) links.push(`<a class="detail-link" href="${gmaps}" target="_blank" rel="noopener">Open in maps ↗</a>`);

@@ -66,7 +66,8 @@ def init_db():
             gmaps TEXT,
             link TEXT,
             image TEXT,
-            note TEXT
+            note TEXT,
+            days TEXT
         );
 
         CREATE TABLE IF NOT EXISTS event_recurrences (
@@ -76,6 +77,12 @@ def init_db():
         );
     ''')
     db.commit()
+    # Migrations
+    try:
+        db.execute('ALTER TABLE venue_directory ADD COLUMN days TEXT')
+        db.commit()
+    except Exception:
+        pass  # column already exists
     db.close()
 
 def seed_directory():
@@ -100,6 +107,7 @@ def seed_directory():
             gmaps  = row['gmap'].strip() or None
             link   = row['link'].strip() or None
             image  = row['image'].strip() or None
+            days   = row['days'].strip() or None
             lat, lng = None, None
             coords = row['coordinates'].strip()
             if coords:
@@ -111,8 +119,8 @@ def seed_directory():
                     except ValueError:
                         pass
             db.execute(
-                'INSERT INTO venue_directory (name, labels, address, city, lat, lng, gmaps, link, image, note) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-                (name, labels, None, city, lat, lng, gmaps, link, image, note)
+                'INSERT INTO venue_directory (name, labels, address, city, lat, lng, gmaps, link, image, note, days) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+                (name, labels, None, city, lat, lng, gmaps, link, image, note, days)
             )
 
     db.commit()
