@@ -20,15 +20,15 @@
     html, body { height: 100%; background: var(--maroon); color: var(--cream); font-family: 'DM Sans', sans-serif; font-weight: 300; }
 
     /* Mobile */
-    #app { min-height: 100vh; }
-    .sidebar { padding: 48px 24px 64px; max-width: 480px; margin: 0 auto; }
-    #map-pane { display: none; }
+    #app { display: flex; flex-direction: column; }
+    .sidebar { padding: 48px 24px 40px; max-width: 480px; margin: 0 auto; width: 100%; }
+    #map-pane { display: block; height: 300px; position: relative; flex-shrink: 0; }
 
     /* Desktop */
     @media (min-width: 768px) {
-      #app { display: flex; height: 100vh; overflow: hidden; }
+      #app { flex-direction: row; height: 100vh; overflow: hidden; }
       .sidebar { width: 400px; flex-shrink: 0; max-width: none; margin: 0; padding: 40px 28px; overflow-y: auto; height: 100vh; }
-      #map-pane { display: block; flex: 1; height: 100vh; position: relative; }
+      #map-pane { flex: 1; height: 100vh; }
     }
 
     /* Hero */
@@ -222,7 +222,7 @@ async function loadCities() {
 // ── Map ──
 
 function initMap() {
-  if (map || window.innerWidth < 768) return;
+  if (map) return;
   map = L.map('map-pane', {zoomControl: true, scrollWheelZoom: true});
   const tileLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {maxZoom: 19});
   tileLayer.once('load', () => loadInactivePins());
