@@ -254,6 +254,7 @@ async function loadInactivePins() {
   inactiveMarkers.forEach(m => m.remove());
   inactiveMarkers = [];
 
+  const venueBounds = [];
   venues.forEach(v => {
     if (!v.lat || !v.lng) return;
     const marker = L.marker([v.lat, v.lng], {icon: inactivePinIcon(), zIndexOffset: 0}).addTo(map);
@@ -267,7 +268,9 @@ async function loadInactivePins() {
       days: v.days,
     }));
     inactiveMarkers.push(marker);
+    venueBounds.push([v.lat, v.lng]);
   });
+  if (venueBounds.length) map.fitBounds(venueBounds, {padding:[60,60], maxZoom:14});
 }
 
 function updateActiveMarkers(events) {
@@ -368,6 +371,7 @@ async function onFilterChange() {
   const container = document.getElementById('events-container');
   container.innerHTML = '<div class="loading">Loading…</div>';
   closeMapCard();
+  loadInactivePins();
 
   if (val==='all') {
     const res = await fetch(`/api/events/all?city=${encodeURIComponent(city)}`);
