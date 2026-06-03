@@ -248,7 +248,7 @@ def login():
 
 # --- Public API ---
 
-def fetch_events(city, day=None, date=None):
+def fetch_events(city=None, day=None, date=None):
     db = get_db()
     base = '''
         SELECT DISTINCT e.id, e.title, e.specific_date, e.time,
@@ -260,9 +260,12 @@ def fetch_events(city, day=None, date=None):
         LEFT JOIN communities c ON e.community_id = c.id
         LEFT JOIN venues v ON e.venue_id = v.id
         LEFT JOIN event_recurrences r ON r.event_id = e.id
-        WHERE e.active = 1 AND v.city = ?
+        WHERE e.active = 1
     '''
-    params = [city]
+    params = []
+    if city:
+        base += ' AND v.city = ?'
+        params.append(city)
     if day:
         base += ''' AND (
             e.id IN (SELECT event_id FROM event_recurrences WHERE day = ?)
@@ -287,10 +290,14 @@ def fetch_events(city, day=None, date=None):
                lat as venue_lat, lng as venue_lng,
                days as recurrence_days
         FROM venue_directory
-        WHERE city = ? AND days IS NOT NULL AND days != ''
-        AND name NOT IN (SELECT name FROM venues WHERE city = ?)
+        WHERE days IS NOT NULL AND days != ''
     '''
-    vd_params = [city, city]
+    vd_params = []
+    if city:
+        vd_query += ' AND city = ? AND name NOT IN (SELECT name FROM venues WHERE city = ?)'
+        vd_params += [city, city]
+    else:
+        vd_query += ' AND name NOT IN (SELECT name FROM venues)'
     if day:
         vd_query += ' AND days LIKE ?'
         vd_params.append(f'%{day}%')
@@ -307,6 +314,11 @@ def get_events():
     day = request.args.get('day')
     date = request.args.get('date')
     return jsonify(fetch_events(city, day, date))
+
+@app.route('/api/events/global')
+def get_global_events():
+    """All events worldwide with coords — used for map pins."""
+    return jsonify(fetch_events())
 
 @app.route('/api/events/all')
 def get_all_events():
@@ -466,16 +478,24 @@ def delete_event(id):
 
 @app.route('/api/venue-directory')
 def venue_directory():
-    city = request.args.get('city', 'Amsterdam')
+    city = request.args.get('city')
     db = get_db()
-    # Exclude venues whose names match active event venues to avoid duplicate pins
-    rows = db.execute('''
-        SELECT vd.* FROM venue_directory vd
-        WHERE vd.city = ?
-        AND vd.lat IS NOT NULL AND vd.lng IS NOT NULL
-        AND vd.name NOT IN (SELECT name FROM venues WHERE city = ?)
-        AND (vd.days IS NULL OR vd.days = '')
-    ''', (city, city)).fetchall()
+    if city:
+        rows = db.execute('''
+            SELECT vd.* FROM venue_directory vd
+            WHERE vd.city = ?
+            AND vd.lat IS NOT NULL AND vd.lng IS NOT NULL
+            AND vd.name NOT IN (SELECT name FROM venues WHERE city = ?)
+            AND (vd.days IS NULL OR vd.days = '')
+        ''', (city, city)).fetchall()
+    else:
+        # All venues globally — used for map pins
+        rows = db.execute('''
+            SELECT vd.* FROM venue_directory vd
+            WHERE vd.lat IS NOT NULL AND vd.lng IS NOT NULL
+            AND vd.name NOT IN (SELECT name FROM venues)
+            AND (vd.days IS NULL OR vd.days = '')
+        ''').fetchall()
     return jsonify([dict(r) for r in rows])
 
 

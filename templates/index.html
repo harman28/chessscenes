@@ -225,7 +225,7 @@ function initMap() {
   if (map) return;
   map = L.map('map-pane', {zoomControl: true, scrollWheelZoom: true});
   const tileLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {maxZoom: 19});
-  tileLayer.once('load', () => loadInactivePins());
+  tileLayer.once('load', () => loadGlobalPins());
   tileLayer.addTo(map);
 }
 
@@ -245,47 +245,33 @@ function inactivePinIcon() {
   });
 }
 
-async function loadInactivePins() {
+let allInactiveVenues = [];
+let allActiveEvents = [];
+
+async function loadGlobalPins() {
   if (!map) return;
-  const city = document.getElementById('city-select').value || 'Amsterdam';
-  const res = await fetch(`/api/venue-directory?city=${encodeURIComponent(city)}`);
-  const venues = await res.json();
+  const [vRes, eRes] = await Promise.all([
+    fetch('/api/venue-directory'),
+    fetch('/api/events/global'),
+  ]);
+  allInactiveVenues = await vRes.json();
+  allActiveEvents = await eRes.json();
 
-  inactiveMarkers.forEach(m => m.remove());
-  inactiveMarkers = [];
-
-  const venueBounds = [];
-  venues.forEach(v => {
+  allInactiveVenues.forEach(v => {
     if (!v.lat || !v.lng) return;
     const marker = L.marker([v.lat, v.lng], {icon: inactivePinIcon(), zIndexOffset: 0}).addTo(map);
     marker.on('click', () => showMapCard({
-      title: v.name,
-      subtitle: v.labels,
-      note: v.note,
-      image: v.image,
-      gmaps: v.gmaps,
-      link: v.link,
-      days: v.days,
+      title: v.name, subtitle: v.labels, note: v.note,
+      image: v.image, gmaps: v.gmaps, link: v.link, days: v.days,
     }));
     inactiveMarkers.push(marker);
-    venueBounds.push([v.lat, v.lng]);
   });
-  if (venueBounds.length) map.fitBounds(venueBounds, {padding:[60,60], maxZoom:14});
-}
 
-function updateActiveMarkers(events) {
-  if (!map) return;
-  Object.values(activeMarkers).forEach(({marker}) => marker.remove());
-  activeMarkers = {};
-
-  const bounds = [];
-  events.forEach(e => {
+  allActiveEvents.forEach(e => {
     if (!e.venue_lat || !e.venue_lng) return;
-    const lat = parseFloat(e.venue_lat);
-    const lng = parseFloat(e.venue_lng);
-    if (isNaN(lat)||isNaN(lng)) return;
-
-    const marker = L.marker([lat,lng], {icon: activePinIcon(), zIndexOffset: 100}).addTo(map);
+    const lat = parseFloat(e.venue_lat), lng = parseFloat(e.venue_lng);
+    if (isNaN(lat) || isNaN(lng)) return;
+    const marker = L.marker([lat, lng], {icon: activePinIcon(), zIndexOffset: 100}).addTo(map);
     marker.on('click', () => {
       showMapCard({
         title: e.title,
@@ -299,10 +285,21 @@ function updateActiveMarkers(events) {
       scrollToCard(e.id);
     });
     activeMarkers[e.id] = {marker, lat, lng};
-    bounds.push([lat,lng]);
   });
 
-  if (bounds.length) map.fitBounds(bounds, {padding:[60,60], maxZoom:15});
+  panToCity(document.getElementById('city-select').value || 'Amsterdam');
+}
+
+function panToCity(city) {
+  if (!map) return;
+  const bounds = [];
+  allInactiveVenues.forEach(v => { if (v.city === city && v.lat && v.lng) bounds.push([v.lat, v.lng]); });
+  (currentEvents || []).forEach(e => {
+    if (!e.venue_lat || !e.venue_lng) return;
+    const la = parseFloat(e.venue_lat), ln = parseFloat(e.venue_lng);
+    if (!isNaN(la) && !isNaN(ln)) bounds.push([la, ln]);
+  });
+  if (bounds.length) map.fitBounds(bounds, {padding:[60,60], maxZoom:14});
 }
 
 function activityLine(labels, days) {
@@ -371,7 +368,6 @@ async function onFilterChange() {
   const container = document.getElementById('events-container');
   container.innerHTML = '<div class="loading">Loading…</div>';
   closeMapCard();
-  loadInactivePins();
 
   if (val==='all') {
     const res = await fetch(`/api/events/all?city=${encodeURIComponent(city)}`);
@@ -385,7 +381,7 @@ async function onFilterChange() {
     currentEvents = await res.json();
     renderList(currentEvents, container);
   }
-  updateActiveMarkers(currentEvents);
+  panToCity(city);
 }
 
 function renderGrouped(grouped) {
@@ -460,7 +456,7 @@ loadCities().then(() => {
 });
 
 window.addEventListener('resize', () => {
-  if (window.innerWidth>=768 && !map) { initMap(); updateActiveMarkers(currentEvents); }
+  if (window.innerWidth>=768 && !map) { initMap(); }
 });
 </script>
 </body>
