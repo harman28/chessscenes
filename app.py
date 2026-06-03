@@ -276,6 +276,29 @@ def fetch_events(city, day=None, date=None):
         d = dict(r)
         d['recurrence_days'] = d['recurrence_days'].split(',') if d['recurrence_days'] else []
         result.append(d)
+
+    # Also surface venue_directory entries that have days set, as event-like rows.
+    # Offset id to avoid collision with events.id (autoincrement, unlikely to reach 1M).
+    vd_query = '''
+        SELECT id + 1000000 as id, name as title, NULL as specific_date, NULL as time,
+               NULL as time_end, NULL as format_tag, link as external_link, note as notes,
+               NULL as community_name, image as community_image,
+               name as venue_name, address as venue_address, gmaps as venue_gmaps,
+               lat as venue_lat, lng as venue_lng,
+               days as recurrence_days
+        FROM venue_directory
+        WHERE city = ? AND days IS NOT NULL AND days != ''
+        AND name NOT IN (SELECT name FROM venues WHERE city = ?)
+    '''
+    vd_params = [city, city]
+    if day:
+        vd_query += ' AND days LIKE ?'
+        vd_params.append(f'%{day}%')
+    for r in db.execute(vd_query, vd_params).fetchall():
+        d = dict(r)
+        d['recurrence_days'] = [x.strip() for x in (d['recurrence_days'] or '').split(',') if x.strip()]
+        result.append(d)
+
     return result
 
 @app.route('/api/events')
@@ -451,6 +474,7 @@ def venue_directory():
         WHERE vd.city = ?
         AND vd.lat IS NOT NULL AND vd.lng IS NOT NULL
         AND vd.name NOT IN (SELECT name FROM venues WHERE city = ?)
+        AND (vd.days IS NULL OR vd.days = '')
     ''', (city, city)).fetchall()
     return jsonify([dict(r) for r in rows])
 
