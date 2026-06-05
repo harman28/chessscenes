@@ -51,6 +51,12 @@ Railway picks up the push and redeploys automatically. No manual trigger needed.
 
 ---
 
+## Reviewing scout candidates
+
+`pending_venues.json` is populated daily by the GitHub Actions scout agent (`scout.py`). At the start of each session, check if there are pending venues: read `pending_venues.json` and if it's non-empty, present the candidates to Harman one by one (name, city, note, link) and ask approve/reject/edit. On approval, add the row to the CSV, remove it from the JSON, commit both, and push. On reject, just remove it from the JSON and commit.
+
+---
+
 ## Adding new venues or events (mobile screenshot workflow)
 
 Harman may send a screenshot of a chess venue or event listing (from Instagram, Google Maps, a website, etc.) and ask you to add it. When this happens:

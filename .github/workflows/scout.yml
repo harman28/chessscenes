@@ -1,0 +1,35 @@
+name: Chess Scout
+
+on:
+  schedule:
+    - cron: '0 8 * * *'   # Daily at 8am UTC
+  workflow_dispatch:        # Allow manual trigger from GitHub UI
+
+jobs:
+  scout:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write       # Needed to push pending_venues.json back
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install anthropic
+
+      - name: Run scout agent
+        run: python scout.py
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+
+      - name: Commit results
+        run: |
+          git config user.name "Chess Scout"
+          git config user.email "scout@chessscenes.com"
+          git add pending_venues.json
+          git diff --staged --quiet || git commit -m "Scout: candidates from $(date +%Y-%m-%d)"
+          git push
