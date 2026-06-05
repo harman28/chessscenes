@@ -65,7 +65,7 @@ Harman may send a screenshot of a chess venue or event listing (from Instagram, 
 
 1. **Extract from the screenshot**: name, city, labels (pick from the list above), coordinates (lat/lng — look them up via the note/address if not visible), note (brief description of what it is / when it meets), Google Maps link, website/Instagram link, image URL (imgur preferred — ask Harman if none available), days (comma-separated day names if it recurs on specific days, e.g. `Tuesday` or `Friday, Saturday`).
 
-2. **Add a row to the CSV** at `/Users/harmansingh/workplace/chess scenes project/chessscenes/Chess Scenes (Public) - chess_scenes_venues.csv`. Column order: `name,labels,city,coordinates,note,gmap,link,image,days,id`. Leave `id` empty. Quote the coordinates field: `"lat, lng"`. Quote the days field if multiple: `"Monday, Wednesday"`.
+2. **Add a row to the CSV** — **important:** quote any field that contains commas, including Google Maps URLs (e.g. `"https://maps.google.com/place/628+SE+Belmont+St,+Portland,+OR"`). Unquoted commas in URLs corrupt the column alignment. at `/Users/harmansingh/workplace/chess scenes project/chessscenes/Chess Scenes (Public) - chess_scenes_venues.csv`. Column order: `name,labels,city,coordinates,note,gmap,link,image,days,id`. Leave `id` empty. Quote the coordinates field: `"lat, lng"`. Quote the days field if multiple: `"Monday, Wednesday"`.
 
 3. **Commit and push**:
    ```
