@@ -55,6 +55,8 @@ Railway picks up the push and redeploys automatically. No manual trigger needed.
 
 `pending_venues.json` is populated daily by the GitHub Actions scout agent (`scout.py`). At the start of each session, check if there are pending venues: read `pending_venues.json` and if it's non-empty, present the candidates to Harman one by one (name, city, note, link) and ask approve/reject/edit. On approval, add the row to the CSV, remove it from the JSON, commit both, and push. On reject, just remove it from the JSON and commit.
 
+**Cap at 5 reviews per session.** After the 5th, commit progress and tell Harman how many remain.
+
 ---
 
 ## Adding new venues or events (mobile screenshot workflow)
