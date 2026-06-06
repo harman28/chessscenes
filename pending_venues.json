@@ -1,1 +1,72 @@
-[]
+[
+  {
+    "name": "Denver Chess Club",
+    "city": "Denver",
+    "labels": [
+      "chess club"
+    ],
+    "coordinates": "39.6761, -104.9327",
+    "note": "Colorado's oldest and largest chess club. Hosts USCF-rated tournament games every Tuesday night with monthly tournaments offering classical play.",
+    "gmap": "https://www.google.com/maps/search/Hope+Fellowship+Christian+Reformed+Church+2400+S+Ash+St+Denver+CO+80222",
+    "link": "https://denverchess.com/",
+    "image": "",
+    "days": "Tuesday",
+    "_scouted": "2026-06-06"
+  },
+  {
+    "name": "Learn to Play Chess! Meetup",
+    "city": "Denver",
+    "labels": [
+      "chess meetup"
+    ],
+    "coordinates": "39.6936, -104.9719",
+    "note": "Open, friendly chess group offering beginner lessons and casual games at multiple Denver locations. Meetups happen throughout the week at various venues.",
+    "gmap": "https://www.google.com/maps/search/The+Bookies+Bookstore+2085+S+Holly+St+Denver+CO",
+    "link": "https://www.meetup.com/learn-to-play-chess/",
+    "image": "",
+    "days": "Saturday",
+    "_scouted": "2026-06-06"
+  },
+  {
+    "name": "Rook",
+    "city": "Denver",
+    "labels": [
+      "chess bar"
+    ],
+    "coordinates": "39.7571, -104.9714",
+    "note": "A rooftop bar and board game lounge in RiNo featuring chess, pool, and other games alongside cocktails. Strategy meets shenanigans in this casual clubhouse atmosphere.",
+    "gmap": "https://www.google.com/maps/search/Rook+3770+Walnut+St+Denver+CO+80205",
+    "link": "https://www.rookrooftop.com/",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-06"
+  },
+  {
+    "name": "Oprah's Rook Club at The Lodge at Woods Boss Brewery",
+    "city": "Denver",
+    "labels": [
+      "chess club"
+    ],
+    "coordinates": "39.7614, -104.9903",
+    "note": "A casual chess group that meets every Wednesday night at Woods Boss Brewery's Lodge space. Social, unrated games for all skill levels.",
+    "gmap": "https://www.google.com/maps/search/The+Lodge+Woods+Boss+Brewery+675+22nd+St+Denver",
+    "link": "https://www.chess.com/club/oprahs-rook-club",
+    "image": "",
+    "days": "Wednesday",
+    "_scouted": "2026-06-06"
+  },
+  {
+    "name": "Long Table Brewhouse",
+    "city": "Denver",
+    "labels": [
+      "chess board"
+    ],
+    "coordinates": "39.7441, -104.9485",
+    "note": "A brewhouse in Park Hill where casual chess players gather. Non-Meetup group plays informally Wednesday and Friday afternoons.",
+    "gmap": "https://www.google.com/maps/search/Long+Table+Brewhouse+2895+Fairfax+St+Denver+CO",
+    "link": "https://www.lngtbl.com/",
+    "image": "",
+    "days": "Wednesday, Friday",
+    "_scouted": "2026-06-06"
+  }
+]
