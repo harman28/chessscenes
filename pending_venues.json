@@ -68,5 +68,136 @@
     "image": "",
     "days": "Wednesday, Friday",
     "_scouted": "2026-06-06"
+  },
+  {
+    "name": "Austin Chess Club",
+    "city": "Austin",
+    "labels": [
+      "chess club"
+    ],
+    "coordinates": "30.283, -97.7257",
+    "note": "Meets Saturdays 3pm-9pm at Upbring School. Offers both casual play and USCF-rated tournaments in separate rooms.",
+    "gmap": "https://www.google.com/maps/search/3407+Red+River+Street,+Austin+TX+78705",
+    "link": "https://www.austinchessclub.com/",
+    "image": "",
+    "days": "Saturday",
+    "_scouted": "2026-06-07"
+  },
+  {
+    "name": "Pease Park Chess Club",
+    "city": "Austin",
+    "labels": [
+      "chess meetup"
+    ],
+    "coordinates": "30.283, -97.745",
+    "note": "Free casual chess meetup on Saturdays 1pm-4pm at Pease Park. Tournament play starts at 1:30pm, free to attend with no membership required.",
+    "gmap": "https://www.google.com/maps/search/Pease+Park+1100+Kingsbury+St+Austin+TX",
+    "link": "https://www.meetup.com/pease-chess/",
+    "image": "",
+    "days": "Saturday",
+    "_scouted": "2026-06-07"
+  },
+  {
+    "name": "Chess IRL at Central Machine Works Brewery",
+    "city": "Austin",
+    "labels": [
+      "chess bar",
+      "chess meetup"
+    ],
+    "coordinates": "30.273, -97.715",
+    "note": "Community-driven chess meetup at brewery. Meets Sundays at 8pm (some sources indicate 1-3pm). Provides chess sets and clocks; no fees.",
+    "gmap": "https://www.google.com/maps/search/Central+Machine+Works+Brewery+4824+East+Cesar+Chavez+Austin+TX",
+    "link": "https://www.meetup.com/chess-irl/",
+    "image": "",
+    "days": "Sunday",
+    "_scouted": "2026-06-07"
+  },
+  {
+    "name": "Traveling Chess Club - Jack and Ginger's",
+    "city": "Austin",
+    "labels": [
+      "chess bar",
+      "chess meetup"
+    ],
+    "coordinates": "30.442, -97.734",
+    "note": "Social chess meetup at Irish pub. Meets Tuesdays 6-10pm with free tournament starting at 7pm. Must RSVP, 21+ event.",
+    "gmap": "https://www.google.com/maps/search/Jack+and+Gingers+11500+Rock+Rose+Ave+Austin+TX+78758",
+    "link": "https://www.meetup.com/traveling-chess-club/",
+    "image": "",
+    "days": "Tuesday",
+    "_scouted": "2026-06-07"
+  },
+  {
+    "name": "Traveling Chess Club - Mozart's Coffee Roasters",
+    "city": "Austin",
+    "labels": [
+      "chess meetup",
+      "chess board"
+    ],
+    "coordinates": "30.295, -97.784",
+    "note": "Casual chess meetup at lakeside coffee roastery. Boards and pieces provided by Traveling Chess Club. Thursdays for chess social.",
+    "gmap": "https://www.google.com/maps/search/Mozart's+Coffee+Roasters+3825+Lake+Austin+Blvd+Austin+TX",
+    "link": "https://www.austintexas.org/event/mozarts-chess-social/",
+    "image": "",
+    "days": "Thursday",
+    "_scouted": "2026-06-07"
+  },
+  {
+    "name": "Traveling Chess Club - Stargazer Bar",
+    "city": "Austin",
+    "labels": [
+      "chess bar",
+      "chess meetup"
+    ],
+    "coordinates": "30.274, -97.714",
+    "note": "Chess meetup at bar. Meets Wednesdays 7-10pm for casual and competitive chess for all skill levels.",
+    "gmap": "https://www.google.com/maps/search/Stargazer+Bar+979+Springdale+Rd+Suite+130+Austin+TX",
+    "link": "https://www.stargazerbar.com/events/traveling-chess-club",
+    "image": "",
+    "days": "Wednesday",
+    "_scouted": "2026-06-07"
+  },
+  {
+    "name": "South Austin Senior Activity Center Chess",
+    "city": "Austin",
+    "labels": [
+      "chess club"
+    ],
+    "coordinates": "30.267, -97.775",
+    "note": "Casual chess for all players. Twice-weekly adult chess meetup on Mondays and Fridays 10am-12pm. Bring your own set and board.",
+    "gmap": "https://www.google.com/maps/search/South+Austin+Senior+Activity+Center+3911+Menchaca+Rd+Austin+TX",
+    "link": "https://www.austinchesstournaments.com/monday-and-friday-chess-at-the-south-austin-senior-activity-center/",
+    "image": "",
+    "days": "Monday, Friday",
+    "_scouted": "2026-06-07"
+  },
+  {
+    "name": "Lion's Field Adult Center Chess",
+    "city": "Austin",
+    "labels": [
+      "chess club"
+    ],
+    "coordinates": "30.277, -97.755",
+    "note": "Adult-only casual chess (18+). Meets Thursdays 5-8:30pm. Bring your own chess set.",
+    "gmap": "https://www.google.com/maps/search/Lion's+Field+Adult+Center+2809+Broadway+St+Austin+TX",
+    "link": "https://www.austinchesstournaments.com/thursdays-at-lions-field-adult-center-adults-only/",
+    "image": "",
+    "days": "Thursday",
+    "_scouted": "2026-06-07"
+  },
+  {
+    "name": "Austin Grandmaster Chess Academy (AGCA)",
+    "city": "Austin",
+    "labels": [
+      "chess club",
+      "chess shop"
+    ],
+    "coordinates": "30.372, -97.693",
+    "note": "Premiere chess academy with lessons, tournaments, and camps for all skill levels. Offers coaching, USCF-rated tournaments, and specialized training.",
+    "gmap": "https://www.google.com/maps/search/Austin+Grandmaster+Chess+Academy+7801+N+Lamar+Blvd+Suite+A123+Austin+TX",
+    "link": "https://austin-chess.com/",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-07"
   }
 ]
