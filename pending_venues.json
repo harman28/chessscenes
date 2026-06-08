@@ -199,5 +199,149 @@
     "image": "",
     "days": "",
     "_scouted": "2026-06-07"
+  },
+  {
+    "name": "Nashville Chess Center",
+    "city": "Nashville",
+    "labels": [
+      "chess club"
+    ],
+    "coordinates": "36.1494, -86.8084",
+    "note": "A nonprofit chess club offering scholastic programs, tournaments, and casual play. Open Sundays 1-4 PM (scholastic), Mondays 4-10 PM, Thursdays 6-10 PM (casual play), and Fridays (rated quads).",
+    "gmap": "https://maps.google.com/?q=2911+Belmont+Blvd+Nashville+TN",
+    "link": "https://www.nashvillechess.org",
+    "image": "",
+    "days": "Sunday, Monday, Thursday, Friday",
+    "_scouted": "2026-06-08"
+  },
+  {
+    "name": "Blue Room Chess Club",
+    "city": "Nashville",
+    "labels": [
+      "chess bar"
+    ],
+    "coordinates": "36.1532, -86.7770",
+    "note": "Chess club hosted at The Blue Room bar inside Third Man Records. Players can enjoy chess from 7pm to midnight with cocktails and drinks available.",
+    "gmap": "https://maps.google.com/?q=623+7th+Ave+S+Nashville+TN",
+    "link": "https://theblueroombar.com",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-08"
+  },
+  {
+    "name": "Nashville Public Library Chess Club",
+    "city": "Nashville",
+    "labels": [
+      "chess meetup"
+    ],
+    "coordinates": "36.1639, -86.7788",
+    "note": "Chess club at the main library led by Frank and friends. Open to all ages and skill levels, meeting every Thursday (weather permitting).",
+    "gmap": "https://maps.google.com/?q=615+Church+St+Nashville+TN",
+    "link": "https://library.nashville.gov",
+    "image": "",
+    "days": "Thursday",
+    "_scouted": "2026-06-08"
+  },
+  {
+    "name": "Downriver Chess Club - Turtle Bay",
+    "city": "New Orleans",
+    "labels": [
+      "chess club",
+      "chess bar"
+    ],
+    "coordinates": "29.9557, -90.2623",
+    "note": "Downriver Chess Club meets for tournament play at Turtle Bay. Monday nights feature G/15 rapid tournaments with registration at 6:45 PM and first round at 7:00 PM.",
+    "gmap": "https://www.google.com/maps/search/1119+Decatur+St+New+Orleans",
+    "link": "https://www.downriverchess.com/",
+    "image": "",
+    "days": "Monday",
+    "_scouted": "2026-06-08"
+  },
+  {
+    "name": "Downriver Chess Club - Morning Call",
+    "city": "New Orleans",
+    "labels": [
+      "chess club"
+    ],
+    "coordinates": "30.0170, -90.2295",
+    "note": "Downriver Chess Club meets for tournament play at Morning Call coffee stand. Tuesday nights feature G/90 tournaments with registration at 6:30 PM and pairings at 7:00 PM.",
+    "gmap": "https://www.google.com/maps/search/5101+Canal+Blvd+New+Orleans",
+    "link": "https://www.downriverchess.com/",
+    "image": "",
+    "days": "Tuesday",
+    "_scouted": "2026-06-08"
+  },
+  {
+    "name": "Downriver Chess Club - Café Envie",
+    "city": "New Orleans",
+    "labels": [
+      "chess club",
+      "chess bar"
+    ],
+    "coordinates": "29.9563, -90.2593",
+    "note": "Downriver Chess Club meets for G/15 rapid tournaments at Café Envie, a French Quarter coffee and espresso bar. Thursday nights with registration at 6:45 PM.",
+    "gmap": "https://www.google.com/maps/search/1241+Decatur+St+New+Orleans",
+    "link": "https://www.downriverchess.com/",
+    "image": "",
+    "days": "Thursday",
+    "_scouted": "2026-06-08"
+  },
+  {
+    "name": "The Chess Cave",
+    "city": "New Orleans",
+    "labels": [
+      "chess club",
+      "chess shop"
+    ],
+    "coordinates": "29.9582, -90.2568",
+    "note": "A small nonprofit chess space in the French Quarter offering free and low-cost chess lessons, books, and art. Founded by Baylee Badawy and the Red Beret Chess Foundation.",
+    "gmap": "https://www.google.com/maps/search/531+St+Philip+St+New+Orleans",
+    "link": "https://www.thechesscave.org/",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-08"
+  },
+  {
+    "name": "New Orleans Chess House",
+    "city": "New Orleans",
+    "labels": [
+      "chess club",
+      "chess shop"
+    ],
+    "coordinates": "29.9743, -90.2461",
+    "note": "A chess academy, tournament venue, and social club offering casual play, lessons, camps, tournaments, and a members-only cafe. Hosts Saturday tournaments with registration at 4:50 PM.",
+    "gmap": "https://www.google.com/maps/search/1514+Poland+Avenue+New+Orleans",
+    "link": "https://www.neworleanschesshouse.com/",
+    "image": "",
+    "days": "Saturday",
+    "_scouted": "2026-06-08"
+  },
+  {
+    "name": "HNOC Chess Club",
+    "city": "New Orleans",
+    "labels": [
+      "chess club"
+    ],
+    "coordinates": "29.9578, -90.2630",
+    "note": "Historic New Orleans Collection's youth-led chess club blending chess with creative activities and historical research. Meets at various locations including the REACH Center and other historic venues.",
+    "gmap": "https://www.google.com/maps/search/520+Royal+Street+New+Orleans",
+    "link": "https://hnoc.org/learn-explore/students-families/chess-club",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-08"
+  },
+  {
+    "name": "New Orleans West Bank Chess Club",
+    "city": "New Orleans",
+    "labels": [
+      "chess club"
+    ],
+    "coordinates": "29.8910, -90.3141",
+    "note": "Established in 1977, this club meets every Thursday night at 7:30 PM at Woodland Presbyterian Church. Hosts USCF-rated back-to-back tournaments with G/90+30 time control.",
+    "gmap": "https://www.google.com/maps/search/5824+Berkley+Dr+New+Orleans+Algiers",
+    "link": "",
+    "image": "",
+    "days": "Thursday",
+    "_scouted": "2026-06-08"
   }
 ]
