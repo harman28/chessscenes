@@ -343,5 +343,77 @@
     "image": "",
     "days": "Thursday",
     "_scouted": "2026-06-08"
+  },
+  {
+    "name": "Downriver Chess Club",
+    "city": "New Orleans",
+    "labels": "chess club, chess meetup",
+    "coordinates": "29.9576, -90.0633",
+    "note": "Non-profit chess club hosting regular meetups three times a week at different venues (Turtle Bay on Mondays, Morning Call on Tuesdays, Café Envie on Thursdays). Organizes USCF-rated tournaments and larger events.",
+    "gmap": "https://maps.google.com/?q=Turtle+Bay+1119+Decatur+New+Orleans",
+    "link": "https://www.downriverchess.com",
+    "image": "",
+    "days": "Monday, Tuesday, Thursday",
+    "_scouted": "2026-06-09"
+  },
+  {
+    "name": "Turtle Bay",
+    "city": "New Orleans",
+    "labels": "chess bar, chess meetup",
+    "coordinates": "29.9597, -90.0627",
+    "note": "Bar and restaurant in the French Quarter hosting Downriver Chess Club meetups. Monday nights feature G/15 chess tournaments with registration at 6:45 PM.",
+    "gmap": "https://maps.google.com/?q=Turtle+Bay+1119+Decatur+New+Orleans",
+    "link": "",
+    "image": "",
+    "days": "Monday",
+    "_scouted": "2026-06-09"
+  },
+  {
+    "name": "Café Envie",
+    "city": "New Orleans",
+    "labels": "chess bar, chess meetup",
+    "coordinates": "29.9589, -90.0627",
+    "note": "French Quarter café hosting Downriver Chess Club tournaments on Thursday nights. G/15 chess games with registration at 6:45 PM. Public venue with occasional distractions.",
+    "gmap": "https://maps.google.com/?q=Cafe+Envie+1241+Decatur+New+Orleans",
+    "link": "https://cafeenvie.com",
+    "image": "",
+    "days": "Thursday",
+    "_scouted": "2026-06-09"
+  },
+  {
+    "name": "Morning Call Coffee Stand",
+    "city": "New Orleans",
+    "labels": "chess bar, chess meetup",
+    "coordinates": "30.0217, -90.1404",
+    "note": "Historic coffee stand at City Park Area hosting Downriver Chess Club tournaments on Tuesdays. Five-round G/90 tournaments held one round per week over five weeks.",
+    "gmap": "https://maps.google.com/?q=Morning+Call+Coffee+5101+Canal+Boulevard+New+Orleans",
+    "link": "https://morningcallnola.com",
+    "image": "",
+    "days": "Tuesday",
+    "_scouted": "2026-06-09"
+  },
+  {
+    "name": "HNOC Chess Club (Historic New Orleans Collection)",
+    "city": "New Orleans",
+    "labels": "chess club, chess museum",
+    "coordinates": "29.9595, -90.0625",
+    "note": "Youth-led chess club blending chess with creative activities and historical research about New Orleans chess heritage. Meets at multiple locations including Royal Street and hosts annual Chess Fest.",
+    "gmap": "https://maps.google.com/?q=Historic+New Orleans+Collection+520+Royal+Street+New+Orleans",
+    "link": "https://hnoc.org/learn-explore/students-families/chess-club",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-09"
+  },
+  {
+    "name": "Greater New Orleans Chess Club",
+    "city": "New Orleans",
+    "labels": "chess club",
+    "coordinates": "30.0231, -90.1387",
+    "note": "Formerly Metairie Chess Club. Hosts Tuesday 5-round G/90 tournaments at Morning Call, one round per week. Offers casual play and skittles anytime.",
+    "gmap": "https://maps.google.com/?q=Morning+Call+Coffee+5101+Canal+Boulevard+New+Orleans",
+    "link": "",
+    "image": "",
+    "days": "Tuesday",
+    "_scouted": "2026-06-09"
   }
 ]
