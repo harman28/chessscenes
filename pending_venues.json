@@ -415,5 +415,383 @@
     "image": "",
     "days": "Tuesday",
     "_scouted": "2026-06-09"
+  },
+  {
+    "name": "Montreal Chess Players",
+    "city": "Montreal",
+    "labels": [
+      "chess meetup"
+    ],
+    "coordinates": "45.5017, -73.5673",
+    "note": "Downtown OTB meetup group for avid chess players. Meets weekly with regular group of players at all levels.",
+    "gmap": "https://www.google.com/maps/search/Montreal+Chess+Players+3630+University",
+    "link": "https://www.meetup.com/montrealchess/",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-10"
+  },
+  {
+    "name": "Iconoclast Chess Club (ICC)",
+    "city": "Montreal",
+    "labels": [
+      "chess club",
+      "chess meetup"
+    ],
+    "coordinates": "45.5214, -73.5858",
+    "note": "Chess club offering events called 'Chess Knights' open to enthusiasts of all levels, beginner to advanced.",
+    "gmap": "https://www.google.com/maps/search/Iconoclast+Chess+Club+Montreal",
+    "link": "https://www.meetup.com/iconoclastchessclub/",
+    "image": "",
+    "days": "Friday",
+    "_scouted": "2026-06-10"
+  },
+  {
+    "name": "Blitz Bishops (BB Chess Club & Café)",
+    "city": "Montreal",
+    "labels": [
+      "chess club",
+      "chess bar"
+    ],
+    "coordinates": "45.5115, -73.6047",
+    "note": "Chess speakeasy with good chess, food, and drinks. All boards and clocks provided, all levels welcome.",
+    "gmap": "https://www.google.com/maps/search/129+Van+Horne+Montreal",
+    "link": "https://www.blitzbishops.com/",
+    "image": "",
+    "days": "Thursday, Tuesday",
+    "_scouted": "2026-06-10"
+  },
+  {
+    "name": "Tiers Lieu Montréal (TLM) - Wednesday Chess Club",
+    "city": "Montreal",
+    "labels": [
+      "chess club",
+      "chess meetup"
+    ],
+    "coordinates": "45.5241, -73.5893",
+    "note": "Solidarity cooperative hosting weekly chess nights. Open to all skill levels, $5 entrance fee for the evening.",
+    "gmap": "https://www.google.com/maps/search/5031+Saint+Denis+Montreal",
+    "link": "https://www.meetup.com/multiactivites-au-tiers-lieu-montreal/",
+    "image": "",
+    "days": "Wednesday",
+    "_scouted": "2026-06-10"
+  },
+  {
+    "name": "Chess Specialist / Montreal Chess Club",
+    "city": "Montreal",
+    "labels": [
+      "chess club",
+      "chess shop"
+    ],
+    "coordinates": "45.5127, -73.5734",
+    "note": "Long-running chess hub with Chess'n Math activities and chess specialist shop. Hosts lessons, youth programs, weekend events and community meetups.",
+    "gmap": "https://www.google.com/maps/search/3423+Saint+Denis+Montreal",
+    "link": "https://www.chess-math.org/",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-10"
+  },
+  {
+    "name": "Ahuntsic Chess Club",
+    "city": "Montreal",
+    "labels": [
+      "chess club"
+    ],
+    "coordinates": "45.5407, -73.6239",
+    "note": "Club founded 20+ years ago where people of all ages gather to play chess with frequent semi-rapid tournaments and free play.",
+    "gmap": "https://www.google.com/maps/search/9930+Rue+Parthenais+Montreal",
+    "link": "",
+    "image": "",
+    "days": "Saturday",
+    "_scouted": "2026-06-10"
+  },
+  {
+    "name": "Esplanade Tranquille",
+    "city": "Montreal",
+    "labels": [
+      "chess board",
+      "chess meetup"
+    ],
+    "coordinates": "45.5069, -73.5644",
+    "note": "Downtown public square in Quartier des Spectacles with multipurpose pavilion. Wednesday chess meetups 6-8pm. Tables upstairs year-round.",
+    "gmap": "https://www.google.com/maps/search/1442+Clark+Montreal",
+    "link": "https://www.meetup.com/montrealchess/",
+    "image": "",
+    "days": "Wednesday",
+    "_scouted": "2026-06-10"
+  },
+  {
+    "name": "Lakeshore Chess Club",
+    "city": "Montreal",
+    "labels": [
+      "chess club"
+    ],
+    "coordinates": "45.4267, -73.7428",
+    "note": "First chess club in Montreal, founded by WWII Air Force veterans. Located in Dorval. Offers lessons, practice, and tournaments.",
+    "gmap": "https://www.google.com/maps/search/310+Brookhaven+Dorval",
+    "link": "https://chessyoga.com/chess/",
+    "image": "",
+    "days": "Friday",
+    "_scouted": "2026-06-10"
+  },
+  {
+    "name": "Memento Tuesday Knights",
+    "city": "Montreal",
+    "labels": [
+      "chess bar",
+      "chess meetup"
+    ],
+    "coordinates": "45.4810, -73.5709",
+    "note": "Chess meets vibrant atmosphere by the canal. Open to all ages and skill levels. Chessboards and clocks provided.",
+    "gmap": "https://www.google.com/maps/search/2471+Rue+Saint+Patrick+Montreal",
+    "link": "https://www.eventbrite.ca/e/tuesday-knights-at-memento-tickets-1024955037107",
+    "image": "",
+    "days": "Tuesday",
+    "_scouted": "2026-06-10"
+  },
+  {
+    "name": "Vancity Chess Club",
+    "city": "Vancouver",
+    "labels": [
+      "chess club",
+      "chess meetup"
+    ],
+    "coordinates": "49.2827, -123.1207",
+    "note": "Weekly chess meetups at Vancouver Public Library, 9th floor. Open to all skill levels on Sundays.",
+    "gmap": "https://www.google.com/maps/search/Vancouver+Public+Library+350+W+Georgia+Vancouver",
+    "link": "https://www.vancitychess.ca/",
+    "image": "",
+    "days": "Sunday",
+    "_scouted": "2026-06-10"
+  },
+  {
+    "name": "Vancouver Beer & Chess",
+    "city": "Vancouver",
+    "labels": [
+      "chess bar",
+      "chess meetup"
+    ],
+    "coordinates": "",
+    "note": "Bi-weekly chess meetups at various bars and venues around Vancouver. Social chess with drinks and casual play.",
+    "gmap": "",
+    "link": "https://www.meetup.com/vancouver-beer-chess/",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-10"
+  },
+  {
+    "name": "Bean Around the World",
+    "city": "Vancouver",
+    "labels": [
+      "chess meetup",
+      "chess board"
+    ],
+    "coordinates": "49.2607, -123.1000",
+    "note": "Saturday afternoon chess meetups at this Main Street café. Casual games for all skill levels in a relaxed setting.",
+    "gmap": "https://www.google.com/maps/search/Bean+Around+the+World+Main+10th+Vancouver",
+    "link": "",
+    "image": "",
+    "days": "Saturday",
+    "_scouted": "2026-06-10"
+  },
+  {
+    "name": "Brock House Chess Club",
+    "city": "Vancouver",
+    "labels": [
+      "chess club"
+    ],
+    "coordinates": "49.2661, -123.2169",
+    "note": "Chess club for seniors aged 55 and older. Welcoming environment for casual and relaxed play.",
+    "gmap": "https://www.google.com/maps/search/Brock+House+3875+Point+Grey+Road+Vancouver",
+    "link": "https://www.brockhousesociety.com/",
+    "image": "",
+    "days": "Tuesday, Thursday",
+    "_scouted": "2026-06-10"
+  },
+  {
+    "name": "Vancouver Chess School",
+    "city": "Vancouver",
+    "labels": [
+      "chess club",
+      "chess shop"
+    ],
+    "coordinates": "49.2645, -123.1621",
+    "note": "Premier chess learning center offering group and private lessons for kids and adults, online classes, and tournaments.",
+    "gmap": "https://www.google.com/maps/search/Vancouver+Chess+School+4196+W+4th+Avenue+Vancouver",
+    "link": "https://www.vanchess.ca/",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-10"
+  },
+  {
+    "name": "Penny Chess Club",
+    "city": "Vancouver",
+    "labels": [
+      "chess club"
+    ],
+    "coordinates": "49.2546, -123.1869",
+    "note": "Chess club for both children and adults with after-school programs, weekend classes, and tournaments.",
+    "gmap": "https://www.google.com/maps/search/Penny+Chess+Club+8828+Selkirk+Street+Vancouver",
+    "link": "",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-10"
+  },
+  {
+    "name": "Robson Square Chess",
+    "city": "Vancouver",
+    "labels": [
+      "chess board"
+    ],
+    "coordinates": "49.2828, -123.1204",
+    "note": "Public outdoor chess tables at Robson Square for casual games in an urban setting. Open to all skill levels.",
+    "gmap": "https://www.google.com/maps/search/Robson+Square+800+Robson+Street+Vancouver",
+    "link": "",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-10"
+  },
+  {
+    "name": "Echo Cafe Chess Club",
+    "city": "Vancouver",
+    "labels": [
+      "chess club",
+      "chess meetup"
+    ],
+    "coordinates": "49.3197, -123.0729",
+    "note": "Chess club in North Vancouver hosted at Echo Cafe. Friendly environment for all ages and skill levels on Thursday evenings.",
+    "gmap": "https://www.google.com/maps/search/Echo+Cafe+116+E+14th+St+North+Vancouver",
+    "link": "https://fraservalleychess.com/vancouver-chess/",
+    "image": "",
+    "days": "Thursday",
+    "_scouted": "2026-06-10"
+  },
+  {
+    "name": "Croatian Community Chess Club",
+    "city": "Vancouver",
+    "labels": [
+      "chess club"
+    ],
+    "coordinates": "49.2828, -123.0913",
+    "note": "Weekly chess tournaments at Croatian Cultural Centre. Competitive play with 5 rounds and 30-minute time control.",
+    "gmap": "https://www.google.com/maps/search/Croatian+Cultural+Centre+3250+Commercial+Drive+Vancouver",
+    "link": "",
+    "image": "",
+    "days": "Sunday",
+    "_scouted": "2026-06-10"
+  },
+  {
+    "name": "Calgary Chess Club",
+    "city": "Calgary",
+    "labels": [
+      "chess club"
+    ],
+    "coordinates": "51.0486, -114.0708",
+    "note": "The premier chess club established over 60 years ago offering regular tournaments, lessons, and structured competitive events. Meets weekday evenings and weekends with Tuesday classical tournaments, Wednesday blitz, Thursday classes, and Friday open house.",
+    "gmap": "https://maps.google.com/maps?q=3359+27th+Street+NE+Calgary+AB",
+    "link": "https://calgarychess.com/",
+    "image": "",
+    "days": "Tuesday, Wednesday, Thursday, Friday",
+    "_scouted": "2026-06-10"
+  },
+  {
+    "name": "Downtown Chess Night at Social Beer Haus",
+    "city": "Calgary",
+    "labels": [
+      "chess bar",
+      "chess meetup"
+    ],
+    "coordinates": "51.0440, -114.0708",
+    "note": "Biweekly chess meetups at a downtown bar with casual drop-in play at 5:30 PM. Open to all skill levels, every other Thursday.",
+    "gmap": "https://maps.google.com/maps?q=220+8+Ave+SW+Calgary+AB",
+    "link": "https://www.downtownchess.com/",
+    "image": "",
+    "days": "Thursday",
+    "_scouted": "2026-06-10"
+  },
+  {
+    "name": "Y Not Today Bingsu & Board Game Cafe",
+    "city": "Calgary",
+    "labels": [
+      "chess bar",
+      "chess meetup"
+    ],
+    "coordinates": "50.9819, -114.1287",
+    "note": "A board game cafe hosting regular chess meetups where beginners and experienced players can compete and socialize. Operates Friday and Sunday evenings.",
+    "gmap": "https://maps.google.com/maps?q=4339+Macleod+Trail+SW+Calgary+AB",
+    "link": "https://ynottoday.ca/",
+    "image": "",
+    "days": "Friday, Sunday",
+    "_scouted": "2026-06-10"
+  },
+  {
+    "name": "University of Calgary Chess Club",
+    "city": "Calgary",
+    "labels": [
+      "chess club",
+      "chess meetup"
+    ],
+    "coordinates": "51.0834, -114.1347",
+    "note": "Student chess club offering weekly meetings, blitz and classical tournaments, and strategy training sessions for university students and chess enthusiasts.",
+    "gmap": "",
+    "link": "",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-10"
+  },
+  {
+    "name": "Calgary Youth Chess Club",
+    "city": "Calgary",
+    "labels": [
+      "chess club"
+    ],
+    "coordinates": "51.0533, -114.1389",
+    "note": "Chess club for children and teenagers offering weekly sessions with games, coaching, and tournaments in a fun and educational environment.",
+    "gmap": "https://maps.google.com/maps?q=2020+14+Street+NW+Calgary+AB",
+    "link": "",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-10"
+  },
+  {
+    "name": "Bearspaw Junior Chess Club",
+    "city": "Calgary",
+    "labels": [
+      "chess club"
+    ],
+    "coordinates": "51.2001, -114.3467",
+    "note": "Junior chess club focusing on teaching chess fundamentals to children with group lessons, camps, and tournaments.",
+    "gmap": "https://maps.google.com/maps?q=253+Bearspaw+Road+Calgary+AB",
+    "link": "https://bearspawjuniorchessclub.com/",
+    "image": "",
+    "days": "Friday",
+    "_scouted": "2026-06-10"
+  },
+  {
+    "name": "Calgary Seniors Chess Club",
+    "city": "Calgary",
+    "labels": [
+      "chess club"
+    ],
+    "coordinates": "51.0669, -114.1556",
+    "note": "Chess club for senior players offering casual games, friendly competitions, and a community-oriented atmosphere.",
+    "gmap": "https://maps.google.com/maps?q=3525+35+Street+NW+Calgary+AB",
+    "link": "",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-10"
+  },
+  {
+    "name": "Chess Minds Calgary",
+    "city": "Calgary",
+    "labels": [
+      "chess club"
+    ],
+    "coordinates": "",
+    "note": "In-person chess school offering classes, lessons, camps, and tournaments with expert chess coaches.",
+    "gmap": "",
+    "link": "https://www.chessmindscalgary.ca/",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-10"
   }
 ]
