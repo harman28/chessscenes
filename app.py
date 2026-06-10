@@ -1,12 +1,19 @@
-from flask import Flask, render_template, jsonify, request, g
+from flask import Flask, render_template, jsonify, request, g, abort
 import sqlite3
 import os
+import re
 import jwt
 import datetime
 from functools import wraps
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'dev-secret-change-in-prod')
+
+def slugify(text):
+    text = text.lower().strip()
+    text = re.sub(r'[^\w\s-]', '', text)
+    text = re.sub(r'[\s_]+', '-', text)
+    return re.sub(r'-+', '-', text).strip('-')
 DATABASE = 'chess.db'
 
 def get_db():
@@ -82,7 +89,12 @@ def init_db():
         db.execute('ALTER TABLE venue_directory ADD COLUMN days TEXT')
         db.commit()
     except Exception:
-        pass  # column already exists
+        pass
+    try:
+        db.execute('ALTER TABLE venue_directory ADD COLUMN slug TEXT')
+        db.commit()
+    except Exception:
+        pass
     db.close()
 
 def seed_directory():
@@ -97,6 +109,7 @@ def seed_directory():
         db.close()
         return
 
+    seen_slugs = set()
     with open(csv_path, newline='', encoding='utf-8') as f:
         reader = csv_module.DictReader(f)
         for row in reader:
@@ -118,9 +131,18 @@ def seed_directory():
                         lng = float(parts[1].strip())
                     except ValueError:
                         pass
+            base = slugify(name)
+            slug = base
+            if slug in seen_slugs:
+                slug = base + '-' + slugify(city)
+            counter = 2
+            while slug in seen_slugs:
+                slug = base + '-' + str(counter)
+                counter += 1
+            seen_slugs.add(slug)
             db.execute(
-                'INSERT INTO venue_directory (name, labels, address, city, lat, lng, gmaps, link, image, note, days) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-                (name, labels, None, city, lat, lng, gmaps, link, image, note, days)
+                'INSERT INTO venue_directory (name, labels, address, city, lat, lng, gmaps, link, image, note, days, slug) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+                (name, labels, None, city, lat, lng, gmaps, link, image, note, days, slug)
             )
 
     db.commit()
@@ -288,7 +310,7 @@ def fetch_events(city=None, day=None, date=None):
                NULL as community_name, image as community_image,
                name as venue_name, address as venue_address, gmaps as venue_gmaps,
                lat as venue_lat, lng as venue_lng,
-               days as recurrence_days
+               days as recurrence_days, slug as venue_slug
         FROM venue_directory
         WHERE days IS NOT NULL AND days != ''
     '''
@@ -499,11 +521,117 @@ def venue_directory():
     return jsonify([dict(r) for r in rows])
 
 
+@app.route('/api/venue/<slug>')
+def api_venue(slug):
+    db = get_db()
+    row = db.execute('SELECT * FROM venue_directory WHERE slug=?', (slug,)).fetchone()
+    if not row:
+        return jsonify({'error': 'Not found'}), 404
+    v = dict(row)
+    v['event_id'] = v['id'] + 1000000
+    return jsonify(v)
+
+@app.route('/api/event/<int:event_id>')
+def api_event(event_id):
+    db = get_db()
+    row = db.execute('''
+        SELECT e.*, c.name as community_name, c.image as community_image,
+               v.name as venue_name, v.address as venue_address,
+               v.gmaps as venue_gmaps, v.lat as venue_lat, v.lng as venue_lng,
+               v.city as city,
+               GROUP_CONCAT(r.day, ',') as recurrence_days
+        FROM events e
+        LEFT JOIN communities c ON e.community_id = c.id
+        LEFT JOIN venues v ON e.venue_id = v.id
+        LEFT JOIN event_recurrences r ON r.event_id = e.id
+        WHERE e.id = ?
+        GROUP BY e.id
+    ''', (event_id,)).fetchone()
+    if not row:
+        return jsonify({'error': 'Not found'}), 404
+    d = dict(row)
+    d['recurrence_days'] = d['recurrence_days'].split(',') if d['recurrence_days'] else []
+    return jsonify(d)
+
 # --- Pages ---
 
 @app.route('/')
 def index():
     return render_template('index.html')
+
+@app.route('/venue/<slug>')
+def venue_page(slug):
+    db = get_db()
+    row = db.execute('SELECT * FROM venue_directory WHERE slug=?', (slug,)).fetchone()
+    if not row:
+        abort(404)
+    v = dict(row)
+    name = v.get('name', '')
+    city = v.get('city', '')
+    desc_parts = [f"Chess venue in {city}"]
+    if v.get('days'):
+        desc_parts.append(f"Active on {v['days']}")
+    if v.get('note'):
+        desc_parts.append(v['note'])
+    return render_template('index.html',
+        og_title=f"{name} · Chess Scenes",
+        og_description=" · ".join(desc_parts),
+        og_image=v.get('image'),
+        og_url=f"/venue/{slug}",
+        initial_data={
+            'type': 'venue',
+            'slug': slug,
+            'city': city,
+            'name': name,
+            'event_id': v['id'] + 1000000,
+            'lat': v.get('lat'),
+            'lng': v.get('lng'),
+            'days': v.get('days'),
+            'labels': v.get('labels'),
+            'note': v.get('note'),
+            'image': v.get('image'),
+            'gmaps': v.get('gmaps'),
+            'link': v.get('link'),
+        }
+    )
+
+@app.route('/event/<int:event_id>')
+def event_page(event_id):
+    db = get_db()
+    row = db.execute('''
+        SELECT e.*, c.name as community_name, c.image as community_image,
+               v.name as venue_name, v.city as city,
+               v.lat as venue_lat, v.lng as venue_lng
+        FROM events e
+        LEFT JOIN communities c ON e.community_id = c.id
+        LEFT JOIN venues v ON e.venue_id = v.id
+        WHERE e.id = ?
+    ''', (event_id,)).fetchone()
+    if not row:
+        abort(404)
+    ev = dict(row)
+    city = ev.get('city', '')
+    name = ev.get('title', '')
+    venue = ev.get('venue_name', '')
+    desc_parts = [f"Chess in {city}"]
+    if venue:
+        desc_parts.append(f"at {venue}")
+    if ev.get('notes'):
+        desc_parts.append(ev['notes'])
+    return render_template('index.html',
+        og_title=f"{name} · Chess Scenes",
+        og_description=" · ".join(desc_parts),
+        og_image=ev.get('community_image'),
+        og_url=f"/event/{event_id}",
+        initial_data={
+            'type': 'event',
+            'id': event_id,
+            'city': city,
+            'name': name,
+            'lat': ev.get('venue_lat'),
+            'lng': ev.get('venue_lng'),
+        }
+    )
 
 @app.route('/admin')
 def admin():

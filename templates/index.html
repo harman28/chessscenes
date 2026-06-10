@@ -3,7 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Chess Scenes</title>
+  <title>{% if og_title %}{{ og_title }}{% else %}Chess Scenes{% endif %}</title>
+  {% if og_title %}
+  <meta name="description" content="{{ og_description }}">
+  <meta property="og:title" content="{{ og_title }}">
+  <meta property="og:description" content="{{ og_description }}">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="{{ og_url }}">
+  {% if og_image %}<meta property="og:image" content="{{ og_image }}">{% endif %}
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="{{ og_title }}">
+  <meta name="twitter:description" content="{{ og_description }}">
+  {% endif %}
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
@@ -177,6 +188,9 @@
 </div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+{% if initial_data %}
+<script>window.__CHESS_INIT__ = {{ initial_data | tojson | safe }};</script>
+{% endif %}
 <script>
 const DAYS = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 let map = null;
@@ -422,6 +436,8 @@ function renderCard(e) {
   const links = [];
   if (e.venue_gmaps) links.push(`<a class="detail-link" href="${e.venue_gmaps}" target="_blank" rel="noopener">Open in maps ↗</a>`);
   if (e.external_link) links.push(`<a class="detail-link" href="${e.external_link}" target="_blank" rel="noopener">More info ↗</a>`);
+  const shareHref = e.venue_slug ? `/venue/${e.venue_slug}` : (e.id < 1000000 ? `/event/${e.id}` : null);
+  if (shareHref) links.push(`<a class="detail-link" href="${shareHref}">Share ↗</a>`);
   if (links.length) rows.push(`<div class="detail-links">${links.join('')}</div>`);
 
   return `<div class="event-card" id="card-${e.id}" onclick="onCardClick(this,${e.id})">
@@ -447,12 +463,49 @@ function onCardClick(el, eventId) {
   }
 }
 
+// ── Deep links ──
+
+function handleDeepLink(data) {
+  if (data.type === 'venue') {
+    // highlight sidebar card if this venue is surfaced as an event-like row
+    if (data.days) {
+      const card = document.getElementById('card-' + data.event_id);
+      if (card) {
+        card.scrollIntoView({behavior:'smooth', block:'center'});
+        card.classList.add('highlighted');
+        setTimeout(() => card.classList.remove('highlighted'), 2500);
+      }
+    }
+    if (data.lat && data.lng) {
+      map && map.setView([data.lat, data.lng], 15);
+      showMapCard({title: data.name, subtitle: data.labels, note: data.note,
+                   image: data.image, gmaps: data.gmaps, link: data.link, days: data.days});
+    }
+  } else if (data.type === 'event') {
+    scrollToCard(data.id);
+    highlightCard(data.id);
+    if (activeMarkers[data.id]) {
+      const {lat, lng} = activeMarkers[data.id];
+      map && map.setView([lat, lng], 15);
+    }
+  }
+}
+
 // ── Init ──
 
 buildDateOptions();
 loadCities().then(() => {
+  const init = window.__CHESS_INIT__;
+  if (init && init.city) {
+    const sel = document.getElementById('city-select');
+    if (Array.from(sel.options).some(o => o.value === init.city)) {
+      sel.value = init.city;
+    }
+  }
   initMap();
-  onFilterChange();
+  onFilterChange().then(() => {
+    if (window.__CHESS_INIT__) handleDeepLink(window.__CHESS_INIT__);
+  });
 });
 
 window.addEventListener('resize', () => {
