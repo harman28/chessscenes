@@ -496,11 +496,13 @@ function handleDeepLink(data) {
 buildDateOptions();
 loadCities().then(() => {
   const init = window.__CHESS_INIT__;
-  if (init && init.city) {
-    const sel = document.getElementById('city-select');
-    if (Array.from(sel.options).some(o => o.value === init.city)) {
-      sel.value = init.city;
+  if (init) {
+    if (init.city) {
+      const sel = document.getElementById('city-select');
+      if (Array.from(sel.options).some(o => o.value === init.city)) sel.value = init.city;
     }
+    // Show all days so the linked venue/event is always visible in the list
+    document.getElementById('date-select').value = 'all';
   }
   initMap();
   onFilterChange().then(() => {
