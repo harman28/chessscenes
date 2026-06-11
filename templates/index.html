@@ -200,6 +200,15 @@ let currentEvents = [];
 
 // ── Dropdown ──
 
+function fitSelect(sel) {
+  const tmp = document.createElement('span');
+  tmp.style.cssText = 'visibility:hidden;position:absolute;font-family:"Playfair Display",serif;font-size:inherit;font-weight:500;white-space:pre';
+  tmp.textContent = sel.options[sel.selectedIndex]?.text || '';
+  document.body.appendChild(tmp);
+  sel.style.width = (tmp.offsetWidth + 22) + 'px';
+  document.body.removeChild(tmp);
+}
+
 function todayIdx() { return new Date().getDay(); }
 function dayName(idx) { return DAYS[idx % 7]; }
 
@@ -210,6 +219,7 @@ function buildDateOptions() {
   for (let i = 2; i < 9; i++) options.push({value: dayName(today+i), label: 'on ' + dayName(today+i)});
   sel.innerHTML = options.map(o=>`<option value="${o.value}">${o.label}</option>`).join('')
     + '<option value="all">any day</option>';
+  fitSelect(sel);
 }
 
 function resolveDay(val) {
@@ -231,6 +241,7 @@ async function loadCities() {
   const cities = await res.json();
   const sel = document.getElementById('city-select');
   sel.innerHTML = cities.map(c=>`<option value="${c}">${c}</option>`).join('');
+  fitSelect(sel);
 }
 
 // ── Map ──
@@ -389,6 +400,8 @@ function highlightCard(id) {
 // ── Events ──
 
 async function onFilterChange() {
+  fitSelect(document.getElementById('date-select'));
+  fitSelect(document.getElementById('city-select'));
   const val = document.getElementById('date-select').value;
   const city = document.getElementById('city-select').value;
   const container = document.getElementById('events-container');
