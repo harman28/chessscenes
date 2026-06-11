@@ -650,5 +650,332 @@
     "image": "",
     "days": "",
     "_scouted": "2026-06-10"
+  },
+  {
+    "name": "Robson Square",
+    "city": "Vancouver",
+    "labels": [
+      "chess board"
+    ],
+    "coordinates": "49.2807, -123.1172",
+    "note": "Public outdoor chess tables in a bustling urban setting. Casual games for players of varying skill levels.",
+    "gmap": "https://maps.google.com/maps?q=800+Robson+Street,+Vancouver,+BC",
+    "link": "",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-11"
+  },
+  {
+    "name": "Chigorin Chess Club",
+    "city": "Vancouver",
+    "labels": [
+      "chess club"
+    ],
+    "coordinates": "",
+    "note": "Free, family-friendly chess club at community venues. Open to all ages and skill levels with lessons and tournaments.",
+    "gmap": "",
+    "link": "https://www.chigorin.ca/",
+    "image": "",
+    "days": "Sunday",
+    "_scouted": "2026-06-11"
+  },
+  {
+    "name": "Croatian Cultural Centre Chess",
+    "city": "Vancouver",
+    "labels": [
+      "chess club"
+    ],
+    "coordinates": "49.2525, -123.0697",
+    "note": "Sunday chess tournament with 5 rounds and 30-minute time control games. Competitive play venue.",
+    "gmap": "https://maps.google.com/maps?q=3250+Commercial+Drive,+Vancouver,+BC",
+    "link": "",
+    "image": "",
+    "days": "Sunday",
+    "_scouted": "2026-06-11"
+  },
+  {
+    "name": "South Calgary Chess Club",
+    "city": "Calgary",
+    "labels": [
+      "chess club"
+    ],
+    "coordinates": "",
+    "note": "A community-based club in southern Calgary catering to both casual and competitive players with regular meetings.",
+    "gmap": "",
+    "link": "https://www.facebook.com/groups/379824672100845/",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-11"
+  },
+  {
+    "name": "University of Calgary Chess Club",
+    "city": "Calgary",
+    "labels": [
+      "chess club"
+    ],
+    "coordinates": "",
+    "note": "Student-focused chess club organizing weekly club meetings, tournaments, and strategy discussions.",
+    "gmap": "",
+    "link": "",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-11"
+  },
+  {
+    "name": "Calgary Youth Chess Club",
+    "city": "Calgary",
+    "labels": [
+      "chess club"
+    ],
+    "coordinates": "51.0644, -114.1333",
+    "note": "A club for children and teenagers offering weekly sessions with games, coaching, and tournaments at Hillhurst United Church.",
+    "gmap": "",
+    "link": "",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-11"
+  },
+  {
+    "name": "Chess 'n' Math Association (Calgary Chess & Math Center)",
+    "city": "Calgary",
+    "labels": [
+      "chess club",
+      "chess school"
+    ],
+    "coordinates": "51.0639, -114.1317",
+    "note": "A national organization providing after-school programs, summer camps, and tournaments for children to develop cognitive skills.",
+    "gmap": "",
+    "link": "",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-11"
+  },
+  {
+    "name": "Calgary Chess School",
+    "city": "Calgary",
+    "labels": [
+      "chess school"
+    ],
+    "coordinates": "51.2333, -114.2167",
+    "note": "Offers structured chess programs including after-school classes, weekend sessions, and chess camps at Beddington Theatre Arts Centre.",
+    "gmap": "",
+    "link": "",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-11"
+  },
+  {
+    "name": "Calgary Public Library Chess Meetups",
+    "city": "Calgary",
+    "labels": [
+      "chess meetup"
+    ],
+    "coordinates": "",
+    "note": "Multiple library branches across Calgary host casual chess meetups and chess programs for all ages.",
+    "gmap": "",
+    "link": "",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-11"
+  },
+  {
+    "name": "Flying Minds Chess Club",
+    "city": "Calgary",
+    "labels": [
+      "chess school"
+    ],
+    "coordinates": "",
+    "note": "Offers chess lessons for kids at beginner and intermediate levels with a focus on fun and engaging instruction.",
+    "gmap": "",
+    "link": "https://www.flyingminds.ca/chess-curriculum",
+    "image": "",
+    "days": "Tuesday",
+    "_scouted": "2026-06-11"
+  },
+  {
+    "name": "Central Memorial Park",
+    "city": "Calgary",
+    "labels": [
+      "chess board"
+    ],
+    "coordinates": "51.0471, -114.0747",
+    "note": "Outdoor public park with designated chess tables for casual play in a beautiful setting.",
+    "gmap": "",
+    "link": "",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-11"
+  },
+  {
+    "name": "Prince's Island Park",
+    "city": "Calgary",
+    "labels": [
+      "chess board"
+    ],
+    "coordinates": "51.0486, -114.0575",
+    "note": "Public park with chess tables where players can enjoy the game while surrounded by nature.",
+    "gmap": "",
+    "link": "",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-11"
+  },
+  {
+    "name": "Riley Park",
+    "city": "Calgary",
+    "labels": [
+      "chess board"
+    ],
+    "coordinates": "51.0389, -114.0461",
+    "note": "A quiet public park with designated chess tables suitable for friendly matches.",
+    "gmap": "",
+    "link": "",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-11"
+  },
+  {
+    "name": "RA Chess Club",
+    "city": "Ottawa",
+    "labels": [
+      "chess club"
+    ],
+    "coordinates": "45.3950, -75.6966",
+    "note": "One of the oldest and largest chess clubs in Canada. Meets Thursday evenings and Sunday afternoons from September through June for competitive and recreational play.",
+    "gmap": "https://maps.google.com/?q=RA+Centre,+2451+Riverside+Drive,+Ottawa,+ON+K1H+7X7",
+    "link": "https://www.racentre.com/chess-club.html",
+    "image": "",
+    "days": "Thursday, Sunday",
+    "_scouted": "2026-06-11"
+  },
+  {
+    "name": "Barrhaven Chess Club",
+    "city": "Ottawa",
+    "labels": [
+      "chess club",
+      "chess meetup"
+    ],
+    "coordinates": "45.2500, -75.7333",
+    "note": "Chess club serving southern Ottawa at Minto Recreation Complex. Offers casual meetups and tournaments for all ages and skill levels with chess sets provided.",
+    "gmap": "https://maps.google.com/?q=Minto+Recreation+Complex,+3500+Cambrian+Road,+Ottawa,+ON+K2J+0V1",
+    "link": "",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-11"
+  },
+  {
+    "name": "Kanata Chess Club",
+    "city": "Ottawa",
+    "labels": [
+      "chess club"
+    ],
+    "coordinates": "45.3167, -75.7500",
+    "note": "Serves western Ottawa and Kanata area, offering casual games and competitive matches. Popular among young players and families with a fun and educational focus.",
+    "gmap": "https://maps.google.com/?q=Kanata+Beaverbrook+Community+Centre,+2+Beaverbrook+Road,+Ottawa,+ON+K2K+1L1",
+    "link": "",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-11"
+  },
+  {
+    "name": "Chess'n Math Ottawa",
+    "city": "Ottawa",
+    "labels": [
+      "chess club"
+    ],
+    "coordinates": "45.4167, -75.6667",
+    "note": "Part of the national Chess'n Math Association dedicated to promoting chess as an educational tool. Offers lessons, workshops, and tournaments for children and scholastic players.",
+    "gmap": "",
+    "link": "",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-11"
+  },
+  {
+    "name": "Ottawa and Gatineau Chess Meetup",
+    "city": "Ottawa",
+    "labels": [
+      "chess meetup",
+      "chess bar"
+    ],
+    "coordinates": "45.4263, -75.6968",
+    "note": "Social chess meetup for beginners to experts at Lower Brewery in ByWard Market. Aimed at socializing and sharpening chess skills.",
+    "gmap": "https://maps.google.com/?q=Lower+Brewery+ByWard+Market,+Ottawa",
+    "link": "https://www.meetup.com/ottawa-gatinrau-chess-meetup-u-lepla-meetup/",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-11"
+  },
+  {
+    "name": "Centennial Public Library Evening Chess",
+    "city": "Ottawa",
+    "labels": [
+      "chess club",
+      "chess meetup"
+    ],
+    "coordinates": "45.3667, -75.7833",
+    "note": "Evening chess sessions at Centennial Public Library in Bells Corners. Sessions run from 6:30 to 8:00 pm with limited enrollment.",
+    "gmap": "https://maps.google.com/?q=Centennial+Public+Library,+3870+Old+Richmond+Road,+Ottawa",
+    "link": "https://chess-math.org/blog/ottawa-evening-chess-club",
+    "image": "",
+    "days": "Tuesday",
+    "_scouted": "2026-06-11"
+  },
+  {
+    "name": "University of Ottawa Chess Club",
+    "city": "Ottawa",
+    "labels": [
+      "chess club"
+    ],
+    "coordinates": "45.4231, -75.6950",
+    "note": "Known for lively, social atmosphere with fast-paced blitz and bullet games. Mixed skill levels from beginners to titled players.",
+    "gmap": "https://maps.google.com/?q=University+Centre,+85+University+Private,+Ottawa",
+    "link": "https://www.chess.com/club/university-of-ottawa-chess-club",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-11"
+  },
+  {
+    "name": "ChessMates Ottawa",
+    "city": "Ottawa",
+    "labels": [
+      "chess club"
+    ],
+    "coordinates": "45.4167, -75.6667",
+    "note": "Youth-led chess club run by high school students offering tournaments, coaching, and community events for all ages and skill levels.",
+    "gmap": "",
+    "link": "https://www.chessmatesottawa.ca/",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-11"
+  },
+  {
+    "name": "The Loft Board Game Lounge",
+    "city": "Ottawa",
+    "labels": [
+      "chess bar",
+      "chess meetup"
+    ],
+    "coordinates": "45.4233, -75.6967",
+    "note": "Board game lounge ideal for casual chess with food and drinks. Offers quality chess sets and occasional chess nights.",
+    "gmap": "https://maps.google.com/?q=The+Loft+Board+Game+Lounge,+14+Waller+Street,+Ottawa",
+    "link": "",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-11"
+  },
+  {
+    "name": "Bishop Chess Academy",
+    "city": "Ottawa",
+    "labels": [
+      "chess club"
+    ],
+    "coordinates": "45.4167, -75.6667",
+    "note": "Offers monthly tournaments, in-person and online chess classes, and coaching for all skill levels connected to Chess Federation of Canada.",
+    "gmap": "",
+    "link": "",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-11"
   }
 ]
