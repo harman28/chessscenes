@@ -423,9 +423,8 @@ function renderList(events, container) {
 }
 
 function renderCard(e) {
-  const imgHtml = e.community_image
-    ? `<div class="card-image"><img src="${e.community_image}" alt="" onerror="this.parentElement.innerHTML='♟'"></div>`
-    : `<div class="card-image">♟</div>`;
+  const src = e.community_image || fallbackImg(e.title);
+  const imgHtml = `<div class="card-image"><img src="${src}" alt="" onerror="this.src='${fallbackImg(e.title)}'"></div>`;
   const timeStr = e.time ? (e.time_end ? e.time+'–'+e.time_end : e.time) : null;
   const meta = [timeStr, e.venue_name].filter(Boolean).join(' · ');
   const tag = e.format_tag ? `<span class="card-tag">${e.format_tag}</span>` : '';
