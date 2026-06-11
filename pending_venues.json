@@ -1,33 +1,5 @@
 [
   {
-    "name": "Denver Chess Club",
-    "city": "Denver",
-    "labels": [
-      "chess club"
-    ],
-    "coordinates": "39.6761, -104.9327",
-    "note": "Colorado's oldest and largest chess club. Hosts USCF-rated tournament games every Tuesday night with monthly tournaments offering classical play.",
-    "gmap": "https://www.google.com/maps/search/Hope+Fellowship+Christian+Reformed+Church+2400+S+Ash+St+Denver+CO+80222",
-    "link": "https://denverchess.com/",
-    "image": "",
-    "days": "Tuesday",
-    "_scouted": "2026-06-06"
-  },
-  {
-    "name": "Learn to Play Chess! Meetup",
-    "city": "Denver",
-    "labels": [
-      "chess meetup"
-    ],
-    "coordinates": "39.6936, -104.9719",
-    "note": "Open, friendly chess group offering beginner lessons and casual games at multiple Denver locations. Meetups happen throughout the week at various venues.",
-    "gmap": "https://www.google.com/maps/search/The+Bookies+Bookstore+2085+S+Holly+St+Denver+CO",
-    "link": "https://www.meetup.com/learn-to-play-chess/",
-    "image": "",
-    "days": "Saturday",
-    "_scouted": "2026-06-06"
-  },
-  {
     "name": "Rook",
     "city": "Denver",
     "labels": [
@@ -272,14 +244,14 @@
     "_scouted": "2026-06-08"
   },
   {
-    "name": "Downriver Chess Club - Café Envie",
+    "name": "Downriver Chess Club - Caf\u00e9 Envie",
     "city": "New Orleans",
     "labels": [
       "chess club",
       "chess bar"
     ],
     "coordinates": "29.9563, -90.2593",
-    "note": "Downriver Chess Club meets for G/15 rapid tournaments at Café Envie, a French Quarter coffee and espresso bar. Thursday nights with registration at 6:45 PM.",
+    "note": "Downriver Chess Club meets for G/15 rapid tournaments at Caf\u00e9 Envie, a French Quarter coffee and espresso bar. Thursday nights with registration at 6:45 PM.",
     "gmap": "https://www.google.com/maps/search/1241+Decatur+St+New+Orleans",
     "link": "https://www.downriverchess.com/",
     "image": "",
@@ -349,7 +321,7 @@
     "city": "New Orleans",
     "labels": "chess club, chess meetup",
     "coordinates": "29.9576, -90.0633",
-    "note": "Non-profit chess club hosting regular meetups three times a week at different venues (Turtle Bay on Mondays, Morning Call on Tuesdays, Café Envie on Thursdays). Organizes USCF-rated tournaments and larger events.",
+    "note": "Non-profit chess club hosting regular meetups three times a week at different venues (Turtle Bay on Mondays, Morning Call on Tuesdays, Caf\u00e9 Envie on Thursdays). Organizes USCF-rated tournaments and larger events.",
     "gmap": "https://maps.google.com/?q=Turtle+Bay+1119+Decatur+New+Orleans",
     "link": "https://www.downriverchess.com",
     "image": "",
@@ -369,11 +341,11 @@
     "_scouted": "2026-06-09"
   },
   {
-    "name": "Café Envie",
+    "name": "Caf\u00e9 Envie",
     "city": "New Orleans",
     "labels": "chess bar, chess meetup",
     "coordinates": "29.9589, -90.0627",
-    "note": "French Quarter café hosting Downriver Chess Club tournaments on Thursday nights. G/15 chess games with registration at 6:45 PM. Public venue with occasional distractions.",
+    "note": "French Quarter caf\u00e9 hosting Downriver Chess Club tournaments on Thursday nights. G/15 chess games with registration at 6:45 PM. Public venue with occasional distractions.",
     "gmap": "https://maps.google.com/?q=Cafe+Envie+1241+Decatur+New+Orleans",
     "link": "https://cafeenvie.com",
     "image": "",
@@ -446,7 +418,7 @@
     "_scouted": "2026-06-10"
   },
   {
-    "name": "Blitz Bishops (BB Chess Club & Café)",
+    "name": "Blitz Bishops (BB Chess Club & Caf\u00e9)",
     "city": "Montreal",
     "labels": [
       "chess club",
@@ -461,7 +433,7 @@
     "_scouted": "2026-06-10"
   },
   {
-    "name": "Tiers Lieu Montréal (TLM) - Wednesday Chess Club",
+    "name": "Tiers Lieu Montr\u00e9al (TLM) - Wednesday Chess Club",
     "city": "Montreal",
     "labels": [
       "chess club",
@@ -586,7 +558,7 @@
       "chess board"
     ],
     "coordinates": "49.2607, -123.1000",
-    "note": "Saturday afternoon chess meetups at this Main Street café. Casual games for all skill levels in a relaxed setting.",
+    "note": "Saturday afternoon chess meetups at this Main Street caf\u00e9. Casual games for all skill levels in a relaxed setting.",
     "gmap": "https://www.google.com/maps/search/Bean+Around+the+World+Main+10th+Vancouver",
     "link": "",
     "image": "",
