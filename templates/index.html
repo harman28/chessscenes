@@ -201,11 +201,12 @@ let currentEvents = [];
 // ── Dropdown ──
 
 function fitSelect(sel) {
+  const cs = window.getComputedStyle(sel);
   const tmp = document.createElement('span');
-  tmp.style.cssText = 'visibility:hidden;position:absolute;font-family:"Playfair Display",serif;font-size:inherit;font-weight:500;white-space:pre';
+  tmp.style.cssText = `visibility:hidden;position:absolute;font-family:${cs.fontFamily};font-size:${cs.fontSize};font-weight:${cs.fontWeight};white-space:pre`;
   tmp.textContent = sel.options[sel.selectedIndex]?.text || '';
   document.body.appendChild(tmp);
-  sel.style.width = (tmp.offsetWidth + 22) + 'px';
+  sel.style.width = (tmp.offsetWidth + 24) + 'px';
   document.body.removeChild(tmp);
 }
 
