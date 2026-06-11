@@ -324,10 +324,14 @@ function activityLine(labels, days) {
   return null;
 }
 
+function fallbackImg(title) {
+  const seed = encodeURIComponent(title || 'chess');
+  return `https://picsum.photos/seed/${seed}/400/200`;
+}
+
 function showMapCard({title, subtitle, note, image, gmaps, link, days, eventId}) {
-  const imgHtml = image
-    ? `<div class="card-image"><img src="${image}" alt="" onerror="this.parentElement.innerHTML='♟'"></div>`
-    : `<div class="card-image">♟</div>`;
+  const src = image || fallbackImg(title);
+  const imgHtml = `<div class="card-image"><img src="${src}" alt="" onerror="this.src='${fallbackImg(title)}'"></div>`;
 
   const detailRows = [];
   const activity = activityLine(subtitle, days);
