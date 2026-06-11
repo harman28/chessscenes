@@ -324,9 +324,17 @@ function activityLine(labels, days) {
   return null;
 }
 
+const FALLBACK_IMGS = [
+  'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Chess_pieces_close_up.jpg/960px-Chess_pieces_close_up.jpg',
+  'https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Chess_pieces_organised.jpg/960px-Chess_pieces_organised.jpg',
+  'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Chess_board_0976.jpg/960px-Chess_board_0976.jpg',
+  'https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/Chess_game.jpg/960px-Chess_game.jpg',
+  'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Chess_board_with_pieces.jpg/960px-Chess_board_with_pieces.jpg',
+  'https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/The_Chess_Board.JPG/960px-The_Chess_Board.JPG',
+];
 function fallbackImg(title) {
-  const seed = encodeURIComponent(title || 'chess');
-  return `https://picsum.photos/seed/${seed}/400/200`;
+  const h = [...(title || '')].reduce((a, c) => a + c.charCodeAt(0), 0);
+  return FALLBACK_IMGS[h % FALLBACK_IMGS.length];
 }
 
 function showMapCard({title, subtitle, note, image, gmaps, link, days, eventId}) {
