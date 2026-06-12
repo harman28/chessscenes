@@ -977,5 +977,164 @@
     "image": "",
     "days": "",
     "_scouted": "2026-06-11"
+  },
+  {
+    "name": "Calgary Public Library Chess in the Library",
+    "city": "Calgary",
+    "labels": [
+      "chess club",
+      "chess meetup"
+    ],
+    "coordinates": "",
+    "note": "Chess drop-in program at Calgary Public Library branches. Casual games with chess experts for all skill levels, in partnership with Calgary Junior Chess Centre.",
+    "gmap": "",
+    "link": "https://www.calgarylibrary.ca/events-and-programs/programs/chess-in-the-library",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-12"
+  },
+  {
+    "name": "Flying Minds Education Centre",
+    "city": "Calgary",
+    "labels": [
+      "chess club"
+    ],
+    "coordinates": "50.9833, -114.0333",
+    "note": "Chess lessons for kids ages 5-12 with focus on fun learning. Offers beginner and intermediate lessons on Tuesdays.",
+    "gmap": "https://www.google.com/maps/search/10325+Bonaventure+Drive+SE+Unit+408+Calgary+AB",
+    "link": "https://www.flyingminds.ca",
+    "image": "",
+    "days": "Tuesday",
+    "_scouted": "2026-06-12"
+  },
+  {
+    "name": "Ottawa Evening Chess Club",
+    "city": "Ottawa",
+    "labels": [
+      "chess club",
+      "chess meetup"
+    ],
+    "coordinates": "45.3600, -75.7800",
+    "note": "Evening chess sessions at Centennial Public Library in Bells Corners. Runs from 6:30 to 8:00 PM.",
+    "gmap": "https://maps.google.com/maps?q=3870+Old+Richmond+Road,+Ottawa",
+    "link": "",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-12"
+  },
+  {
+    "name": "Clube de Xadrez São Paulo",
+    "city": "São Paulo",
+    "labels": [
+      "chess club"
+    ],
+    "coordinates": "-23.5502, -46.6370",
+    "note": "Founded in 1902, it is the oldest chess club in Brazil. It has 48 free chess tables and offers tournaments on Friday and Saturday.",
+    "gmap": "https://maps.google.com/?q=-23.5502,-46.6370",
+    "link": "https://www.instagram.com/clubedexadrezsp/",
+    "image": "",
+    "days": "Friday, Saturday",
+    "_scouted": "2026-06-12"
+  },
+  {
+    "name": "Ludus Luderia",
+    "city": "São Paulo",
+    "labels": [
+      "chess bar",
+      "chess board"
+    ],
+    "coordinates": "-23.5517, -46.6508",
+    "note": "A board game bar with over 1,800 games including chess. Four chess tables available all week with paid entry and game monitors.",
+    "gmap": "https://maps.google.com/?q=-23.5517,-46.6508",
+    "link": "https://www.ludusluderia.com.br/",
+    "image": "",
+    "days": "Thursday, Friday, Saturday, Sunday",
+    "_scouted": "2026-06-12"
+  },
+  {
+    "name": "Biblioteca de São Paulo (Chess Program)",
+    "city": "São Paulo",
+    "labels": [
+      "chess club",
+      "chess board"
+    ],
+    "coordinates": "-23.5265, -46.5897",
+    "note": "Free chess program with 4 boards including one for visually impaired players. Workshops held Saturdays 15h-17h and Sundays 14h-16h.",
+    "gmap": "https://maps.google.com/?q=-23.5265,-46.5897",
+    "link": "https://bsp.org.br/",
+    "image": "",
+    "days": "Saturday, Sunday",
+    "_scouted": "2026-06-12"
+  },
+  {
+    "name": "Biblioteca Parque Villa-Lobos (Chess Program)",
+    "city": "São Paulo",
+    "labels": [
+      "chess club",
+      "chess board"
+    ],
+    "coordinates": "-23.5650, -46.7310",
+    "note": "Free chess boards and accessible boards for people with visual impairment. Workshops held Saturdays 15h-17h.",
+    "gmap": "https://maps.google.com/?q=-23.5650,-46.7310",
+    "link": "https://bvl.org.br/",
+    "image": "",
+    "days": "Saturday",
+    "_scouted": "2026-06-12"
+  },
+  {
+    "name": "Galeria de Xadrez Borba Gato",
+    "city": "São Paulo",
+    "labels": [
+      "chess club"
+    ],
+    "coordinates": "-23.6142, -46.7105",
+    "note": "Chess gallery in Santo Amaro neighborhood hosting tournaments and games. Tournaments are held Saturdays from 14h30.",
+    "gmap": "https://maps.google.com/?q=-23.6142,-46.7105",
+    "link": "https://galeriadexadrez.blogspot.com/",
+    "image": "",
+    "days": "Saturday",
+    "_scouted": "2026-06-12"
+  },
+  {
+    "name": "Clube de Xadrez São Francisco de Assis",
+    "city": "São Paulo",
+    "labels": [
+      "chess club"
+    ],
+    "coordinates": "-23.4668, -46.7313",
+    "note": "Chess club teaching children and making friends. In-person games every Saturday from 09h00 to 12h00 at the church patio.",
+    "gmap": "https://maps.google.com/?q=-23.4668,-46.7313",
+    "link": "https://www.chess.com/club/cxsfa-clube-de-xadrez-sao-francisco-de-assis",
+    "image": "",
+    "days": "Saturday",
+    "_scouted": "2026-06-12"
+  },
+  {
+    "name": "Xadrez Total",
+    "city": "São Paulo",
+    "labels": [
+      "chess club"
+    ],
+    "coordinates": "-23.5858, -46.6308",
+    "note": "Chess school and tournament venue in Vila Mariana. Offers classes, tournaments, and lectures. Lectures held Mondays 20h-22h.",
+    "gmap": "https://maps.google.com/?q=-23.5858,-46.6308",
+    "link": "https://xadreztotal.com.br/",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-12"
+  },
+  {
+    "name": "Elevado Presidente João Goulart (Minhocão)",
+    "city": "São Paulo",
+    "labels": [
+      "chess board"
+    ],
+    "coordinates": "-23.5315, -46.6519",
+    "note": "Public elevated park with four large 3-meter chess boards for free play on weekends. Monitors available to help players.",
+    "gmap": "https://maps.google.com/?q=-23.5315,-46.6519",
+    "link": "",
+    "image": "",
+    "days": "Saturday, Sunday",
+    "_scouted": "2026-06-12"
   }
 ]
