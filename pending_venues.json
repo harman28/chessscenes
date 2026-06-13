@@ -1136,5 +1136,20 @@
     "image": "",
     "days": "Saturday, Sunday",
     "_scouted": "2026-06-12"
+  },
+  {
+    "name": "Lowertown Brewery Chess Meetup",
+    "city": "Ottawa",
+    "labels": [
+      "chess meetup",
+      "chess bar"
+    ],
+    "coordinates": "45.42647, -75.68893",
+    "note": "Social chess meetup for beginners to experts at a brewery/pub venue with food and drinks available.",
+    "gmap": "https://www.google.com/maps/search/Lowertown+Brewery+73+York+Street+Ottawa",
+    "link": "https://www.meetup.com/ottawa-gatinrau-chess-meetup-u-lepla-meetup/",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-13"
   }
 ]
