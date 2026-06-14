@@ -1151,5 +1151,34 @@
     "image": "",
     "days": "",
     "_scouted": "2026-06-13"
+  },
+  {
+    "name": "CXSFA - Clube de Xadrez São Francisco de Assis",
+    "city": "São Paulo",
+    "labels": [
+      "chess club",
+      "chess school"
+    ],
+    "coordinates": "-23.4885, -46.7260",
+    "note": "Chess club focused on teaching children, located in Pirituba. Holds in-person games every Saturday from 09:00 to 12:00 at the São Francisco de Assis Church courtyard.",
+    "gmap": "https://www.google.com/maps/search/Avenida+Menotti+Laudisio+740+Pirituba+São+Paulo",
+    "link": "https://www.chess.com/club/cxsfa-clube-de-xadrez-sao-francisco-de-assis",
+    "image": "",
+    "days": "Saturday",
+    "_scouted": "2026-06-14"
+  },
+  {
+    "name": "Chess Club",
+    "city": "São Paulo",
+    "labels": [
+      "chess bar"
+    ],
+    "coordinates": "-23.6217, -46.6719",
+    "note": "Sophisticated nightclub inspired by European clubs in Campo Belo district. Opens daily from 22:00. Offers comfort, sophistication and high-tech facilities.",
+    "gmap": "https://www.google.com/maps/search/Chess+Club+Campo+Belo+São+Paulo",
+    "link": "https://www.baressp.com.br/baladas/chess-club",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-14"
   }
 ]
