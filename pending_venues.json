@@ -1180,5 +1180,53 @@
     "image": "",
     "days": "",
     "_scouted": "2026-06-14"
+  },
+  {
+    "name": "Clube Xadrez Carioca",
+    "city": "Rio de Janeiro",
+    "labels": "chess club",
+    "coordinates": "-22.8825, -43.5625",
+    "note": "Chess club in the West Zone hosting in-person tournaments with a library and lectures from chess masters. Also has a giant outdoor chess board at West Shopping on weekends.",
+    "gmap": "https://maps.google.com/?q=-22.8825,-43.5625",
+    "link": "https://www.chess.com/club/clube-xadrez-carioca",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-15"
+  },
+  {
+    "name": "ALEX (Associação Leopoldinense de Xadrez)",
+    "city": "Rio de Janeiro",
+    "labels": "chess club",
+    "coordinates": "-22.9034, -43.1810",
+    "note": "Traditional chess club founded in 1974 located in Cinelândia. Hosts rapid tournaments on Saturdays and offers instruction for beginners.",
+    "gmap": "https://maps.google.com/?q=-22.9034,-43.1810",
+    "link": "http://www.alex.org.br",
+    "image": "",
+    "days": "Tuesday, Wednesday, Thursday, Saturday",
+    "_scouted": "2026-06-15"
+  },
+  {
+    "name": "Xadrez Rio de Janeiro",
+    "city": "Rio de Janeiro",
+    "labels": "chess board",
+    "coordinates": "-22.9081, -43.1775",
+    "note": "Outdoor chess playing area on Rua Adilson Eslater in downtown Rio where people play chess in public.",
+    "gmap": "https://maps.google.com/?q=-22.9081,-43.1775",
+    "link": "",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-15"
+  },
+  {
+    "name": "Clube Municipal",
+    "city": "Rio de Janeiro",
+    "labels": "chess club",
+    "coordinates": "-22.9514, -43.2430",
+    "note": "Municipal club in Tijuca that hosts the V Rio Chess Open tournament annually, featuring multiple chess events for all levels.",
+    "gmap": "https://maps.google.com/?q=-22.9514,-43.2430",
+    "link": "https://riochessopen.com/en/",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-15"
   }
 ]
