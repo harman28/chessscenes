@@ -1228,5 +1228,101 @@
     "image": "",
     "days": "",
     "_scouted": "2026-06-15"
+  },
+  {
+    "name": "Club Argentino de Ajedrez",
+    "city": "Buenos Aires",
+    "labels": "chess club, chess museum",
+    "coordinates": "-34.5947, -58.3860",
+    "note": "Prestigious historic chess club founded in 1905 in Recoleta. Hosts tournaments, classes, and houses a museum with memorabilia from famous matches like Alekhine-Capablanca.",
+    "gmap": "https://maps.google.com/?q=-34.5947,-58.3860",
+    "link": "https://www.instagram.com/caajedrez/",
+    "image": "",
+    "days": "Monday, Tuesday, Wednesday, Thursday, Friday, Saturday",
+    "_scouted": "2026-06-16"
+  },
+  {
+    "name": "Círculo de Ajedrez Torre Blanca",
+    "city": "Buenos Aires",
+    "labels": "chess club, chess meetup",
+    "coordinates": "-34.6007, -58.4224",
+    "note": "Non-profit chess club founded in 1972 in Almagro. Known as major breeding ground for young chess talent, organizes ~100 tournaments annually.",
+    "gmap": "https://maps.google.com/?q=-34.6007,-58.4224",
+    "link": "https://ajedreztorreblanca.com/",
+    "image": "",
+    "days": "Monday, Tuesday, Wednesday, Thursday, Friday, Saturday",
+    "_scouted": "2026-06-16"
+  },
+  {
+    "name": "Club Jaque Mate",
+    "city": "Buenos Aires",
+    "labels": "chess club",
+    "coordinates": "-34.6097, -58.3877",
+    "note": "Historic chess club in Constitución founded between 1928-1930. Hosts tournaments and chess classes for all levels. Shares building with Argentine Go Association.",
+    "gmap": "https://maps.google.com/?q=-34.6097,-58.3877",
+    "link": "https://www.facebook.com/ClubJaque/",
+    "image": "",
+    "days": "Saturday",
+    "_scouted": "2026-06-16"
+  },
+  {
+    "name": "El Caballito De Palermo",
+    "city": "Buenos Aires",
+    "labels": "chess club",
+    "coordinates": "-34.5876, -58.4313",
+    "note": "Chess education association in Palermo operating for over 20 years. Offers chess workshops for all ages with holistic educational approach.",
+    "gmap": "https://maps.google.com/?q=-34.5876,-58.4313",
+    "link": "https://www.caballitodepalermo.org/",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-16"
+  },
+  {
+    "name": "Teran Chess Academy",
+    "city": "Buenos Aires",
+    "labels": "chess club",
+    "coordinates": "-34.5658, -58.4686",
+    "note": "Chess academy offering personalized in-person and online classes for all levels and ages. Professional staff with friendly approach.",
+    "gmap": "https://maps.google.com/?q=-34.5658,-58.4686",
+    "link": "https://www.facebook.com/teranchess/",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-16"
+  },
+  {
+    "name": "Escuela y Círculo de Ajedrez Carpe Diem",
+    "city": "Buenos Aires",
+    "labels": "chess club",
+    "coordinates": "-34.6207, -58.4548",
+    "note": "Chess school in Saavedra area. Organizes tournaments and classes for various skill levels.",
+    "gmap": "https://maps.google.com/?q=-34.6207,-58.4548",
+    "link": "https://www.instagram.com/ajedrez_carpediem/",
+    "image": "",
+    "days": "Monday, Wednesday",
+    "_scouted": "2026-06-16"
+  },
+  {
+    "name": "Club de Ajedrez El Paseo del Rey",
+    "city": "Buenos Aires",
+    "labels": "chess club",
+    "coordinates": "-34.6333, -58.3661",
+    "note": "Chess club in La Boca with strong daily tournaments of various categories.",
+    "gmap": "https://maps.google.com/?q=-34.6333,-58.3661",
+    "link": "https://lichess.org/team/paseo-del-rey",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-16"
+  },
+  {
+    "name": "Magnus Chess Group Buenos Aires",
+    "city": "Buenos Aires",
+    "labels": "chess meetup",
+    "coordinates": "-34.6035, -58.3815",
+    "note": "Meetup group for chess players to connect, improve skills, and attend online/in-person events in the community.",
+    "gmap": "https://maps.google.com/?q=-34.6035,-58.3815",
+    "link": "https://www.meetup.com/es/magnus-chess-group-buenos-aires/",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-16"
   }
 ]
