@@ -1324,5 +1324,75 @@
     "image": "",
     "days": "",
     "_scouted": "2026-06-16"
+  },
+  {
+    "name": "Club de Ajedrez Lasker",
+    "city": "Bogotá",
+    "labels": [
+      "chess club"
+    ],
+    "coordinates": "4.7224, -74.0752",
+    "note": "Established 40+ years ago, serves as a meeting place for serious chess players. Also functions as a restaurant and bar.",
+    "gmap": "https://www.google.com/maps/search/Club+de+Ajedrez+Lasker+Bogota",
+    "link": "https://www.facebook.com/ajedrezlaskerbogota/",
+    "image": "",
+    "days": "Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday",
+    "_scouted": "2026-06-17"
+  },
+  {
+    "name": "Hotel Vintage Chess Room",
+    "city": "Bogotá",
+    "labels": [
+      "chess bar"
+    ],
+    "coordinates": "4.7500, -74.0350",
+    "note": "Chess room at a 4-star hotel with restaurant and bar featuring chess games. Located in Chapinero district.",
+    "gmap": "https://www.google.com/maps/search/Hotel+Vintage+Chess+Room+Bogota",
+    "link": "https://www.hotelvintage.co/EN/chess-room.html",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-17"
+  },
+  {
+    "name": "Meetup de Ajedrez en Bogotá",
+    "city": "Bogotá",
+    "labels": [
+      "chess meetup"
+    ],
+    "coordinates": "4.7224, -74.0752",
+    "note": "Chess meetup group organized by John Fonseca with 50+ members. Meets regularly for casual chess and strategy improvement.",
+    "gmap": "",
+    "link": "https://www.meetup.com/meetup-de-ajedrez-en-bogota/",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-17"
+  },
+  {
+    "name": "Biblioteca Pública El Tintal (Manuel Zapata Olivella)",
+    "city": "Bogotá",
+    "labels": [
+      "chess board"
+    ],
+    "coordinates": "4.7167, -74.1667",
+    "note": "Public library that occasionally hosts chess tournaments and simultaneous exhibitions for amateur players.",
+    "gmap": "https://www.google.com/maps/search/Biblioteca+El+Tintal+Bogota",
+    "link": "",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-17"
+  },
+  {
+    "name": "Unicentro de Occidente",
+    "city": "Bogotá",
+    "labels": [
+      "chess board"
+    ],
+    "coordinates": "4.7400, -74.1550",
+    "note": "Shopping center food court where chess games are played in afternoons, especially on Fridays, in a friendly environment.",
+    "gmap": "https://www.google.com/maps/search/Unicentro+de+Occidente+Bogota",
+    "link": "https://unicentrodeoccidente.com.co/",
+    "image": "",
+    "days": "Friday",
+    "_scouted": "2026-06-17"
   }
 ]
