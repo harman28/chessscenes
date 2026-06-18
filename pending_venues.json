@@ -1394,5 +1394,192 @@
     "image": "",
     "days": "Friday",
     "_scouted": "2026-06-17"
+  },
+  {
+    "name": "Parque del Ajedrez",
+    "city": "Medellín",
+    "labels": [
+      "chess board",
+      "chess memorial"
+    ],
+    "coordinates": "6.2483, -75.6156",
+    "note": "Large-scale chess board in a public park in La América/Santa Mónica. Renovated space with playground, outdoor gym, and seating.",
+    "gmap": "",
+    "link": "",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-18"
+  },
+  {
+    "name": "Medellín Chess Club",
+    "city": "Medellín",
+    "labels": [
+      "chess club"
+    ],
+    "coordinates": "",
+    "note": "Founded in 1985, one of the oldest and most prestigious clubs in the city center. Offers classes for all levels and organizes tournaments.",
+    "gmap": "",
+    "link": "",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-18"
+  },
+  {
+    "name": "Liga de Ajedrez de Antioquia",
+    "city": "Medellín",
+    "labels": [
+      "chess club"
+    ],
+    "coordinates": "6.2306, -75.5944",
+    "note": "Antioquia Chess League based at Calle 50 #71-147. Organizes local tournaments and competitions.",
+    "gmap": "",
+    "link": "https://www.facebook.com/LigadeAjedrezdeAntioquia/",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-18"
+  },
+  {
+    "name": "Comfama Chess Club",
+    "city": "Medellín",
+    "labels": [
+      "chess club"
+    ],
+    "coordinates": "",
+    "note": "Multiple locations across the city offering free or low-cost workshops, ideal for beginners and families.",
+    "gmap": "",
+    "link": "",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-18"
+  },
+  {
+    "name": "University of Antioquia Chess Club",
+    "city": "Medellín",
+    "labels": [
+      "chess club"
+    ],
+    "coordinates": "",
+    "note": "University-affiliated chess club focused on training players and promoting chess research and academic events.",
+    "gmap": "",
+    "link": "",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-18"
+  },
+  {
+    "name": "El Poblado Chess Club",
+    "city": "Medellín",
+    "labels": [
+      "chess club"
+    ],
+    "coordinates": "",
+    "note": "Located in El Poblado, attracts high-level competitive players with tournaments and advanced training.",
+    "gmap": "",
+    "link": "",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-18"
+  },
+  {
+    "name": "Ajedrez Lima Club",
+    "city": "Lima",
+    "labels": [
+      "chess club"
+    ],
+    "coordinates": "-12.0865, -77.0324",
+    "note": "Chess club based in San Borja district. Offers chess games and tournaments for members.",
+    "gmap": "",
+    "link": "https://www.chess.com/club/ajedrez-lima-club",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-18"
+  },
+  {
+    "name": "LIMA CHESS",
+    "city": "Lima",
+    "labels": [
+      "chess club",
+      "chess school"
+    ],
+    "coordinates": "",
+    "note": "Chess school and club offering chess classes, tournaments, and training. Email: ajedrezlimachess@gmail.com",
+    "gmap": "",
+    "link": "https://www.chess.com/club/lima-chess-1",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-18"
+  },
+  {
+    "name": "Academia de Ajedrez Armagedón",
+    "city": "Lima",
+    "labels": [
+      "chess club",
+      "chess school"
+    ],
+    "coordinates": "-12.0899, -77.0034",
+    "note": "Chess academy in San Miguel offering in-person and online classes for all levels. Phone: +51 989 876 032",
+    "gmap": "https://www.google.com/maps/search/Academia+de+Ajedrez+Armagedón+San+Miguel+Lima",
+    "link": "https://www.facebook.com/AcademiaArmagedon/",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-18"
+  },
+  {
+    "name": "Centro Metropolitano de Ajedrez",
+    "city": "Lima",
+    "labels": [
+      "chess club"
+    ],
+    "coordinates": "-12.0462, -77.0223",
+    "note": "Chess center located at Museo Metropolitano de Lima. Community space for all skill levels, hosts tournaments.",
+    "gmap": "https://www.google.com/maps/search/Museo+Metropolitano+de+Lima+Avenida+28+de+Julio+800+Lima",
+    "link": "https://www.facebook.com/CentroMetropolitanodeAjedrez/",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-18"
+  },
+  {
+    "name": "Academia de Ajedrez Entre Maestros",
+    "city": "Lima",
+    "labels": [
+      "chess club",
+      "chess school"
+    ],
+    "coordinates": "-12.0975, -77.0015",
+    "note": "Chess academy in Surquillo offering in-person and online classes for children, teens, and adults. Established academy with 10+ years experience.",
+    "gmap": "https://www.google.com/maps/search/Academia+de+Ajedrez+Entre+Maestros+Calle+28+134+Surquillo+Lima",
+    "link": "https://entremaestros.com.pe/",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-18"
+  },
+  {
+    "name": "Federación Deportiva Peruana de Ajedrez Academy",
+    "city": "Lima",
+    "labels": [
+      "chess club",
+      "chess school"
+    ],
+    "coordinates": "-12.0700, -77.0285",
+    "note": "Academy run by the Peruvian Chess Federation. Located in Jesús María. Phone: +51 976 829 754, Hours: 9:00 AM - 5:30 PM",
+    "gmap": "https://www.google.com/maps/search/Calle+Lloque+Yupanqui+1026+Jesús+María+Lima",
+    "link": "https://federacionperuanadeajedrez.org/",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-18"
+  },
+  {
+    "name": "Chess Square - Avenida Diagonal",
+    "city": "Lima",
+    "labels": [
+      "chess board"
+    ],
+    "coordinates": "-12.1200, -77.0300",
+    "note": "Small square in Miraflores where people play chess in public. Casual street chess games.",
+    "gmap": "https://www.google.com/maps/search/Avenida+Diagonal+Miraflores+Lima",
+    "link": "",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-18"
   }
 ]
