@@ -1581,5 +1581,125 @@
     "image": "",
     "days": "",
     "_scouted": "2026-06-18"
+  },
+  {
+    "name": "Cairo Chess Academy",
+    "city": "Cairo",
+    "labels": [
+      "chess academy",
+      "chess club"
+    ],
+    "coordinates": "30.0515, 31.3349",
+    "note": "Chess academy offering instruction for all ages and levels using international federation methods. Multiple branches including at Petro Sport Club and Zahra al-Maadi.",
+    "gmap": "https://maps.google.com/?q=30.0515,31.3349",
+    "link": "https://www.facebook.com/cairochessacademy1",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-20"
+  },
+  {
+    "name": "Adly Chess Academy",
+    "city": "Cairo",
+    "labels": [
+      "chess academy",
+      "chess club"
+    ],
+    "coordinates": "30.0541, 31.3349",
+    "note": "FIDE-certified chess academy established in 2007 by Grandmaster Ahmed Adly. Offers personalized lessons and tournaments for all skill levels.",
+    "gmap": "https://maps.google.com/?q=30.0541,31.3349",
+    "link": "https://www.adlychess.com/",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-20"
+  },
+  {
+    "name": "Egypt Chess Academy",
+    "city": "Cairo",
+    "labels": [
+      "chess academy",
+      "chess club"
+    ],
+    "coordinates": "30.0573, 31.3298",
+    "note": "Chess academy offering learning and training at Lakehouse Club. Provides fun and easy instruction for all ages with expert trainers.",
+    "gmap": "https://maps.google.com/?q=30.0573,31.3298",
+    "link": "https://www.instagram.com/egyptchessacademy/",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-20"
+  },
+  {
+    "name": "El-Fishawy Café",
+    "city": "Cairo",
+    "labels": [
+      "chess board",
+      "chess cafe"
+    ],
+    "coordinates": "30.0475, 31.2623",
+    "note": "Historic café in Khan El-Khalili since 1797. Traditional Egyptian cafés typically have chess sets available. Open 24/7.",
+    "gmap": "https://maps.google.com/?q=30.0475,31.2623",
+    "link": "https://en.wikipedia.org/wiki/El-Fishawy_Caf%C3%A9",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-20"
+  },
+  {
+    "name": "Nairobi Chess Club",
+    "city": "Nairobi",
+    "labels": "chess club",
+    "coordinates": "-1.2727, 36.8163",
+    "note": "Kenya's oldest chess club (registered 1958). Meets every Saturday from 2-6 PM at Goan Gymkhana Club for playing and tournaments.",
+    "gmap": "https://www.google.com/maps/place/Goan+Gymkhana+Club/@-1.2727,36.8163",
+    "link": "https://nairobichessclub.com",
+    "image": "",
+    "days": "Saturday",
+    "_scouted": "2026-06-20"
+  },
+  {
+    "name": "Westlands Chess Club",
+    "city": "Nairobi",
+    "labels": "chess club",
+    "coordinates": "-1.2668, 36.8117",
+    "note": "Chess club based in Westlands offering blitz, rapid, and classical tournaments with member ratings. Promotes competitive club play.",
+    "gmap": "https://www.google.com/maps/place/Corner+Plaza+Parklands+Road+Westlands+Nairobi",
+    "link": "https://www.westlandschess.com",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-20"
+  },
+  {
+    "name": "Nairobi Chess Academy & Club (NACHA)",
+    "city": "Nairobi",
+    "labels": "chess academy, chess club",
+    "coordinates": "-1.2821, 36.8184",
+    "note": "Founded 2006. Offers chess instruction for all ages, tournaments including Nairobi Open, and youth development programs.",
+    "gmap": "",
+    "link": "https://nairobichessacademy.co.ke",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-20"
+  },
+  {
+    "name": "Nairobi Social Chess Club Meetup",
+    "city": "Nairobi",
+    "labels": "chess meetup",
+    "coordinates": "-1.2319, 36.8778",
+    "note": "Meetup group for chess enthusiasts of all levels. Previously met at Garden City Mall on Thika Road (Kasarani area).",
+    "gmap": "https://www.google.com/maps/place/Garden+City+Mall+Nairobi",
+    "link": "https://www.meetup.com/nairobi-social-chess-club-meetup/",
+    "image": "",
+    "days": "Sunday",
+    "_scouted": "2026-06-20"
+  },
+  {
+    "name": "Eurochess",
+    "city": "Nairobi",
+    "labels": "chess club",
+    "coordinates": "-1.2821, 36.8184",
+    "note": "Recommended free chess club with online and physical presence. No membership fees. Accommodates beginners to experienced players and holds tournaments.",
+    "gmap": "",
+    "link": "https://eurochess.net",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-20"
   }
 ]
