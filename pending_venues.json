@@ -1701,5 +1701,149 @@
     "image": "",
     "days": "",
     "_scouted": "2026-06-20"
+  },
+  {
+    "name": "PMadol Chess Club",
+    "city": "Nairobi",
+    "labels": [
+      "chess club"
+    ],
+    "coordinates": "-1.3163, 36.7878",
+    "note": "One of Kenya's newest progressive chess clubs offering personalized coaching, a library of chess books and magazines, and equipment rental.",
+    "gmap": "",
+    "link": "https://pmadol.com/",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-21"
+  },
+  {
+    "name": "Eurochess Nairobi",
+    "city": "Nairobi",
+    "labels": [
+      "chess club",
+      "chess meetup"
+    ],
+    "coordinates": "-1.2833, 36.8167",
+    "note": "Free chess club with no membership fees, offering both online and physical presence. Welcomes beginners and experienced players.",
+    "gmap": "",
+    "link": "",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-21"
+  },
+  {
+    "name": "Orchid-Lekki Chess Club (OLCC)",
+    "city": "Lagos",
+    "labels": [
+      "chess club"
+    ],
+    "coordinates": "6.4303, 3.5842",
+    "note": "An elite chess club located at Orchid Hotel. Offers membership for adults and children, with training sessions and tournaments.",
+    "gmap": "",
+    "link": "https://www.olchessclub.com/",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-21"
+  },
+  {
+    "name": "Royal Rex Hotels Chess Club",
+    "city": "Lagos",
+    "labels": [
+      "chess club"
+    ],
+    "coordinates": "",
+    "note": "Chess club with weekly meetups, structured learning sessions, tournament preparation, and guest lectures.",
+    "gmap": "",
+    "link": "https://royalrexhotels.com/chess-club/",
+    "image": "",
+    "days": "weekly meetups",
+    "_scouted": "2026-06-21"
+  },
+  {
+    "name": "Three Monkeys Bar",
+    "city": "Lagos",
+    "labels": [
+      "chess bar",
+      "chess board"
+    ],
+    "coordinates": "",
+    "note": "Bar where you can play chess along with pool, darts, and backgammon. Serves as social venue with rock & roll vibes.",
+    "gmap": "",
+    "link": "",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-21"
+  },
+  {
+    "name": "The Wanderers Chess Club",
+    "city": "Johannesburg",
+    "labels": [
+      "chess club",
+      "chess bar"
+    ],
+    "coordinates": "-26.1344, 28.0469",
+    "note": "Vibrant chess community at The Wanderers Club offering social chess at Chariots Bar (Wed & Thu 5:30-8pm) and Vista Room (Sat 10-12:30pm), plus coaching and rated tournaments.",
+    "gmap": "https://www.google.com/maps/search/The+Wanderers+Club+Johannesburg",
+    "link": "https://www.thewanderersclub.co.za/pages/sports",
+    "image": "",
+    "days": "Wednesday, Thursday, Saturday",
+    "_scouted": "2026-06-21"
+  },
+  {
+    "name": "Chariots Bar",
+    "city": "Johannesburg",
+    "labels": [
+      "chess bar",
+      "chess meetup"
+    ],
+    "coordinates": "",
+    "note": "Chess bar hosting free weekly social chess events on Wednesday and Thursday evenings (5:30-8pm) as part of the Wanderers Chess Club meetups.",
+    "gmap": "",
+    "link": "",
+    "image": "",
+    "days": "Wednesday, Thursday",
+    "_scouted": "2026-06-21"
+  },
+  {
+    "name": "Randburg Chess Club",
+    "city": "Johannesburg",
+    "labels": [
+      "chess club"
+    ],
+    "coordinates": "",
+    "note": "Chess club playing OTB Blitz, Rapid and Standard tournaments throughout the year on Tuesday evenings.",
+    "gmap": "",
+    "link": "https://www.chess.com/club/randburg-chess-club",
+    "image": "",
+    "days": "Tuesday",
+    "_scouted": "2026-06-21"
+  },
+  {
+    "name": "House of Chess",
+    "city": "Johannesburg",
+    "labels": [
+      "chess shop"
+    ],
+    "coordinates": "-25.9287, 27.9990",
+    "note": "Chess retail store in Robindale/Randburg stocking chess sets, collectibles, and other chess-related items. Occasionally hosts chess evenings.",
+    "gmap": "https://www.google.com/maps/search/House+of+Chess+Robindale+Johannesburg",
+    "link": "",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-21"
+  },
+  {
+    "name": "Johannesburg Central Chess Club",
+    "city": "Johannesburg",
+    "labels": [
+      "chess club"
+    ],
+    "coordinates": "",
+    "note": "Open chess club for all ages serving Johannesburg's central suburbs, providing membership and coaching services.",
+    "gmap": "",
+    "link": "https://www.facebook.com/jhbcentralchess/",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-21"
   }
 ]
