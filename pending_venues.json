@@ -1845,5 +1845,49 @@
     "image": "",
     "days": "",
     "_scouted": "2026-06-21"
+  },
+  {
+    "name": "Royal Rex Hotels & Spa Chess Club",
+    "city": "Lagos",
+    "labels": [
+      "chess club",
+      "chess bar"
+    ],
+    "coordinates": "",
+    "note": "Chess club at a hotel with weekly meetups for casual and competitive play, structured learning sessions, and tournament preparation. Welcomes players of all ages and skill levels.",
+    "gmap": "",
+    "link": "https://royalrexhotels.com/chess-club/",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-22"
+  },
+  {
+    "name": "Three Monkeys",
+    "city": "Lagos",
+    "labels": [
+      "chess bar"
+    ],
+    "coordinates": "",
+    "note": "A legendary bar in Lagos offering chess, darts, backgammon and pool in afternoons, with live rock music and European match broadcasts.",
+    "gmap": "",
+    "link": "",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-22"
+  },
+  {
+    "name": "Rosebank Chess Club",
+    "city": "Johannesburg",
+    "labels": [
+      "chess club",
+      "chess meetup"
+    ],
+    "coordinates": "-26.1343, 28.0349",
+    "note": "A dynamic chess community for all skill levels offering coaching and social OTB events. Wednesday socials at Chariots Bar (17:30–20:00).",
+    "gmap": "https://www.google.com/maps/search/Rosebank+Chess+Club+Johannesburg",
+    "link": "https://www.rosebankchessclub.co.za/",
+    "image": "",
+    "days": "Wednesday",
+    "_scouted": "2026-06-22"
   }
 ]
