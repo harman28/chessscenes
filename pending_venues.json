@@ -1889,5 +1889,184 @@
     "image": "",
     "days": "Wednesday",
     "_scouted": "2026-06-22"
+  },
+  {
+    "name": "Wanderers Chess Club",
+    "city": "Johannesburg",
+    "labels": [
+      "chess club",
+      "chess board"
+    ],
+    "coordinates": "-26.1667, 28.0333",
+    "note": "A vibrant chess community at The Wanderers Club offering social chess events, coaching, and rated tournaments. Social events at Chariots Bar and Vista Room.",
+    "gmap": "https://maps.google.com/maps?q=21+North+Street+Illovo+Johannesburg",
+    "link": "https://www.thewanderersclub.co.za/pages/sports",
+    "image": "",
+    "days": "Wednesday, Thursday, Saturday, Sunday",
+    "_scouted": "2026-06-23"
+  },
+  {
+    "name": "Johannesburg Central Chess",
+    "city": "Johannesburg",
+    "labels": [
+      "chess club"
+    ],
+    "coordinates": "-26.1550, 28.0410",
+    "note": "Open chess club for all ages serving central suburbs of Johannesburg. Provides membership and coaching.",
+    "gmap": "https://maps.google.com/maps?q=Johannesburg+Central+Chess",
+    "link": "https://www.facebook.com/jhbcentralchess/",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-23"
+  },
+  {
+    "name": "Street Chess",
+    "city": "Accra",
+    "labels": [
+      "chess meetup"
+    ],
+    "coordinates": "5.6037, -0.1870",
+    "note": "A grassroots youth empowerment movement that brings chess to public spaces like streets, schools, and community centers. Sessions are ongoing with coaches and volunteers.",
+    "gmap": "",
+    "link": "https://ghanatrvl.com/community-projects/street-chess/",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-23"
+  },
+  {
+    "name": "Accra Chess Club",
+    "city": "Accra",
+    "labels": [
+      "chess club"
+    ],
+    "coordinates": "",
+    "note": "Described as the largest community of chess players in Accra, offering lessons, events, classes, and tournaments.",
+    "gmap": "",
+    "link": "https://x.com/accrachessclub?lang=en",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-23"
+  },
+  {
+    "name": "Ghana Chess Association",
+    "city": "Accra",
+    "labels": [
+      "chess club"
+    ],
+    "coordinates": "",
+    "note": "The official governing body for chess in Ghana, based in Accra. Organizes tournaments and promotes the game.",
+    "gmap": "",
+    "link": "https://www.facebook.com/ghanachessassociation/",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-23"
+  },
+  {
+    "name": "Bangkok Chess Club at The Royal Oak",
+    "city": "Bangkok",
+    "labels": "chess club, chess bar",
+    "coordinates": "13.7287, 100.5547",
+    "note": "Thailand's biggest international chess club. Holds Friday evening meetings with casual games from 7pm and blitz tournaments from 8pm.",
+    "gmap": "https://maps.google.com/?q=595/10-11+Sukhumvit+Soi+33/1+Bangkok",
+    "link": "https://www.bangkokchess.com/",
+    "image": "",
+    "days": "Friday",
+    "_scouted": "2026-06-23"
+  },
+  {
+    "name": "Red Knight Chess Club",
+    "city": "Bangkok",
+    "labels": "chess club, chess academy",
+    "coordinates": "13.7288, 100.5498",
+    "note": "Competitive chess academy hosting FIDE-rated tournaments. Located at Prasarnmit Plaza on Sukhumvit 23, focusing on serious competitive play and coaching.",
+    "gmap": "https://maps.google.com/?q=Prasarnmit+Plaza+Sukhumvit+23+Bangkok",
+    "link": "https://www.redknightchess.com/",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-23"
+  },
+  {
+    "name": "Red Knight Chess Cafe",
+    "city": "Bangkok",
+    "labels": "chess cafe, chess club, chess board",
+    "coordinates": "13.7263, 100.5568",
+    "note": "Casual chess cafe established August 2024 at Bambini Villa. Hosts Saturday evening casual chess games and blitz tournaments, plus Wednesday morning coffees.",
+    "gmap": "https://maps.google.com/?q=Bambini+Villa+Sukhumvit+26+Bangkok",
+    "link": "https://www.redknightchess.com/chess-cafe/",
+    "image": "",
+    "days": "Saturday, Wednesday",
+    "_scouted": "2026-06-23"
+  },
+  {
+    "name": "Happy Pawn Chess Club at Blue Parrot Bangkok",
+    "city": "Bangkok",
+    "labels": "chess club, chess meetup",
+    "coordinates": "13.7082, 100.5411",
+    "note": "Youth-focused chess club hosting tournaments and multi-day chess camps at open-air garden restaurant. Family-friendly atmosphere with casual and competitive events.",
+    "gmap": "https://maps.google.com/?q=Blue+Parrot+Bangkok+Yen+Akat+Sathorn",
+    "link": "https://www.happypawnchess.com/",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-23"
+  },
+  {
+    "name": "Happy Pawn Chess Club at Alliance Française Bangkok",
+    "city": "Bangkok",
+    "labels": "chess club, chess meetup",
+    "coordinates": "13.7381, 100.5531",
+    "note": "Monthly chess tournaments hosted at Alliance Française. More formal setting than Blue Parrot for Happy Pawn tournaments and events.",
+    "gmap": "https://maps.google.com/?q=Alliance+Francaise+Bangkok+179+Wireless+Road",
+    "link": "https://www.happypawnchess.com/",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-23"
+  },
+  {
+    "name": "Big Rook Chess Academy (BRCA)",
+    "city": "Bangkok",
+    "labels": "chess club, chess academy",
+    "coordinates": "13.7454, 100.5597",
+    "note": "Serious chess academy and competitive club. Members meet Sundays at 1pm and Wednesdays at 4:30pm for games and rated tournaments.",
+    "gmap": "https://maps.google.com/?q=15+Pattanavet+11+Pridi+Bhanomyong+Bangkok",
+    "link": "https://www.bigrookchess.com/",
+    "image": "",
+    "days": "Sunday, Wednesday",
+    "_scouted": "2026-06-23"
+  },
+  {
+    "name": "Checkmate Bar & Bistro",
+    "city": "Bangkok",
+    "labels": "chess bar, chess board",
+    "coordinates": "13.6752, 100.5234",
+    "note": "Chess-themed bar and bistro with live music at Asiatique The Riverfront. Casual dining with chess-themed decor but not primarily a chess venue.",
+    "gmap": "https://maps.google.com/?q=Checkmate+Bar+Bistro+Asiatique+Bangkok",
+    "link": "",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-23"
+  },
+  {
+    "name": "Bangkok Social Chess at Fig Lobby Hotel",
+    "city": "Bangkok",
+    "labels": "chess meetup",
+    "coordinates": "13.7294, 100.5567",
+    "note": "Casual chess meetup group for beginners and experienced players. Meets every Tuesday 7pm-11pm for friendly games and learning.",
+    "gmap": "https://maps.google.com/?q=Fig+Lobby+Hotel+Rimthangrotfaisaipaknam+Road+Bangkok",
+    "link": "https://www.facebook.com/bangkoksocialchess/",
+    "image": "",
+    "days": "Tuesday",
+    "_scouted": "2026-06-23"
+  },
+  {
+    "name": "Bangkok Chess Meetup at New Kiwi Sports Bar",
+    "city": "Bangkok",
+    "labels": "chess bar, chess meetup",
+    "coordinates": "13.7481, 100.5537",
+    "note": "Casual chess meetup group meeting at sports bar. Welcoming to beginners and experienced players for social chess games.",
+    "gmap": "https://maps.google.com/?q=New+Kiwi+Sports+Bar+Sukhumvit+Soi+8+Bangkok",
+    "link": "https://www.meetup.com/bangkok-chess/",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-23"
   }
 ]
