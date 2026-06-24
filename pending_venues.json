@@ -2068,5 +2068,106 @@
     "image": "",
     "days": "",
     "_scouted": "2026-06-23"
+  },
+  {
+    "name": "Bempong Chess Foundation",
+    "city": "Accra",
+    "labels": [
+      "chess club"
+    ],
+    "coordinates": "5.6, -0.19",
+    "note": "Non-profit organization teaching chess to students and youth in Ghana. Conducts tournaments, workshops, and training sessions.",
+    "gmap": "",
+    "link": "https://www.chess.com/clubs/about/bempong-chess-foundation",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-24"
+  },
+  {
+    "name": "Pro Chess Ghana",
+    "city": "Accra",
+    "labels": [
+      "chess club"
+    ],
+    "coordinates": "5.6818, -0.1934",
+    "note": "Chess club operating in Greater Accra Region offering chess instruction and community play.",
+    "gmap": "",
+    "link": "",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-24"
+  },
+  {
+    "name": "Bangkok Chess Club",
+    "city": "Bangkok",
+    "labels": [
+      "chess club"
+    ],
+    "coordinates": "13.7251, 100.5648",
+    "note": "Thailand's biggest international chess club established in 1999. Weekly Friday evening meetings with casual games and blitz tournaments from 8pm.",
+    "gmap": "https://maps.google.com/?q=The+Royal+Oak,+Sukhumvit+33/1,+Bangkok",
+    "link": "https://bangkokchess.com/",
+    "image": "",
+    "days": "Friday",
+    "_scouted": "2026-06-24"
+  },
+  {
+    "name": "Bangkok Social Chess",
+    "city": "Bangkok",
+    "labels": [
+      "chess meetup"
+    ],
+    "coordinates": "13.7437, 100.5512",
+    "note": "Free, friendly casual chess meetup for beginners and all levels. Meets weekly at FCCT (Foreign Correspondents' Club of Thailand) with food and drink specials.",
+    "gmap": "https://maps.google.com/?q=FCCT,+Ploenchit+Road,+Maneeya+Center,+Bangkok",
+    "link": "https://www.facebook.com/bangkoksocialchess",
+    "image": "",
+    "days": "Tuesday",
+    "_scouted": "2026-06-24"
+  },
+  {
+    "name": "Bangkok Chess Meetup",
+    "city": "Bangkok",
+    "labels": [
+      "chess meetup",
+      "chess bar"
+    ],
+    "coordinates": "13.7277, 100.5574",
+    "note": "Casual chess meetup open to beginners and experts at New Kiwi Sports Bar. Social chess games and friendly atmosphere.",
+    "gmap": "https://maps.google.com/?q=New+Kiwi+Sports+Bar,+Sukhumvit+Soi+8,+Bangkok",
+    "link": "https://www.meetup.com/bangkok-chess/",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-24"
+  },
+  {
+    "name": "Big Rook Chess Academy",
+    "city": "Bangkok",
+    "labels": [
+      "chess club",
+      "chess academy"
+    ],
+    "coordinates": "13.7398, 100.5619",
+    "note": "Professional chess academy with BRCA Chess Club. Members meet for game sessions and rated tournaments. Open-door club scene with coaching available.",
+    "gmap": "https://maps.google.com/?q=15+Pattanavet+11,+Pridi+Bhanomyong+26,+Bangkok",
+    "link": "https://bigrookchess.com/",
+    "image": "",
+    "days": "Sunday, Wednesday",
+    "_scouted": "2026-06-24"
+  },
+  {
+    "name": "Happy Pawn Chess Club",
+    "city": "Bangkok",
+    "labels": [
+      "chess club",
+      "chess academy"
+    ],
+    "coordinates": "13.7128, 100.5394",
+    "note": "Youth-focused chess club at Blue Parrot Bangkok open-air garden restaurant. Hosts tournaments, chess camps, and multi-day events for families and young players.",
+    "gmap": "https://maps.google.com/?q=Blue+Parrot+Bangkok,+Yen+Akat+2,+Sathorn,+Bangkok",
+    "link": "https://www.happypawnchess.com/",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-24"
   }
 ]
