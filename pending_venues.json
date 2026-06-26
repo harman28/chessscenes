@@ -2169,5 +2169,213 @@
     "image": "",
     "days": "",
     "_scouted": "2026-06-24"
+  },
+  {
+    "name": "Hanoi Chess Club",
+    "city": "Hanoi",
+    "labels": [
+      "chess club",
+      "chess bar",
+      "chess meetup"
+    ],
+    "coordinates": "",
+    "note": "Exclusive social chess club that meets at various upscale bars and lounges. Chess gatherings every Saturday with tournaments on the last Saturday of each month.",
+    "gmap": "",
+    "link": "https://www.facebook.com/people/Hanoi-Chess-Club/100093623171446/",
+    "image": "",
+    "days": "Saturday",
+    "_scouted": "2026-06-26"
+  },
+  {
+    "name": "Aus Der Gasse",
+    "city": "Hanoi",
+    "labels": [
+      "chess bar",
+      "chess board"
+    ],
+    "coordinates": "21.0285, 105.8554",
+    "note": "Historic café in the Old Quarter offering free chess, coffee, and cocktails in a charming 100+ year old building with traditional Vietnamese atmosphere.",
+    "gmap": "https://www.google.com/maps/search/36+Hang+Can+Hanoi",
+    "link": "https://www.tripadvisor.com/Attraction_Review-g293924-d26193735-Reviews-Aus_Der_Gasse-Hanoi.html",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-26"
+  },
+  {
+    "name": "Young Talent Chess Club",
+    "city": "Hanoi",
+    "labels": [
+      "chess club"
+    ],
+    "coordinates": "21.0279, 105.8342",
+    "note": "Chess training center founded in 2005 focusing on children's chess education with qualified coaches. Offers classes, tournaments, and training programs.",
+    "gmap": "https://www.google.com/maps/search/P608+C7+Building+Tran+Huy+Lieut+Giang+Vo+Hanoi",
+    "link": "https://mytour.vn/en/blog/xep-hang/top-9-best-chess-training-centers-in-hanoi-mytour.html",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-26"
+  },
+  {
+    "name": "The 100 Garden",
+    "city": "Hanoi",
+    "labels": [
+      "chess meetup",
+      "chess board"
+    ],
+    "coordinates": "21.0642, 105.8197",
+    "note": "Garden venue in Tây Hồ offering craft beers, food, and entertainment including chess nights. Hosts chess meetups on Saturday afternoons.",
+    "gmap": "https://www.google.com/maps/place/The+100+Garden",
+    "link": "https://www.facebook.com/the100hanoi/",
+    "image": "",
+    "days": "Saturday",
+    "_scouted": "2026-06-26"
+  },
+  {
+    "name": "Hanoi Lucky Chess Club",
+    "city": "Hanoi",
+    "labels": [
+      "chess club"
+    ],
+    "coordinates": "",
+    "note": "Active chess community offering tournaments, casual games, training events, and kids programs with competitive activities every week.",
+    "gmap": "",
+    "link": "https://www.hanoiluckychess.com/",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-26"
+  },
+  {
+    "name": "Saigon Chess Club",
+    "city": "Ho Chi Minh City",
+    "labels": [
+      "chess club",
+      "chess bar",
+      "chess meetup"
+    ],
+    "coordinates": "10.7769, 106.7007",
+    "note": "Weekly meetups at various upscale venues (currently Ministry of Men at Sofitel Saigon Plaza). Casual social and competitive chess with all levels welcome.",
+    "gmap": "https://maps.google.com/?q=17+Le+Duan+Sofitel+Saigon+Plaza+Ho+Chi+Minh",
+    "link": "https://www.facebook.com/welovetochess/",
+    "image": "",
+    "days": "Saturday",
+    "_scouted": "2026-06-26"
+  },
+  {
+    "name": "Luna & Co Chess Club",
+    "city": "Ho Chi Minh City",
+    "labels": [
+      "chess club",
+      "chess meetup",
+      "chess bar"
+    ],
+    "coordinates": "10.8006, 106.7475",
+    "note": "Sunday chess meetup at Luna & Co cafe in Thảo Điền. Fee of 150K VND includes free drink. Features blitz, bughouse, team challenges, and beginner lessons.",
+    "gmap": "https://maps.google.com/?q=2+Nguyen+Ba+Huan+Thao+Dien+Ho+Chi+Minh",
+    "link": "https://www.meetup.com/saigon-chess-club/",
+    "image": "",
+    "days": "Sunday",
+    "_scouted": "2026-06-26"
+  },
+  {
+    "name": "Genius School of Chess",
+    "city": "Ho Chi Minh City",
+    "labels": [
+      "chess club",
+      "chess board"
+    ],
+    "coordinates": "10.8034, 106.7540",
+    "note": "Chess school for children and adult chess club in District 2. Open 8AM-8PM daily; call ahead to confirm chess players are present.",
+    "gmap": "https://maps.google.com/?q=District+2+Hochiminh+Ho+Chi+Minh+City",
+    "link": "https://www.chess.com/club/genius-school-of-chess",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-26"
+  },
+  {
+    "name": "Chess Fancy",
+    "city": "Ho Chi Minh City",
+    "labels": [
+      "chess club",
+      "chess board"
+    ],
+    "coordinates": "10.8058, 106.7604",
+    "note": "Chess club in District 2 (Phú Nhuận) offering lessons and regular tournaments. Also has location in Dalat. Beautiful dedicated chess space with premium experience.",
+    "gmap": "https://maps.google.com/?q=43D+Ho+Van+Hue+Ho+Chi+Minh+City",
+    "link": "https://chessfancy.com/",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-26"
+  },
+  {
+    "name": "Be Nuts Chess Club",
+    "city": "Ho Chi Minh City",
+    "labels": [
+      "chess club"
+    ],
+    "coordinates": "10.8006, 106.7475",
+    "note": "Small chess club in District 2 near Thảo Điền area. Community-focused chess venue.",
+    "gmap": "https://maps.google.com/?q=43a+43b+Xuan+Thuy+Thao+Dien+District+2",
+    "link": "https://www.facebook.com/BeNutsVnstore/",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-26"
+  },
+  {
+    "name": "CHESS BAR",
+    "city": "Ho Chi Minh City",
+    "labels": [
+      "chess bar"
+    ],
+    "coordinates": "10.7750, 106.6950",
+    "note": "Small, cozy chess bar hidden on an upper floor of D.lion building. Peaceful space for chess and socializing.",
+    "gmap": "",
+    "link": "https://www.facebook.com/chessbar.vn/",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-26"
+  },
+  {
+    "name": "KL Chess Academy",
+    "city": "Kuala Lumpur",
+    "labels": [
+      "chess club",
+      "chess academy"
+    ],
+    "coordinates": "3.2014, 101.5892",
+    "note": "An enrichment centre specialising in teaching chess and training young chess talent. Hosts the KL Chess Grand Prix on Sundays (13 July, 16 August, 11 October, 15 November, 6 December 2026) from 1:30-5:30pm.",
+    "gmap": "https://maps.google.com/maps?q=20-1+Jln+27/70A+Desa+Sri+Hartamas+50480+Kuala+Lumpur",
+    "link": "https://www.klchessacademy.my/",
+    "image": "",
+    "days": "Sunday",
+    "_scouted": "2026-06-26"
+  },
+  {
+    "name": "Kuala Lumpur Chess Association (KLCA)",
+    "city": "Kuala Lumpur",
+    "labels": [
+      "chess club"
+    ],
+    "coordinates": "3.2014, 101.5892",
+    "note": "Non-governmental organization organizing chess competitions and events in Kuala Lumpur. Based in Desa Sri Hartamas.",
+    "gmap": "",
+    "link": "https://klca.my/",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-26"
+  },
+  {
+    "name": "Kuala Lumpur Poggers (Chiquyo Japanese Restaurant, Amcorp Mall)",
+    "city": "Kuala Lumpur",
+    "labels": [
+      "chess meetup",
+      "chess bar"
+    ],
+    "coordinates": "3.0556, 101.5517",
+    "note": "Weekly chess meetup group meeting at Chiquyo Japanese Restaurant for fun sessions and blitz chess games. All levels welcome.",
+    "gmap": "https://bit.ly/amcorpchess",
+    "link": "https://www.meetup.com/chesscom-group-kuala-lumpur/",
+    "image": "",
+    "days": "Saturday",
+    "_scouted": "2026-06-26"
   }
 ]
