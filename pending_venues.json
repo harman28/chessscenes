@@ -2377,5 +2377,154 @@
     "image": "",
     "days": "Saturday",
     "_scouted": "2026-06-26"
+  },
+  {
+    "name": "Saigon Knight Life",
+    "city": "Ho Chi Minh City",
+    "labels": [
+      "chess club",
+      "chess meetup"
+    ],
+    "coordinates": "10.8029, 106.7579",
+    "note": "Sunday chess meetup group at Luna & Co. with beginner-friendly lessons, special formats, and prizes. Fee includes a free drink.",
+    "gmap": "https://maps.google.com/?q=2+Nguyen+Ba+Huan+Thao+Dien+District+2",
+    "link": "https://www.meetup.com/saigon-chess-club/",
+    "image": "",
+    "days": "Sunday",
+    "_scouted": "2026-06-27"
+  },
+  {
+    "name": "Monopolatte Cafe au Play",
+    "city": "Ho Chi Minh City",
+    "labels": [
+      "chess board",
+      "chess cafe"
+    ],
+    "coordinates": "10.8014, 106.7628",
+    "note": "Board game café in District 2 with a good selection of board games including chess. Casual atmosphere with WiFi and coffee.",
+    "gmap": "https://maps.google.com/?q=Monopolatte+Cafe+au+Play+District+2",
+    "link": "",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-27"
+  },
+  {
+    "name": "Capablanca Chess Cafe",
+    "city": "Ho Chi Minh City",
+    "labels": [
+      "chess cafe"
+    ],
+    "coordinates": "10.7770, 106.6920",
+    "note": "Casual chess café in Ho Chi Minh City dedicated to chess players. Currently closed but previously operated as a chess venue.",
+    "gmap": "",
+    "link": "https://www.facebook.com/CapablancaSaigon/",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-27"
+  },
+  {
+    "name": "Andalus Cafe Chess Meetup",
+    "city": "Kuala Lumpur",
+    "labels": [
+      "chess meetup",
+      "chess bar"
+    ],
+    "coordinates": "3.1520, 101.6480",
+    "note": "Chess meetup hosted at Andalus Cafe in Rumah Universiti. Casual venue for chess players to gather and play.",
+    "gmap": "https://maps.google.com/maps?q=Andalus+Cafe,+Rumah+Universiti,+Lingkungan+Budi,+50603+Kuala+Lumpur",
+    "link": "",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-27"
+  },
+  {
+    "name": "Siree Chess Cafe",
+    "city": "Jakarta",
+    "labels": [
+      "chess cafe",
+      "chess board",
+      "chess meetup"
+    ],
+    "coordinates": "-6.238, 106.731",
+    "note": "Chess cafe in Meruya serving coffee with regular chess tournaments. Open daily 9am-10pm with tournaments on various days.",
+    "gmap": "",
+    "link": "https://www.instagram.com/sireechesscafe/",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-27"
+  },
+  {
+    "name": "Taman Danau Singkarak",
+    "city": "Jakarta",
+    "labels": [
+      "chess board",
+      "outdoor chess"
+    ],
+    "coordinates": "-6.183, 106.814",
+    "note": "Public park with giant outdoor chess board in Central Jakarta's Bendungan Hilir area. Free public access for playing oversized chess.",
+    "gmap": "",
+    "link": "",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-27"
+  },
+  {
+    "name": "ZURA Knight Chess Club",
+    "city": "Jakarta",
+    "labels": [
+      "chess club",
+      "chess school"
+    ],
+    "coordinates": "",
+    "note": "FOA-affiliated chess club offering training, tournaments, and private lessons. Open daily 9am-5pm with both online and over-the-board classes.",
+    "gmap": "",
+    "link": "https://kursuscatur.com",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-27"
+  },
+  {
+    "name": "Tujuhari Coffee",
+    "city": "Jakarta",
+    "labels": [
+      "chess cafe",
+      "chess meetup"
+    ],
+    "coordinates": "-6.247, 106.809",
+    "note": "Coffee shop hosting regular chess tournaments organized by CHESSNUTS community. Specialty coffee venue with chess tournaments weekly.",
+    "gmap": "",
+    "link": "",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-27"
+  },
+  {
+    "name": "CHESSNUTS - Jakarta's Premier Chess Community",
+    "city": "Jakarta",
+    "labels": [
+      "chess community",
+      "chess meetup"
+    ],
+    "coordinates": "",
+    "note": "Active chess community organizing weekly tournaments at multiple coffee shops across Jakarta with 1,800+ members on Instagram.",
+    "gmap": "",
+    "link": "https://www.instagram.com/chessnuts.id/",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-27"
+  },
+  {
+    "name": "DORPI Chess Club Danau Sunter",
+    "city": "Jakarta",
+    "labels": [
+      "chess club"
+    ],
+    "coordinates": "-6.140, 106.862",
+    "note": "Chess community near Hotel Sunlake in Danau Sunter 2, North Jakarta offering casual play and tournaments.",
+    "gmap": "",
+    "link": "",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-27"
   }
 ]
