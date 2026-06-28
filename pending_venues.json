@@ -2526,5 +2526,177 @@
     "image": "",
     "days": "",
     "_scouted": "2026-06-27"
+  },
+  {
+    "name": "Kuala Lumpur Poggers (Chiquyo Japanese Restaurant)",
+    "city": "Kuala Lumpur",
+    "labels": [
+      "chess meetup",
+      "chess bar"
+    ],
+    "coordinates": "3.1048, 101.6470",
+    "note": "A weekly chess meetup group that gathers for fun casual games. Meets at Chiquyo Japanese Restaurant in Amcorp Mall with over 130 participants in their WhatsApp group.",
+    "gmap": "https://bit.ly/amcorpchess",
+    "link": "https://www.meetup.com/chesscom-group-kuala-lumpur/",
+    "image": "",
+    "days": "Saturday",
+    "_scouted": "2026-06-28"
+  },
+  {
+    "name": "Andalus Cafe (Rumah Universiti)",
+    "city": "Kuala Lumpur",
+    "labels": [
+      "chess meetup"
+    ],
+    "coordinates": "3.1180, 101.6560",
+    "note": "A chess meetup hosted by Allen at Andalus Cafe located within Rumah Universiti at University Malaya. Registration approval required to join.",
+    "gmap": "",
+    "link": "https://luma.com/7vrm0413",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-28"
+  },
+  {
+    "name": "JW Coffee Garden",
+    "city": "Jakarta",
+    "labels": [
+      "chess cafe",
+      "chess meetup"
+    ],
+    "coordinates": "-6.1395, 106.8769",
+    "note": "Coffee shop hosting weekly CHESSNUTS chess tournaments organized by the Jakarta chess community. Open daily 09:00-23:00.",
+    "gmap": "https://maps.google.com/?q=-6.1395,106.8769",
+    "link": "https://www.instagram.com/jwcoffeegarden/",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-28"
+  },
+  {
+    "name": "CHESSNUTS",
+    "city": "Jakarta",
+    "labels": [
+      "chess community",
+      "chess meetup"
+    ],
+    "coordinates": "",
+    "note": "Premier Jakarta chess community organizing weekly tournaments across multiple cafes. Founded to promote fun, accessible chess for all ages.",
+    "gmap": "",
+    "link": "https://www.instagram.com/chessnuts.id/",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-28"
+  },
+  {
+    "name": "Magnus Chess Group Jakarta",
+    "city": "Jakarta",
+    "labels": [
+      "chess meetup"
+    ],
+    "coordinates": "",
+    "note": "Chess.com community meetup group for Jakarta chess enthusiasts organizing in-person and online chess events.",
+    "gmap": "",
+    "link": "https://www.meetup.com/es-ES/magnus-chess-group-jakarta/",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-28"
+  },
+  {
+    "name": "Chess Plaza",
+    "city": "Manila",
+    "labels": [
+      "chess board"
+    ],
+    "coordinates": "14.5794, 121.0089",
+    "note": "A shady spot in Rizal Park where regulars test each other and look for new blood. Open during park hours.",
+    "gmap": "",
+    "link": "",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-28"
+  },
+  {
+    "name": "Tarrasch Knight Chess Club",
+    "city": "Manila",
+    "labels": [
+      "chess club"
+    ],
+    "coordinates": "14.5565, 121.0089",
+    "note": "Located in Guadalupe Commercial Complex, near Makati. Fills up from 10-11 a.m. daily with chess players and tournaments.",
+    "gmap": "",
+    "link": "",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-28"
+  },
+  {
+    "name": "Metro Manila Hills Communities Chess Club",
+    "city": "Manila",
+    "labels": [
+      "chess club"
+    ],
+    "coordinates": "",
+    "note": "Community chess club located in Metro Manila Hills. Holds tournaments and games every weekend.",
+    "gmap": "",
+    "link": "https://www.chess.com/club/metro-manila-hills-communities-chess-club",
+    "image": "",
+    "days": "Saturday, Sunday",
+    "_scouted": "2026-06-28"
+  },
+  {
+    "name": "Eastwood City Chess",
+    "city": "Manila",
+    "labels": [
+      "chess club",
+      "chess meetup"
+    ],
+    "coordinates": "14.5895, 121.0834",
+    "note": "Kid-friendly casual chess and cube-solving community in Eastwood City. Hosts regular meetups and activities.",
+    "gmap": "",
+    "link": "https://www.facebook.com/EastwoodCityChess",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-28"
+  },
+  {
+    "name": "Bayanihan Chess Club",
+    "city": "Manila",
+    "labels": [
+      "chess club"
+    ],
+    "coordinates": "",
+    "note": "Chess club based in Manila focused on community and recreational play.",
+    "gmap": "",
+    "link": "https://www.facebook.com/p/Bayanihan-Chess-Club-100063979208037/",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-28"
+  },
+  {
+    "name": "Manila Chess Club",
+    "city": "Manila",
+    "labels": [
+      "chess club"
+    ],
+    "coordinates": "",
+    "note": "Premier chess club offering training programs and weekly meetups for all skill levels.",
+    "gmap": "",
+    "link": "https://eloxp.com/directory/org/manila-chess-club",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-28"
+  },
+  {
+    "name": "The Zabarte Chess Club",
+    "city": "Manila",
+    "labels": [
+      "chess club"
+    ],
+    "coordinates": "14.6288, 121.0578",
+    "note": "Chess club in Quezon City with regular games Monday-Friday 10am-7pm and special games Saturday afternoon.",
+    "gmap": "",
+    "link": "https://www.chess.com/clubs/about/the-zabarte-chess-club",
+    "image": "",
+    "days": "Monday, Tuesday, Wednesday, Thursday, Friday, Saturday",
+    "_scouted": "2026-06-28"
   }
 ]
