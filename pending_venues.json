@@ -2698,5 +2698,95 @@
     "image": "",
     "days": "Monday, Tuesday, Wednesday, Thursday, Friday, Saturday",
     "_scouted": "2026-06-28"
+  },
+  {
+    "name": "Zabarte Chess Club",
+    "city": "Manila",
+    "labels": [
+      "chess club"
+    ],
+    "coordinates": "",
+    "note": "Chess club offering training lessons and organized games. Regular games Monday-Friday 10am-7pm, Special games Saturday 2pm onwards.",
+    "gmap": "",
+    "link": "https://www.chess.com/club/the-zabarte-chess-club",
+    "image": "",
+    "days": "Monday, Tuesday, Wednesday, Thursday, Friday, Saturday",
+    "_scouted": "2026-06-29"
+  },
+  {
+    "name": "Snacks & Ladders Board Game Cafe",
+    "city": "Manila",
+    "labels": [
+      "chess board",
+      "chess bar"
+    ],
+    "coordinates": "14.5756, 121.0496",
+    "note": "Board game cafe with giant chess board and over 400 games. Perfect for casual chess play with food and drinks.",
+    "gmap": "",
+    "link": "https://www.facebook.com/snacksandladderscafebar/",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-29"
+  },
+  {
+    "name": "Taipei ChessClub",
+    "city": "Taipei",
+    "labels": [
+      "chess club",
+      "chess meetup"
+    ],
+    "coordinates": "25.0330, 121.5438",
+    "note": "A membership chess club with free first visit. Meets every Saturday evening for competitive and casual play.",
+    "gmap": "https://www.google.com/maps/search/Fuxing+South+Rd+Sec+2+Daan+District+Taipei",
+    "link": "https://x.com/chessclubtaipei",
+    "image": "",
+    "days": "Saturday",
+    "_scouted": "2026-06-29"
+  },
+  {
+    "name": "Taiwan Chase Chess Academy (Taipei Main)",
+    "city": "Taipei",
+    "labels": [
+      "chess academy",
+      "chess school",
+      "chess lessons"
+    ],
+    "coordinates": "25.0347, 121.5428",
+    "note": "Chess academy offering classes, camps, and chess sets. Group classes available on Saturday-Sunday, 9:30am-6:00pm.",
+    "gmap": "https://www.google.com/maps/search/Lane+151+Section+2+Fuxing+South+Rd+Daan+District+Taipei",
+    "link": "https://taipeichess.com.tw/",
+    "image": "",
+    "days": "Saturday, Sunday",
+    "_scouted": "2026-06-29"
+  },
+  {
+    "name": "NTU Chess Club",
+    "city": "Taipei",
+    "labels": [
+      "chess club",
+      "university chess"
+    ],
+    "coordinates": "25.0183, 121.5381",
+    "note": "Chess club at National Taiwan University. Provides space for play on Saturdays with lessons and gatherings. Sundays also mentioned as active.",
+    "gmap": "https://www.google.com/maps/search/National+Taiwan+University+Sports+Center+Taipei",
+    "link": "https://www.facebook.com/NTUChess/",
+    "image": "",
+    "days": "Saturday, Sunday",
+    "_scouted": "2026-06-29"
+  },
+  {
+    "name": "OTS Chess Club",
+    "city": "Taipei",
+    "labels": [
+      "chess bar",
+      "nightclub"
+    ],
+    "coordinates": "25.0447, 121.5654",
+    "note": "Chess-themed nightclub with black and white tiles and life-size chess pieces. Hip hop music venue. Requires reservation or early arrival.",
+    "gmap": "https://www.google.com/maps/search/297+Zhongxiao+E+Rd+Sec+5+Xinyi+District+Taipei",
+    "link": "https://www.facebook.com/pages/OTS-Chess-Club/244690749558975",
+    "image": "",
+    "days": "Wednesday, Friday, Saturday",
+    "_scouted": "2026-06-29"
   }
 ]
