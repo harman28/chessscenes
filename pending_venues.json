@@ -2788,5 +2788,130 @@
     "image": "",
     "days": "Wednesday, Friday, Saturday",
     "_scouted": "2026-06-29"
+  },
+  {
+    "name": "Taipei Chess Club",
+    "city": "Taipei",
+    "labels": [
+      "chess club",
+      "chess meetup"
+    ],
+    "coordinates": "25.0330, 121.5440",
+    "note": "Membership chess club with first visit free. Meets every Saturday evening at Fuxing South Road, Daan District.",
+    "gmap": "",
+    "link": "https://taipeichess.org",
+    "image": "",
+    "days": "Saturday",
+    "_scouted": "2026-06-30"
+  },
+  {
+    "name": "Taipei Chess Association",
+    "city": "Taipei",
+    "labels": [
+      "chess club"
+    ],
+    "coordinates": "25.0300, 121.5385",
+    "note": "Governing organization for chess in Taipei. Organizes tournaments and training for coaches, referees, and players.",
+    "gmap": "",
+    "link": "https://taipeichess.org",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-30"
+  },
+  {
+    "name": "Caissa Chess Club - Sheung Wan",
+    "city": "Hong Kong",
+    "labels": "chess club",
+    "coordinates": "22.2855, 114.1460",
+    "note": "Established 2012, offers structured chess program for children and adults with FIDE-certified trainers. Regular in-house tournaments, seasonal leagues, and holiday camps.",
+    "gmap": "https://maps.google.com/?q=19-25+Jervois+Street+Sheung+Wan+Hong+Kong",
+    "link": "https://www.caissahk.org/",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-30"
+  },
+  {
+    "name": "Caissa Chess Club - Discovery Bay",
+    "city": "Hong Kong",
+    "labels": "chess club",
+    "coordinates": "22.2906, 113.9663",
+    "note": "Second location of Caissa Club founded 2012 in Discovery Bay. Hosts tournaments and training programs with a focus on youth development.",
+    "gmap": "https://maps.google.com/?q=96+Siena+Avenue+Discovery+Bay+Hong+Kong",
+    "link": "https://www.caissahk.org/",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-30"
+  },
+  {
+    "name": "Pub Chess Hong Kong",
+    "city": "Hong Kong",
+    "labels": "chess bar, chess meetup",
+    "coordinates": "22.2772, 114.1708",
+    "note": "Social chess meetup at Trafalgar pub in Wan Chai. No membership fees, welcome players of all levels. Purchase drinks to support venue.",
+    "gmap": "https://maps.google.com/?q=Trafalgar+Wan+Chai+Hong+Kong",
+    "link": "https://www.meetup.com/pub-chess-hong-kong/",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-30"
+  },
+  {
+    "name": "Chess Night Hong Kong",
+    "city": "Hong Kong",
+    "labels": "chess meetup",
+    "coordinates": "22.2768, 114.1878",
+    "note": "Irregular chess meetups at My Home Cafe Causeway Bay. Promotes western chess, welcomes all levels. 15-minute teaching provided for beginners.",
+    "gmap": "https://maps.google.com/?q=My+Home+Cafe+Causeway+Bay+Hong+Kong",
+    "link": "https://www.meetup.com/chessnighthongkong/",
+    "image": "",
+    "days": "Monday",
+    "_scouted": "2026-06-30"
+  },
+  {
+    "name": "The Chess Academy (TCA) - ActiveKids Kennedy Town",
+    "city": "Hong Kong",
+    "labels": "chess club",
+    "coordinates": "22.2870, 114.1350",
+    "note": "Leading chess program founded 2004, led by two Grandmasters. Offers classes for ages 4-18, tournaments, and competitive play opportunities.",
+    "gmap": "https://maps.google.com/?q=86+Belchers+Street+Kennedy+Town+Hong+Kong",
+    "link": "https://thechessacademyhk.com/",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-30"
+  },
+  {
+    "name": "Scholastic Chess Hong Kong",
+    "city": "Hong Kong",
+    "labels": "chess club",
+    "coordinates": "22.2822, 114.1567",
+    "note": "Promotes chess for children and teens with monthly tournaments, online play, and lessons. Programs at Kennedy Town, Sheung Wan, Sai Kung, and Tai Po.",
+    "gmap": "https://maps.google.com/?q=Scholastic+Chess+Hong+Kong",
+    "link": "https://www.scholasticchess.hk/",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-06-30"
+  },
+  {
+    "name": "Chess Clubhouse HK - Jordan",
+    "city": "Hong Kong",
+    "labels": "chess club, chess meetup",
+    "coordinates": "22.3009, 114.1716",
+    "note": "Chess gathering venue in Jordan. Monthly meetups (2nd and 3rd Friday) for players of all levels. Free entry, can bring own food/drinks.",
+    "gmap": "https://maps.google.com/?q=Rightful+Centre+12+Tak+Hing+Street+Jordan+Hong+Kong",
+    "link": "https://chess-clubhouse.com/en/",
+    "image": "",
+    "days": "Friday",
+    "_scouted": "2026-06-30"
+  },
+  {
+    "name": "To Kwa Wan Chess Club - Badgers Cafe Hung Hom",
+    "city": "Hong Kong",
+    "labels": "chess meetup",
+    "coordinates": "22.3029, 114.1885",
+    "note": "Weekly Saturday morning chess meetup at Badgers Cafe. No entry fee, all skill levels welcome. Requires food/drink purchase to support venue.",
+    "gmap": "https://maps.google.com/?q=Badgers+Cafe+Baker+Court+Hung+Hom+Hong+Kong",
+    "link": "https://www.meetup.com/to-kwa-wan-chess-club/",
+    "image": "",
+    "days": "Saturday",
+    "_scouted": "2026-06-30"
   }
 ]
