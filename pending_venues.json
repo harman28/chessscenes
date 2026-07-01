@@ -2913,5 +2913,165 @@
     "image": "",
     "days": "Saturday",
     "_scouted": "2026-06-30"
+  },
+  {
+    "name": "CHESS Taipei",
+    "city": "Taipei",
+    "labels": [
+      "chess bar"
+    ],
+    "coordinates": "25.0433, 121.5661",
+    "note": "A chess-themed nightclub offering premier nightlife entertainment. Open Wednesday through Saturday evenings for hip-hop music and clubbing.",
+    "gmap": "https://maps.google.com/?q=25.0433,121.5661",
+    "link": "https://www.facebook.com/chesstaipei",
+    "image": "",
+    "days": "Wednesday, Thursday, Friday, Saturday",
+    "_scouted": "2026-07-01"
+  },
+  {
+    "name": "Taiwan Chase Chess Academy",
+    "city": "Taipei",
+    "labels": [
+      "chess club",
+      "chess shop"
+    ],
+    "coordinates": "25.0319, 121.5382",
+    "note": "A chess academy offering chess instruction, coaching, and a chess shop with chess sets and equipment. Located in Daan District.",
+    "gmap": "https://maps.google.com/?q=25.0319,121.5382",
+    "link": "",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-07-01"
+  },
+  {
+    "name": "Pub Chess Hong Kong at Trafalgar",
+    "city": "Hong Kong",
+    "labels": [
+      "chess bar",
+      "chess meetup"
+    ],
+    "coordinates": "22.2783, 114.1726",
+    "note": "Social chess meetup at this English pub in Wan Chai. No membership fees; players of all skill levels welcome. Purchase a drink to support the venue.",
+    "gmap": "https://maps.google.com/?q=5F+The+Broadway+54-62+Lockhart+Road+Wan+Chai+Hong+Kong",
+    "link": "https://www.meetup.com/pub-chess-hong-kong/",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-07-01"
+  },
+  {
+    "name": "Chess Night Hong Kong at My Home Cafe",
+    "city": "Hong Kong",
+    "labels": [
+      "chess meetup",
+      "chess bar"
+    ],
+    "coordinates": "22.2774, 114.1788",
+    "note": "Chess meetup held at My Home Cafe in Causeway Bay. No entry fee; offers 15-minute teaching for beginners. Players of all levels welcome.",
+    "gmap": "https://maps.google.com/?q=3F+510+Lockhart+Road+Causeway+Bay+Hong+Kong",
+    "link": "https://www.meetup.com/chessnighthongkong/",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-07-01"
+  },
+  {
+    "name": "To Kwa Wan Chess Club at Badgers Cafe",
+    "city": "Hong Kong",
+    "labels": [
+      "chess meetup",
+      "chess board"
+    ],
+    "coordinates": "22.3037, 114.1892",
+    "note": "Saturday morning chess meetup at Badgers Cafe in Hung Hom. No entry fee; players of all abilities welcome. Requires purchase of food/drink.",
+    "gmap": "https://maps.google.com/?q=Shop+B+Baker+Residences+8+Baker+Court+Hung+Hom+Hong+Kong",
+    "link": "https://www.meetup.com/to-kwa-wan-chess-club/",
+    "image": "",
+    "days": "Saturday",
+    "_scouted": "2026-07-01"
+  },
+  {
+    "name": "The Chess Academy - Kennedy Town",
+    "city": "Hong Kong",
+    "labels": [
+      "chess club"
+    ],
+    "coordinates": "22.2867, 114.1287",
+    "note": "Premier chess academy led by Grandmasters offering structured programs for children and adults. Hosts monthly tournaments and regular chess club sessions.",
+    "gmap": "https://maps.google.com/?q=Unit+A+1F+Nan+Sang+Building+86+Belchers+Street+Kennedy+Town+Hong+Kong",
+    "link": "https://www.activekidshk.com/the-chess-academy",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-07-01"
+  },
+  {
+    "name": "Scholastic Chess Hong Kong - Kennedy Town",
+    "city": "Hong Kong",
+    "labels": [
+      "chess club",
+      "chess meetup"
+    ],
+    "coordinates": "22.2867, 114.1287",
+    "note": "Promotes international chess with monthly over-the-board tournaments and lessons. Hosts 'Triple 10' round-robin and 'Juniors' tournaments at Kennedy Town Community Complex.",
+    "gmap": "https://maps.google.com/?q=Kennedy+Town+Community+Complex+12+Rock+Hill+Street+Kennedy+Town+Hong+Kong",
+    "link": "https://www.scholasticchess.hk/",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-07-01"
+  },
+  {
+    "name": "Chess Clubhouse HK",
+    "city": "Hong Kong",
+    "labels": [
+      "chess club",
+      "chess shop"
+    ],
+    "coordinates": "",
+    "note": "Chess shop and club promoting international chess. Hosts meetups and chess events. Organizes chess gatherings at various venues including Tsim Sha Tsui.",
+    "gmap": "",
+    "link": "https://chess-clubhouse.com/en/",
+    "image": "",
+    "days": "Saturday",
+    "_scouted": "2026-07-01"
+  },
+  {
+    "name": "Hong Kong Juniors Chess Club",
+    "city": "Hong Kong",
+    "labels": [
+      "chess club"
+    ],
+    "coordinates": "",
+    "note": "Non-profit established in 1997 focusing on youth chess. Organizes three annual events: Hong Kong Junior Chess Championship, Inter-Schools Championship, and Junior Rapid Championship.",
+    "gmap": "",
+    "link": "https://www.hkjuniorchess.org/",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-07-01"
+  },
+  {
+    "name": "Caissa Osaka Chess Club",
+    "city": "Osaka",
+    "labels": [
+      "chess club"
+    ],
+    "coordinates": "",
+    "note": "Official chess club recognized by the Japan Chess Federation offering training and tournaments including blitz, rapid, classical, scholastic, and team chess. Based in Osaka and active in Osaka and Kobe.",
+    "gmap": "",
+    "link": "https://www.caissajp.com/",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-07-01"
+  },
+  {
+    "name": "Chess Park",
+    "city": "Osaka",
+    "labels": [
+      "chess board"
+    ],
+    "coordinates": "34.692521, 135.507871",
+    "note": "Chess space installation in the eastern part of Nakanoshima Park where you can play chess or watch other players. Near Naniwabashi Station.",
+    "gmap": "",
+    "link": "",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-07-01"
   }
 ]
