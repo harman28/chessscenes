@@ -3073,5 +3073,226 @@
     "image": "",
     "days": "",
     "_scouted": "2026-07-01"
+  },
+  {
+    "name": "Caissa Chess Club",
+    "city": "Hong Kong",
+    "labels": [
+      "chess club"
+    ],
+    "coordinates": "22.2865, 114.1456",
+    "note": "Founded in 2012, offers structured chess training using the Dutch Step Method with classes and tournaments at Sheung Wan and Discovery Bay locations. Regular in-house tournaments, rapid events, and coaching for all levels.",
+    "gmap": "https://maps.google.com/?q=22.2865,114.1456",
+    "link": "https://www.caissahk.org/",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-07-02"
+  },
+  {
+    "name": "Pub Chess Hong Kong (at Trafalgar)",
+    "city": "Hong Kong",
+    "labels": [
+      "chess bar",
+      "chess meetup"
+    ],
+    "coordinates": "22.2868, 114.1747",
+    "note": "Social chess meetup held at Trafalgar bar in Wan Chai. No membership fees, welcomes all skill levels. Participants buy drinks to support the venue.",
+    "gmap": "https://maps.google.com/?q=22.2868,114.1747",
+    "link": "https://www.meetup.com/pub-chess-hong-kong/",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-07-02"
+  },
+  {
+    "name": "Chess Night Hong Kong (at My Home Cafe)",
+    "city": "Hong Kong",
+    "labels": [
+      "chess bar",
+      "chess meetup"
+    ],
+    "coordinates": "22.2837, 114.1843",
+    "note": "Regular chess meetups at My Home Cafe in Causeway Bay. Aims to promote chess with casual play for all levels. Free teaching for beginners.",
+    "gmap": "https://maps.google.com/?q=22.2837,114.1843",
+    "link": "https://www.meetup.com/chessnighthongkong/",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-07-02"
+  },
+  {
+    "name": "Badgers Cafe Chess Club",
+    "city": "Hong Kong",
+    "labels": [
+      "chess bar",
+      "chess meetup"
+    ],
+    "coordinates": "22.3066, 114.1869",
+    "note": "Saturday morning chess meetup in Hung Hom at Badgers Cafe. No entry fee, welcomes all abilities. Participants buy food/drink to support the cafe.",
+    "gmap": "https://maps.google.com/?q=22.3066,114.1869",
+    "link": "https://www.meetup.com/to-kwa-wan-chess-club/",
+    "image": "",
+    "days": "Saturday",
+    "_scouted": "2026-07-02"
+  },
+  {
+    "name": "The Chess Academy (TCA)",
+    "city": "Hong Kong",
+    "labels": [
+      "chess club"
+    ],
+    "coordinates": "22.2895, 114.1358",
+    "note": "Hong Kong's leading chess program led by two Grandmasters. Offers classes, tournaments, and competitive opportunities for all ages. Regular tournaments and world-class coaching.",
+    "gmap": "https://maps.google.com/?q=22.2895,114.1358",
+    "link": "https://thechessacademyhk.com/",
+    "image": "",
+    "days": "Saturday",
+    "_scouted": "2026-07-02"
+  },
+  {
+    "name": "Osaka En Passant Chess Club",
+    "city": "Osaka",
+    "labels": "chess club",
+    "coordinates": "34.6669, 135.5006",
+    "note": "Active chess club meeting at a teahouse, hosting three games every Sunday at 11:30, 2:00, and 4:00 with proper time control.",
+    "gmap": "",
+    "link": "https://lichess.org/team/osaka-en-passant",
+    "image": "",
+    "days": "Sunday",
+    "_scouted": "2026-07-02"
+  },
+  {
+    "name": "Chess Park at Nakanoshima",
+    "city": "Osaka",
+    "labels": "chess board",
+    "coordinates": "34.692521, 135.507871",
+    "note": "Public chess space in Nakanoshima Park where you can play chess or watch other players. Free and open to the public.",
+    "gmap": "https://maps.google.com/maps?q=34.692521,135.507871",
+    "link": "",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-07-02"
+  },
+  {
+    "name": "The Hearth Board Game Cafe and Bar",
+    "city": "Osaka",
+    "labels": "chess board, chess bar",
+    "coordinates": "34.6652, 135.5007",
+    "note": "Board game cafe and bar with chess available along with 100+ board games. 500 yen entry fee with unlimited play time.",
+    "gmap": "https://maps.google.com/maps?q=34.6652,135.5007",
+    "link": "https://www.thehearthosaka.com/",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-07-02"
+  },
+  {
+    "name": "Dubai Chess & Culture Club",
+    "city": "Dubai",
+    "labels": [
+      "chess club"
+    ],
+    "coordinates": "25.2886187, 55.3480268",
+    "note": "The most prominent professional chess club in Dubai, established in 1979. Hosts tournaments, classes, and training with international-level facilities. Open Monday-Sunday 10am-1pm and 5pm-9pm.",
+    "gmap": "https://maps.google.com/maps?q=25.2886187,55.3480268",
+    "link": "https://www.dubaichess.ae/",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-07-02"
+  },
+  {
+    "name": "Chess Lab Club",
+    "city": "Dubai",
+    "labels": [
+      "chess club"
+    ],
+    "coordinates": "25.1310793, 55.2141593",
+    "note": "Chess academy and club focused on creative chess education and game theory. Offers private and group lessons, plus FIDE-rated tournaments throughout the year.",
+    "gmap": "https://maps.google.com/maps?q=25.1310793,55.2141593",
+    "link": "https://www.chesslab.ae/",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-07-02"
+  },
+  {
+    "name": "Signature Chess Club",
+    "city": "Dubai",
+    "labels": [
+      "chess club"
+    ],
+    "coordinates": "25.1267, 55.2036",
+    "note": "Premier chess club for students under 18, established in 2017. Offers Grandmaster training and collaborates with top Dubai schools.",
+    "gmap": "https://maps.google.com/maps?q=25.1267,55.2036",
+    "link": "https://signaturechessclub.com/",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-07-02"
+  },
+  {
+    "name": "DSO Chess Club",
+    "city": "Dubai",
+    "labels": [
+      "chess meetup"
+    ],
+    "coordinates": "25.1439, 55.2299",
+    "note": "Casual chess club hosting weekly in-person meetings at My Home Kitchen in Dubai Silicon Oasis. All skill levels welcome, max 10 players per session.",
+    "gmap": "https://maps.google.com/maps?q=25.1439,55.2299",
+    "link": "https://www.dsochessclub.com/",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-07-02"
+  },
+  {
+    "name": "E5 Chess Club Dubai",
+    "city": "Dubai",
+    "labels": [
+      "chess meetup"
+    ],
+    "coordinates": "25.0955, 55.1467",
+    "note": "Community-based chess meetup group for all levels. Meets at Caféine Club UAE in Jumeirah Lake Towers. Regular gatherings for casual and informal chess play.",
+    "gmap": "https://maps.google.com/maps?q=25.0955,55.1467",
+    "link": "https://www.instagram.com/e5_chess_club_dubai/",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-07-02"
+  },
+  {
+    "name": "Chess Club Dubai",
+    "city": "Dubai",
+    "labels": [
+      "chess club"
+    ],
+    "coordinates": "25.2100, 55.2700",
+    "note": "Members-only chess club offering classes for adults, families, and corporate clients. Also organizes workshops and international tournaments.",
+    "gmap": "https://maps.google.com/maps?q=25.2100,55.2700",
+    "link": "https://www.chessclub.ae/",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-07-02"
+  },
+  {
+    "name": "FERZ Chess & Aesthetics Club",
+    "city": "Dubai",
+    "labels": [
+      "chess bar"
+    ],
+    "coordinates": "",
+    "note": "Unique chess club combining chess with art, music, and aesthetics. No permanent location; hosts special events at various upscale venues. Emphasizes immersive experiences.",
+    "gmap": "",
+    "link": "https://www.ferz.co/",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-07-02"
+  },
+  {
+    "name": "Dubai Chess Learning & Community Group",
+    "city": "Dubai",
+    "labels": [
+      "chess meetup"
+    ],
+    "coordinates": "25.0500, 55.1833",
+    "note": "Community group for chess learning and improvement. Meets at Rove Healthcare City for lessons, practice sessions, and casual games for beginners to intermediate players.",
+    "gmap": "",
+    "link": "https://www.meetup.com/chess-lessons-dubai-healthcare-city/",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-07-02"
   }
 ]
