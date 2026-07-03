@@ -3294,5 +3294,161 @@
     "image": "",
     "days": "",
     "_scouted": "2026-07-02"
+  },
+  {
+    "name": "Chess Park (Nakanoshima Park)",
+    "city": "Osaka",
+    "labels": [
+      "chess board"
+    ],
+    "coordinates": "34.692521, 135.507871",
+    "note": "A chess space installation in the eastern part of Nakanoshima Park where visitors can play chess or watch others play. Located near Naniwabashi Station.",
+    "gmap": "",
+    "link": "",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-07-03"
+  },
+  {
+    "name": "The Hearth Board Game Bar and Cafe",
+    "city": "Osaka",
+    "labels": [
+      "chess bar",
+      "chess board"
+    ],
+    "coordinates": "",
+    "note": "A board game bar and cafe in Osaka serving food and beverages alongside board game entertainment.",
+    "gmap": "",
+    "link": "https://www.thehearthosaka.com/",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-07-03"
+  },
+  {
+    "name": "Chess Lab",
+    "city": "Dubai",
+    "labels": "chess club",
+    "coordinates": "25.1310745, 55.2141593",
+    "note": "Professional chess training center with analytical approach and FIDE-rated tournaments, combining group and individual lessons.",
+    "gmap": "https://maps.google.com/maps/place/Chess+Lab+Club/@25.1310793,55.2115844",
+    "link": "https://chesslab.ae",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-07-03"
+  },
+  {
+    "name": "FERZ Chess Club",
+    "city": "Dubai",
+    "labels": "chess bar",
+    "coordinates": "",
+    "note": "Luxury aesthetic chess club hosting curated chess events with music, art, and drinks at various venues, with no permanent location.",
+    "gmap": "",
+    "link": "https://www.ferz.co",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-07-03"
+  },
+  {
+    "name": "ChessBar Israel",
+    "city": "Tel Aviv",
+    "labels": [
+      "chess bar",
+      "chess meetup",
+      "chess club"
+    ],
+    "coordinates": "",
+    "note": "Weekly chess meetups, rapid tournaments, and meet & play sessions with boards and clocks provided. Multiple rotating venues across Tel Aviv.",
+    "gmap": "",
+    "link": "https://chessbarisrael.com/",
+    "image": "",
+    "days": "Tuesday",
+    "_scouted": "2026-07-03"
+  },
+  {
+    "name": "Masaryk Wine & Flowers",
+    "city": "Tel Aviv",
+    "labels": [
+      "chess bar",
+      "chess meetup"
+    ],
+    "coordinates": "32.0850, 34.7674",
+    "note": "Chess meetup venue hosting rapid tournaments (5 rounds 8+2) and meet & play sessions. Part of the ChessBar Israel network.",
+    "gmap": "https://maps.google.com/?q=32.0850,34.7674",
+    "link": "https://www.meetup.com/chess-tel-aviv/",
+    "image": "",
+    "days": "Tuesday",
+    "_scouted": "2026-07-03"
+  },
+  {
+    "name": "Chess Club Lasker",
+    "city": "Tel Aviv",
+    "labels": [
+      "chess club"
+    ],
+    "coordinates": "",
+    "note": "Historic chess club in the heart of Tel Aviv for all levels. Open for members to meet and play.",
+    "gmap": "",
+    "link": "https://www.instagram.com/chess_club_lasker/",
+    "image": "",
+    "days": "Monday, Wednesday",
+    "_scouted": "2026-07-03"
+  },
+  {
+    "name": "Campus Chess Club",
+    "city": "Tel Aviv",
+    "labels": [
+      "chess club",
+      "chess meetup"
+    ],
+    "coordinates": "",
+    "note": "Chess and Go club for enthusiasts of all levels meeting weekly. Meets at Campus Tel Aviv or the Cluster.",
+    "gmap": "",
+    "link": "https://www.meetup.com/campus-chess-club/",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-07-03"
+  },
+  {
+    "name": "The Blue Fox",
+    "city": "Tel Aviv",
+    "labels": [
+      "chess bar",
+      "chess board"
+    ],
+    "coordinates": "32.0587, 34.7618",
+    "note": "Board game bar in Florentin hosting chess meetups with blitz tournaments and prizes. Cozy evening with networking.",
+    "gmap": "https://maps.google.com/?q=32.0587,34.7618",
+    "link": "https://www.bluefox-telaviv.com/",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-07-03"
+  },
+  {
+    "name": "Chess Party @ Avner 1",
+    "city": "Tel Aviv",
+    "labels": [
+      "chess meetup"
+    ],
+    "coordinates": "",
+    "note": "Chess parties with lessons for beginners and advanced students, followed by social activities. Opening 20:00-20:30, lessons 20:30-21:00, party 21:00-23:00.",
+    "gmap": "",
+    "link": "https://www.secrettelaviv.com/tickets/chess-party",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-07-03"
+  },
+  {
+    "name": "Wizard Chess",
+    "city": "Tel Aviv",
+    "labels": [
+      "chess club"
+    ],
+    "coordinates": "",
+    "note": "Renowned chess academy in the heart of Tel Aviv-Yafo with personalized coaching for all skill levels.",
+    "gmap": "",
+    "link": "",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-07-03"
   }
 ]
