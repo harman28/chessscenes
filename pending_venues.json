@@ -3620,5 +3620,135 @@
     "image": "",
     "days": "",
     "_scouted": "2026-07-04"
+  },
+  {
+    "name": "The Blue Fox - Board Game Bar",
+    "city": "Tel Aviv",
+    "labels": [
+      "chess bar",
+      "chess meetup"
+    ],
+    "coordinates": "32.0574, 34.7626",
+    "note": "Board game bar hosting chess meetups and blitz tournaments with prizes in the Florentin area.",
+    "gmap": "https://maps.google.com/?q=Florentin+7+Tel+Aviv",
+    "link": "https://www.bluefox-telaviv.com/",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-07-05"
+  },
+  {
+    "name": "Chess Party at Avner 1",
+    "city": "Tel Aviv",
+    "labels": [
+      "chess bar",
+      "chess meetup"
+    ],
+    "coordinates": "32.0865, 34.7681",
+    "note": "Regular chess party events with lessons for beginners and advanced players, networking and social activities.",
+    "gmap": "https://maps.google.com/?q=Avner+1+Tel+Aviv",
+    "link": "https://www.secrettelaviv.com/tickets/chess-party",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-07-05"
+  },
+  {
+    "name": "SatrancIstanbul Café",
+    "city": "Istanbul",
+    "labels": [
+      "chess cafe",
+      "chess club"
+    ],
+    "coordinates": "40.9925, 29.0235",
+    "note": "An advanced chess café in Yeldeğirmeni, Kadıköy, where experienced players gather to play and enjoy the company of skilled chess enthusiasts.",
+    "gmap": "",
+    "link": "https://satrancistanbul.com/",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-07-05"
+  },
+  {
+    "name": "Chess Istanbul Club",
+    "city": "Istanbul",
+    "labels": [
+      "chess club"
+    ],
+    "coordinates": "40.9940, 29.0280",
+    "note": "An active chess club in Rasimpaşa, Kadıköy that hosts tournaments and regular meetings for chess players, located on 3rd floor of a building.",
+    "gmap": "",
+    "link": "",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-07-05"
+  },
+  {
+    "name": "Keshmat Chess Center",
+    "city": "Beirut",
+    "labels": [
+      "chess club"
+    ],
+    "coordinates": "",
+    "note": "A chess center hosting tournaments, group and private lessons with over 50 chessboards and a 500+ book library. Open Wednesdays 5pm-10pm with lectures Saturdays 5pm.",
+    "gmap": "",
+    "link": "https://keshmat.org/",
+    "image": "",
+    "days": "Wednesday, Saturday",
+    "_scouted": "2026-07-05"
+  },
+  {
+    "name": "Beirut Chess Academy",
+    "city": "Beirut",
+    "labels": [
+      "chess club"
+    ],
+    "coordinates": "",
+    "note": "Founded in 2013 by FIDE Master Faisal Khairallah. Provides chess curriculum using latest teaching methods and technologies for players of all ages.",
+    "gmap": "",
+    "link": "http://beirutchessacademy.com/",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-07-05"
+  },
+  {
+    "name": "ProChess Academy",
+    "city": "Beirut",
+    "labels": [
+      "chess club"
+    ],
+    "coordinates": "",
+    "note": "A prestigious chess institution offering comprehensive training with chess masters. Provides one-on-one sessions and group classes for all skill levels.",
+    "gmap": "",
+    "link": "https://prochess.org/",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-07-05"
+  },
+  {
+    "name": "Lebanese Chess Moves",
+    "city": "Beirut",
+    "labels": [
+      "chess club",
+      "chess shop"
+    ],
+    "coordinates": "",
+    "note": "Chess services group specializing in private training, chess equipment sales (hand-crafted boards and DGT materials), and tournament arbitration services.",
+    "gmap": "",
+    "link": "https://lebanesechessmoves.com/",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-07-05"
+  },
+  {
+    "name": "Beirut Chess Club",
+    "city": "Beirut",
+    "labels": [
+      "chess club"
+    ],
+    "coordinates": "",
+    "note": "A chess club with an active community presence. Contact via Instagram for details on meetings and activities.",
+    "gmap": "",
+    "link": "https://www.instagram.com/beirutchessclub/",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-07-05"
   }
 ]
