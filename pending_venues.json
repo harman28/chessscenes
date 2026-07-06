@@ -3750,5 +3750,78 @@
     "image": "",
     "days": "",
     "_scouted": "2026-07-05"
+  },
+  {
+    "name": "Küff Cafe",
+    "city": "Istanbul",
+    "labels": [
+      "chess cafe",
+      "chess bar"
+    ],
+    "coordinates": "40.9949, 29.0328",
+    "note": "Artsy café in Yeldeğirmeni with chess boards, books, and a unique blend of art and music for playing chess.",
+    "gmap": "https://maps.google.com/maps/place/Küff+Yeldeğirmeni",
+    "link": "https://www.instagram.com/kuff.yeldegirmeni/",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-07-06"
+  },
+  {
+    "name": "SatrancIstanbul Yeldeğirmeni Cafe",
+    "city": "Istanbul",
+    "labels": [
+      "chess cafe",
+      "chess club"
+    ],
+    "coordinates": "40.9949, 29.0328",
+    "note": "Lovely café in Yeldeğirmeni run by chess enthusiasts for advanced players offering a social chess environment.",
+    "gmap": "",
+    "link": "https://satrancistanbul.com/",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-07-06"
+  },
+  {
+    "name": "Amicale Notre Dame Chess Club",
+    "city": "Beirut",
+    "labels": [
+      "chess club"
+    ],
+    "coordinates": "",
+    "note": "Established chess club founded in 1994 on Sami El Solh Street. Provides daily chess play, lessons, library, and organizes major tournaments including the Beirut International Open Championship.",
+    "gmap": "",
+    "link": "https://andlb.org/",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-07-06"
+  },
+  {
+    "name": "Shamieh Chess Academy",
+    "city": "Beirut",
+    "labels": [
+      "chess club",
+      "chess academy"
+    ],
+    "coordinates": "",
+    "note": "Chess academy with location inside Lions Club in Beirut. Welcomes all ages and skill levels for chess instruction and play.",
+    "gmap": "",
+    "link": "https://www.instagram.com/shamieh.chess.academy/",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-07-06"
+  },
+  {
+    "name": "Royal Jordanian Chess Federation",
+    "city": "Amman",
+    "labels": [
+      "chess club"
+    ],
+    "coordinates": "",
+    "note": "The official chess federation in Amman located in Al-Hussein Sports City. Tournaments with different time limits are held regularly.",
+    "gmap": "",
+    "link": "www.jordanchess.com",
+    "image": "",
+    "days": "Monday, Tuesday, Wednesday, Thursday, Sunday",
+    "_scouted": "2026-07-06"
   }
 ]
