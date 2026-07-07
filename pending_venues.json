@@ -3823,5 +3823,92 @@
     "image": "",
     "days": "Monday, Tuesday, Wednesday, Thursday, Sunday",
     "_scouted": "2026-07-06"
+  },
+  {
+    "name": "Melbourne Chess Club",
+    "city": "Melbourne",
+    "labels": [
+      "chess club"
+    ],
+    "coordinates": "-37.8042, 145.0042",
+    "note": "Australia's biggest chess club, established 1866. Open 7 days for social chess; tournaments Saturday afternoons and Monday evenings.",
+    "gmap": "https://maps.google.com/?q=-37.8042,145.0042",
+    "link": "https://www.melbournechessclub.org/",
+    "image": "",
+    "days": "Monday, Wednesday, Saturday, Sunday",
+    "_scouted": "2026-07-07"
+  },
+  {
+    "name": "Acid Chess Club",
+    "city": "Melbourne",
+    "labels": [
+      "chess club",
+      "chess bar"
+    ],
+    "coordinates": "-37.8018, 145.0104",
+    "note": "Social and competitive chess club at rooftop bar. Fortnightly events alternating between Learn & Play and tournaments with hectic/chill/open streams.",
+    "gmap": "https://maps.google.com/?q=-37.8018,145.0104",
+    "link": "https://www.instagram.com/acid.chess.club.thursdays/",
+    "image": "",
+    "days": "Thursday",
+    "_scouted": "2026-07-07"
+  },
+  {
+    "name": "Melbourne Chess Society",
+    "city": "Melbourne",
+    "labels": [
+      "chess meetup"
+    ],
+    "coordinates": "-37.7986, 145.0068",
+    "note": "Social chess meetups in Melbourne CBD at various locations. Free, all skill levels welcome. Hosts after-work chess events with beer.",
+    "gmap": "https://maps.google.com/?q=-37.7986,145.0068",
+    "link": "https://www.meetup.com/melbourne-chess-society/",
+    "image": "",
+    "days": "Thursday",
+    "_scouted": "2026-07-07"
+  },
+  {
+    "name": "Social Chess Meetup at Brick Lane",
+    "city": "Melbourne",
+    "labels": [
+      "chess bar",
+      "chess meetup"
+    ],
+    "coordinates": "-37.8085, 145.0003",
+    "note": "Social chess at Brick Lane Brewery and Market near Queen Victoria Market. Free event with boards and pieces provided. Dinner and drinks available.",
+    "gmap": "https://maps.google.com/?q=-37.8085,145.0003",
+    "link": "https://linktr.ee/MelbourneChessSociety",
+    "image": "",
+    "days": "Wednesday",
+    "_scouted": "2026-07-07"
+  },
+  {
+    "name": "Box Hill Chess Club",
+    "city": "Melbourne",
+    "labels": [
+      "chess club"
+    ],
+    "coordinates": "-37.8703, 145.1087",
+    "note": "One of Victoria's largest suburban chess clubs, established 1952. Hosts rated tournaments and supports junior chess development.",
+    "gmap": "https://maps.google.com/?q=-37.8703,145.1087",
+    "link": "https://www.boxhillchess.org.au/",
+    "image": "",
+    "days": "Friday, Sunday",
+    "_scouted": "2026-07-07"
+  },
+  {
+    "name": "Melbourne University Chess Club",
+    "city": "Melbourne",
+    "labels": [
+      "chess club",
+      "chess meetup"
+    ],
+    "coordinates": "-37.7975, 145.0632",
+    "note": "University chess club welcoming all skill levels. Meets weekly during semester with coaching, masterclasses, and tournaments.",
+    "gmap": "https://maps.google.com/?q=-37.7975,145.0632",
+    "link": "https://www.facebook.com/groups/melbournechessclub/",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-07-07"
   }
 ]
