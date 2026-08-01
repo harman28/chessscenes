@@ -517,9 +517,15 @@ function navigate(path, opts) {
 
 window.addEventListener('popstate', () => { navDepth = Math.max(0, navDepth - 1); applyRoute(location.pathname); });
 
+// Returns true if this actually changed the selected city (false if it was already
+// selected, or the name didn't match any option) — callers use this to avoid re-fetching
+// and re-rendering the whole sidebar list when nothing about the city context changed.
 function selectCityInUI(cityName) {
   const sel = document.getElementById('city-select');
-  if (cityName && Array.from(sel.options).some(o => o.value === cityName)) sel.value = cityName;
+  if (!cityName || sel.value === cityName) return false;
+  if (!Array.from(sel.options).some(o => o.value === cityName)) return false;
+  sel.value = cityName;
+  return true;
 }
 
 function cityNameFromSlug(slug) {
@@ -568,8 +574,12 @@ async function applyRoute(path) {
     const res = await fetch('/api/venue/' + encodeURIComponent(route.slug));
     if (!res.ok) { navigate('/', {replace: true}); return; }
     const v = await res.json();
-    selectCityInUI(v.city);
-    await onFilterChange();
+    // Only refetch/rebuild the sidebar list if this venue actually belongs to a different
+    // city than what's already showing — e.g. clicking a card in the currently-visible
+    // list is already showing the right city, and rebuilding the list from scratch here
+    // would blow away the very card the user just clicked open (it visibly expands, the
+    // list re-renders collapsed, and it looks like the click did nothing / the page reloaded).
+    if (selectCityInUI(v.city)) await onFilterChange();
     if (v.lat && v.lng) map && map.setView([v.lat, v.lng], 15);
     showMapCard({title: v.name, subtitle: v.labels, note: v.note, image: v.image, gmaps: v.gmaps, link: v.link, days: v.days});
     if (v.days) highlightSidebarCardFor(v.event_id);
@@ -580,8 +590,7 @@ async function applyRoute(path) {
     const res = await fetch('/api/event/' + route.id);
     if (!res.ok) { navigate('/', {replace: true}); return; }
     const e = await res.json();
-    selectCityInUI(e.city);
-    await onFilterChange();
+    if (selectCityInUI(e.city)) await onFilterChange();
     if (e.venue_lat && e.venue_lng) map && map.setView([parseFloat(e.venue_lat), parseFloat(e.venue_lng)], 15);
     showMapCard({
       title: e.title,
