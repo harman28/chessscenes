@@ -747,11 +747,6 @@ def city_page(slug):
         og_description=desc,
         og_image=(request.url_root.rstrip('/') + f'/city/{slug}/map.png') if count else None,
         og_url=f"/city/{slug}",
-        initial_data={
-            'type': 'city',
-            'city': city,
-            'slug': slug,
-        }
     )
 
 @app.route('/venue/<slug>')
@@ -773,21 +768,6 @@ def venue_page(slug):
         og_description=" · ".join(desc_parts),
         og_image=v.get('image'),
         og_url=f"/venue/{slug}",
-        initial_data={
-            'type': 'venue',
-            'slug': slug,
-            'city': city,
-            'name': name,
-            'event_id': v['id'] + 1000000,
-            'lat': v.get('lat'),
-            'lng': v.get('lng'),
-            'days': v.get('days'),
-            'labels': v.get('labels'),
-            'note': v.get('note'),
-            'image': v.get('image'),
-            'gmaps': v.get('gmaps'),
-            'link': v.get('link'),
-        }
     )
 
 @app.route('/event/<int:event_id>')
@@ -818,14 +798,6 @@ def event_page(event_id):
         og_description=" · ".join(desc_parts),
         og_image=ev.get('community_image'),
         og_url=f"/event/{event_id}",
-        initial_data={
-            'type': 'event',
-            'id': event_id,
-            'city': city,
-            'name': name,
-            'lat': ev.get('venue_lat'),
-            'lng': ev.get('venue_lng'),
-        }
     )
 
 @app.route('/admin')

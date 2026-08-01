@@ -57,11 +57,6 @@
       background-repeat: no-repeat; background-position: right 2px center; outline: none;
     }
     .hero-select option { background: var(--maroon-dark); color: var(--cream); }
-    .hero-share-link {
-      display: inline-block; margin: -20px 0 28px; font-size: 12px; color: var(--cream-muted);
-      text-decoration: none; border-bottom: 1px solid rgba(201,168,158,0.4); padding-bottom: 1px;
-    }
-    .hero-share-link:hover { color: var(--cream); border-color: var(--cream); }
 
     /* Day groups */
     .day-group { margin-bottom: 28px; }
@@ -175,28 +170,24 @@
       They're probably playing chess
       <select class="hero-select" id="date-select" onchange="onFilterChange()"></select>
       in
-      <select class="hero-select" id="city-select" onchange="onFilterChange()">
+      <select class="hero-select" id="city-select" onchange="onCitySelectChange()">
         <option value="Amsterdam">Amsterdam</option>
       </select>
       in these places.
     </p>
-    <a id="share-city-link" class="hero-share-link" href="/city/amsterdam">Share this city ↗</a>
     <div id="events-container"><div class="loading">Loading…</div></div>
   </div>
 
   <div id="map-pane">
     <!-- Map overlay card -->
     <div id="map-card">
-      <button id="map-card-close" onclick="closeMapCard()">✕</button>
+      <button id="map-card-close" onclick="closeMapCardAndReturn()">✕</button>
       <div id="map-card-inner"></div>
     </div>
   </div>
 </div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-{% if initial_data %}
-<script>window.__CHESS_INIT__ = {{ initial_data | tojson | safe }};</script>
-{% endif %}
 <script>
 const DAYS = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 let map = null;
@@ -249,14 +240,18 @@ async function loadCities() {
   const sel = document.getElementById('city-select');
   sel.innerHTML = cities.map(c=>`<option value="${c.name}" data-slug="${c.slug}">${c.name}</option>`).join('');
   fitSelect(sel);
-  updateCityShareLink();
 }
 
-function updateCityShareLink() {
+function citySlugFromName(name) {
   const sel = document.getElementById('city-select');
-  const opt = sel.options[sel.selectedIndex];
-  const link = document.getElementById('share-city-link');
-  if (opt && link) link.href = '/city/' + opt.dataset.slug;
+  const opt = Array.from(sel.options).find(o => o.value === name);
+  return opt ? opt.dataset.slug : null;
+}
+
+// User picked a city from the dropdown — this is a real navigation, not just a filter change.
+function onCitySelectChange() {
+  const slug = citySlugFromName(document.getElementById('city-select').value);
+  if (slug) navigate('/city/' + slug);
 }
 
 // ── Map ──
@@ -300,10 +295,7 @@ async function loadGlobalPins() {
   allInactiveVenues.forEach(v => {
     if (!v.lat || !v.lng) return;
     const marker = L.marker([v.lat, v.lng], {icon: inactivePinIcon(), zIndexOffset: 0}).addTo(map);
-    marker.on('click', () => showMapCard({
-      title: v.name, subtitle: v.labels, note: v.note,
-      image: v.image, gmaps: v.gmaps, link: v.link, days: v.days,
-    }));
+    marker.on('click', () => { if (v.slug) navigate('/venue/' + v.slug); });
     inactiveMarkers.push(marker);
   });
 
@@ -313,16 +305,8 @@ async function loadGlobalPins() {
     if (isNaN(lat) || isNaN(lng)) return;
     const marker = L.marker([lat, lng], {icon: activePinIcon(), zIndexOffset: 100}).addTo(map);
     marker.on('click', () => {
-      showMapCard({
-        title: e.title,
-        subtitle: e.time ? (e.time_end ? e.time+'–'+e.time_end : e.time) + ' · ' + (e.venue_name||'') : e.venue_name,
-        note: e.notes,
-        image: e.community_image,
-        gmaps: e.venue_gmaps,
-        link: e.external_link,
-        eventId: e.id,
-      });
-      scrollToCard(e.id);
+      const path = e.venue_slug ? '/venue/' + e.venue_slug : (e.id < 1000000 ? '/event/' + e.id : null);
+      if (path) navigate(path);
     });
     activeMarkers[e.id] = {marker, lat, lng};
   });
@@ -421,8 +405,6 @@ async function onFilterChange() {
   const city = document.getElementById('city-select').value;
   const container = document.getElementById('events-container');
   container.innerHTML = '<div class="loading">Loading…</div>';
-  closeMapCard();
-  updateCityShareLink();
 
   if (val==='all') {
     const res = await fetch(`/api/events/all?city=${encodeURIComponent(city)}`);
@@ -486,68 +468,124 @@ function renderCard(e) {
   </div>`;
 }
 
-function onCardClick(el, eventId) {
-  el.querySelector('.card-detail').classList.toggle('open');
-  if (activeMarkers[eventId]) {
-    const {marker, lat, lng} = activeMarkers[eventId];
-    map && map.panTo([lat,lng], {animate:true});
-    showMapCard({
-      title: el.querySelector('.card-name').textContent,
-      subtitle: el.querySelector('.card-meta').textContent,
-      eventId,
-      gmaps: currentEvents.find(e=>e.id===eventId)?.venue_gmaps,
-      link: currentEvents.find(e=>e.id===eventId)?.external_link,
-      image: currentEvents.find(e=>e.id===eventId)?.community_image,
-      note: currentEvents.find(e=>e.id===eventId)?.notes,
-    });
-  }
+function pathForEvent(e) {
+  if (!e) return null;
+  return e.venue_slug ? '/venue/' + e.venue_slug : (e.id < 1000000 ? '/event/' + e.id : null);
 }
 
-// ── Deep links ──
+function onCardClick(el, eventId) {
+  const detail = el.querySelector('.card-detail');
+  const opening = !detail.classList.contains('open');
+  detail.classList.toggle('open');
+  if (!opening) { closeMapCard(); return; }
+  const path = pathForEvent(currentEvents.find(e => e.id === eventId));
+  if (path) navigate(path);
+}
 
-function handleDeepLink(data) {
-  if (data.type === 'venue') {
-    // highlight sidebar card if this venue is surfaced as an event-like row
-    if (data.days) {
-      const card = document.getElementById('card-' + data.event_id);
-      if (card) {
-        card.scrollIntoView({behavior:'smooth', block:'center'});
-        card.classList.add('highlighted');
-        setTimeout(() => card.classList.remove('highlighted'), 2500);
-      }
-    }
-    if (data.lat && data.lng) {
-      map && map.setView([data.lat, data.lng], 15);
-      showMapCard({title: data.name, subtitle: data.labels, note: data.note,
-                   image: data.image, gmaps: data.gmaps, link: data.link, days: data.days});
-    }
-  } else if (data.type === 'event') {
-    scrollToCard(data.id);
-    highlightCard(data.id);
-    if (activeMarkers[data.id]) {
-      const {lat, lng} = activeMarkers[data.id];
-      map && map.setView([lat, lng], 15);
-    }
+// ── Router ──
+// Every navigable view (home, a city, a venue, an event) has one canonical URL, and the
+// URL is the single source of truth for what's rendered — whether you typed it, clicked a
+// link/pin, or hit browser back/forward. There's no separate "share" affordance because
+// there's nothing for it to do: the address bar always already matches what's on screen.
+
+function parseRoute(path) {
+  let m;
+  if ((m = path.match(/^\/city\/([^/]+)\/?$/))) return {view: 'city', slug: m[1]};
+  if ((m = path.match(/^\/venue\/([^/]+)\/?$/))) return {view: 'venue', slug: m[1]};
+  if ((m = path.match(/^\/event\/(\d+)\/?$/))) return {view: 'event', id: Number(m[1])};
+  return {view: 'home'};
+}
+
+let navDepth = 0; // how many in-app navigations deep we are, so "close" can safely go back
+
+function navigate(path, opts) {
+  opts = opts || {};
+  if (path !== location.pathname) {
+    if (opts.replace) history.replaceState({}, '', path);
+    else { history.pushState({}, '', path); navDepth++; }
   }
+  return applyRoute(path);
+}
+
+window.addEventListener('popstate', () => { navDepth = Math.max(0, navDepth - 1); applyRoute(location.pathname); });
+
+function selectCityInUI(cityName) {
+  const sel = document.getElementById('city-select');
+  if (cityName && Array.from(sel.options).some(o => o.value === cityName)) sel.value = cityName;
+  document.getElementById('date-select').value = 'all'; // so a linked venue/event is always visible
+}
+
+function cityNameFromSlug(slug) {
+  const opt = Array.from(document.getElementById('city-select').options).find(o => o.dataset.slug === slug);
+  return opt ? opt.value : null;
+}
+
+function highlightSidebarCardFor(id) {
+  if (id == null) return;
+  scrollToCard(id);
+  highlightCard(id);
+}
+
+async function applyRoute(path) {
+  const route = parseRoute(path);
+
+  if (route.view === 'city') {
+    selectCityInUI(cityNameFromSlug(route.slug));
+    await onFilterChange();
+    closeMapCard();
+    panToCity(document.getElementById('city-select').value);
+    return;
+  }
+
+  if (route.view === 'venue') {
+    const res = await fetch('/api/venue/' + encodeURIComponent(route.slug));
+    if (!res.ok) { navigate('/', {replace: true}); return; }
+    const v = await res.json();
+    selectCityInUI(v.city);
+    await onFilterChange();
+    if (v.lat && v.lng) map && map.setView([v.lat, v.lng], 15);
+    showMapCard({title: v.name, subtitle: v.labels, note: v.note, image: v.image, gmaps: v.gmaps, link: v.link, days: v.days});
+    if (v.days) highlightSidebarCardFor(v.event_id);
+    return;
+  }
+
+  if (route.view === 'event') {
+    const res = await fetch('/api/event/' + route.id);
+    if (!res.ok) { navigate('/', {replace: true}); return; }
+    const e = await res.json();
+    selectCityInUI(e.city);
+    await onFilterChange();
+    if (e.venue_lat && e.venue_lng) map && map.setView([parseFloat(e.venue_lat), parseFloat(e.venue_lng)], 15);
+    showMapCard({
+      title: e.title,
+      subtitle: e.time ? (e.time_end ? e.time + '–' + e.time_end : e.time) + ' · ' + (e.venue_name || '') : e.venue_name,
+      note: e.notes, image: e.community_image, gmaps: e.venue_gmaps, link: e.external_link,
+    });
+    highlightSidebarCardFor(e.id);
+    return;
+  }
+
+  // home
+  selectCityInUI(null); // leave whatever the default (first/alphabetical) selection is
+  await onFilterChange();
+  closeMapCard();
+  panToCity(document.getElementById('city-select').value);
+}
+
+// Closing the venue/event overlay returns to whatever view was open before it — using real
+// browser history when we have somewhere in-app to go back to, so back/forward stays coherent.
+function closeMapCardAndReturn() {
+  closeMapCard();
+  if (navDepth > 0) { history.back(); }
+  else { navigate('/'); }
 }
 
 // ── Init ──
 
 buildDateOptions();
 loadCities().then(() => {
-  const init = window.__CHESS_INIT__;
-  if (init) {
-    if (init.city) {
-      const sel = document.getElementById('city-select');
-      if (Array.from(sel.options).some(o => o.value === init.city)) sel.value = init.city;
-    }
-    // Show all days so the linked venue/event is always visible in the list
-    document.getElementById('date-select').value = 'all';
-  }
   initMap();
-  onFilterChange().then(() => {
-    if (window.__CHESS_INIT__) handleDeepLink(window.__CHESS_INIT__);
-  });
+  applyRoute(location.pathname);
 });
 
 window.addEventListener('resize', () => {
