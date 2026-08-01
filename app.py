@@ -531,6 +531,12 @@ def delete_event(id):
 
 @app.route('/api/venue-directory')
 def venue_directory():
+    # A venue can legitimately exist in both venue_directory (the general CSV-sourced
+    # list) and venues (scheduled-event venues, admin-curated) — excluded here by name so
+    # it doesn't render as two separate map pins. Matching by name alone missed
+    # near-miss variants (e.g. "Vondelbunker Chess" vs "Vondelbunker" — same place, same
+    # gmaps link, different pin) — also matching on gmaps link catches that whole class of
+    # duplicate without needing exact name agreement.
     city = request.args.get('city')
     db = get_db()
     if city:
@@ -539,14 +545,20 @@ def venue_directory():
             WHERE vd.city = ?
             AND vd.lat IS NOT NULL AND vd.lng IS NOT NULL
             AND vd.name NOT IN (SELECT name FROM venues WHERE city = ?)
+            AND (vd.gmaps IS NULL OR vd.gmaps = '' OR vd.gmaps NOT IN (
+                SELECT gmaps FROM venues WHERE city = ? AND gmaps IS NOT NULL AND gmaps != ''
+            ))
             AND (vd.days IS NULL OR vd.days = '')
-        ''', (city, city)).fetchall()
+        ''', (city, city, city)).fetchall()
     else:
         # All venues globally — used for map pins
         rows = db.execute('''
             SELECT vd.* FROM venue_directory vd
             WHERE vd.lat IS NOT NULL AND vd.lng IS NOT NULL
             AND vd.name NOT IN (SELECT name FROM venues)
+            AND (vd.gmaps IS NULL OR vd.gmaps = '' OR vd.gmaps NOT IN (
+                SELECT gmaps FROM venues WHERE gmaps IS NOT NULL AND gmaps != ''
+            ))
             AND (vd.days IS NULL OR vd.days = '')
         ''').fetchall()
     return jsonify([dict(r) for r in rows])
