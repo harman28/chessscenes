@@ -1,10 +1,14 @@
-from flask import Flask, render_template, jsonify, request, g, abort
+from flask import Flask, render_template, jsonify, request, g, abort, Response
 import sqlite3
 import os
 import re
 import jwt
 import datetime
+import math
+import io
+import urllib.request
 from functools import wraps
+from PIL import Image, ImageDraw
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'dev-secret-change-in-prod')
@@ -357,7 +361,7 @@ def get_all_events():
 def get_cities():
     db = get_db()
     rows = db.execute('SELECT DISTINCT city FROM venue_directory ORDER BY city').fetchall()
-    return jsonify([r['city'] for r in rows])
+    return jsonify([{'name': r['city'], 'slug': slugify(r['city'])} for r in rows])
 
 # --- Admin API ---
 
@@ -553,11 +557,196 @@ def api_event(event_id):
     d['recurrence_days'] = d['recurrence_days'].split(',') if d['recurrence_days'] else []
     return jsonify(d)
 
+# --- Static pin-map images (used as og:image for city and homepage shares) ---
+
+TILE_SIZE = 256
+OSM_TILE_URL = "https://tile.openstreetmap.org/{z}/{x}/{y}.png"
+MAP_USER_AGENT = "ChessScenes/1.0 (+https://chessscenes.com)"
+MAP_PIN_COLOR = (107, 26, 42)  # matches --maroon in templates/index.html
+MAP_PIN_OUTLINE = (245, 230, 224)  # matches --cream
+
+_tile_cache = {}
+_map_image_cache = {}
+
+
+def _lonlat_to_pixel(lon, lat, zoom):
+    lat_rad = math.radians(lat)
+    n = 2.0 ** zoom
+    x = (lon + 180.0) / 360.0 * n * TILE_SIZE
+    y = (1.0 - math.log(math.tan(lat_rad) + 1 / math.cos(lat_rad)) / math.pi) / 2.0 * n * TILE_SIZE
+    return x, y
+
+
+def _fit_zoom(min_lon, min_lat, max_lon, max_lat, width, height, max_zoom=15, padding=60):
+    for zoom in range(max_zoom, 1, -1):
+        x0, y0 = _lonlat_to_pixel(min_lon, max_lat, zoom)
+        x1, y1 = _lonlat_to_pixel(max_lon, min_lat, zoom)
+        if (x1 - x0) <= (width - padding * 2) and (y1 - y0) <= (height - padding * 2):
+            return zoom
+    return 2
+
+
+def _fetch_tile(z, x, y):
+    n = 2 ** z
+    x = x % n
+    if y < 0 or y >= n:
+        return None
+    key = (z, x, y)
+    if key in _tile_cache:
+        return _tile_cache[key]
+    req = urllib.request.Request(OSM_TILE_URL.format(z=z, x=x, y=y), headers={"User-Agent": MAP_USER_AGENT})
+    try:
+        with urllib.request.urlopen(req, timeout=5) as resp:
+            data = resp.read()
+        img = Image.open(io.BytesIO(data)).convert("RGB")
+    except Exception:
+        img = None
+    _tile_cache[key] = img
+    return img
+
+
+def render_pin_map(points, width=1200, height=630):
+    """points: list of (lat, lng). Returns PNG bytes of a static OSM map with pins, or None if no points."""
+    if not points:
+        return None
+    lats = [p[0] for p in points]
+    lngs = [p[1] for p in points]
+    min_lat, max_lat = min(lats), max(lats)
+    min_lng, max_lng = min(lngs), max(lngs)
+    if min_lat == max_lat and min_lng == max_lng:
+        pad = 0.02
+        min_lat -= pad
+        max_lat += pad
+        min_lng -= pad
+        max_lng += pad
+
+    zoom = _fit_zoom(min_lng, min_lat, max_lng, max_lat, width, height)
+    center_lng = (min_lng + max_lng) / 2
+    center_lat = (min_lat + max_lat) / 2
+    center_x, center_y = _lonlat_to_pixel(center_lng, center_lat, zoom)
+    left = center_x - width / 2
+    top = center_y - height / 2
+
+    canvas = Image.new("RGB", (width, height), (232, 208, 200))  # --cream-dark fallback
+    first_tx, first_ty = int(left // TILE_SIZE), int(top // TILE_SIZE)
+    last_tx, last_ty = int((left + width) // TILE_SIZE), int((top + height) // TILE_SIZE)
+    for tx in range(first_tx, last_tx + 1):
+        for ty in range(first_ty, last_ty + 1):
+            tile = _fetch_tile(zoom, tx, ty)
+            if tile is None:
+                continue
+            canvas.paste(tile, (int(tx * TILE_SIZE - left), int(ty * TILE_SIZE - top)))
+
+    draw = ImageDraw.Draw(canvas)
+    for lat, lng in points:
+        px, py = _lonlat_to_pixel(lng, lat, zoom)
+        x, y = px - left, py - top
+        if -20 <= x <= width + 20 and -20 <= y <= height + 20:
+            r = 7
+            draw.ellipse([x - r, y - r, x + r, y + r], fill=MAP_PIN_COLOR, outline=MAP_PIN_OUTLINE, width=2)
+
+    buf = io.BytesIO()
+    canvas.save(buf, format="PNG")
+    return buf.getvalue()
+
+
+def get_points(city=None):
+    """Every venue's coordinates for a city (or globally if city is None), deduped
+    across venue_directory and venues (a venue with scheduled events lives in both)."""
+    db = get_db()
+    if city:
+        rows_a = db.execute(
+            'SELECT lat, lng FROM venue_directory WHERE city = ? AND lat IS NOT NULL AND lng IS NOT NULL',
+            (city,)).fetchall()
+        rows_b = db.execute(
+            'SELECT lat, lng FROM venues WHERE city = ? AND lat IS NOT NULL AND lng IS NOT NULL',
+            (city,)).fetchall()
+    else:
+        rows_a = db.execute(
+            'SELECT lat, lng FROM venue_directory WHERE lat IS NOT NULL AND lng IS NOT NULL').fetchall()
+        rows_b = db.execute(
+            'SELECT lat, lng FROM venues WHERE lat IS NOT NULL AND lng IS NOT NULL').fetchall()
+    seen = set()
+    points = []
+    for r in list(rows_a) + list(rows_b):
+        key = (round(r['lat'], 5), round(r['lng'], 5))
+        if key in seen:
+            continue
+        seen.add(key)
+        points.append((r['lat'], r['lng']))
+    return points
+
+
+def find_city_by_slug(slug):
+    db = get_db()
+    rows = db.execute('SELECT DISTINCT city FROM venue_directory').fetchall()
+    for r in rows:
+        if slugify(r['city']) == slug:
+            return r['city']
+    return None
+
+
+@app.route('/map.png')
+def global_map_image():
+    points = get_points()
+    cache_key = ('__global__', len(points), tuple(sorted(points)))
+    if cache_key not in _map_image_cache:
+        png = render_pin_map(points)
+        if not png:
+            abort(404)
+        _map_image_cache[cache_key] = png
+    return Response(_map_image_cache[cache_key], mimetype='image/png')
+
+
+@app.route('/city/<slug>/map.png')
+def city_map_image(slug):
+    city = find_city_by_slug(slug)
+    if not city:
+        abort(404)
+    points = get_points(city)
+    if not points:
+        abort(404)
+    cache_key = (city, len(points), tuple(sorted(points)))
+    if cache_key not in _map_image_cache:
+        png = render_pin_map(points)
+        if not png:
+            abort(404)
+        _map_image_cache[cache_key] = png
+    return Response(_map_image_cache[cache_key], mimetype='image/png')
+
+
 # --- Pages ---
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    points = get_points()
+    count = len(points)
+    return render_template('index.html',
+        og_title="Chess Scenes",
+        og_description=f"{count} places to find chess around the world — clubs, bars, outdoor boards, museums, memorials." if count else None,
+        og_image=(request.url_root.rstrip('/') + '/map.png') if count else None,
+        og_url="/",
+    )
+
+@app.route('/city/<slug>')
+def city_page(slug):
+    city = find_city_by_slug(slug)
+    if not city:
+        abort(404)
+    points = get_points(city)
+    count = len(points)
+    desc = f"{count} chess spot{'s' if count != 1 else ''} to find in {city}." if count else f"Chess spots in {city}."
+    return render_template('index.html',
+        og_title=f"Chess in {city} · Chess Scenes",
+        og_description=desc,
+        og_image=(request.url_root.rstrip('/') + f'/city/{slug}/map.png') if count else None,
+        og_url=f"/city/{slug}",
+        initial_data={
+            'type': 'city',
+            'city': city,
+            'slug': slug,
+        }
+    )
 
 @app.route('/venue/<slug>')
 def venue_page(slug):
