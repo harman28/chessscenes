@@ -3823,5 +3823,257 @@
     "image": "",
     "days": "Monday, Tuesday, Wednesday, Thursday, Sunday",
     "_scouted": "2026-07-06"
+  },
+  {
+    "name": "Melbourne Chess Club",
+    "city": "Melbourne",
+    "labels": [
+      "chess club"
+    ],
+    "coordinates": "-37.8042, 145.0042",
+    "note": "Australia's biggest chess club, established 1866. Open 7 days for social chess; tournaments Saturday afternoons and Monday evenings.",
+    "gmap": "https://maps.google.com/?q=-37.8042,145.0042",
+    "link": "https://www.melbournechessclub.org/",
+    "image": "",
+    "days": "Monday, Wednesday, Saturday, Sunday",
+    "_scouted": "2026-07-07"
+  },
+  {
+    "name": "Acid Chess Club",
+    "city": "Melbourne",
+    "labels": [
+      "chess club",
+      "chess bar"
+    ],
+    "coordinates": "-37.8018, 145.0104",
+    "note": "Social and competitive chess club at rooftop bar. Fortnightly events alternating between Learn & Play and tournaments with hectic/chill/open streams.",
+    "gmap": "https://maps.google.com/?q=-37.8018,145.0104",
+    "link": "https://www.instagram.com/acid.chess.club.thursdays/",
+    "image": "",
+    "days": "Thursday",
+    "_scouted": "2026-07-07"
+  },
+  {
+    "name": "Melbourne Chess Society",
+    "city": "Melbourne",
+    "labels": [
+      "chess meetup"
+    ],
+    "coordinates": "-37.7986, 145.0068",
+    "note": "Social chess meetups in Melbourne CBD at various locations. Free, all skill levels welcome. Hosts after-work chess events with beer.",
+    "gmap": "https://maps.google.com/?q=-37.7986,145.0068",
+    "link": "https://www.meetup.com/melbourne-chess-society/",
+    "image": "",
+    "days": "Thursday",
+    "_scouted": "2026-07-07"
+  },
+  {
+    "name": "Social Chess Meetup at Brick Lane",
+    "city": "Melbourne",
+    "labels": [
+      "chess bar",
+      "chess meetup"
+    ],
+    "coordinates": "-37.8085, 145.0003",
+    "note": "Social chess at Brick Lane Brewery and Market near Queen Victoria Market. Free event with boards and pieces provided. Dinner and drinks available.",
+    "gmap": "https://maps.google.com/?q=-37.8085,145.0003",
+    "link": "https://linktr.ee/MelbourneChessSociety",
+    "image": "",
+    "days": "Wednesday",
+    "_scouted": "2026-07-07"
+  },
+  {
+    "name": "Box Hill Chess Club",
+    "city": "Melbourne",
+    "labels": [
+      "chess club"
+    ],
+    "coordinates": "-37.8703, 145.1087",
+    "note": "One of Victoria's largest suburban chess clubs, established 1952. Hosts rated tournaments and supports junior chess development.",
+    "gmap": "https://maps.google.com/?q=-37.8703,145.1087",
+    "link": "https://www.boxhillchess.org.au/",
+    "image": "",
+    "days": "Friday, Sunday",
+    "_scouted": "2026-07-07"
+  },
+  {
+    "name": "Melbourne University Chess Club",
+    "city": "Melbourne",
+    "labels": [
+      "chess club",
+      "chess meetup"
+    ],
+    "coordinates": "-37.7975, 145.0632",
+    "note": "University chess club welcoming all skill levels. Meets weekly during semester with coaching, masterclasses, and tournaments.",
+    "gmap": "https://maps.google.com/?q=-37.7975,145.0632",
+    "link": "https://www.facebook.com/groups/melbournechessclub/",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-07-07"
+  },
+  {
+    "name": "Orthodox Club",
+    "city": "Amman",
+    "labels": [
+      "chess board"
+    ],
+    "coordinates": "31.948, 35.897",
+    "note": "A family club in Abdoun offering sports and social activities. Chess training and play available. Contact for current chess schedule.",
+    "gmap": "",
+    "link": "https://www.orthodoxclub.com",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-07-08"
+  },
+  {
+    "name": "Acid Chess Club Thursdays",
+    "city": "Melbourne",
+    "labels": "chess club, chess bar",
+    "coordinates": "-37.803, 144.988",
+    "note": "Social chess club at Runner Up rooftop bar. Fortnightly events alternating between Learn & Play nights and tournaments with multiple skill streams.",
+    "gmap": "https://www.google.com/maps/search/35+Johnston+Street,+Collingwood+VIC+3066",
+    "link": "https://www.instagram.com/acid.chess.club.thursdays/",
+    "image": "",
+    "days": "Thursday",
+    "_scouted": "2026-07-08"
+  },
+  {
+    "name": "Brick Lane Market Social Chess",
+    "city": "Melbourne",
+    "labels": "chess meetup, chess bar",
+    "coordinates": "-37.810, 144.962",
+    "note": "Social chess meetups at Brick Lane Brewery next to Queen Vic Market. Free, all skill levels welcome. Boards, pieces and clocks provided.",
+    "gmap": "https://www.google.com/maps/search/466+Queen+Street,+Melbourne+VIC+3000",
+    "link": "https://www.meetup.com/melbourne-chess-society/",
+    "image": "",
+    "days": "Tuesday, Wednesday",
+    "_scouted": "2026-07-08"
+  },
+  {
+    "name": "State Library Chess Room",
+    "city": "Melbourne",
+    "labels": "chess club, chess museum",
+    "coordinates": "-37.809811, 144.965195",
+    "note": "Chess room with 8-9 tables and one of world's largest chess libraries (5000+ volumes). Free to play casually. Players always present in afternoons.",
+    "gmap": "https://www.google.com/maps/search/328+Swanston+Street,+Melbourne+VIC+3000",
+    "link": "https://www.slv.vic.gov.au/search-discover/explore-collections-theme/sport-games/chess",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-07-08"
+  },
+  {
+    "name": "Migrant Chess Club",
+    "city": "Melbourne",
+    "labels": "chess meetup, chess bar",
+    "coordinates": "-37.813, 144.969",
+    "note": "Social chess events partnering with local businesses for relaxed matches, music, food and drinks. Events usually free and held at various venues including UP THERE store.",
+    "gmap": "https://www.google.com/maps/search/69+Flinders+Lane,+Melbourne+VIC+3000",
+    "link": "https://uptherestore.com/",
+    "image": "",
+    "days": "",
+    "_scouted": "2026-07-08"
+  },
+  {
+    "name": "Brisbane Chess Club",
+    "city": "Brisbane",
+    "labels": [
+      "chess club"
+    ],
+    "coordinates": "-27.489912, 153.035134",
+    "note": "Competitive club hosting weekly rated tournaments. Meets every Thursday at 7:30 pm with multiple time controls and rating divisions.",
+    "gmap": "https://maps.google.com/?q=-27.489912,153.035134",
+    "link": "https://www.brisbanechessclub.org.au/",
+    "image": "",
+    "days": "Thursday",
+    "_scouted": "2026-07-08"
+  },
+  {
+    "name": "Brisbane Social Chess - West End Park Cafe",
+    "city": "Brisbane",
+    "labels": [
+      "chess meetup",
+      "chess board"
+    ],
+    "coordinates": "-27.488889, 153.022222",
+    "note": "Free social chess meetup at West End Park Cafe. Games welcome all skill levels. Also hosts games at other locations during the week.",
+    "gmap": "https://maps.google.com/?q=-27.488889,153.022222",
+    "link": "https://www.brisbanesocialchess.org.au/",
+    "image": "",
+    "days": "Saturday",
+    "_scouted": "2026-07-08"
+  },
+  {
+    "name": "Brisbane Social Chess - The Gardens Cafe (Roma Street Parklands)",
+    "city": "Brisbane",
+    "labels": [
+      "chess meetup",
+      "chess board"
+    ],
+    "coordinates": "-27.475833, 153.023889",
+    "note": "Free social chess meetup at The Garden Room Cafe within Roma Street Parklands. All ages and skill levels welcome.",
+    "gmap": "https://maps.google.com/?q=-27.475833,153.023889",
+    "link": "https://www.brisbanesocialchess.org.au/",
+    "image": "",
+    "days": "Sunday",
+    "_scouted": "2026-07-08"
+  },
+  {
+    "name": "Caxton Street Brewing Co - Brisbane Pub Chess",
+    "city": "Brisbane",
+    "labels": [
+      "chess bar"
+    ],
+    "coordinates": "-27.458333, 153.007778",
+    "note": "Casual chess venue at brewery where players enjoy beer and food while playing. Mixed skill levels welcome in relaxed atmosphere.",
+    "gmap": "https://maps.google.com/?q=-27.458333,153.007778",
+    "link": "https://caxtonstreetbrewing.com/",
+    "image": "",
+    "days": "Sunday",
+    "_scouted": "2026-07-08"
+  },
+  {
+    "name": "Royal Hotel Nundah - Brisbane Social Chess",
+    "city": "Brisbane",
+    "labels": [
+      "chess bar",
+      "chess meetup"
+    ],
+    "coordinates": "-27.406667, 153.120833",
+    "note": "Chess meetup at Royal Hotel Nundah. Free social chess in a pub setting with all skill levels welcome.",
+    "gmap": "https://maps.google.com/?q=-27.406667,153.120833",
+    "link": "https://royalhotelnundah.com.au/",
+    "image": "",
+    "days": "Thursday",
+    "_scouted": "2026-07-08"
+  },
+  {
+    "name": "Chocolate Moments - Brisbane Social Chess",
+    "city": "Brisbane",
+    "labels": [
+      "chess meetup",
+      "chess board"
+    ],
+    "coordinates": "-27.475, 153.032778",
+    "note": "Chess meetup at chocolate cafe and shop in Brisbane CBD. Social chess games at 11 am with all skill levels welcome.",
+    "gmap": "https://maps.google.com/?q=-27.475,153.032778",
+    "link": "https://chocolatemoments.com.au/",
+    "image": "",
+    "days": "Friday",
+    "_scouted": "2026-07-08"
+  },
+  {
+    "name": "June's Cafe - Brisbane Social Chess",
+    "city": "Brisbane",
+    "labels": [
+      "chess meetup",
+      "chess board"
+    ],
+    "coordinates": "-27.479161, 153.042150",
+    "note": "Chess meetup at June's Cafe in East Brisbane. Free social chess at 12 pm with welcoming atmosphere for all abilities.",
+    "gmap": "https://maps.google.com/?q=-27.479161,153.042150",
+    "link": "https://www.brisbanesocialchess.org.au/",
+    "image": "",
+    "days": "Wednesday",
+    "_scouted": "2026-07-08"
   }
 ]
