@@ -9,9 +9,15 @@ import io
 import urllib.request
 from functools import wraps
 from PIL import Image, ImageDraw
+from werkzeug.middleware.proxy_fix import ProxyFix
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'dev-secret-change-in-prod')
+# Railway terminates TLS in front of this app and forwards plain HTTP, so
+# request.url_root/request.scheme would report "http" even though the public site is
+# https-only — trust the one reverse proxy's X-Forwarded-Proto so absolute URLs we build
+# (og:image, og:url) get the right scheme instead of a redirect-requiring http:// one.
+app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
 
 def slugify(text):
     text = text.lower().strip()
