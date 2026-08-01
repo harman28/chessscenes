@@ -168,7 +168,7 @@
     <div style="font-family: 'DM Sans', sans-serif; font-size: 11px; font-weight: 500; letter-spacing: 0.25em; text-transform: uppercase; color: var(--cream-muted); margin-bottom: 28px;">Chess Scenes</div>
     <p class="hero">
       They're probably playing chess
-      <select class="hero-select" id="date-select" onchange="onFilterChange()"></select>
+      <select class="hero-select" id="date-select" onchange="onDateSelectChange()"></select>
       in
       <select class="hero-select" id="city-select" onchange="onCitySelectChange()">
         <option value="Amsterdam">Amsterdam</option>
@@ -248,10 +248,25 @@ function citySlugFromName(name) {
   return opt ? opt.dataset.slug : null;
 }
 
-// User picked a city from the dropdown — this is a real navigation, not just a filter change.
+// User picked a city or day from the dropdowns — both are real navigations (the URL
+// always reflects city as the path and day as ?day=), not just in-place filter changes.
 function onCitySelectChange() {
   const slug = citySlugFromName(document.getElementById('city-select').value);
-  if (slug) navigate('/city/' + slug);
+  const day = document.getElementById('date-select').value;
+  if (slug) navigate(pathWithDay('/city/' + slug, day));
+}
+
+function onDateSelectChange() {
+  const day = document.getElementById('date-select').value;
+  const route = parseRoute(location.pathname);
+  if (route.view === 'venue' || route.view === 'event') {
+    // Changing the day filter while looking at a specific venue/event just re-filters the
+    // sidebar underneath it — that deep link's URL isn't day-scoped, so don't touch it.
+    onFilterChange();
+    return;
+  }
+  const basePath = route.view === 'city' ? '/city/' + route.slug : '/';
+  navigate(pathWithDay(basePath, day));
 }
 
 // ── Map ──
@@ -334,22 +349,17 @@ function activityLine(labels, days) {
   return null;
 }
 
-const FALLBACK_IMGS = [
-  'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Chess_pieces_close_up.jpg/960px-Chess_pieces_close_up.jpg',
-  'https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Chess_pieces_organised.jpg/960px-Chess_pieces_organised.jpg',
-  'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Chess_board_0976.jpg/960px-Chess_board_0976.jpg',
-  'https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/Chess_game.jpg/960px-Chess_game.jpg',
-  'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Chess_board_with_pieces.jpg/960px-Chess_board_with_pieces.jpg',
-  'https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/The_Chess_Board.JPG/960px-The_Chess_Board.JPG',
-];
-function fallbackImg(title) {
-  const h = [...(title || '')].reduce((a, c) => a + c.charCodeAt(0), 0);
-  return FALLBACK_IMGS[h % FALLBACK_IMGS.length];
+// One single, deliberately generic stock photo for venues/events with no real image —
+// using just one (not a rotating set) makes it obviously a placeholder rather than
+// something that could pass for a real photo of the specific place.
+const FALLBACK_IMG = 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Chess_pieces_close_up.jpg/960px-Chess_pieces_close_up.jpg';
+function fallbackImg() {
+  return FALLBACK_IMG;
 }
 
 function showMapCard({title, subtitle, note, image, gmaps, link, days, eventId}) {
-  const src = image || fallbackImg(title);
-  const imgHtml = `<div class="card-image"><img src="${src}" alt="" onerror="this.src='${fallbackImg(title)}'"></div>`;
+  const src = image || fallbackImg();
+  const imgHtml = `<div class="card-image"><img src="${src}" alt="" onerror="this.src='${fallbackImg()}'"></div>`;
 
   const detailRows = [];
   const activity = activityLine(subtitle, days);
@@ -442,8 +452,8 @@ function renderList(events, container) {
 }
 
 function renderCard(e) {
-  const src = e.community_image || fallbackImg(e.title);
-  const imgHtml = `<div class="card-image"><img src="${src}" alt="" onerror="this.src='${fallbackImg(e.title)}'"></div>`;
+  const src = e.community_image || fallbackImg();
+  const imgHtml = `<div class="card-image"><img src="${src}" alt="" onerror="this.src='${fallbackImg()}'"></div>`;
   const timeStr = e.time ? (e.time_end ? e.time+'–'+e.time_end : e.time) : null;
   const meta = [timeStr, e.venue_name].filter(Boolean).join(' · ');
   const tag = e.format_tag ? `<span class="card-tag">${e.format_tag}</span>` : '';
@@ -456,10 +466,8 @@ function renderCard(e) {
   }
   if (e.notes) rows.push(`<div class="detail-note">${e.notes}</div>`);
   const links = [];
-  if (e.venue_gmaps) links.push(`<a class="detail-link" href="${e.venue_gmaps}" target="_blank" rel="noopener">Open in maps ↗</a>`);
-  if (e.external_link) links.push(`<a class="detail-link" href="${e.external_link}" target="_blank" rel="noopener">More info ↗</a>`);
-  const shareHref = e.venue_slug ? `/venue/${e.venue_slug}` : (e.id < 1000000 ? `/event/${e.id}` : null);
-  if (shareHref) links.push(`<a class="detail-link" href="${shareHref}">Share ↗</a>`);
+  if (e.venue_gmaps) links.push(`<a class="detail-link" href="${e.venue_gmaps}" target="_blank" rel="noopener" onclick="event.stopPropagation()">Open in maps ↗</a>`);
+  if (e.external_link) links.push(`<a class="detail-link" href="${e.external_link}" target="_blank" rel="noopener" onclick="event.stopPropagation()">More info ↗</a>`);
   if (links.length) rows.push(`<div class="detail-links">${links.join('')}</div>`);
 
   return `<div class="event-card" id="card-${e.id}" onclick="onCardClick(this,${e.id})">
@@ -512,12 +520,30 @@ window.addEventListener('popstate', () => { navDepth = Math.max(0, navDepth - 1)
 function selectCityInUI(cityName) {
   const sel = document.getElementById('city-select');
   if (cityName && Array.from(sel.options).some(o => o.value === cityName)) sel.value = cityName;
-  document.getElementById('date-select').value = 'all'; // so a linked venue/event is always visible
 }
 
 function cityNameFromSlug(slug) {
   const opt = Array.from(document.getElementById('city-select').options).find(o => o.dataset.slug === slug);
   return opt ? opt.value : null;
+}
+
+// The day filter ("today" / "on Friday" / "any day") is carried as a ?day= query param on
+// home/city URLs, the same way the city itself is carried in the path — so changing it is
+// a real navigation too, not just in-memory state the URL forgets about.
+function dayFromQuery() {
+  return new URLSearchParams(location.search).get('day'); // null if absent — caller decides the fallback
+}
+
+function applyDayFromQuery() {
+  // Only override the day dropdown when the URL actually specifies one — otherwise leave
+  // it alone so a plain "/" or "/city/<slug>" with no ?day= keeps its normal default
+  // (whatever the dropdown's own first option is), rather than forcing "any day".
+  const day = dayFromQuery();
+  if (day) document.getElementById('date-select').value = day;
+}
+
+function pathWithDay(basePath, day) {
+  return day && day !== 'all' ? basePath + '?day=' + encodeURIComponent(day) : basePath;
 }
 
 function highlightSidebarCardFor(id) {
@@ -531,6 +557,7 @@ async function applyRoute(path) {
 
   if (route.view === 'city') {
     selectCityInUI(cityNameFromSlug(route.slug));
+    applyDayFromQuery();
     await onFilterChange();
     closeMapCard();
     panToCity(document.getElementById('city-select').value);
@@ -567,6 +594,7 @@ async function applyRoute(path) {
 
   // home
   selectCityInUI(null); // leave whatever the default (first/alphabetical) selection is
+  applyDayFromQuery();
   await onFilterChange();
   closeMapCard();
   panToCity(document.getElementById('city-select').value);
