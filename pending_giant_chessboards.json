@@ -1,23 +1,5 @@
 [
   {
-    "name": "Unnamed chess feature (way/1157535059)",
-    "city": "Amsterdam",
-    "labels": [
-      "chess board"
-    ],
-    "coordinates": "52.3552042, 4.7815527",
-    "note": "[DRAFT — confirm via photo/Street View before publishing] Found via OSM tagged match. Tags: leisure=pitch, sport=chess.",
-    "gmap": "https://www.google.com/maps?q=52.3552042,4.7815527",
-    "link": "",
-    "image": "",
-    "days": "",
-    "_source": "osm-overpass",
-    "_country": "Nederland",
-    "_osm_link": "https://www.openstreetmap.org/way/1157535059",
-    "_matched_by": "tagged",
-    "_possible_duplicate_of": ""
-  },
-  {
     "name": "Unnamed chess feature (way/1233476758)",
     "city": "Amsterdam",
     "labels": [
