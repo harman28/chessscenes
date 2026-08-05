@@ -18,24 +18,6 @@
     "_possible_duplicate_of": ""
   },
   {
-    "name": "Unnamed chess feature (node/10661819507)",
-    "city": "Amsterdam",
-    "labels": [
-      "chess board"
-    ],
-    "coordinates": "52.3584388, 4.7994255",
-    "note": "[DRAFT — confirm via photo/Street View before publishing] Found via OSM tagged match. Tags: leisure=pitch, sport=chess.",
-    "gmap": "https://www.google.com/maps?q=52.3584388,4.7994255",
-    "link": "",
-    "image": "",
-    "days": "",
-    "_source": "osm-overpass",
-    "_country": "Nederland",
-    "_osm_link": "https://www.openstreetmap.org/node/10661819507",
-    "_matched_by": "tagged",
-    "_possible_duplicate_of": ""
-  },
-  {
     "name": "Schaakvereniging 'De Volewijckers'",
     "city": "Amsterdam",
     "labels": [
