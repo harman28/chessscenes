@@ -18,24 +18,6 @@
     "_possible_duplicate_of": ""
   },
   {
-    "name": "Unnamed chess feature (node/10661819383)",
-    "city": "Amsterdam",
-    "labels": [
-      "chess board"
-    ],
-    "coordinates": "52.355436, 4.7934152",
-    "note": "[DRAFT — confirm via photo/Street View before publishing] Found via OSM tagged match. Tags: leisure=picnic_table, sport=chess.",
-    "gmap": "https://www.google.com/maps?q=52.355436,4.7934152",
-    "link": "",
-    "image": "",
-    "days": "",
-    "_source": "osm-overpass",
-    "_country": "Nederland",
-    "_osm_link": "https://www.openstreetmap.org/node/10661819383",
-    "_matched_by": "tagged",
-    "_possible_duplicate_of": ""
-  },
-  {
     "name": "Unnamed chess feature (node/10661819507)",
     "city": "Amsterdam",
     "labels": [
