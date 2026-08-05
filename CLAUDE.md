@@ -51,6 +51,32 @@ Railway picks up the push and redeploys automatically. No manual trigger needed.
 
 ---
 
+## Giant chessboard finder
+
+`giant_chessboard_finder.py` sweeps OpenStreetMap's Overpass API for outdoor giant
+chessboards worldwide (a `sport=chess` tag query plus a free-text fallback for
+untagged/mistagged boards), dedupes hits within 50m of each other, reverse-geocodes
+each cluster to a city/country via Nominatim, and cross-checks against the existing
+CSV to flag likely-already-known venues by proximity (100m). It writes two review
+files — never auto-publishes, since OSM's tagging here is noisy (indoor board-game
+cafes, ordinary playground pitches, etc. get caught too):
+
+- `giant_chessboards_review.csv` — production CSV columns first (so approved rows
+  can be copy-pasted straight into the real CSV), plus `_`-prefixed review metadata
+  (OSM link, which query matched, raw tags, possible-duplicate flag).
+- `pending_giant_chessboards.json` — same shape as `pending_venues.json` (labels as
+  a list) so it can go through the same one-by-one review flow as scout candidates,
+  kept in its own file rather than merged into the scout's queue.
+
+Needs real internet access to `overpass-api.de` and `nominatim.openstreetmap.org`.
+Run it locally, or via the manually-triggered **Giant Chessboard Finder** GitHub
+Actions workflow (`.github/workflows/giant_chessboard_finder.yml`, same
+checkout-and-push pattern as `scout.yml`) — it will not work from a network-sandboxed
+session that blocks those hosts. `test_giant_chessboard_finder.py` covers the
+dedupe/clustering/duplicate-flagging logic offline, without hitting either API.
+
+---
+
 ## Reviewing scout candidates
 
 `pending_venues.json` is populated daily by the GitHub Actions scout agent (`scout.py`). At the start of each session, check if there are pending venues: read `pending_venues.json` and if it's non-empty, present the candidates to Harman one by one (name, city, note, link) and ask approve/reject/edit. On approval, add the row to the CSV, remove it from the JSON, commit both, and push. On reject, just remove it from the JSON and commit.
