@@ -2,15 +2,27 @@
 """
 Giant Chessboard Finder for chessscenes.com.
 
-Sweeps OpenStreetMap via the Overpass API for outdoor giant chessboards
-worldwide, dedupes results within ~50m of each other, reverse-geocodes each
-cluster to a city/country via Nominatim, flags likely-already-known venues
-by proximity to the existing directory, and writes review-ready CSV + JSON.
+Sweeps OpenStreetMap via the Overpass API for outdoor giant chessboards in an
+EXPLICITLY SCOPED area, dedupes results within ~50m of each other,
+reverse-geocodes each cluster to a city/country via Nominatim, flags
+likely-already-known venues by proximity to the existing directory, and
+writes review-ready CSV + JSON.
 
 Nothing here is auto-published. OSM's sport=chess tag (and the free-text
 fallback) are noisy — indoor board-game cafes, regular playground pitches,
 and mistagged nodes all show up — so every hit needs a human to confirm via
 photo/Street View before it's promoted into the CSV/chess.db.
+
+*** Scope is mandatory: pass --area "City Name" or --bbox S,W,N,E. ***
+An earlier version of this script ran the free-text query unscoped — a
+regex scan over the name/description tag across every named node on the
+ENTIRE PLANET. That's a full-text scan (not an indexed tag lookup) against
+a free, community-funded public API, and it had to be manually cancelled
+mid-run after burning ~20 minutes retrying an oversized query. There is
+deliberately no "--global" escape hatch here. If a genuinely global sweep
+is ever wanted, that needs its own design (e.g. iterating per-country with
+real pacing between requests) — don't quietly re-add an unbounded query to
+route around the --area/--bbox requirement below.
 
 Needs real internet access to overpass-api.de and nominatim.openstreetmap.org.
 Run it locally, or via the "Giant Chessboard Finder" GitHub Actions workflow
@@ -19,12 +31,14 @@ runners — the same pattern already used for scout.py/scout.yml. It will NOT
 work from a network-sandboxed session that blocks those hosts.
 
 Usage:
-    python3 giant_chessboard_finder.py
-    python3 giant_chessboard_finder.py --skip-geocode        # faster, no city/country
-    python3 giant_chessboard_finder.py --out-dir /tmp/out
+    python3 giant_chessboard_finder.py --area "Amsterdam"
+    python3 giant_chessboard_finder.py --bbox 52.28,4.70,52.43,5.02
+    python3 giant_chessboard_finder.py --area "Amsterdam" --skip-geocode
+    python3 giant_chessboard_finder.py --area "Amsterdam" --out-dir /tmp/out
     python3 giant_chessboard_finder.py --tagged-json f1.json --freetext-json f2.json
         # offline/test mode: read raw Overpass responses from local files instead
-        # of hitting the live API (used by test_giant_chessboard_finder.py)
+        # of hitting the live API (used by test_giant_chessboard_finder.py) —
+        # --area/--bbox still required even here, just to build the review notes
 """
 
 import argparse
@@ -46,33 +60,55 @@ USER_AGENT = "ChessScenesGiantChessboardFinder/1.0 (+https://chessscenes.com)"
 DEDUPE_RADIUS_M = 50
 EXISTING_MATCH_RADIUS_M = 100
 NOMINATIM_DELAY_S = 1.1  # Nominatim usage policy: max 1 req/sec, no bulk hammering
-OVERPASS_TIMEOUT_S = 200
+OVERPASS_TIMEOUT_S = 60  # a properly-scoped area query should finish in seconds, not minutes
 OVERPASS_RETRIES = 3
 OVERPASS_BACKOFF_S = (5, 15, 45)
 
-QUERY_TAGGED = """
-[out:json][timeout:180];
-(
-  node["sport"="chess"];
-  way["sport"="chess"];
-  node["leisure"="pitch"]["sport"="chess"];
+NAME_PATTERN = "schaakbord|chess board|chessboard|giant chess|xadrez gigante|scacchiera gigante"
+DESCRIPTION_PATTERN = "schaakbord|chess board|chessboard|giant chess"
+
+
+def build_queries(area=None, admin_level="8", bbox=None, timeout=OVERPASS_TIMEOUT_S):
+    """
+    Build the two Overpass QL queries, scoped to either an OSM area (by name)
+    or an explicit bounding box. Exactly one of area/bbox must be given —
+    there is no unscoped/global mode (see module docstring for why).
+    """
+    if bool(area) == bool(bbox):
+        raise ValueError("build_queries requires exactly one of area= or bbox=")
+
+    if bbox:
+        south, west, north, east = bbox
+        scope_prefix = ""
+        scope_filter = f"({south},{west},{north},{east})"
+        scope_desc = f"bbox {south},{west},{north},{east}"
+    else:
+        if '"' in area:
+            raise ValueError("area name must not contain a double-quote character")
+        scope_prefix = f'area["name"="{area}"]["admin_level"="{admin_level}"]->.searchArea;\n'
+        scope_filter = "(area.searchArea)"
+        scope_desc = f'area "{area}" (admin_level={admin_level})'
+
+    tagged = f"""
+[out:json][timeout:{timeout}];
+{scope_prefix}(
+  node["sport"="chess"]{scope_filter};
+  way["sport"="chess"]{scope_filter};
+  node["leisure"="pitch"]["sport"="chess"]{scope_filter};
 );
 out center;
 """
 
-QUERY_FREETEXT = """
-[out:json][timeout:180];
-(
-  node["name"~"schaakbord|chess board|chessboard|giant chess|xadrez gigante|scacchiera gigante",i];
-  node["description"~"schaakbord|chess board|chessboard|giant chess",i];
+    freetext = f"""
+[out:json][timeout:{timeout}];
+{scope_prefix}(
+  node["name"~"{NAME_PATTERN}",i]{scope_filter};
+  node["description"~"{DESCRIPTION_PATTERN}",i]{scope_filter};
 );
 out center;
 """
 
-QUERIES = [
-    ("tagged", QUERY_TAGGED),
-    ("freetext", QUERY_FREETEXT),
-]
+    return [("tagged", tagged), ("freetext", freetext)], scope_desc
 
 
 def haversine_m(lat1, lon1, lat2, lon2):
@@ -399,12 +435,27 @@ def print_summary(raw_counts, merged_count, clustered, rows):
             print(f"    {n:3d}  {country}")
 
 
+def parse_bbox(s):
+    parts = [p.strip() for p in s.split(",")]
+    if len(parts) != 4:
+        raise argparse.ArgumentTypeError("--bbox must be south,west,north,east (4 comma-separated numbers)")
+    try:
+        return tuple(float(p) for p in parts)
+    except ValueError:
+        raise argparse.ArgumentTypeError("--bbox values must all be numbers")
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    scope_group = parser.add_mutually_exclusive_group(required=True)
+    scope_group.add_argument("--area", help='OSM area name to scope the search to, e.g. "Amsterdam" (required unless --bbox is given)')
+    scope_group.add_argument("--bbox", type=parse_bbox, help="Explicit bounding box south,west,north,east (required unless --area is given)")
+    parser.add_argument("--admin-level", default="8", help='OSM admin_level for --area (default 8 = Dutch municipality; adjust per-country)')
     parser.add_argument("--out-dir", default=str(REPO_ROOT), help="Where to write the review CSV/JSON (default: repo root)")
     parser.add_argument("--skip-geocode", action="store_true", help="Skip Nominatim reverse geocoding (faster, no city/country)")
     parser.add_argument("--dedupe-radius-m", type=float, default=DEDUPE_RADIUS_M)
     parser.add_argument("--existing-radius-m", type=float, default=EXISTING_MATCH_RADIUS_M)
+    parser.add_argument("--overpass-timeout", type=int, default=OVERPASS_TIMEOUT_S, help="Server-side [timeout:N] for the Overpass query itself")
     parser.add_argument("--tagged-json", help="(offline/testing) read raw Overpass elements for the tag query from this JSON file instead of hitting the live API")
     parser.add_argument("--freetext-json", help="(offline/testing) same, for the free-text query")
     args = parser.parse_args()
@@ -412,10 +463,13 @@ def main():
     out_dir = Path(args.out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
 
+    queries, scope_desc = build_queries(area=args.area, bbox=args.bbox, admin_level=args.admin_level, timeout=args.overpass_timeout)
+    print(f"Scope: {scope_desc}", flush=True)
+
     raw_counts = {}
     all_candidates = []
     overrides = {"tagged": args.tagged_json, "freetext": args.freetext_json}
-    for label, query in QUERIES:
+    for label, query in queries:
         override_path = overrides.get(label)
         if override_path:
             elements = json.loads(Path(override_path).read_text(encoding="utf-8"))

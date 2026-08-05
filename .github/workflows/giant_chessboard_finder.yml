@@ -2,7 +2,20 @@ name: Giant Chessboard Finder
 
 on:
   workflow_dispatch:        # Manual trigger from GitHub UI — this is a sweep you re-run
-                             # occasionally as OSM data changes, not a daily job like scout.yml
+                             # occasionally for a specific place, not a daily job like scout.yml
+    inputs:
+      area:
+        description: 'OSM area name to search (e.g. Amsterdam). Ignored if bbox is set.'
+        required: false
+        default: 'Amsterdam'
+      admin_level:
+        description: 'OSM admin_level for the area filter (8 = Dutch municipality; adjust per-country)'
+        required: false
+        default: '8'
+      bbox:
+        description: 'Optional bounding box south,west,north,east — overrides area/admin_level if set'
+        required: false
+        default: ''
 
 jobs:
   find:
@@ -21,14 +34,25 @@ jobs:
         run: pip install requests
 
       - name: Run giant chessboard finder
-        run: python -u giant_chessboard_finder.py
         env:
           PYTHONUNBUFFERED: "1"   # stream progress logs live instead of buffering them
+          AREA_INPUT: ${{ inputs.area }}
+          ADMIN_LEVEL_INPUT: ${{ inputs.admin_level }}
+          BBOX_INPUT: ${{ inputs.bbox }}
+        run: |
+          if [ -n "$BBOX_INPUT" ]; then
+            python -u giant_chessboard_finder.py --bbox "$BBOX_INPUT"
+          else
+            python -u giant_chessboard_finder.py --area "$AREA_INPUT" --admin-level "$ADMIN_LEVEL_INPUT"
+          fi
 
       - name: Commit results
         run: |
           git config user.name "Giant Chessboard Finder"
           git config user.email "chessboard-finder@chessscenes.com"
           git add giant_chessboards_review.csv pending_giant_chessboards.json
-          git diff --staged --quiet || git commit -m "Giant chessboard sweep: $(date +%Y-%m-%d)"
+          git diff --staged --quiet || git commit -m "Giant chessboard sweep: ${AREA_INPUT:-$BBOX_INPUT} ($(date +%Y-%m-%d))"
           git push
+        env:
+          AREA_INPUT: ${{ inputs.area }}
+          BBOX_INPUT: ${{ inputs.bbox }}

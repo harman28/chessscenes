@@ -11,6 +11,33 @@ import unittest
 import giant_chessboard_finder as gcf
 
 
+class TestBuildQueries(unittest.TestCase):
+    def test_requires_exactly_one_of_area_or_bbox(self):
+        with self.assertRaises(ValueError):
+            gcf.build_queries()
+        with self.assertRaises(ValueError):
+            gcf.build_queries(area="Amsterdam", bbox=(1, 2, 3, 4))
+
+    def test_area_scopes_both_queries(self):
+        queries, scope_desc = gcf.build_queries(area="Amsterdam", admin_level="8")
+        self.assertIn("Amsterdam", scope_desc)
+        for label, q in queries:
+            self.assertIn('area["name"="Amsterdam"]["admin_level"="8"]->.searchArea;', q)
+            self.assertIn("(area.searchArea)", q)
+            self.assertNotIn("(area.searchArea)(area.searchArea)", q)
+
+    def test_bbox_scopes_both_queries(self):
+        queries, scope_desc = gcf.build_queries(bbox=(52.28, 4.70, 52.43, 5.02))
+        self.assertIn("bbox", scope_desc)
+        for label, q in queries:
+            self.assertIn("(52.28,4.7,52.43,5.02)", q)
+            self.assertNotIn("area[", q)
+
+    def test_rejects_quote_in_area_name(self):
+        with self.assertRaises(ValueError):
+            gcf.build_queries(area='Amsterdam"; node["sport"="chess"];(')
+
+
 class TestHaversine(unittest.TestCase):
     def test_zero_distance(self):
         self.assertAlmostEqual(gcf.haversine_m(52.0, 4.0, 52.0, 4.0), 0.0, places=3)
