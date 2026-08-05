@@ -51,6 +51,49 @@ Railway picks up the push and redeploys automatically. No manual trigger needed.
 
 ---
 
+## Giant chessboard finder
+
+`giant_chessboard_finder.py` sweeps OpenStreetMap's Overpass API for outdoor giant
+chessboards in an **explicitly scoped area** (a `sport=chess` tag query plus a
+free-text fallback for untagged/mistagged boards), dedupes hits within 50m of each
+other, reverse-geocodes each cluster to a city/country via Nominatim, and
+cross-checks against the existing CSV to flag likely-already-known venues by
+proximity (100m). It writes two review files — never auto-publishes, since OSM's
+tagging here is noisy (indoor board-game cafes, ordinary playground pitches, etc.
+get caught too):
+
+- `giant_chessboards_review.csv` — production CSV columns first (so approved rows
+  can be copy-pasted straight into the real CSV), plus `_`-prefixed review metadata
+  (OSM link, which query matched, raw tags, possible-duplicate flag).
+- `pending_giant_chessboards.json` — same shape as `pending_venues.json` (labels as
+  a list) so it can go through the same one-by-one review flow as scout candidates,
+  kept in its own file rather than merged into the scout's queue.
+
+**`--area "City Name"` or `--bbox south,west,north,east` is mandatory — there is no
+global/unscoped mode.** The first version of this script ran the free-text query
+unscoped: a regex scan over the `name`/`description` tag across every named node on
+the entire planet. That's a full-text scan, not an indexed tag lookup, against a
+free community-funded public API — it had to be manually cancelled mid-run after
+burning ~20 minutes retrying an oversized query. `build_queries()` now refuses to
+run without exactly one of `area=`/`bbox=`, and the CLI enforces the same via a
+required mutually-exclusive group — this fails fast with a usage error, before any
+network call. If a genuinely global sweep is ever wanted, that needs its own
+deliberate design (e.g. iterating per-country with real pacing between requests,
+not a bigger blanket regex) — don't route around the `--area`/`--bbox` requirement
+to get back to an unbounded query.
+
+Needs real internet access to `overpass-api.de` and `nominatim.openstreetmap.org`.
+Run it locally, or via the manually-triggered **Giant Chessboard Finder** GitHub
+Actions workflow (`.github/workflows/giant_chessboard_finder.yml`, same
+checkout-and-push pattern as `scout.yml`) — its `workflow_dispatch` inputs
+(`area`/`admin_level`/`bbox`, defaulting to Amsterdam) make the scope visible in the
+GitHub UI before anyone clicks Run. It will not work from a network-sandboxed
+session that blocks those hosts. `test_giant_chessboard_finder.py` covers the
+dedupe/clustering/duplicate-flagging/query-scoping logic offline, without hitting
+either API.
+
+---
+
 ## Reviewing scout candidates
 
 `pending_venues.json` is populated daily by the GitHub Actions scout agent (`scout.py`). At the start of each session, check if there are pending venues: read `pending_venues.json` and if it's non-empty, present the candidates to Harman one by one (name, city, note, link) and ask approve/reject/edit. On approval, add the row to the CSV, remove it from the JSON, commit both, and push. On reject, just remove it from the JSON and commit.

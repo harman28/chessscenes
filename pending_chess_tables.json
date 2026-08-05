@@ -1,0 +1,59 @@
+[
+  {
+    "name": "Unnamed chess feature (node/2455444144)",
+    "city": "Amsterdam",
+    "labels": [
+      "chess board"
+    ],
+    "coordinates": "52.3500022, 4.8533436",
+    "note": "[DRAFT — confirm via photo/Street View before publishing] Found via OSM tagged match. Tags: leisure=picnic_table, sport=chess.",
+    "gmap": "https://www.google.com/maps?q=52.3500022,4.8533436",
+    "link": "",
+    "image": "",
+    "days": "",
+    "_source": "osm-overpass",
+    "_country": "Nederland",
+    "_osm_link": "https://www.openstreetmap.org/node/2455444144",
+    "_matched_by": "tagged",
+    "_possible_duplicate_of": "",
+    "_deferred_reason": "leisure=picnic_table + sport=chess: likely a regular-sized chess table, not a giant board, but worth a dedicated future look"
+  },
+  {
+    "name": "Unnamed chess feature (node/11028276181)",
+    "city": "Amsterdam",
+    "labels": [
+      "chess board"
+    ],
+    "coordinates": "52.3289326, 4.8751029",
+    "note": "[DRAFT — confirm via photo/Street View before publishing] Found via OSM tagged match. Tags: bench=yes, colour=white, covered=no, leisure=picnic_table, lit=no, material=concrete, sport=chess.",
+    "gmap": "https://www.google.com/maps?q=52.3289326,4.8751029",
+    "link": "",
+    "image": "",
+    "days": "",
+    "_source": "osm-overpass",
+    "_country": "Nederland",
+    "_osm_link": "https://www.openstreetmap.org/node/11028276181",
+    "_matched_by": "tagged",
+    "_possible_duplicate_of": "",
+    "_deferred_reason": "leisure=picnic_table + sport=chess: likely a regular-sized chess table, not a giant board, but worth a dedicated future look"
+  },
+  {
+    "name": "Unnamed chess feature (node/12837404119)",
+    "city": "Amsterdam",
+    "labels": [
+      "chess board"
+    ],
+    "coordinates": "52.3600388, 4.9433701",
+    "note": "[DRAFT — confirm via photo/Street View before publishing] Found via OSM tagged match. Tags: covered=no, leisure=picnic_table, sport=chess.",
+    "gmap": "https://www.google.com/maps?q=52.3600388,4.9433701",
+    "link": "",
+    "image": "",
+    "days": "",
+    "_source": "osm-overpass",
+    "_country": "Nederland",
+    "_osm_link": "https://www.openstreetmap.org/node/12837404119",
+    "_matched_by": "tagged",
+    "_possible_duplicate_of": "",
+    "_deferred_reason": "leisure=picnic_table + sport=chess: confirmed real public chess table (per medina website), not a giant board"
+  }
+]
