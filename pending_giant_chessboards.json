@@ -1,23 +1,5 @@
 [
   {
-    "name": "Unnamed chess feature (node/11397735425)",
-    "city": "Amsterdam",
-    "labels": [
-      "chess board"
-    ],
-    "coordinates": "52.384569, 4.8843426",
-    "note": "[DRAFT — confirm via photo/Street View before publishing] Found via OSM tagged match. Tags: bench=yes, covered=no, leisure=picnic_table, lit=yes, material=concrete, sport=chess.",
-    "gmap": "https://www.google.com/maps?q=52.384569,4.8843426",
-    "link": "",
-    "image": "",
-    "days": "",
-    "_source": "osm-overpass",
-    "_country": "Nederland",
-    "_osm_link": "https://www.openstreetmap.org/node/11397735425",
-    "_matched_by": "tagged",
-    "_possible_duplicate_of": "Chess Table Haarlemmerplein (Amsterdam)"
-  },
-  {
     "name": "Unnamed chess feature (node/11765859064)",
     "city": "Amsterdam",
     "labels": [
