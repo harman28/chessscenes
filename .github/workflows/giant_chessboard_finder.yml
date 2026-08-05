@@ -21,7 +21,9 @@ jobs:
         run: pip install requests
 
       - name: Run giant chessboard finder
-        run: python giant_chessboard_finder.py
+        run: python -u giant_chessboard_finder.py
+        env:
+          PYTHONUNBUFFERED: "1"   # stream progress logs live instead of buffering them
 
       - name: Commit results
         run: |

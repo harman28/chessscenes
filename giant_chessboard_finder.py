@@ -31,8 +31,6 @@ import argparse
 import csv
 import json
 import math
-import sqlite3
-import sys
 import time
 from pathlib import Path
 
@@ -40,7 +38,6 @@ import requests
 
 REPO_ROOT = Path(__file__).parent
 CSV_PATH = REPO_ROOT / "Chess Scenes (Public) - chess_scenes_venues.csv"
-DB_PATH = REPO_ROOT / "chess.db"
 
 OVERPASS_URL = "https://overpass-api.de/api/interpreter"
 NOMINATIM_URL = "https://nominatim.openstreetmap.org/reverse"
@@ -91,6 +88,12 @@ def run_overpass_query(query, label):
     """POST a query to the live Overpass API with retries. Returns raw elements list."""
     last_err = None
     for attempt in range(OVERPASS_RETRIES):
+        print(
+            f"  [{label}] sending request (attempt {attempt + 1}/{OVERPASS_RETRIES}, "
+            f"up to {OVERPASS_TIMEOUT_S}s — global queries can take a couple minutes)...",
+            flush=True,
+        )
+        started = time.monotonic()
         try:
             resp = requests.post(
                 OVERPASS_URL,
@@ -98,14 +101,19 @@ def run_overpass_query(query, label):
                 headers={"User-Agent": USER_AGENT},
                 timeout=OVERPASS_TIMEOUT_S,
             )
+            elapsed = time.monotonic() - started
             if resp.status_code == 200:
-                return resp.json().get("elements", [])
+                elements = resp.json().get("elements", [])
+                print(f"  [{label}] got {len(elements)} elements in {elapsed:.1f}s", flush=True)
+                return elements
             last_err = f"HTTP {resp.status_code}: {resp.text[:200]}"
         except requests.RequestException as e:
+            elapsed = time.monotonic() - started
             last_err = str(e)
+        print(f"  [{label}] attempt {attempt + 1} failed after {elapsed:.1f}s: {last_err}", flush=True)
         if attempt < OVERPASS_RETRIES - 1:
             wait = OVERPASS_BACKOFF_S[min(attempt, len(OVERPASS_BACKOFF_S) - 1)]
-            print(f"  [{label}] attempt {attempt + 1} failed ({last_err}); retrying in {wait}s...", file=sys.stderr)
+            print(f"  [{label}] retrying in {wait}s...", flush=True)
             time.sleep(wait)
     raise RuntimeError(f"Overpass query '{label}' failed after {OVERPASS_RETRIES} attempts: {last_err}")
 
@@ -266,7 +274,7 @@ def reverse_geocode(lat, lon):
             )
             result = {"city": city, "country": addr.get("country", "")}
     except requests.RequestException as e:
-        print(f"  [geocode] failed for {lat},{lon}: {e}", file=sys.stderr)
+        print(f"  [geocode] failed for {lat},{lon}: {e}", flush=True)
     finally:
         time.sleep(NOMINATIM_DELAY_S)
     _geocode_cache[key] = result
@@ -275,13 +283,15 @@ def reverse_geocode(lat, lon):
 
 def build_review_rows(clusters, geocode=True):
     rows = []
-    for c in clusters:
+    total = len(clusters)
+    for i, c in enumerate(clusters, start=1):
         tags = c["tags"]
         name = tags.get("name") or f"Unnamed chess feature ({c['osm_type']}/{c['osm_id']})"
         city, country = "", ""
         if geocode:
             geo = reverse_geocode(c["lat"], c["lon"])
             city, country = geo["city"], geo["country"]
+            print(f"  [geocode] {i}/{total}: {name!r} -> {city or '?'}, {country or '?'}", flush=True)
 
         source_bits = sorted(c["matched_by"])
         tag_summary = ", ".join(f"{k}={v}" for k, v in sorted(tags.items()))
@@ -410,19 +420,25 @@ def main():
         if override_path:
             elements = json.loads(Path(override_path).read_text(encoding="utf-8"))
         else:
-            print(f"Querying Overpass [{label}]...")
+            print(f"Querying Overpass [{label}]...", flush=True)
             elements = run_overpass_query(query, label)
         raw_counts[label] = len(elements)
         all_candidates.extend(elements_to_candidates(elements, label))
 
     merged = merge_by_osm_id(all_candidates)
     clustered = spatial_dedupe(merged, radius_m=args.dedupe_radius_m)
+    print(f"Merged to {len(merged)} unique OSM elements, {len(clustered)} clusters after {args.dedupe_radius_m}m dedupe.", flush=True)
 
     existing_venues = load_existing_venues()
     flag_possible_duplicates(clustered, existing_venues, radius_m=args.existing_radius_m)
 
     if not args.skip_geocode:
-        print(f"Reverse-geocoding {len(clustered)} clusters via Nominatim (~{NOMINATIM_DELAY_S}s each)...")
+        eta_s = len(clustered) * NOMINATIM_DELAY_S
+        print(
+            f"Reverse-geocoding {len(clustered)} clusters via Nominatim "
+            f"(~{NOMINATIM_DELAY_S}s each, ~{eta_s / 60:.1f} min total; progress printed per item below)...",
+            flush=True,
+        )
     rows = build_review_rows(clustered, geocode=not args.skip_geocode)
 
     csv_path = out_dir / "giant_chessboards_review.csv"
