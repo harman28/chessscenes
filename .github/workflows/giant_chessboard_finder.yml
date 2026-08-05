@@ -1,0 +1,32 @@
+name: Giant Chessboard Finder
+
+on:
+  workflow_dispatch:        # Manual trigger from GitHub UI — this is a sweep you re-run
+                             # occasionally as OSM data changes, not a daily job like scout.yml
+
+jobs:
+  find:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write       # Needed to push the review CSV/JSON back
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Run giant chessboard finder
+        run: python giant_chessboard_finder.py
+
+      - name: Commit results
+        run: |
+          git config user.name "Giant Chessboard Finder"
+          git config user.email "chessboard-finder@chessscenes.com"
+          git add giant_chessboards_review.csv pending_giant_chessboards.json
+          git diff --staged --quiet || git commit -m "Giant chessboard sweep: $(date +%Y-%m-%d)"
+          git push
