@@ -314,6 +314,11 @@ def fetch_events(city=None, day=None, date=None):
 
     # Also surface venue_directory entries that have days set, as event-like rows.
     # Offset id to avoid collision with events.id (autoincrement, unlikely to reach 1M).
+    # Excluded if the name matches either a scheduled venue OR a community/event title —
+    # a venue_directory row can duplicate an already-curated recurring meetup even when
+    # its own venue name differs from the meetup's, e.g. "Chess & Beer" (the community/
+    # event title) meets at "Cafe De Balie" (the venue name); matching only against venue
+    # names missed this and showed the same meetup twice, with and without real details.
     vd_query = '''
         SELECT id + 1000000 as id, name as title, NULL as specific_date, NULL as time,
                NULL as time_end, NULL as format_tag, link as external_link, note as notes,
@@ -326,10 +331,26 @@ def fetch_events(city=None, day=None, date=None):
     '''
     vd_params = []
     if city:
-        vd_query += ' AND city = ? AND name NOT IN (SELECT name FROM venues WHERE city = ?)'
-        vd_params += [city, city]
+        vd_query += '''
+            AND city = ?
+            AND name NOT IN (
+                SELECT name FROM venues WHERE city = ?
+                UNION
+                SELECT c.name FROM events e
+                JOIN communities c ON e.community_id = c.id
+                LEFT JOIN venues v2 ON e.venue_id = v2.id
+                WHERE v2.city = ?
+            )
+        '''
+        vd_params += [city, city, city]
     else:
-        vd_query += ' AND name NOT IN (SELECT name FROM venues)'
+        vd_query += '''
+            AND name NOT IN (
+                SELECT name FROM venues
+                UNION
+                SELECT c.name FROM events e JOIN communities c ON e.community_id = c.id
+            )
+        '''
     if day:
         vd_query += ' AND days LIKE ?'
         vd_params.append(f'%{day}%')
@@ -759,11 +780,6 @@ def city_page(slug):
         og_description=desc,
         og_image=(request.url_root.rstrip('/') + f'/city/{slug}/map.png') if count else None,
         og_url=f"/city/{slug}",
-        initial_data={
-            'type': 'city',
-            'city': city,
-            'slug': slug,
-        }
     )
 
 @app.route('/venue/<slug>')
@@ -785,21 +801,6 @@ def venue_page(slug):
         og_description=" · ".join(desc_parts),
         og_image=v.get('image'),
         og_url=f"/venue/{slug}",
-        initial_data={
-            'type': 'venue',
-            'slug': slug,
-            'city': city,
-            'name': name,
-            'event_id': v['id'] + 1000000,
-            'lat': v.get('lat'),
-            'lng': v.get('lng'),
-            'days': v.get('days'),
-            'labels': v.get('labels'),
-            'note': v.get('note'),
-            'image': v.get('image'),
-            'gmaps': v.get('gmaps'),
-            'link': v.get('link'),
-        }
     )
 
 @app.route('/event/<int:event_id>')
@@ -830,14 +831,6 @@ def event_page(event_id):
         og_description=" · ".join(desc_parts),
         og_image=ev.get('community_image'),
         og_url=f"/event/{event_id}",
-        initial_data={
-            'type': 'event',
-            'id': event_id,
-            'city': city,
-            'name': name,
-            'lat': ev.get('venue_lat'),
-            'lng': ev.get('venue_lng'),
-        }
     )
 
 @app.route('/admin')
