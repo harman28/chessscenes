@@ -349,17 +349,8 @@ function activityLine(labels, days) {
   return null;
 }
 
-// One single, deliberately generic stock photo for venues/events with no real image —
-// using just one (not a rotating set) makes it obviously a placeholder rather than
-// something that could pass for a real photo of the specific place.
-const FALLBACK_IMG = 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Chess_pieces_close_up.jpg/960px-Chess_pieces_close_up.jpg';
-function fallbackImg() {
-  return FALLBACK_IMG;
-}
-
 function showMapCard({title, subtitle, note, image, gmaps, link, days, eventId}) {
-  const src = image || fallbackImg();
-  const imgHtml = `<div class="card-image"><img src="${src}" alt="" onerror="this.src='${fallbackImg()}'"></div>`;
+  const imgHtml = image ? `<div class="card-image"><img src="${image}" alt="" onerror="this.parentElement.remove()"></div>` : '';
 
   const detailRows = [];
   const activity = activityLine(subtitle, days);
@@ -452,8 +443,7 @@ function renderList(events, container) {
 }
 
 function renderCard(e) {
-  const src = e.community_image || fallbackImg();
-  const imgHtml = `<div class="card-image"><img src="${src}" alt="" onerror="this.src='${fallbackImg()}'"></div>`;
+  const imgHtml = e.community_image ? `<div class="card-image"><img src="${e.community_image}" alt="" onerror="this.parentElement.remove()"></div>` : '';
   const timeStr = e.time ? (e.time_end ? e.time+'–'+e.time_end : e.time) : null;
   const meta = [timeStr, e.venue_name].filter(Boolean).join(' · ');
   const tag = e.format_tag ? `<span class="card-tag">${e.format_tag}</span>` : '';
