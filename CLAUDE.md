@@ -95,6 +95,13 @@ required — edit the two source files directly:
    screenshot), a label from the list above, a note, Google Maps link, website/Instagram
    link, an image URL (imgur preferred — ask Harman if none available), and generate a
    unique `slug`. Coordinates are mandatory — don't add a place without them.
+   **Don't guess a label from the venue/community name** — during the places/events
+   migration, 4 of 9 newly-created places got mislabeled this way (e.g. "KLABU Clubhouse"
+   hosting "Amsterdam Spirit Chess **Club**" looked like `chess club`, but the actual
+   gathering is casual, not a formal membership club — it should be `chess meetup`). The
+   reliable signal is the *event's* own `format_tag`: `"Club night"` means a real club
+   (schaakvereniging-style, dues/league play), anything else (`"Casual"`, `"Open play"`,
+   etc.) doesn't, regardless of what the name says.
 2. **New event** at an existing place: add an object to `chess_scenes_events.json`'s
    `events` list with that place's `place_slug`, the community (if any), and either `days`
    (recurring) or `specific_date` (one-off).
@@ -106,8 +113,15 @@ required — edit the two source files directly:
 4. **Commit and push** both changed files together (see Deployment above).
 
 **Archiving**: don't delete an event that's no longer active — set `"active": false` on it
-instead, so the history/reasoning stays in the file (e.g. Chess & Beer at Cafe De Balie,
-archived 2026-08-17 because the meetup stopped running).
+instead, so the history/reasoning stays in the file (e.g. Chess & Beer, archived 2026-08-17
+because the meetup stopped running — its venue, Cafe De Balie, was removed from `places`
+entirely rather than archived, since it was never a chess place on its own, only ever
+Chess & Beer's venue; the archived event keeps Cafe De Balie's location as a standalone
+field instead of a `place_id`).
+
+**`migrate_to_places_schema.py`** is a one-off migration script, already run (2026-08-17) —
+it's kept as a historical record of exactly what the old `venues`/`venue_directory`/`events`
+data became, not something to run again.
 
 ---
 
