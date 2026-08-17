@@ -54,12 +54,14 @@ DROP_ALIAS_PLACE_NAMES = {
 }
 
 # Venues that only existed in the old hardcoded seed_db() venues list — never had a
-# CSV/venue_directory row. (name, labels, gmaps, lat, lng, city)
+# CSV/venue_directory row, so their `labels` had to be judgment calls rather than existing
+# data. First pass got 3 of 9 wrong (2 Klaveren, Bilderdijkpark, Vondelbunker, then KLABU
+# Clubhouse) — caught via the pin-icon feature showing the wrong piece. The reliable signal
+# was already sitting in HARDCODED_EVENTS the whole time: format_tag "Club night" means a
+# formal club (schaakvereniging), "Casual" doesn't — even when the venue/community name has
+# "club" in it (KLABU Clubhouse hosting "Amsterdam Spirit Chess Club" is tagged Casual, not
+# Club night, so it's a meetup, not a club). (name, labels, gmaps, lat, lng, city)
 NEW_PLACES = [
-    # 2 Klaveren and Bilderdijkpark host Zwart op Wit and Schaakvereniging Amsterdam West
-    # respectively — both formal clubs, same as Huize Lydia/Gaaspstraat 8/Speelzaal KLUP/Het
-    # Zwanenmeer below — so "chess club", not "chess bar"/"chess meetup" (caught after the
-    # fact: Harman noticed Zwart op Wit's pin showing a knight instead of a rook).
     ("2 Klaveren", "chess club", "https://maps.app.goo.gl/2iYpS9ALfHsJLAwYA", 52.3711, 4.8662, "Amsterdam"),
     ("Bilderdijkpark", "chess club", "https://maps.app.goo.gl/HE7btnNk4Bit5ywy8", 52.3718, 4.8688, "Amsterdam"),
     ("Huize Lydia", "chess club", "https://maps.app.goo.gl/cnJ446iJsELTRz7XA", 52.3532, 4.8833, "Amsterdam"),
@@ -67,8 +69,8 @@ NEW_PLACES = [
     ("Gaaspstraat 8", "chess club", "https://maps.app.goo.gl/dZG9V7rcx1a9q3rLA", 52.3452, 4.9085, "Amsterdam"),
     ("Speelzaal KLUP", "chess club", "https://maps.app.goo.gl/4hLHEWU5ktfCiWCXA", 52.3544, 4.8545, "Amsterdam"),
     ("Het Zwanenmeer", "chess club", "https://maps.app.goo.gl/mqUyi83fLoGxKCwi8", 52.3956, 4.9499, "Amsterdam"),
-    ("Vondelbunker", "chess bar", "https://maps.app.goo.gl/zVaGJ4eQ19HZ6h6z8", 52.3609, 4.8776, "Amsterdam"),
-    ("KLABU Clubhouse", "chess club", "https://maps.app.goo.gl/Hwt9yytsy1LJbFCa8", 52.3831, 4.8865, "Amsterdam"),
+    ("Vondelbunker", "chess meetup", "https://maps.app.goo.gl/zVaGJ4eQ19HZ6h6z8", 52.3609, 4.8776, "Amsterdam"),
+    ("KLABU Clubhouse", "chess meetup", "https://maps.app.goo.gl/Hwt9yytsy1LJbFCa8", 52.3831, 4.8865, "Amsterdam"),
 ]
 # Cafe De Balie is deliberately NOT a place — it isn't a chess place in its own right, it
 # was only ever the venue for Chess & Beer (now inactive, see STANDALONE_EVENTS below). Same
