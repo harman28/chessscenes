@@ -56,8 +56,12 @@ DROP_ALIAS_PLACE_NAMES = {
 # Venues that only existed in the old hardcoded seed_db() venues list — never had a
 # CSV/venue_directory row. (name, labels, gmaps, lat, lng, city)
 NEW_PLACES = [
-    ("2 Klaveren", "chess bar", "https://maps.app.goo.gl/2iYpS9ALfHsJLAwYA", 52.3711, 4.8662, "Amsterdam"),
-    ("Bilderdijkpark", "chess meetup", "https://maps.app.goo.gl/HE7btnNk4Bit5ywy8", 52.3718, 4.8688, "Amsterdam"),
+    # 2 Klaveren and Bilderdijkpark host Zwart op Wit and Schaakvereniging Amsterdam West
+    # respectively — both formal clubs, same as Huize Lydia/Gaaspstraat 8/Speelzaal KLUP/Het
+    # Zwanenmeer below — so "chess club", not "chess bar"/"chess meetup" (caught after the
+    # fact: Harman noticed Zwart op Wit's pin showing a knight instead of a rook).
+    ("2 Klaveren", "chess club", "https://maps.app.goo.gl/2iYpS9ALfHsJLAwYA", 52.3711, 4.8662, "Amsterdam"),
+    ("Bilderdijkpark", "chess club", "https://maps.app.goo.gl/HE7btnNk4Bit5ywy8", 52.3718, 4.8688, "Amsterdam"),
     ("Huize Lydia", "chess club", "https://maps.app.goo.gl/cnJ446iJsELTRz7XA", 52.3532, 4.8833, "Amsterdam"),
     ("La Plaza, Groenelaan", "chess club", "https://maps.app.goo.gl/3msMbTPckGVqGh9d9", 52.2926, 4.8745, "Amsterdam"),
     ("Gaaspstraat 8", "chess club", "https://maps.app.goo.gl/dZG9V7rcx1a9q3rLA", 52.3452, 4.9085, "Amsterdam"),
