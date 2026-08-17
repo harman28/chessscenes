@@ -191,8 +191,8 @@
 <script>
 const DAYS = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 let map = null;
-let activeMarkers = {};   // event id -> {marker}
-let inactiveMarkers = []; // array of markers
+let placeMarkers = {};     // place slug -> marker (grey layer, every place in the current city)
+let eventPinMarkers = {};  // place slug (or "event-<id>" if standalone) -> marker (red overlay)
 let currentEvents = [];
 
 // ── Dropdown ──
@@ -259,8 +259,8 @@ function onCitySelectChange() {
 function onDateSelectChange() {
   const day = document.getElementById('date-select').value;
   const route = parseRoute(location.pathname);
-  if (route.view === 'venue' || route.view === 'event') {
-    // Changing the day filter while looking at a specific venue/event just re-filters the
+  if (route.view === 'place' || route.view === 'event') {
+    // Changing the day filter while looking at a specific place/event just re-filters the
     // sidebar underneath it — that deep link's URL isn't day-scoped, so don't touch it.
     onFilterChange();
     return;
@@ -275,7 +275,6 @@ function initMap() {
   if (map) return;
   map = L.map('map-pane', {zoomControl: true, scrollWheelZoom: true});
   const tileLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {maxZoom: 19});
-  tileLayer.once('load', () => loadGlobalPins());
   tileLayer.addTo(map);
 }
 
@@ -295,49 +294,53 @@ function inactivePinIcon() {
   });
 }
 
-let allInactiveVenues = [];
-let allActiveEvents = [];
+function clearMarkerLayer(obj) {
+  Object.values(obj).forEach(m => map.removeLayer(m));
+  for (const k in obj) delete obj[k];
+}
 
-async function loadGlobalPins() {
+// The map is scoped to exactly one city and one day filter, fetched fresh on every
+// change — grey pins (every place) and red pins (places/standalone events with a match
+// for the current day) come from the same filters as the scenes list, so the two can
+// never disagree about what's showing.
+async function refreshMapPins(city, day) {
   if (!map) return;
-  const [vRes, eRes] = await Promise.all([
-    fetch('/api/venue-directory'),
-    fetch('/api/events/global'),
+  const [placesRes, eventsRes] = await Promise.all([
+    fetch(`/api/places?city=${encodeURIComponent(city)}`),
+    fetch(`/api/events?city=${encodeURIComponent(city)}&day=${encodeURIComponent(day || '')}`),
   ]);
-  allInactiveVenues = await vRes.json();
-  allActiveEvents = await eRes.json();
+  const cityPlaces = await placesRes.json();
+  const dayEvents = await eventsRes.json();
 
-  allInactiveVenues.forEach(v => {
-    if (!v.lat || !v.lng) return;
-    const marker = L.marker([v.lat, v.lng], {icon: inactivePinIcon(), zIndexOffset: 0}).addTo(map);
-    marker.on('click', () => { if (v.slug) navigate('/venue/' + v.slug); });
-    inactiveMarkers.push(marker);
+  clearMarkerLayer(placeMarkers);
+  clearMarkerLayer(eventPinMarkers);
+
+  cityPlaces.forEach(p => {
+    const marker = L.marker([p.lat, p.lng], {icon: inactivePinIcon(), zIndexOffset: 0}).addTo(map);
+    marker.on('click', () => navigate('/place/' + p.slug));
+    placeMarkers[p.slug] = marker;
   });
 
-  allActiveEvents.forEach(e => {
-    if (!e.venue_lat || !e.venue_lng) return;
-    const lat = parseFloat(e.venue_lat), lng = parseFloat(e.venue_lng);
+  const seenKeys = new Set();
+  dayEvents.forEach(e => {
+    const key = e.place_slug || ('event-' + e.id);
+    if (seenKeys.has(key)) return; // one pin per place, even if it has multiple matching events
+    seenKeys.add(key);
+    if (!e.place_lat || !e.place_lng) return;
+    const lat = parseFloat(e.place_lat), lng = parseFloat(e.place_lng);
     if (isNaN(lat) || isNaN(lng)) return;
     const marker = L.marker([lat, lng], {icon: activePinIcon(), zIndexOffset: 100}).addTo(map);
-    marker.on('click', () => {
-      const path = e.venue_slug ? '/venue/' + e.venue_slug : (e.id < 1000000 ? '/event/' + e.id : null);
-      if (path) navigate(path);
-    });
-    activeMarkers[e.id] = {marker, lat, lng};
+    marker.on('click', () => navigate(e.place_slug ? '/place/' + e.place_slug : '/event/' + e.id));
+    eventPinMarkers[key] = marker;
   });
-
-  panToCity(document.getElementById('city-select').value || 'Amsterdam');
 }
 
 function panToCity(city) {
   if (!map) return;
-  const bounds = [];
-  allInactiveVenues.forEach(v => { if (v.city === city && v.lat && v.lng) bounds.push([v.lat, v.lng]); });
-  (currentEvents || []).forEach(e => {
-    if (!e.venue_lat || !e.venue_lng) return;
-    const la = parseFloat(e.venue_lat), ln = parseFloat(e.venue_lng);
-    if (!isNaN(la) && !isNaN(ln)) bounds.push([la, ln]);
-  });
+  const bounds = [
+    ...Object.values(placeMarkers).map(m => m.getLatLng()),
+    ...Object.values(eventPinMarkers).map(m => m.getLatLng()),
+  ];
   if (bounds.length) map.fitBounds(bounds, {padding:[60,60], maxZoom:14});
 }
 
@@ -345,7 +348,7 @@ function activityLine(labels, days) {
   const l = (labels || '').toLowerCase();
   const isLocation = l.includes('chess board') || l.includes('chess memorial') || l.includes('chess shop') || l.includes('chess museum');
   if (days) return `Plays on ${days}`;
-  if (!isLocation) return 'Open venue — check their hours';
+  if (!isLocation) return 'Open place — check their hours';
   return null;
 }
 
@@ -419,6 +422,7 @@ async function onFilterChange() {
     currentEvents = await res.json();
     renderList(currentEvents, container);
   }
+  await refreshMapPins(city, resolveDay(val));
   panToCity(city);
 }
 
@@ -445,10 +449,10 @@ function renderList(events, container) {
 function renderCard(e) {
   const imgHtml = e.community_image ? `<div class="card-image"><img src="${e.community_image}" alt="" onerror="this.parentElement.remove()"></div>` : '';
   const timeStr = e.time ? (e.time_end ? e.time+'–'+e.time_end : e.time) : null;
-  const meta = [timeStr, e.venue_name].filter(Boolean).join(' · ');
+  const meta = [timeStr, e.place_name].filter(Boolean).join(' · ');
   const tag = e.format_tag ? `<span class="card-tag">${e.format_tag}</span>` : '';
   const rows = [];
-  if (e.venue_name) rows.push(`<div class="detail-row"><span class="detail-label">Where</span><span>${e.venue_name}${e.venue_address?', '+e.venue_address:''}</span></div>`);
+  if (e.place_name) rows.push(`<div class="detail-row"><span class="detail-label">Where</span><span>${e.place_name}${e.place_address?', '+e.place_address:''}</span></div>`);
   if (e.time) {
     const tr = e.time_end ? e.time+'–'+e.time_end : e.time;
     const days = e.recurrence_days&&e.recurrence_days.length ? ', every '+e.recurrence_days.join(', ') : '';
@@ -456,7 +460,7 @@ function renderCard(e) {
   }
   if (e.notes) rows.push(`<div class="detail-note">${e.notes}</div>`);
   const links = [];
-  if (e.venue_gmaps) links.push(`<a class="detail-link" href="${e.venue_gmaps}" target="_blank" rel="noopener" onclick="event.stopPropagation()">Open in maps ↗</a>`);
+  if (e.place_gmaps) links.push(`<a class="detail-link" href="${e.place_gmaps}" target="_blank" rel="noopener" onclick="event.stopPropagation()">Open in maps ↗</a>`);
   if (e.external_link) links.push(`<a class="detail-link" href="${e.external_link}" target="_blank" rel="noopener" onclick="event.stopPropagation()">More info ↗</a>`);
   if (links.length) rows.push(`<div class="detail-links">${links.join('')}</div>`);
 
@@ -468,7 +472,7 @@ function renderCard(e) {
 
 function pathForEvent(e) {
   if (!e) return null;
-  return e.venue_slug ? '/venue/' + e.venue_slug : (e.id < 1000000 ? '/event/' + e.id : null);
+  return e.place_slug ? '/place/' + e.place_slug : '/event/' + e.id;
 }
 
 function onCardClick(el, eventId) {
@@ -481,7 +485,7 @@ function onCardClick(el, eventId) {
 }
 
 // ── Router ──
-// Every navigable view (home, a city, a venue, an event) has one canonical URL, and the
+// Every navigable view (home, a city, a place, an event) has one canonical URL, and the
 // URL is the single source of truth for what's rendered — whether you typed it, clicked a
 // link/pin, or hit browser back/forward. There's no separate "share" affordance because
 // there's nothing for it to do: the address bar always already matches what's on screen.
@@ -489,7 +493,7 @@ function onCardClick(el, eventId) {
 function parseRoute(path) {
   let m;
   if ((m = path.match(/^\/city\/([^/]+)\/?$/))) return {view: 'city', slug: m[1]};
-  if ((m = path.match(/^\/venue\/([^/]+)\/?$/))) return {view: 'venue', slug: m[1]};
+  if ((m = path.match(/^\/place\/([^/]+)\/?$/))) return {view: 'place', slug: m[1]};
   if ((m = path.match(/^\/event\/(\d+)\/?$/))) return {view: 'event', id: Number(m[1])};
   return {view: 'home'};
 }
@@ -560,19 +564,22 @@ async function applyRoute(path) {
     return;
   }
 
-  if (route.view === 'venue') {
-    const res = await fetch('/api/venue/' + encodeURIComponent(route.slug));
+  if (route.view === 'place') {
+    const res = await fetch('/api/place/' + encodeURIComponent(route.slug));
     if (!res.ok) { navigate('/', {replace: true}); return; }
     const v = await res.json();
-    // Only refetch/rebuild the sidebar list if this venue actually belongs to a different
-    // city than what's already showing — e.g. clicking a card in the currently-visible
-    // list is already showing the right city, and rebuilding the list from scratch here
-    // would blow away the very card the user just clicked open (it visibly expands, the
-    // list re-renders collapsed, and it looks like the click did nothing / the page reloaded).
+    // Only refetch/rebuild the sidebar list (and map pins) if this place actually belongs
+    // to a different city than what's already showing — e.g. clicking a card in the
+    // currently-visible list is already showing the right city, and rebuilding the list
+    // from scratch here would blow away the very card the user just clicked open (it
+    // visibly expands, the list re-renders collapsed, and it looks like the click did
+    // nothing / the page reloaded). If the city's unchanged, map pins are still current
+    // from the last refreshMapPins() call, so nothing needs refetching there either.
     if (selectCityInUI(v.city)) await onFilterChange();
     if (v.lat && v.lng) map && map.setView([v.lat, v.lng], 15);
     showMapCard({title: v.name, subtitle: v.labels, note: v.note, image: v.image, gmaps: v.gmaps, link: v.link, days: v.days});
-    if (v.days) highlightSidebarCardFor(v.event_id);
+    const match = currentEvents.find(e => e.place_slug === route.slug);
+    if (match) highlightSidebarCardFor(match.id);
     return;
   }
 
@@ -580,12 +587,12 @@ async function applyRoute(path) {
     const res = await fetch('/api/event/' + route.id);
     if (!res.ok) { navigate('/', {replace: true}); return; }
     const e = await res.json();
-    if (selectCityInUI(e.city)) await onFilterChange();
-    if (e.venue_lat && e.venue_lng) map && map.setView([parseFloat(e.venue_lat), parseFloat(e.venue_lng)], 15);
+    if (selectCityInUI(e.place_city)) await onFilterChange();
+    if (e.place_lat && e.place_lng) map && map.setView([parseFloat(e.place_lat), parseFloat(e.place_lng)], 15);
     showMapCard({
       title: e.title,
-      subtitle: e.time ? (e.time_end ? e.time + '–' + e.time_end : e.time) + ' · ' + (e.venue_name || '') : e.venue_name,
-      note: e.notes, image: e.community_image, gmaps: e.venue_gmaps, link: e.external_link,
+      subtitle: e.time ? (e.time_end ? e.time + '–' + e.time_end : e.time) + ' · ' + (e.place_name || '') : e.place_name,
+      note: e.notes, image: e.community_image, gmaps: e.place_gmaps, link: e.external_link,
     });
     highlightSidebarCardFor(e.id);
     return;
@@ -599,7 +606,7 @@ async function applyRoute(path) {
   panToCity(document.getElementById('city-select').value);
 }
 
-// Closing the venue/event overlay returns to whatever view was open before it — using real
+// Closing the place/event overlay returns to whatever view was open before it — using real
 // browser history when we have somewhere in-app to go back to, so back/forward stays coherent.
 function closeMapCardAndReturn() {
   closeMapCard();
@@ -610,13 +617,21 @@ function closeMapCardAndReturn() {
 // ── Init ──
 
 buildDateOptions();
-loadCities().then(() => {
+loadCities().then(async () => {
   initMap();
+  // Guarantees map pins + list are populated for the default city/day before
+  // route-specific logic runs — needed for a cold load straight onto /place/<slug> or
+  // /event/<id>, where that branch only refetches if the city differs from the default.
+  await onFilterChange();
   applyRoute(location.pathname);
 });
 
 window.addEventListener('resize', () => {
-  if (window.innerWidth>=768 && !map) { initMap(); }
+  if (window.innerWidth>=768 && !map) {
+    initMap();
+    const city = document.getElementById('city-select').value;
+    refreshMapPins(city, resolveDay(document.getElementById('date-select').value)).then(() => panToCity(city));
+  }
 });
 </script>
 </body>

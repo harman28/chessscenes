@@ -1,0 +1,1419 @@
+{
+  "communities": {
+    "Zwart op Wit": "https://i.imgur.com/8jibVQ6.jpeg",
+    "Schaakvereniging Amsterdam West": "https://i.imgur.com/inhlo0q.jpeg",
+    "Schaakvereniging Caissa": "https://i.imgur.com/S7Sk0IW.jpeg",
+    "Pegasus Amstelveen": "https://i.imgur.com/RHugkLY.jpeg",
+    "Schaakvereniging EsPion": "https://i.imgur.com/nlSMpwC.jpeg",
+    "De Queer Schaakclub": "https://i.imgur.com/G6UwvNd.jpeg",
+    "De Volewijckers": null,
+    "Max Euwe Centrum": "https://i.imgur.com/inTkxpx.jpeg",
+    "Chess & Beer": "https://i.imgur.com/RTWaMou.png",
+    "Vondelbunker Chess": "https://i.imgur.com/zgYqQLp.png",
+    "Amsterdam Spirit Chess Club": "https://i.imgur.com/qrvUv5i.png",
+    "Barblitz Amsterdam": "https://i.imgur.com/9NRex3f.jpeg",
+    "Cafe de Laurierboom": "https://i.imgur.com/9NRex3f.jpeg",
+    "Schaakcafe Utrecht": "https://i.imgur.com/wlhqWob.jpeg",
+    "Stichting En Passant": "https://i.imgur.com/fVrdQDp.jpeg",
+    "KopieKoffie": "https://i.imgur.com/pC1qmvK.jpeg"
+  },
+  "events": [
+    {
+      "place_slug": "2-klaveren",
+      "community": "Zwart op Wit",
+      "title": "Zwart op Wit Club Night",
+      "time": "20:00",
+      "time_end": null,
+      "format_tag": "Club night",
+      "external_link": "https://www.zwartopwit.org/",
+      "notes": null,
+      "days": [
+        "Monday"
+      ],
+      "specific_date": null,
+      "active": true
+    },
+    {
+      "place_slug": "gaaspstraat-8",
+      "community": "Schaakvereniging EsPion",
+      "title": "EsPion Club Night",
+      "time": "20:00",
+      "time_end": null,
+      "format_tag": "Club night",
+      "external_link": "https://www.espion.nl/",
+      "notes": null,
+      "days": [
+        "Monday"
+      ],
+      "specific_date": null,
+      "active": true
+    },
+    {
+      "place_slug": "huize-lydia",
+      "community": "Schaakvereniging Caissa",
+      "title": "Caissa Club Night",
+      "time": "20:00",
+      "time_end": null,
+      "format_tag": "Club night",
+      "external_link": "http://www.caissa-amsterdam.nl/",
+      "notes": null,
+      "days": [
+        "Tuesday"
+      ],
+      "specific_date": null,
+      "active": true
+    },
+    {
+      "place_slug": "la-plaza-groenelaan",
+      "community": "Pegasus Amstelveen",
+      "title": "Pegasus Club Night",
+      "time": "19:45",
+      "time_end": null,
+      "format_tag": "Club night",
+      "external_link": "https://www.pegasusamstelveen.nl",
+      "notes": null,
+      "days": [
+        "Tuesday"
+      ],
+      "specific_date": null,
+      "active": true
+    },
+    {
+      "place_slug": "speelzaal-klup",
+      "community": "De Queer Schaakclub",
+      "title": "De Queer Schaakclub",
+      "time": "20:00",
+      "time_end": null,
+      "format_tag": "Club night",
+      "external_link": "https://dequeerschaakclub.nl/",
+      "notes": null,
+      "days": [
+        "Wednesday"
+      ],
+      "specific_date": null,
+      "active": true
+    },
+    {
+      "place_slug": "het-zwanenmeer",
+      "community": "De Volewijckers",
+      "title": "De Volewijckers Club Night",
+      "time": "20:00",
+      "time_end": null,
+      "format_tag": "Club night",
+      "external_link": "https://www.schaakverenigingdevolewijckers.nl/",
+      "notes": null,
+      "days": [
+        "Wednesday"
+      ],
+      "specific_date": null,
+      "active": true
+    },
+    {
+      "place_slug": "bilderdijkpark",
+      "community": "Schaakvereniging Amsterdam West",
+      "title": "Amsterdam West Club Night",
+      "time": "20:00",
+      "time_end": null,
+      "format_tag": "Club night",
+      "external_link": "https://www.svamsterdamwest.nl/",
+      "notes": null,
+      "days": [
+        "Thursday"
+      ],
+      "specific_date": null,
+      "active": true
+    },
+    {
+      "place_slug": "max-euwe-centrum",
+      "community": "Max Euwe Centrum",
+      "title": "Max Euwe Centrum Open Hours",
+      "time": "10:00",
+      "time_end": "16:00",
+      "format_tag": "Open play",
+      "external_link": "https://maxeuwe.nl/",
+      "notes": "Open Tue–Sat",
+      "days": [
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday"
+      ],
+      "specific_date": null,
+      "active": true
+    },
+    {
+      "place_slug": "cafe-de-balie",
+      "community": "Chess & Beer",
+      "title": "Chess & Beer",
+      "time": "14:00",
+      "time_end": null,
+      "format_tag": "Casual",
+      "external_link": "https://www.meetup.com/amsterdam-chess-and-beer/",
+      "notes": "Every second Sunday",
+      "days": [
+        "Sunday"
+      ],
+      "specific_date": null,
+      "active": false
+    },
+    {
+      "place_slug": "vondelbunker",
+      "community": "Vondelbunker Chess",
+      "title": "Vondelbunker Chess",
+      "time": "14:00",
+      "time_end": null,
+      "format_tag": "Casual",
+      "external_link": "https://radar.squat.net/en/event/amsterdam/vondelbunker/2026-05-17/bunker-chess-club",
+      "notes": "Irregular — check link for dates",
+      "days": [
+        "Sunday"
+      ],
+      "specific_date": null,
+      "active": true
+    },
+    {
+      "place_slug": "klabu-clubhouse",
+      "community": "Amsterdam Spirit Chess Club",
+      "title": "Amsterdam Spirit Chess Club",
+      "time": "15:00",
+      "time_end": "18:00",
+      "format_tag": "Casual",
+      "external_link": "https://klabu.org/clubhouses/amsterdam",
+      "notes": null,
+      "days": [
+        "Sunday"
+      ],
+      "specific_date": null,
+      "active": true
+    },
+    {
+      "place_slug": "cafe-de-laurierboom",
+      "community": "Cafe de Laurierboom",
+      "title": "Cafe de Laurierboom",
+      "time": "15:00",
+      "time_end": null,
+      "format_tag": "Casual",
+      "external_link": "https://maps.app.goo.gl/PizEC9TRQ4kt8QyK6",
+      "notes": "Hours vary: Wed–Thu until 01:00, Fri–Sat until 03:00, Sun–Tue until 01:00",
+      "days": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday"
+      ],
+      "specific_date": null,
+      "active": true
+    },
+    {
+      "place_slug": "schaakcafe-utrecht",
+      "community": "Schaakcafe Utrecht",
+      "title": "Schaakcafe Utrecht",
+      "time": "13:30",
+      "time_end": "17:00",
+      "format_tag": "Casual",
+      "external_link": "https://www.schakeninutrecht.nl/schaakcafe/",
+      "notes": null,
+      "days": [
+        "Friday"
+      ],
+      "specific_date": null,
+      "active": true
+    },
+    {
+      "place_slug": "stichting-en-passant",
+      "community": "Stichting En Passant",
+      "title": "Stichting En Passant",
+      "time": "14:00",
+      "time_end": null,
+      "format_tag": "Club night",
+      "external_link": "https://www.stichtingenpassant.nl/",
+      "notes": "Chess on weekends.",
+      "days": [
+        "Friday",
+        "Saturday",
+        "Sunday"
+      ],
+      "specific_date": null,
+      "active": true
+    },
+    {
+      "place_slug": "kopiekoffie",
+      "community": "KopieKoffie",
+      "title": "KopieKoffie Chess",
+      "time": "15:30",
+      "time_end": null,
+      "format_tag": "Casual",
+      "external_link": "https://kopiekoffie.nl/blog/events/schaken-bij-kopiekoffie/",
+      "notes": null,
+      "days": [
+        "Sunday"
+      ],
+      "specific_date": null,
+      "active": true
+    },
+    {
+      "place_slug": "buurtcentrum-gentbrugge",
+      "community": null,
+      "title": "Buurtcentrum Gentbrugge",
+      "time": null,
+      "time_end": null,
+      "format_tag": null,
+      "external_link": null,
+      "notes": "Chess Sunday 10am to 1pm",
+      "days": [
+        "Sunday"
+      ],
+      "specific_date": null,
+      "active": true
+    },
+    {
+      "place_slug": "le-pantin",
+      "community": null,
+      "title": "Le Pantin",
+      "time": null,
+      "time_end": null,
+      "format_tag": null,
+      "external_link": null,
+      "notes": "Blitz tournament Tuesdays at 7pm.",
+      "days": [
+        "Tuesday"
+      ],
+      "specific_date": null,
+      "active": true
+    },
+    {
+      "place_slug": "toots-jazz-club",
+      "community": null,
+      "title": "Toots Jazz Club",
+      "time": null,
+      "time_end": null,
+      "format_tag": null,
+      "external_link": "https://www.toots.brussels/en/about#Schedule",
+      "notes": "Blitz event Tuesdays at 7.30pm. Get there early.",
+      "days": [
+        "Tuesday"
+      ],
+      "specific_date": null,
+      "active": true
+    },
+    {
+      "place_slug": "inverness-chess-club",
+      "community": null,
+      "title": "Inverness Chess Club",
+      "time": null,
+      "time_end": null,
+      "format_tag": null,
+      "external_link": "https://www.chess.com/club/inverness-chess-club",
+      "notes": "Meeting on Wednesdays throughout the year from approximately 7pm.",
+      "days": [
+        "Wednesday"
+      ],
+      "specific_date": null,
+      "active": true
+    },
+    {
+      "place_slug": "pub-chess-beer-emporium",
+      "community": null,
+      "title": "Pub Chess - Beer Emporium",
+      "time": null,
+      "time_end": null,
+      "format_tag": null,
+      "external_link": "https://bristolchess.co.uk/pub-chess/",
+      "notes": "Wednesday evenings, 7.30pm onwards in the basement of this cellar bar. Casual chess with a range of abilities (beginner-2200+ FIDE).",
+      "days": [
+        "Wednesday"
+      ],
+      "specific_date": null,
+      "active": true
+    },
+    {
+      "place_slug": "st-johns-square",
+      "community": null,
+      "title": "St John's Square",
+      "time": null,
+      "time_end": null,
+      "format_tag": null,
+      "external_link": "https://www.fourcorner.club/",
+      "notes": "Chess on Saturday at 12pm.",
+      "days": [
+        "Saturday"
+      ],
+      "specific_date": null,
+      "active": true
+    },
+    {
+      "place_slug": "granary-square",
+      "community": null,
+      "title": "Granary Square",
+      "time": null,
+      "time_end": null,
+      "format_tag": null,
+      "external_link": "https://www.fourcorner.club/",
+      "notes": "Chess on Wednesday at 6.30pm.",
+      "days": [
+        "Wednesday"
+      ],
+      "specific_date": null,
+      "active": true
+    },
+    {
+      "place_slug": "old-brewery",
+      "community": null,
+      "title": "Old Brewery",
+      "time": null,
+      "time_end": null,
+      "format_tag": null,
+      "external_link": null,
+      "notes": "Chess here on Sundays 12–5.",
+      "days": [
+        "Sunday"
+      ],
+      "specific_date": null,
+      "active": true
+    },
+    {
+      "place_slug": "knight-club-chess",
+      "community": null,
+      "title": "Knight Club Chess",
+      "time": null,
+      "time_end": null,
+      "format_tag": null,
+      "external_link": "https://www.instagram.com/knightclubchess/",
+      "notes": "Chess with food and music, Tuesdays from 6.30pm.",
+      "days": [
+        "Tuesday"
+      ],
+      "specific_date": null,
+      "active": true
+    },
+    {
+      "place_slug": "club-dechecs-luxembourg-1915",
+      "community": null,
+      "title": "Club d'Echecs Luxembourg 1915",
+      "time": null,
+      "time_end": null,
+      "format_tag": null,
+      "external_link": "https://www.1915.lu/",
+      "notes": "Chess on Tuesday and Friday at 8pm at Café chez Maria",
+      "days": [
+        "Tuesday",
+        "Friday"
+      ],
+      "specific_date": null,
+      "active": true
+    },
+    {
+      "place_slug": "satranc-2000",
+      "community": null,
+      "title": "Satranc 2000",
+      "time": null,
+      "time_end": null,
+      "format_tag": null,
+      "external_link": "https://satranc2000.de/",
+      "notes": "Chess on the 1st and 3rd Saturday of the month, 3pm at Naturfreundehaus.",
+      "days": [
+        "Saturday"
+      ],
+      "specific_date": null,
+      "active": true
+    },
+    {
+      "place_slug": "copenhagen-chess",
+      "community": null,
+      "title": "Copenhagen Chess",
+      "time": null,
+      "time_end": null,
+      "format_tag": null,
+      "external_link": "https://www.copenhagenchess.dk/chesssalon/",
+      "notes": "Casual chess on Wednesday and Saturday afternoons.",
+      "days": [
+        "Wednesday",
+        "Saturday"
+      ],
+      "specific_date": null,
+      "active": true
+    },
+    {
+      "place_slug": "svarta-hästen-stureplan",
+      "community": null,
+      "title": "Svarta Hästen Stureplan",
+      "time": null,
+      "time_end": null,
+      "format_tag": null,
+      "external_link": "https://svartahasten.se/stockholm/",
+      "notes": "Chess and wine bar.",
+      "days": [
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday"
+      ],
+      "specific_date": null,
+      "active": true
+    },
+    {
+      "place_slug": "svarta-hästen-göteborg",
+      "community": null,
+      "title": "Svarta Hästen Göteborg",
+      "time": null,
+      "time_end": null,
+      "format_tag": null,
+      "external_link": "https://svartahasten.se/stockholm/",
+      "notes": "Chess and wine bar.",
+      "days": [
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday"
+      ],
+      "specific_date": null,
+      "active": true
+    },
+    {
+      "place_slug": "helsinki-street-chess",
+      "community": null,
+      "title": "Helsinki Street Chess",
+      "time": null,
+      "time_end": null,
+      "format_tag": null,
+      "external_link": "https://www.helsinkistreetchess.fi/en/",
+      "notes": "Meetup at Street Bar Kallio. Tournament on Tuesdays at 8pm.",
+      "days": [
+        "Tuesday"
+      ],
+      "specific_date": null,
+      "active": true
+    },
+    {
+      "place_slug": "the-good-knight",
+      "community": null,
+      "title": "The Good Knight",
+      "time": null,
+      "time_end": null,
+      "format_tag": null,
+      "external_link": "https://goodknight.no/english/",
+      "notes": "Just a chess bar.",
+      "days": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday"
+      ],
+      "specific_date": null,
+      "active": true
+    },
+    {
+      "place_slug": "it-chess-club",
+      "community": null,
+      "title": "IT Chess Club",
+      "time": null,
+      "time_end": null,
+      "format_tag": null,
+      "external_link": null,
+      "notes": "Open every Thursday 6pm–10pm.",
+      "days": [
+        "Thursday"
+      ],
+      "specific_date": null,
+      "active": true
+    },
+    {
+      "place_slug": "magyar-sakkvilág",
+      "community": null,
+      "title": "Magyar Sakkvilág",
+      "time": null,
+      "time_end": null,
+      "format_tag": null,
+      "external_link": "https://www.sakkvilag.hu/",
+      "notes": null,
+      "days": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday"
+      ],
+      "specific_date": null,
+      "active": true
+    },
+    {
+      "place_slug": "chess-cafe-panellinion",
+      "community": null,
+      "title": "Chess Cafe Panellinion",
+      "time": null,
+      "time_end": null,
+      "format_tag": null,
+      "external_link": "https://www.facebook.com/kafeneionpanellinion",
+      "notes": null,
+      "days": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday"
+      ],
+      "specific_date": null,
+      "active": true
+    },
+    {
+      "place_slug": "strangerchess",
+      "community": null,
+      "title": "StrangerChess",
+      "time": null,
+      "time_end": null,
+      "format_tag": null,
+      "external_link": "https://www.strangerchess.com/",
+      "notes": "Chess every night at 7pm at Rosa-Luxemburg Straße 13.",
+      "days": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday"
+      ],
+      "specific_date": null,
+      "active": true
+    },
+    {
+      "place_slug": "sp-barrio-96",
+      "community": null,
+      "title": "SP Barrio 96",
+      "time": null,
+      "time_end": null,
+      "format_tag": null,
+      "external_link": "https://www.instagram.com/kulturladenstgeorg/",
+      "notes": "Open chess on Fridays at 6pm at St. George Cultural Shop.",
+      "days": [
+        "Friday"
+      ],
+      "specific_date": null,
+      "active": true
+    },
+    {
+      "place_slug": "chess-in-the-park",
+      "community": null,
+      "title": "Chess in the Park",
+      "time": null,
+      "time_end": null,
+      "format_tag": null,
+      "external_link": "https://spbarrio96.jimdofree.com/barrio-abteilungen/schach/",
+      "notes": "Weekends from 3pm, only in good weather.",
+      "days": [
+        "Saturday",
+        "Sunday"
+      ],
+      "specific_date": null,
+      "active": true
+    },
+    {
+      "place_slug": "gambit-cafebar",
+      "community": null,
+      "title": "Gambit Cafe&Bar",
+      "time": null,
+      "time_end": null,
+      "format_tag": null,
+      "external_link": "https://www.facebook.com/profile.php?id=100095139379673",
+      "notes": "Lots of chess events, casual chess on Wednesdays",
+      "days": [
+        "Wednesday"
+      ],
+      "specific_date": null,
+      "active": true
+    },
+    {
+      "place_slug": "barcelona-chess-meetup-summer",
+      "community": null,
+      "title": "Barcelona Chess Meetup - Summer",
+      "time": null,
+      "time_end": null,
+      "format_tag": null,
+      "external_link": "https://www.meetup.com/barcelona-chess-meetup/",
+      "notes": "Barcelona Chess Meetup meets here on the playground on Sundays in the Summer. Meet at the NorthWest gate at 5pm.",
+      "days": [
+        "Sunday"
+      ],
+      "specific_date": null,
+      "active": true
+    },
+    {
+      "place_slug": "barcelona-chess-meetup-winter",
+      "community": null,
+      "title": "Barcelona Chess Meetup - Winter",
+      "time": null,
+      "time_end": null,
+      "format_tag": null,
+      "external_link": "https://www.meetup.com/barcelona-chess-meetup/",
+      "notes": "Barcelona Chess Meetup meets at Mehman Khanna Halal on Sundays in the Winter.",
+      "days": [
+        "Sunday"
+      ],
+      "specific_date": null,
+      "active": true
+    },
+    {
+      "place_slug": "chessnbar",
+      "community": null,
+      "title": "Chess'nBar",
+      "time": null,
+      "time_end": null,
+      "format_tag": null,
+      "external_link": "https://linktr.ee/chessnbar",
+      "notes": "Chessboard-themed cocktail bar.",
+      "days": [
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday"
+      ],
+      "specific_date": null,
+      "active": true
+    },
+    {
+      "place_slug": "la-vieille-bourse",
+      "community": null,
+      "title": "La Vieille Bourse",
+      "time": null,
+      "time_end": null,
+      "format_tag": null,
+      "external_link": "https://thegoodlifefrance.com/the-book-market-lille-in-photos/",
+      "notes": "2 public boards set up by antique book sellers in a stunning Renaissance-era stock exchange building. Very popular, and the winner gets to keep playing.",
+      "days": [
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday"
+      ],
+      "specific_date": null,
+      "active": true
+    },
+    {
+      "place_slug": "blitz-society",
+      "community": null,
+      "title": "Blitz Society",
+      "time": null,
+      "time_end": null,
+      "format_tag": null,
+      "external_link": "https://www.blitzsociety.fr/",
+      "notes": "Chess bar in the heart of Paris. Weekdays 3:30pm-11:30pm. Saturday and Sunday 10am-11.30pm.",
+      "days": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday"
+      ],
+      "specific_date": null,
+      "active": true
+    },
+    {
+      "place_slug": "jardin-du-luxembourg",
+      "community": null,
+      "title": "Jardin du Luxembourg",
+      "time": null,
+      "time_end": null,
+      "format_tag": null,
+      "external_link": "https://matthewsadler.me.uk/news/chess-jardin-du-luxembourg/",
+      "notes": null,
+      "days": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday"
+      ],
+      "specific_date": null,
+      "active": true
+    },
+    {
+      "place_slug": "chess-museum",
+      "community": null,
+      "title": "Chess Museum",
+      "time": null,
+      "time_end": null,
+      "format_tag": null,
+      "external_link": "https://centralchessclub.ru/en/chess-museum/",
+      "notes": "Free museum housed with the Central Chess Club. 4000 artifacts, including the 1984 Karpov-Kasparov set. Open only 2-6pm on two weekdays.",
+      "days": [
+        "Tuesday",
+        "Thursday"
+      ],
+      "specific_date": null,
+      "active": true
+    },
+    {
+      "place_slug": "oktyabrskiy-shakhmatnyy-klub",
+      "community": null,
+      "title": "Oktyabr'skiy Shakhmatnyy Klub",
+      "time": null,
+      "time_end": null,
+      "format_tag": null,
+      "external_link": "https://www.octoberchess.narod.ru/",
+      "notes": "Old school club with multiple blitz tournaments a week. Weekdays 6pm, Weekends 12pm.",
+      "days": [
+        "Wednesday",
+        "Friday",
+        "Saturday",
+        "Sunday"
+      ],
+      "specific_date": null,
+      "active": true
+    },
+    {
+      "place_slug": "gökyay-foundation-chess-museum",
+      "community": null,
+      "title": "Gökyay Foundation Chess Museum",
+      "time": null,
+      "time_end": null,
+      "format_tag": null,
+      "external_link": "https://www.gokyaysatrancvakfi.org.tr/",
+      "notes": "World's largest chess set collection — 723 sets from 110 countries",
+      "days": [
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday"
+      ],
+      "specific_date": null,
+      "active": true
+    },
+    {
+      "place_slug": "taflfélag-reykjavíkur",
+      "community": null,
+      "title": "Taflfélag Reykjavíkur",
+      "time": null,
+      "time_end": null,
+      "format_tag": null,
+      "external_link": "https://taflfelag.is/",
+      "notes": "Rapid Tuesdays and Blitz Thursdays, walk-in before 7:30 PM. Entry 1000 ISK.",
+      "days": [
+        "Tuesday",
+        "Thursday"
+      ],
+      "specific_date": null,
+      "active": true
+    },
+    {
+      "place_slug": "phoenix-chessbase-india-chess-club",
+      "community": null,
+      "title": "Phoenix ChessBase India Chess Club",
+      "time": null,
+      "time_end": null,
+      "format_tag": null,
+      "external_link": "https://www.instagram.com/phoenixchessbaseindia/",
+      "notes": "Every Saturday 5-7pm in Atrium 5 of Phoenix Market City",
+      "days": [
+        "Saturday"
+      ],
+      "specific_date": null,
+      "active": true
+    },
+    {
+      "place_slug": "ambit-chess-club",
+      "community": null,
+      "title": "Ambit Chess Club",
+      "time": null,
+      "time_end": null,
+      "format_tag": null,
+      "external_link": "https://www.instagram.com/ambitchessclub/",
+      "notes": "First & Third Saturdays every month in the cafeteria of Ambit House",
+      "days": [
+        "Saturday"
+      ],
+      "specific_date": null,
+      "active": true
+    },
+    {
+      "place_slug": "espresso-defense-chess-club",
+      "community": null,
+      "title": "Espresso Defense Chess Club",
+      "time": null,
+      "time_end": null,
+      "format_tag": null,
+      "external_link": "https://www.instagram.com/espressodefense_chessclub/",
+      "notes": "Meet-ups every Sunday in Cut Copy Paste Cafe. Tournament every month.",
+      "days": [
+        "Sunday"
+      ],
+      "specific_date": null,
+      "active": true
+    },
+    {
+      "place_slug": "pune-chess-hangouts",
+      "community": null,
+      "title": "Pune Chess Hangouts",
+      "time": null,
+      "time_end": null,
+      "format_tag": null,
+      "external_link": "https://www.instagram.com/punechesshangouts/",
+      "notes": "Meet-ups (almost) every Saturday/Sunday in various locations in Pune.",
+      "days": [
+        "Saturday",
+        "Sunday"
+      ],
+      "specific_date": null,
+      "active": true
+    },
+    {
+      "place_slug": "marshall-chess-club",
+      "community": null,
+      "title": "Marshall Chess Club",
+      "time": null,
+      "time_end": null,
+      "format_tag": null,
+      "external_link": "https://www.marshallchessclub.org/",
+      "notes": "One of the oldest chess clubs in the US, founded by Frank Marshall. Rated tournaments almost daily. Open to non-members. Closed Tuesdays.",
+      "days": [
+        "Monday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday"
+      ],
+      "specific_date": null,
+      "active": true
+    },
+    {
+      "place_slug": "madison-avenue-pub",
+      "community": null,
+      "title": "Madison Avenue Pub",
+      "time": null,
+      "time_end": null,
+      "format_tag": null,
+      "external_link": "https://www.instagram.com/pubchesstoronto/",
+      "notes": "Chess nights on Wednesdays.",
+      "days": [
+        "Wednesday"
+      ],
+      "specific_date": null,
+      "active": true
+    },
+    {
+      "place_slug": "left-field-brewery",
+      "community": null,
+      "title": "Left Field Brewery",
+      "time": null,
+      "time_end": null,
+      "format_tag": null,
+      "external_link": "https://www.instagram.com/pubchesstoronto",
+      "notes": "Tuesdays at 8pm.",
+      "days": [
+        "Tuesday"
+      ],
+      "specific_date": null,
+      "active": true
+    },
+    {
+      "place_slug": "smiths-olde-bar-checkmate-monday",
+      "community": null,
+      "title": "Smith's Olde Bar — Checkmate Monday",
+      "time": null,
+      "time_end": null,
+      "format_tag": null,
+      "external_link": "https://www.atlantacheckmateclub.com/",
+      "notes": "Atlanta Checkmate Club hosts Checkmate Monday 7–11pm. Free tournament at 8pm. Casual play all night.",
+      "days": [
+        "Monday"
+      ],
+      "specific_date": null,
+      "active": true
+    },
+    {
+      "place_slug": "the-family-dog-chess-knight",
+      "community": null,
+      "title": "The Family Dog — Chess Knight",
+      "time": null,
+      "time_end": null,
+      "format_tag": null,
+      "external_link": "https://www.atlantacheckmateclub.com/",
+      "notes": "Atlanta Checkmate Club hosts Chess Knight at the Dog, Tuesdays 6–10pm. Free tournament at 8pm.",
+      "days": [
+        "Tuesday"
+      ],
+      "specific_date": null,
+      "active": true
+    },
+    {
+      "place_slug": "ladybird-grove-mess-hall-chess-knight",
+      "community": null,
+      "title": "Ladybird Grove & Mess Hall — Chess Knight",
+      "time": null,
+      "time_end": null,
+      "format_tag": null,
+      "external_link": "https://www.atlantacheckmateclub.com/",
+      "notes": "Atlanta Checkmate Club hosts Ladybird Chess Knight, Wednesdays 7–11pm. Free tournament at 9pm.",
+      "days": [
+        "Wednesday"
+      ],
+      "specific_date": null,
+      "active": true
+    },
+    {
+      "place_slug": "park-tavern-chess-knight-at-the-park",
+      "community": null,
+      "title": "Park Tavern — Chess Knight at the Park",
+      "time": null,
+      "time_end": null,
+      "format_tag": null,
+      "external_link": "https://www.atlantacheckmateclub.com/",
+      "notes": "Atlanta Checkmate Club hosts Chess Knight at the Park, Fridays 7–11pm. Free tournament at 9pm.",
+      "days": [
+        "Friday"
+      ],
+      "specific_date": null,
+      "active": true
+    },
+    {
+      "place_slug": "x3-sports-inman-park-chess-boxing",
+      "community": null,
+      "title": "X3 Sports Inman Park — Chess Boxing",
+      "time": null,
+      "time_end": null,
+      "format_tag": null,
+      "external_link": null,
+      "notes": "Atlanta Checkmate Club hosts a Chess Boxing class Mondays 5:30–6:30pm. First class free, $20 drop-in after. All levels welcome.",
+      "days": [
+        "Monday"
+      ],
+      "specific_date": null,
+      "active": true
+    },
+    {
+      "place_slug": "chess-pocket-park",
+      "community": null,
+      "title": "Chess Pocket Park",
+      "time": null,
+      "time_end": null,
+      "format_tag": null,
+      "external_link": null,
+      "notes": "Small public chess park with tournaments every Saturday from 8am. All levels welcome.",
+      "days": [
+        "Saturday"
+      ],
+      "specific_date": null,
+      "active": true
+    },
+    {
+      "place_slug": "chess-center-ueno",
+      "community": null,
+      "title": "Chess Center Ueno",
+      "time": null,
+      "time_end": null,
+      "format_tag": null,
+      "external_link": "https://i.imgur.com/fVyIPRk.png",
+      "notes": "International crowd, welcoming to all levels. Open Thursday 5–10pm, Saturday and Sunday noon–5pm.",
+      "days": [
+        "Thursday",
+        "Saturday",
+        "Sunday"
+      ],
+      "specific_date": null,
+      "active": true
+    },
+    {
+      "place_slug": "board-dublin-social-chess",
+      "community": null,
+      "title": "Board Dublin Social Chess",
+      "time": null,
+      "time_end": null,
+      "format_tag": null,
+      "external_link": "https://boarddublin.com/chess/",
+      "notes": "Chess get together held every Wednesday. \"There's only one rule, loser buys the next round.\" Show up on the day at 7pm and we'll pair you up with someone. You can guarantee yourself a slot by booking a table on the website.",
+      "days": [
+        "Wednesday"
+      ],
+      "specific_date": null,
+      "active": true
+    },
+    {
+      "place_slug": "casual-chess-corrigans",
+      "community": null,
+      "title": "Casual Chess @ Corrigans",
+      "time": null,
+      "time_end": null,
+      "format_tag": null,
+      "external_link": "https://www.meetup.com/casual-chess-corrigans/",
+      "notes": "We're a small group of people who like to enjoy casual games chatting, learning and having fun. Feel free to join us any Tuesday from 8pm at Corrigans pub in Rathmines. All levels welcome! If you see we're more than 6, please bring a board if you can.",
+      "days": [
+        "Tuesday"
+      ],
+      "specific_date": null,
+      "active": true
+    },
+    {
+      "place_slug": "chess-n-fun-in-dublin",
+      "community": null,
+      "title": "Chess n Fun in Dublin",
+      "time": null,
+      "time_end": null,
+      "format_tag": null,
+      "external_link": "https://www.meetup.com/chess-n-fun-in-dublin/",
+      "notes": "Chess meetup every second Sunday afternoon at 3.30pm. \"We're in the back by the stage. Just rock in and look for me. I'm typically in a blue chess hoodie.\"",
+      "days": [
+        "Sunday"
+      ],
+      "specific_date": null,
+      "active": true
+    },
+    {
+      "place_slug": "living-häus-brewery",
+      "community": null,
+      "title": "Living Häus Brewery",
+      "time": null,
+      "time_end": null,
+      "format_tag": null,
+      "external_link": "https://www.livinghausbeer.com/",
+      "notes": "Casual chess meetup every Tuesday from 5-9pm with 15 chess sets provided.",
+      "days": [
+        "Tuesday"
+      ],
+      "specific_date": null,
+      "active": true
+    },
+    {
+      "place_slug": "lazy-days-brewing",
+      "community": null,
+      "title": "Lazy Days Brewing",
+      "time": null,
+      "time_end": null,
+      "format_tag": null,
+      "external_link": "https://lazydaysbrewing.com/",
+      "notes": "Chess meetup every Thursday evening with 4 chess sets provided.",
+      "days": [
+        "Thursday"
+      ],
+      "specific_date": null,
+      "active": true
+    },
+    {
+      "place_slug": "denver-chess-club",
+      "community": null,
+      "title": "Denver Chess Club",
+      "time": null,
+      "time_end": null,
+      "format_tag": null,
+      "external_link": "https://denverchess.com/",
+      "notes": "Colorado's oldest and largest chess club. Hosts USCF-rated tournament games every Tuesday night with monthly classical tournaments.",
+      "days": [
+        "Tuesday"
+      ],
+      "specific_date": null,
+      "active": true
+    },
+    {
+      "place_slug": "monday-night-chess-at-comrade-brewing",
+      "community": null,
+      "title": "Monday Night Chess at Comrade Brewing",
+      "time": null,
+      "time_end": null,
+      "format_tag": null,
+      "external_link": "https://www.meetup.com/learn-to-play-chess/",
+      "notes": "Casual chess every other Monday night at Comrade Brewing Company in Southeast Denver. All skill levels welcome.",
+      "days": [
+        "Monday"
+      ],
+      "specific_date": null,
+      "active": true
+    },
+    {
+      "place_slug": "north-denver-chess",
+      "community": null,
+      "title": "North Denver Chess",
+      "time": null,
+      "time_end": null,
+      "format_tag": null,
+      "external_link": "https://www.meetup.com/learn-to-play-chess/",
+      "notes": "Weekly Monday night chess meetup at The Bardo Coffee House in North Denver. Strong player attendance with all skill levels welcome.",
+      "days": [
+        "Monday"
+      ],
+      "specific_date": null,
+      "active": true
+    },
+    {
+      "place_slug": "parker-chess-club",
+      "community": null,
+      "title": "Parker Chess Club",
+      "time": null,
+      "time_end": null,
+      "format_tag": null,
+      "external_link": "https://www.meetup.com/learn-to-play-chess/",
+      "notes": "Monday evening chess club at Parker Library. All ages and skill levels welcome. Boards and clocks provided.",
+      "days": [
+        "Monday"
+      ],
+      "specific_date": null,
+      "active": true
+    },
+    {
+      "place_slug": "oprahs-rook-club-at-woods-boss-brewing",
+      "community": null,
+      "title": "Oprah's Rook Club at Woods Boss Brewing",
+      "time": null,
+      "time_end": null,
+      "format_tag": null,
+      "external_link": "https://www.chess.com/club/oprahs-rook-club",
+      "notes": "Casual chess group meeting every Wednesday night at Woods Boss Brewing. Social, unrated games for all skill levels.",
+      "days": [
+        "Wednesday"
+      ],
+      "specific_date": null,
+      "active": true
+    },
+    {
+      "place_slug": "long-table-brewhouse",
+      "community": null,
+      "title": "Long Table Brewhouse",
+      "time": null,
+      "time_end": null,
+      "format_tag": null,
+      "external_link": "https://www.meetup.com/learn-to-play-chess/",
+      "notes": "Brewhouse in Park Hill where casual chess players gather. Informal games Wednesday and Friday afternoons.",
+      "days": [
+        "Wednesday",
+        "Friday"
+      ],
+      "specific_date": null,
+      "active": true
+    },
+    {
+      "place_slug": "gambit-café",
+      "community": null,
+      "title": "Gambit Café",
+      "time": null,
+      "time_end": null,
+      "format_tag": null,
+      "external_link": "https://gambitcafe.es/",
+      "notes": "First chess bar in Madrid, located in Malasaña. Games for €3 with no time limits, tournaments, simultaneous exhibitions, food and cocktails.",
+      "days": [
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday"
+      ],
+      "specific_date": null,
+      "active": true
+    },
+    {
+      "place_slug": "ajedrez-con-cabeza",
+      "community": null,
+      "title": "Ajedrez con Cabeza",
+      "time": null,
+      "time_end": null,
+      "format_tag": null,
+      "external_link": "https://ajedrezconcabeza.com/",
+      "notes": "Chess school and club in Chamberí offering classes and a space to play games, tournaments, and exhibitions.",
+      "days": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday"
+      ],
+      "specific_date": null,
+      "active": true
+    },
+    {
+      "place_slug": "la-didáctica",
+      "community": null,
+      "title": "La Didáctica",
+      "time": null,
+      "time_end": null,
+      "format_tag": null,
+      "external_link": "https://www.ladidactica.es/",
+      "notes": "Historic recreational club with an active chess section. Members meet Monday and Wednesday afternoons; Friday and Saturday tournaments. 5 teams in the league.",
+      "days": [
+        "Monday",
+        "Wednesday",
+        "Friday",
+        "Saturday"
+      ],
+      "specific_date": null,
+      "active": true
+    },
+    {
+      "place_slug": "calgary-chess-club",
+      "community": null,
+      "title": "Calgary Chess Club",
+      "time": null,
+      "time_end": null,
+      "format_tag": null,
+      "external_link": "https://calgarychess.com/",
+      "notes": "Premier club established 60+ years ago. Tuesday classical tournaments, Wednesday blitz, Thursday classes, Friday open house.",
+      "days": [
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday"
+      ],
+      "specific_date": null,
+      "active": true
+    },
+    {
+      "place_slug": "downtown-chess-night-at-social-beer-haus",
+      "community": null,
+      "title": "Downtown Chess Night at Social Beer Haus",
+      "time": null,
+      "time_end": null,
+      "format_tag": null,
+      "external_link": "https://www.downtownchess.com/",
+      "notes": "Biweekly chess meetups at a downtown bar. Casual drop-in play at 5:30 PM, every other Thursday.",
+      "days": [
+        "Thursday"
+      ],
+      "specific_date": null,
+      "active": true
+    },
+    {
+      "place_slug": "y-not-today-bingsu-board-game-cafe",
+      "community": null,
+      "title": "Y Not Today Bingsu & Board Game Cafe",
+      "time": null,
+      "time_end": null,
+      "format_tag": null,
+      "external_link": "https://ynottoday.ca/",
+      "notes": "Board game cafe hosting chess nights for all levels. Sets, clocks, and a Chinese Chess/Go set on hand.  minimum purchase. Friday and Sunday evenings.",
+      "days": [
+        "Friday",
+        "Sunday"
+      ],
+      "specific_date": null,
+      "active": true
+    },
+    {
+      "place_slug": "groninger-combinatie",
+      "community": null,
+      "title": "Groninger Combinatie",
+      "time": null,
+      "time_end": null,
+      "format_tag": null,
+      "external_link": "https://www.groningercombinatie.nl/",
+      "notes": "One of the largest chess clubs in town. Thursday evenings at Denksportcentrum Jannes van der Wal — classical games and blitz.",
+      "days": [
+        "Thursday"
+      ],
+      "specific_date": null,
+      "active": true
+    },
+    {
+      "place_slug": "proeflokaal-hooghoudt",
+      "community": null,
+      "title": "Proeflokaal Hooghoudt",
+      "time": null,
+      "time_end": null,
+      "format_tag": null,
+      "external_link": "https://www.facebook.com/ProefLokaalHooghoudt/",
+      "notes": "Authentic city-centre bar and the chess hub of Groningen. Home to student club JSV SISSA on Monday nights, and host of nightly chess during the annual Chess Festival Groningen each December.",
+      "days": [
+        "Monday"
+      ],
+      "specific_date": null,
+      "active": true
+    },
+    {
+      "place_slug": "schaakgezelschap-staunton",
+      "community": null,
+      "title": "Schaakgezelschap Staunton",
+      "time": null,
+      "time_end": null,
+      "format_tag": null,
+      "external_link": "https://sgstaunton.nl/",
+      "notes": "Founded in 1871 — the oldest sports association in Groningen. Monday evenings at De Helpen clubhouse.",
+      "days": [
+        "Monday"
+      ],
+      "specific_date": null,
+      "active": true
+    },
+    {
+      "place_slug": "café-la-tienda",
+      "community": null,
+      "title": "Café La Tienda",
+      "time": null,
+      "time_end": null,
+      "format_tag": null,
+      "external_link": "https://www.meetup.com/de-de/chess-for-fun/events/xxtlktyjckbhb/",
+      "notes": "Casual chess on Sunday afternoons",
+      "days": [
+        "Sunday"
+      ],
+      "specific_date": null,
+      "active": true
+    },
+    {
+      "place_slug": "babylon-chess-club",
+      "community": null,
+      "title": "Babylon Chess Club",
+      "time": null,
+      "time_end": null,
+      "format_tag": null,
+      "external_link": "https://www.instagram.com/babylon.chess.club/",
+      "notes": "Chess every Wednesday from 17:30. Tournament from 19:00.",
+      "days": [
+        "Wednesday"
+      ],
+      "specific_date": null,
+      "active": true
+    },
+    {
+      "place_slug": "gerra-chess-cafe",
+      "community": null,
+      "title": "Gerra Chess Cafe",
+      "time": null,
+      "time_end": null,
+      "format_tag": null,
+      "external_link": "https://www.instagram.com/gerrachesscafe/",
+      "notes": "Chess-specific café in Kadıköy with a quiet environment welcoming amateur and serious players. Features outdoor seating. Open weekdays 11:00–21:30, weekends 10:00–22:00; closed Tuesdays.",
+      "days": [
+        "Monday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday"
+      ],
+      "specific_date": null,
+      "active": true
+    },
+    {
+      "place_slug": "zienzchess",
+      "community": null,
+      "title": "Zienzchess",
+      "time": null,
+      "time_end": null,
+      "format_tag": null,
+      "external_link": "https://www.instagram.com/zienzchess",
+      "notes": "Weekly rapid chess events at Tosbağa Cafe in Kadıköy, held Mondays and Fridays.",
+      "days": [
+        "Monday",
+        "Friday"
+      ],
+      "specific_date": null,
+      "active": true
+    }
+  ]
+}

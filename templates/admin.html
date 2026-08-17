@@ -149,7 +149,7 @@
   <div class="tabs">
     <div class="tab active" onclick="switchTab('events')">Events</div>
     <div class="tab" onclick="switchTab('communities')">Communities</div>
-    <div class="tab" onclick="switchTab('venues')">Venues</div>
+    <div class="tab" onclick="switchTab('places')">Places</div>
   </div>
 
   <!-- Events -->
@@ -159,7 +159,7 @@
     </div>
     <div class="table-wrap">
       <table id="events-table">
-        <thead><tr><th>Title</th><th>Community</th><th>Venue</th><th>Day/Date</th><th>Time</th><th>Format</th><th>Status</th><th></th></tr></thead>
+        <thead><tr><th>Title</th><th>Community</th><th>Place</th><th>Day/Date</th><th>Time</th><th>Format</th><th>Status</th><th></th></tr></thead>
         <tbody></tbody>
       </table>
     </div>
@@ -178,13 +178,13 @@
     </div>
   </div>
 
-  <!-- Venues -->
-  <div class="tab-content" id="tab-venues">
+  <!-- Places -->
+  <div class="tab-content" id="tab-places">
     <div class="add-row" style="padding-top:0; padding-bottom:16px;">
-      <button class="btn btn-primary" onclick="openModal('venue')">+ New venue</button>
+      <button class="btn btn-primary" onclick="openModal('place')">+ New place</button>
     </div>
     <div class="table-wrap">
-      <table id="venues-table">
+      <table id="places-table">
         <thead><tr><th>Name</th><th>Address</th><th>City</th><th></th></tr></thead>
         <tbody></tbody>
       </table>
@@ -199,7 +199,7 @@
 
 <script>
 let token = localStorage.getItem('ct_token') || '';
-let communities = [], venues = [], events = [];
+let communities = [], places = [], events = [];
 let editing = {};
 
 // --- Auth ---
@@ -241,14 +241,14 @@ function showAdmin() {
 
 // --- Data ---
 async function loadAll() {
-  [communities, venues, events] = await Promise.all([
+  [communities, places, events] = await Promise.all([
     fetch('/api/admin/communities', {headers: authHeaders()}).then(r => r.json()),
-    fetch('/api/admin/venues', {headers: authHeaders()}).then(r => r.json()),
+    fetch('/api/admin/places', {headers: authHeaders()}).then(r => r.json()),
     fetch('/api/admin/events', {headers: authHeaders()}).then(r => r.json()),
   ]);
   renderEvents();
   renderCommunities();
-  renderVenues();
+  renderPlaces();
 }
 
 // --- Render ---
@@ -258,7 +258,7 @@ function renderEvents() {
     <tr class="${e.active ? '' : 'inactive'}">
       <td>${e.title}</td>
       <td>${e.community_name || '—'}</td>
-      <td>${e.venue_name || '—'}</td>
+      <td>${e.place_name || '—'}</td>
       <td>${(e.recurrence_days && e.recurrence_days.length ? e.recurrence_days.join(', ') : '') || e.specific_date || '—'}</td>
       <td>${e.time || '—'}</td>
       <td>${e.format_tag ? `<span class="badge">${e.format_tag}</span>` : '—'}</td>
@@ -283,23 +283,23 @@ function renderCommunities() {
     </tr>`).join('');
 }
 
-function renderVenues() {
-  const tbody = document.querySelector('#venues-table tbody');
-  tbody.innerHTML = venues.map(v => `
+function renderPlaces() {
+  const tbody = document.querySelector('#places-table tbody');
+  tbody.innerHTML = places.map(v => `
     <tr>
       <td>${v.name}</td>
       <td>${v.address || '—'}</td>
       <td>${v.city}</td>
       <td><div class="row-actions">
-        <button class="btn" onclick="openModal('venue', ${v.id})">Edit</button>
-        <button class="btn btn-danger" onclick="deleteRow('venue', ${v.id})">Delete</button>
+        <button class="btn" onclick="openModal('place', ${v.id})">Edit</button>
+        <button class="btn btn-danger" onclick="deleteRow('place', ${v.id})">Delete</button>
       </div></td>
     </tr>`).join('');
 }
 
 // --- Tabs ---
 function switchTab(name) {
-  document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', ['events','communities','venues'][i] === name));
+  document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', ['events','communities','places'][i] === name));
   document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
   document.getElementById('tab-' + name).classList.add('active');
 }
@@ -307,9 +307,9 @@ function switchTab(name) {
 // --- Modal ---
 function openModal(type, id) {
   editing = {type, id};
-  const item = id ? (type === 'event' ? events : type === 'community' ? communities : venues).find(x => x.id === id) : null;
+  const item = id ? (type === 'event' ? events : type === 'community' ? communities : places).find(x => x.id === id) : null;
   const modal = document.getElementById('modal-inner');
-  modal.innerHTML = type === 'event' ? eventForm(item) : type === 'community' ? communityForm(item) : venueForm(item);
+  modal.innerHTML = type === 'event' ? eventForm(item) : type === 'community' ? communityForm(item) : placeForm(item);
   document.getElementById('modal').style.display = 'flex';
 }
 
@@ -319,7 +319,7 @@ function closeModal() {
 
 function eventForm(e) {
   const communityOptions = communities.map(c => `<option value="${c.id}" ${e && e.community_id == c.id ? 'selected' : ''}>${c.name}</option>`).join('');
-  const venueOptions = venues.map(v => `<option value="${v.id}" ${e && e.venue_id == v.id ? 'selected' : ''}>${v.name} (${v.city})</option>`).join('');
+  const placeOptions = places.map(v => `<option value="${v.id}" ${e && e.place_id == v.id ? 'selected' : ''}>${v.name} (${v.city})</option>`).join('');
   const days = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
   const selDays = e && e.recurrence_days ? e.recurrence_days : [];
   const dayCheckboxes = days.map(d => `<label style="display:inline-flex;align-items:center;gap:5px;margin-right:10px;margin-bottom:6px;font-size:13px;text-transform:none;letter-spacing:0;color:var(--text)"><input type="checkbox" class="day-cb" value="${d}" ${selDays.includes(d) ? 'checked' : ''}>${d}</label>`).join('');
@@ -329,7 +329,7 @@ function eventForm(e) {
     <h2>${e ? 'Edit event' : 'New event'}</h2>
     <div class="field"><label>Title</label><input id="f-title" value="${e ? e.title : ''}"></div>
     <div class="field"><label>Community</label><select id="f-community"><option value="">— none —</option>${communityOptions}</select></div>
-    <div class="field"><label>Venue</label><select id="f-venue"><option value="">— none —</option>${venueOptions}</select></div>
+    <div class="field"><label>Place</label><select id="f-venue"><option value="">— none —</option>${placeOptions}</select></div>
     <div class="field"><label>Recurring days</label><div style="margin-top:4px;line-height:2">${dayCheckboxes}</div></div>
     <div class="field"><label>Specific date (if one-off)</label><input type="date" id="f-date" value="${e && e.specific_date ? e.specific_date : ''}"></div>
     <div class="field" style="display:flex;gap:12px"><div style="flex:1"><label>Start time</label><input id="f-time" placeholder="20:00" value="${e && e.time ? e.time : ''}"></div><div style="flex:1"><label>End time</label><input id="f-time-end" placeholder="22:00" value="${e && e.time_end ? e.time_end : ''}"></div></div>
@@ -354,9 +354,9 @@ function communityForm(c) {
     </div>`;
 }
 
-function venueForm(v) {
+function placeForm(v) {
   return `
-    <h2>${v ? 'Edit venue' : 'New venue'}</h2>
+    <h2>${v ? 'Edit place' : 'New place'}</h2>
     <div class="field"><label>Name</label><input id="f-name" value="${v ? v.name : ''}"></div>
     <div class="field"><label>Address</label><input id="f-address" value="${v && v.address ? v.address : ''}"></div>
     <div class="field"><label>City</label><input id="f-city" value="${v ? v.city : 'Amsterdam'}"></div>
@@ -364,7 +364,7 @@ function venueForm(v) {
     <div class="field" style="display:flex;gap:12px"><div style="flex:1"><label>Latitude</label><input id="f-lat" placeholder="52.3728" value="${v && v.lat ? v.lat : ''}"></div><div style="flex:1"><label>Longitude</label><input id="f-lng" placeholder="4.8936" value="${v && v.lng ? v.lng : ''}"></div></div>
     <div class="modal-actions">
       <button class="btn" onclick="closeModal()">Cancel</button>
-      <button class="btn btn-primary" onclick="saveVenue(${v ? v.id : 'null'})">Save</button>
+      <button class="btn btn-primary" onclick="savePlace(${v ? v.id : 'null'})">Save</button>
     </div>`;
 }
 
@@ -375,7 +375,7 @@ async function saveEvent(id) {
   const data = {
     title: val('f-title'),
     community_id: val('f-community') || null,
-    venue_id: val('f-venue') || null,
+    place_id: val('f-venue') || null,
     recurrence_days: Array.from(document.querySelectorAll('.day-cb:checked')).map(cb => cb.value),
     specific_date: val('f-date'),
     time: val('f-time'),
@@ -397,16 +397,16 @@ async function saveCommunity(id) {
   closeModal(); loadAll();
 }
 
-async function saveVenue(id) {
+async function savePlace(id) {
   const data = {name: val('f-name'), address: val('f-address'), city: val('f-city') || 'Amsterdam', gmaps: val('f-gmaps'), lat: val('f-lat') ? parseFloat(val('f-lat')) : null, lng: val('f-lng') ? parseFloat(val('f-lng')) : null};
-  const url = id ? `/api/admin/venues/${id}` : '/api/admin/venues';
+  const url = id ? `/api/admin/places/${id}` : '/api/admin/places';
   await fetch(url, {method: id ? 'PUT' : 'POST', headers: authHeaders(), body: JSON.stringify(data)});
   closeModal(); loadAll();
 }
 
 async function deleteRow(type, id) {
   if (!confirm('Delete this item?')) return;
-  await fetch(`/api/admin/${type === 'event' ? 'events' : type === 'community' ? 'communities' : 'venues'}/${id}`,
+  await fetch(`/api/admin/${type === 'event' ? 'events' : type === 'community' ? 'communities' : 'places'}/${id}`,
     {method: 'DELETE', headers: authHeaders()});
   loadAll();
 }

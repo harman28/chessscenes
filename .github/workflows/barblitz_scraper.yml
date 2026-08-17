@@ -1,0 +1,33 @@
+name: Barblitz Scraper
+
+on:
+  schedule:
+    - cron: '0 8 * * 1'   # Weekly, Monday 8am UTC
+  workflow_dispatch:        # Allow manual trigger from GitHub UI
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write       # Needed to push pending_events.json back
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install requests beautifulsoup4
+
+      - name: Run Barblitz scraper
+        run: python barblitz_scraper.py
+
+      - name: Commit results
+        run: |
+          git config user.name "Barblitz Scraper"
+          git config user.email "barblitz-scraper@chessscenes.com"
+          git add pending_events.json
+          git diff --staged --quiet || git commit -m "Barblitz scraper: candidates from $(date +%Y-%m-%d)"
+          git push

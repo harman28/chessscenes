@@ -1,7 +1,9 @@
-from flask import Flask, render_template, jsonify, request, g, abort, Response
+from flask import Flask, render_template, jsonify, request, g, abort, Response, redirect
 import sqlite3
 import os
 import re
+import csv
+import json
 import jwt
 import datetime
 import math
@@ -24,7 +26,10 @@ def slugify(text):
     text = re.sub(r'[^\w\s-]', '', text)
     text = re.sub(r'[\s_]+', '-', text)
     return re.sub(r'-+', '-', text).strip('-')
+
 DATABASE = 'chess.db'
+CSV_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'Chess Scenes (Public) - chess_scenes_venues.csv')
+EVENTS_JSON_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'chess_scenes_events.json')
 
 def get_db():
     db = getattr(g, '_database', None)
@@ -42,49 +47,45 @@ def close_connection(exception):
 def init_db():
     db = sqlite3.connect(DATABASE)
     db.executescript('''
+        CREATE TABLE IF NOT EXISTS places (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL,
+            slug TEXT UNIQUE NOT NULL,
+            labels TEXT,
+            address TEXT,
+            city TEXT NOT NULL,
+            lat REAL NOT NULL,
+            lng REAL NOT NULL,
+            gmaps TEXT,
+            link TEXT,
+            image TEXT,
+            note TEXT
+        );
+
         CREATE TABLE IF NOT EXISTS communities (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT NOT NULL,
-            image TEXT,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            image TEXT
         );
-        CREATE TABLE IF NOT EXISTS venues (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name TEXT NOT NULL,
-            address TEXT,
-            gmaps TEXT,
-            lat REAL,
-            lng REAL,
-            city TEXT NOT NULL DEFAULT 'Amsterdam',
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-        );
+
         CREATE TABLE IF NOT EXISTS events (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
+            place_id INTEGER REFERENCES places(id),
+            standalone_name TEXT,
+            standalone_address TEXT,
+            standalone_city TEXT,
+            standalone_lat REAL,
+            standalone_lng REAL,
+            standalone_gmaps TEXT,
             community_id INTEGER REFERENCES communities(id),
-            venue_id INTEGER REFERENCES venues(id),
             title TEXT NOT NULL,
-            specific_date DATE,
             time TEXT,
             time_end TEXT,
             format_tag TEXT,
             external_link TEXT,
             notes TEXT,
-            active INTEGER NOT NULL DEFAULT 1,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-        );
-        CREATE TABLE IF NOT EXISTS venue_directory (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name TEXT NOT NULL,
-            labels TEXT,
-            address TEXT,
-            city TEXT NOT NULL DEFAULT 'Amsterdam',
-            lat REAL,
-            lng REAL,
-            gmaps TEXT,
-            link TEXT,
-            image TEXT,
-            note TEXT,
-            days TEXT
+            specific_date DATE,
+            active INTEGER NOT NULL DEFAULT 1
         );
 
         CREATE TABLE IF NOT EXISTS event_recurrences (
@@ -94,156 +95,93 @@ def init_db():
         );
     ''')
     db.commit()
-    # Migrations
-    try:
-        db.execute('ALTER TABLE venue_directory ADD COLUMN days TEXT')
-        db.commit()
-    except Exception:
-        pass
-    try:
-        db.execute('ALTER TABLE venue_directory ADD COLUMN slug TEXT')
-        db.commit()
-    except Exception:
-        pass
     db.close()
 
-def seed_directory():
-    import csv as csv_module
+def seed_places():
+    """places is durably sourced from the committed CSV — wipe and reseed on every
+    startup, same convention chessscenes has always used for its directory data."""
     db = sqlite3.connect(DATABASE)
     db.row_factory = sqlite3.Row
-    db.execute('DELETE FROM venue_directory')
+    db.execute('DELETE FROM places')
     db.commit()
 
-    csv_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'Chess Scenes (Public) - chess_scenes_venues.csv')
-    if not os.path.exists(csv_path):
+    if not os.path.exists(CSV_PATH):
         db.close()
         return
 
     seen_slugs = set()
-    with open(csv_path, newline='', encoding='utf-8') as f:
-        reader = csv_module.DictReader(f)
+    with open(CSV_PATH, newline='', encoding='utf-8') as f:
+        reader = csv.DictReader(f)
         for row in reader:
-            name   = row['name'].strip()
-            labels = row['labels'].strip() or None
-            city   = row['city'].strip()
-            note   = row['note'].strip() or None
-            gmaps  = row['gmap'].strip() or None
-            link   = row['link'].strip() or None
-            image  = row['image'].strip() or None
-            days   = row['days'].strip() or None
-            lat, lng = None, None
-            coords = row['coordinates'].strip()
-            if coords:
-                parts = coords.split(',')
-                if len(parts) == 2:
-                    try:
-                        lat = float(parts[0].strip())
-                        lng = float(parts[1].strip())
-                    except ValueError:
-                        pass
-            base = slugify(name)
-            slug = base
+            name = row['name'].strip()
+            slug = row['slug'].strip()
+            if not slug:
+                raise ValueError(f'Place {name!r} has no slug in the CSV')
             if slug in seen_slugs:
-                slug = base + '-' + slugify(city)
-            counter = 2
-            while slug in seen_slugs:
-                slug = base + '-' + str(counter)
-                counter += 1
+                raise ValueError(f'Duplicate place slug {slug!r} in the CSV')
             seen_slugs.add(slug)
+
+            coords = row['coordinates'].strip()
+            if not coords or ',' not in coords:
+                raise ValueError(f'Place {name!r} has no coordinates — places require lat/lng')
+            lat_str, lng_str = [p.strip() for p in coords.split(',', 1)]
+
             db.execute(
-                'INSERT INTO venue_directory (name, labels, address, city, lat, lng, gmaps, link, image, note, days, slug) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-                (name, labels, None, city, lat, lng, gmaps, link, image, note, days, slug)
+                '''INSERT INTO places (name, slug, labels, address, city, lat, lng, gmaps, link, image, note)
+                   VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''',
+                (name, slug, row['labels'].strip() or None, None, row['city'].strip(),
+                 float(lat_str), float(lng_str), row['gmap'].strip() or None,
+                 row['link'].strip() or None, row['image'].strip() or None, row['note'].strip() or None)
             )
 
     db.commit()
     db.close()
 
-def seed_db():
+def seed_communities_and_events():
+    """communities/events/event_recurrences are durably sourced from the committed
+    chess_scenes_events.json — wipe and reseed on every startup, same as seed_places()."""
     db = sqlite3.connect(DATABASE)
     db.row_factory = sqlite3.Row
-    # Clear all seeded data to force clean reseed
     db.execute('DELETE FROM event_recurrences')
     db.execute('DELETE FROM events')
-    db.execute('DELETE FROM venues')
     db.execute('DELETE FROM communities')
-    db.execute("DELETE FROM sqlite_sequence WHERE name IN ('communities','venues','events','event_recurrences')")
     db.commit()
 
-    communities = [
-        ('Zwart op Wit',                  'https://i.imgur.com/8jibVQ6.jpeg'),
-        ('Schaakvereniging Amsterdam West','https://i.imgur.com/inhlo0q.jpeg'),
-        ('Schaakvereniging Caissa',        'https://i.imgur.com/S7Sk0IW.jpeg'),
-        ('Pegasus Amstelveen',             'https://i.imgur.com/RHugkLY.jpeg'),
-        ('Schaakvereniging EsPion',        'https://i.imgur.com/nlSMpwC.jpeg'),
-        ('De Queer Schaakclub',            'https://i.imgur.com/G6UwvNd.jpeg'),
-        ('De Volewijckers',                None),
-        ('Max Euwe Centrum',               'https://i.imgur.com/inTkxpx.jpeg'),
-        ('Chess & Beer',                   'https://i.imgur.com/RTWaMou.png'),
-        ('Vondelbunker Chess',             'https://i.imgur.com/zgYqQLp.png'),
-        ('Amsterdam Spirit Chess Club',    'https://i.imgur.com/qrvUv5i.png'),
-        ('Barblitz Amsterdam',             'https://i.imgur.com/9NRex3f.jpeg'),
-        ('Cafe de Laurierboom',            'https://i.imgur.com/9NRex3f.jpeg'),
-        ('Schaakcafe Utrecht',             'https://i.imgur.com/wlhqWob.jpeg'),
-        ('Stichting En Passant',           'https://i.imgur.com/fVrdQDp.jpeg'),
-        ('KopieKoffie',                    'https://i.imgur.com/pC1qmvK.jpeg'),
-    ]
-    for name, image in communities:
-        db.execute('INSERT INTO communities (name, image) VALUES (?, ?)', (name, image))
+    if not os.path.exists(EVENTS_JSON_PATH):
+        db.close()
+        return
 
-    venues = [
-        ('2 Klaveren',          'Rozengracht 2',              'https://maps.app.goo.gl/2iYpS9ALfHsJLAwYA', 52.3711, 4.8662, 'Amsterdam'),
-        ('Bilderdijkpark',      'Bilderdijkpark, Amsterdam',  'https://maps.app.goo.gl/HE7btnNk4Bit5ywy8', 52.3718, 4.8688, 'Amsterdam'),
-        ('Huize Lydia',         'Churchilllaan 223',          'https://maps.app.goo.gl/cnJ446iJsELTRz7XA', 52.3532, 4.8833, 'Amsterdam'),
-        ('La Plaza, Groenelaan','Groenelaan, Amstelveen',     'https://maps.app.goo.gl/3msMbTPckGVqGh9d9', 52.2926, 4.8745, 'Amsterdam'),
-        ('Gaaspstraat 8',       'Gaaspstraat 8, Amsterdam',   'https://maps.app.goo.gl/dZG9V7rcx1a9q3rLA', 52.3452, 4.9085, 'Amsterdam'),
-        ('Speelzaal KLUP',      'Speelzaal KLUP, Amsterdam',  'https://maps.app.goo.gl/4hLHEWU5ktfCiWCXA', 52.3544, 4.8545, 'Amsterdam'),
-        ('Het Zwanenmeer',      'Het Zwanenmeer, Amsterdam',  'https://maps.app.goo.gl/mqUyi83fLoGxKCwi8', 52.3956, 4.9499, 'Amsterdam'),
-        ('Max Euwe Centrum',    'Max Euweplein 30a',          'https://maps.app.goo.gl/5GeJKV1nBEopb1M29', 52.3628, 4.8828, 'Amsterdam'),
-        ('Cafe De Balie',       'Kleine-Gartmanplantsoen 10', 'https://maps.app.goo.gl/bkpboKbMJeadL65F6', 52.3632, 4.8830, 'Amsterdam'),
-        ('Vondelbunker',        'Vondelpark, Amsterdam',      'https://maps.app.goo.gl/zVaGJ4eQ19HZ6h6z8', 52.3609, 4.8776, 'Amsterdam'),
-        ('KLABU Clubhouse',     'Haarlemmerdijk 106',         'https://maps.app.goo.gl/Hwt9yytsy1LJbFCa8', 52.3831, 4.8865, 'Amsterdam'),
-        ('Cafe de Laurierboom', 'Laurierstraat 39',           'https://maps.app.goo.gl/PizEC9TRQ4kt8QyK6', 52.3723, 4.8809, 'Amsterdam'),
-        ('Schaakcafe Utrecht',  'Oudegracht 321, Utrecht',    'https://maps.app.goo.gl/j7A7ARS1a3TkKk6',   52.09976268371182, 5.103186467326744, 'Utrecht'),
-        ('Stichting En Passant','Den Haag',                   'https://maps.app.goo.gl/2A2fRFpQfjugkGRg9', 52.07432068089482, 4.311602878673388, 'The Hague'),
-        ('KopieKoffie',         'Oude Delft, Delft',          'https://maps.app.goo.gl/zz2rpLMpYdpqykU98', 52.00047872546669, 4.3460540624039785,'Delft'),
-    ]
-    for name, address, gmaps, lat, lng, city in venues:
-        db.execute('INSERT INTO venues (name, address, gmaps, lat, lng, city) VALUES (?, ?, ?, ?, ?, ?)', (name, address, gmaps, lat, lng, city))
+    data = json.loads(open(EVENTS_JSON_PATH, encoding='utf-8').read())
 
-    def cid(name):
-        return db.execute('SELECT id FROM communities WHERE name=?', (name,)).fetchone()[0]
+    community_ids = {}
+    for name, image in data.get('communities', {}).items():
+        cur = db.execute('INSERT INTO communities (name, image) VALUES (?, ?)', (name, image))
+        community_ids[name] = cur.lastrowid
+    db.commit()
 
-    def vid(name):
-        return db.execute('SELECT id FROM venues WHERE name=?', (name,)).fetchone()[0]
+    place_ids = {r['slug']: r['id'] for r in db.execute('SELECT id, slug FROM places').fetchall()}
 
-    ALL_DAYS = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']
+    for ev in data.get('events', []):
+        place_slug = ev.get('place_slug')
+        place_id = None
+        if place_slug:
+            place_id = place_ids.get(place_slug)
+            if place_id is None:
+                raise ValueError(f'Event {ev.get("title")!r} references unknown place slug {place_slug!r}')
+        community_id = community_ids.get(ev.get('community')) if ev.get('community') else None
 
-    events = [
-        # (community_name, venue_name, title, specific_date, time, time_end, format_tag, external_link, notes, days)
-        ('Zwart op Wit',                  '2 Klaveren',          'Zwart op Wit Club Night',       None, '20:00', None,    'Club night', 'https://www.zwartopwit.org/',                         None,                        ['Monday']),
-        ('Schaakvereniging EsPion',        'Gaaspstraat 8',       'EsPion Club Night',              None, '20:00', None,    'Club night', 'https://www.espion.nl/',                              None,                        ['Monday']),
-        ('Schaakvereniging Caissa',        'Huize Lydia',         'Caissa Club Night',              None, '20:00', None,    'Club night', 'http://www.caissa-amsterdam.nl/',                     None,                        ['Tuesday']),
-        ('Pegasus Amstelveen',             'La Plaza, Groenelaan','Pegasus Club Night',             None, '19:45', None,    'Club night', 'https://www.pegasusamstelveen.nl',                    None,                        ['Tuesday']),
-        ('De Queer Schaakclub',            'Speelzaal KLUP',      'De Queer Schaakclub',            None, '20:00', None,    'Club night', 'https://dequeerschaakclub.nl/',                       None,                        ['Wednesday']),
-        ('De Volewijckers',                'Het Zwanenmeer',      'De Volewijckers Club Night',     None, '20:00', None,    'Club night', 'https://www.schaakverenigingdevolewijckers.nl/',      None,                        ['Wednesday']),
-        ('Schaakvereniging Amsterdam West','Bilderdijkpark',      'Amsterdam West Club Night',      None, '20:00', None,    'Club night', 'https://www.svamsterdamwest.nl/',                     None,                        ['Thursday']),
-        ('Max Euwe Centrum',               'Max Euwe Centrum',    'Max Euwe Centrum Open Hours',    None, '10:00', '16:00', 'Open play',  'https://maxeuwe.nl/',                                'Open Tue–Sat',              ['Tuesday','Wednesday','Thursday','Friday','Saturday']),
-        ('Chess & Beer',                   'Cafe De Balie',       'Chess & Beer',                   None, '14:00', None,    'Casual',     'https://www.meetup.com/amsterdam-chess-and-beer/',   'Every second Sunday',       ['Sunday']),
-        ('Vondelbunker Chess',             'Vondelbunker',        'Vondelbunker Chess',             None, '14:00', None,    'Casual',     'https://radar.squat.net/en/event/amsterdam/vondelbunker/2026-05-17/bunker-chess-club', 'Irregular — check link', ['Sunday']),
-        ('Amsterdam Spirit Chess Club',    'KLABU Clubhouse',     'Amsterdam Spirit Chess Club',    None, '15:00', '18:00', 'Casual',     'https://klabu.org/clubhouses/amsterdam',              None,                        ['Sunday']),
-        ('Barblitz Amsterdam',             'Cafe de Laurierboom', 'Barblitz Amsterdam',             None,  None,   None,    'Blitz',      'https://barblitz.co',                                'Scraper needed — check barblitz.co for upcoming dates', []),
-        ('Cafe de Laurierboom',            'Cafe de Laurierboom', 'Cafe de Laurierboom',            None, '15:00', None,    'Casual',     'https://maps.app.goo.gl/PizEC9TRQ4kt8QyK6',          'Hours vary: Wed–Thu until 01:00, Fri–Sat until 03:00, Sun–Tue until 01:00', ALL_DAYS),
-        ('Schaakcafe Utrecht',             'Schaakcafe Utrecht',  'Schaakcafe Utrecht',             None, '13:30', '17:00', 'Casual',     'https://www.schakeninutrecht.nl/schaakcafe/',         None,                        ['Friday']),
-        ('Stichting En Passant',           'Stichting En Passant','Stichting En Passant',           None, '14:00', None,    'Club night', 'https://www.stichtingenpassant.nl/',                  'Chess on weekends.',        ['Friday','Saturday','Sunday']),
-        ('KopieKoffie',                    'KopieKoffie',         'KopieKoffie Chess',              None, '15:30', None,    'Casual',     'https://kopiekoffie.nl/blog/events/schaken-bij-kopiekoffie/', None,              ['Sunday']),
-    ]
-    for community_name, venue_name, title, specific_date, time, time_end, format_tag, external_link, notes, days in events:
         cur = db.execute('''INSERT INTO events
-            (community_id, venue_id, title, specific_date, time, time_end, format_tag, external_link, notes, active)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 1)''',
-            (cid(community_name), vid(venue_name), title, specific_date, time, time_end, format_tag, external_link, notes))
+            (place_id, standalone_name, standalone_address, standalone_city,
+             standalone_lat, standalone_lng, standalone_gmaps, community_id,
+             title, time, time_end, format_tag, external_link, notes, specific_date, active)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''',
+            (place_id, ev.get('standalone_name'), ev.get('standalone_address'), ev.get('standalone_city'),
+             ev.get('standalone_lat'), ev.get('standalone_lng'), ev.get('standalone_gmaps'), community_id,
+             ev['title'], ev.get('time'), ev.get('time_end'), ev.get('format_tag'),
+             ev.get('external_link'), ev.get('notes'), ev.get('specific_date'),
+             1 if ev.get('active', True) else 0))
         event_id = cur.lastrowid
-        for day in days:
+        for day in ev.get('days') or []:
             db.execute('INSERT INTO event_recurrences (event_id, day) VALUES (?, ?)', (event_id, day))
 
     db.commit()
@@ -280,85 +218,47 @@ def login():
 
 # --- Public API ---
 
+# COALESCE(place_id fields, standalone_* fields) so callers never need to know whether an
+# event is tied to a place or roaming (see Barblitz: place_id is null for the bars it uses
+# that aren't otherwise chess places, so no permanent pin gets created for them).
+EVENT_SELECT = '''
+    SELECT e.id, e.title, e.time, e.time_end, e.format_tag, e.external_link, e.notes,
+           e.specific_date, e.active,
+           c.name as community_name, c.image as community_image,
+           p.slug as place_slug,
+           COALESCE(p.name, e.standalone_name) as place_name,
+           COALESCE(p.address, e.standalone_address) as place_address,
+           COALESCE(p.city, e.standalone_city) as place_city,
+           COALESCE(p.lat, e.standalone_lat) as place_lat,
+           COALESCE(p.lng, e.standalone_lng) as place_lng,
+           COALESCE(p.gmaps, e.standalone_gmaps) as place_gmaps,
+           GROUP_CONCAT(r.day, ',') as recurrence_days
+    FROM events e
+    LEFT JOIN places p ON e.place_id = p.id
+    LEFT JOIN communities c ON e.community_id = c.id
+    LEFT JOIN event_recurrences r ON r.event_id = e.id
+'''
+
 def fetch_events(city=None, day=None, date=None):
     db = get_db()
-    base = '''
-        SELECT DISTINCT e.id, e.title, e.specific_date, e.time,
-               e.time_end, e.format_tag, e.external_link, e.notes,
-               c.name as community_name, c.image as community_image,
-               v.name as venue_name, v.address as venue_address, v.gmaps as venue_gmaps, v.lat as venue_lat, v.lng as venue_lng,
-               GROUP_CONCAT(r.day, ',') as recurrence_days
-        FROM events e
-        LEFT JOIN communities c ON e.community_id = c.id
-        LEFT JOIN venues v ON e.venue_id = v.id
-        LEFT JOIN event_recurrences r ON r.event_id = e.id
-        WHERE e.active = 1
-    '''
+    query = EVENT_SELECT + ' WHERE e.active = 1'
     params = []
     if city:
-        base += ' AND v.city = ?'
+        query += ' AND COALESCE(p.city, e.standalone_city) = ?'
         params.append(city)
     if day:
-        base += ''' AND (
+        query += ''' AND (
             e.id IN (SELECT event_id FROM event_recurrences WHERE day = ?)
             OR e.specific_date = ?
         )'''
         params += [day, date or '']
-    base += ' GROUP BY e.id ORDER BY e.time ASC'
-    rows = db.execute(base, params).fetchall()
+    query += ' GROUP BY e.id ORDER BY e.time ASC'
+    rows = db.execute(query, params).fetchall()
     result = []
     for r in rows:
         d = dict(r)
         d['recurrence_days'] = d['recurrence_days'].split(',') if d['recurrence_days'] else []
         result.append(d)
-
-    # Also surface venue_directory entries that have days set, as event-like rows.
-    # Offset id to avoid collision with events.id (autoincrement, unlikely to reach 1M).
-    # Excluded if the name matches either a scheduled venue OR a community/event title —
-    # a venue_directory row can duplicate an already-curated recurring meetup even when
-    # its own venue name differs from the meetup's, e.g. "Chess & Beer" (the community/
-    # event title) meets at "Cafe De Balie" (the venue name); matching only against venue
-    # names missed this and showed the same meetup twice, with and without real details.
-    vd_query = '''
-        SELECT id + 1000000 as id, name as title, NULL as specific_date, NULL as time,
-               NULL as time_end, NULL as format_tag, link as external_link, note as notes,
-               NULL as community_name, image as community_image,
-               name as venue_name, address as venue_address, gmaps as venue_gmaps,
-               lat as venue_lat, lng as venue_lng,
-               days as recurrence_days, slug as venue_slug
-        FROM venue_directory
-        WHERE days IS NOT NULL AND days != ''
-    '''
-    vd_params = []
-    if city:
-        vd_query += '''
-            AND city = ?
-            AND name NOT IN (
-                SELECT name FROM venues WHERE city = ?
-                UNION
-                SELECT c.name FROM events e
-                JOIN communities c ON e.community_id = c.id
-                LEFT JOIN venues v2 ON e.venue_id = v2.id
-                WHERE v2.city = ?
-            )
-        '''
-        vd_params += [city, city, city]
-    else:
-        vd_query += '''
-            AND name NOT IN (
-                SELECT name FROM venues
-                UNION
-                SELECT c.name FROM events e JOIN communities c ON e.community_id = c.id
-            )
-        '''
-    if day:
-        vd_query += ' AND days LIKE ?'
-        vd_params.append(f'%{day}%')
-    for r in db.execute(vd_query, vd_params).fetchall():
-        d = dict(r)
-        d['recurrence_days'] = [x.strip() for x in (d['recurrence_days'] or '').split(',') if x.strip()]
-        result.append(d)
-
     return result
 
 @app.route('/api/events')
@@ -367,11 +267,6 @@ def get_events():
     day = request.args.get('day')
     date = request.args.get('date')
     return jsonify(fetch_events(city, day, date))
-
-@app.route('/api/events/global')
-def get_global_events():
-    """All events worldwide with coords — used for map pins."""
-    return jsonify(fetch_events())
 
 @app.route('/api/events/all')
 def get_all_events():
@@ -384,11 +279,50 @@ def get_all_events():
             result[day] = events
     return jsonify(result)
 
+@app.route('/api/places')
+def get_places():
+    db = get_db()
+    city = request.args.get('city')
+    if city:
+        rows = db.execute('SELECT * FROM places WHERE city = ? ORDER BY name', (city,)).fetchall()
+    else:
+        rows = db.execute('SELECT * FROM places ORDER BY name').fetchall()
+    return jsonify([dict(r) for r in rows])
+
 @app.route('/api/cities')
 def get_cities():
     db = get_db()
-    rows = db.execute('SELECT DISTINCT city FROM venue_directory ORDER BY city').fetchall()
+    rows = db.execute('SELECT DISTINCT city FROM places ORDER BY city').fetchall()
     return jsonify([{'name': r['city'], 'slug': slugify(r['city'])} for r in rows])
+
+@app.route('/api/place/<slug>')
+def api_place(slug):
+    db = get_db()
+    row = db.execute('SELECT * FROM places WHERE slug=?', (slug,)).fetchone()
+    if not row:
+        return jsonify({'error': 'Not found'}), 404
+    v = dict(row)
+    # Aggregate this place's own recurring days across its active events, for card display
+    # (activityLine() in the frontend) — the same role venue_directory.days used to play.
+    days_rows = db.execute('''
+        SELECT DISTINCT r.day FROM event_recurrences r
+        JOIN events e ON e.id = r.event_id
+        WHERE e.place_id = ? AND e.active = 1
+    ''', (row['id'],)).fetchall()
+    order = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']
+    days = sorted({d['day'] for d in days_rows}, key=lambda d: order.index(d) if d in order else 99)
+    v['days'] = ', '.join(days) if days else None
+    return jsonify(v)
+
+@app.route('/api/event/<int:event_id>')
+def api_event(event_id):
+    db = get_db()
+    row = db.execute(EVENT_SELECT + ' WHERE e.id = ? GROUP BY e.id', (event_id,)).fetchone()
+    if not row:
+        return jsonify({'error': 'Not found'}), 404
+    d = dict(row)
+    d['recurrence_days'] = d['recurrence_days'].split(',') if d['recurrence_days'] else []
+    return jsonify(d)
 
 # --- Admin API ---
 
@@ -427,38 +361,52 @@ def delete_community(id):
     db.commit()
     return jsonify({'ok': True})
 
-@app.route('/api/admin/venues', methods=['GET'])
+@app.route('/api/admin/places', methods=['GET'])
 @token_required
-def admin_venues():
+def admin_places():
     db = get_db()
-    rows = db.execute('SELECT * FROM venues ORDER BY city, name').fetchall()
+    rows = db.execute('SELECT * FROM places ORDER BY city, name').fetchall()
     return jsonify([dict(r) for r in rows])
 
-@app.route('/api/admin/venues', methods=['POST'])
+def _unique_slug(db, name, city):
+    base = slugify(name)
+    slug = base
+    if db.execute('SELECT 1 FROM places WHERE slug=?', (slug,)).fetchone():
+        slug = base + '-' + slugify(city)
+    counter = 2
+    while db.execute('SELECT 1 FROM places WHERE slug=?', (slug,)).fetchone():
+        slug = base + '-' + str(counter)
+        counter += 1
+    return slug
+
+@app.route('/api/admin/places', methods=['POST'])
 @token_required
-def create_venue():
+def create_place():
     data = request.json
     db = get_db()
-    cur = db.execute('INSERT INTO venues (name, address, gmaps, lat, lng, city) VALUES (?, ?, ?, ?, ?, ?)',
-                     (data['name'], data.get('address'), data.get('gmaps'), data.get('lat'), data.get('lng'), data.get('city', 'Amsterdam')))
+    city = data.get('city', 'Amsterdam')
+    slug = _unique_slug(db, data['name'], city)
+    cur = db.execute(
+        'INSERT INTO places (name, slug, address, gmaps, lat, lng, city) VALUES (?, ?, ?, ?, ?, ?, ?)',
+        (data['name'], slug, data.get('address'), data.get('gmaps'), data.get('lat'), data.get('lng'), city))
     db.commit()
     return jsonify({'id': cur.lastrowid}), 201
 
-@app.route('/api/admin/venues/<int:id>', methods=['PUT'])
+@app.route('/api/admin/places/<int:id>', methods=['PUT'])
 @token_required
-def update_venue(id):
+def update_place(id):
     data = request.json
     db = get_db()
-    db.execute('UPDATE venues SET name=?, address=?, gmaps=?, lat=?, lng=?, city=? WHERE id=?',
+    db.execute('UPDATE places SET name=?, address=?, gmaps=?, lat=?, lng=?, city=? WHERE id=?',
                (data['name'], data.get('address'), data.get('gmaps'), data.get('lat'), data.get('lng'), data.get('city', 'Amsterdam'), id))
     db.commit()
     return jsonify({'ok': True})
 
-@app.route('/api/admin/venues/<int:id>', methods=['DELETE'])
+@app.route('/api/admin/places/<int:id>', methods=['DELETE'])
 @token_required
-def delete_venue(id):
+def delete_place(id):
     db = get_db()
-    db.execute('DELETE FROM venues WHERE id=?', (id,))
+    db.execute('DELETE FROM places WHERE id=?', (id,))
     db.commit()
     return jsonify({'ok': True})
 
@@ -466,16 +414,7 @@ def delete_venue(id):
 @token_required
 def admin_events():
     db = get_db()
-    rows = db.execute('''
-        SELECT e.*, c.name as community_name, v.name as venue_name,
-               GROUP_CONCAT(r.day, ',') as recurrence_days
-        FROM events e
-        LEFT JOIN communities c ON e.community_id = c.id
-        LEFT JOIN venues v ON e.venue_id = v.id
-        LEFT JOIN event_recurrences r ON r.event_id = e.id
-        GROUP BY e.id
-        ORDER BY e.time ASC
-    ''').fetchall()
+    rows = db.execute(EVENT_SELECT + ' GROUP BY e.id ORDER BY e.time ASC').fetchall()
     result = []
     for r in rows:
         d = dict(r)
@@ -489,9 +428,9 @@ def create_event():
     data = request.json
     db = get_db()
     cur = db.execute('''INSERT INTO events
-        (community_id, venue_id, title, specific_date, time, time_end, format_tag, external_link, notes, active)
+        (community_id, place_id, title, specific_date, time, time_end, format_tag, external_link, notes, active)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''',
-        (data.get('community_id'), data.get('venue_id'), data['title'],
+        (data.get('community_id'), data.get('place_id'), data['title'],
          data.get('specific_date'), data.get('time'), data.get('time_end'),
          data.get('format_tag'), data.get('external_link'), data.get('notes'),
          data.get('active', 1)))
@@ -507,10 +446,10 @@ def update_event(id):
     data = request.json
     db = get_db()
     db.execute('''UPDATE events SET
-        community_id=?, venue_id=?, title=?, specific_date=?,
+        community_id=?, place_id=?, title=?, specific_date=?,
         time=?, time_end=?, format_tag=?, external_link=?, notes=?, active=?
         WHERE id=?''',
-        (data.get('community_id'), data.get('venue_id'), data['title'],
+        (data.get('community_id'), data.get('place_id'), data['title'],
          data.get('specific_date'), data.get('time'), data.get('time_end'),
          data.get('format_tag'), data.get('external_link'), data.get('notes'),
          data.get('active', 1), id))
@@ -528,73 +467,6 @@ def delete_event(id):
     db.execute('DELETE FROM events WHERE id=?', (id,))
     db.commit()
     return jsonify({'ok': True})
-
-@app.route('/api/venue-directory')
-def venue_directory():
-    # A venue can legitimately exist in both venue_directory (the general CSV-sourced
-    # list) and venues (scheduled-event venues, admin-curated) — excluded here by name so
-    # it doesn't render as two separate map pins. Matching by name alone missed
-    # near-miss variants (e.g. "Vondelbunker Chess" vs "Vondelbunker" — same place, same
-    # gmaps link, different pin) — also matching on gmaps link catches that whole class of
-    # duplicate without needing exact name agreement.
-    city = request.args.get('city')
-    db = get_db()
-    if city:
-        rows = db.execute('''
-            SELECT vd.* FROM venue_directory vd
-            WHERE vd.city = ?
-            AND vd.lat IS NOT NULL AND vd.lng IS NOT NULL
-            AND vd.name NOT IN (SELECT name FROM venues WHERE city = ?)
-            AND (vd.gmaps IS NULL OR vd.gmaps = '' OR vd.gmaps NOT IN (
-                SELECT gmaps FROM venues WHERE city = ? AND gmaps IS NOT NULL AND gmaps != ''
-            ))
-            AND (vd.days IS NULL OR vd.days = '')
-        ''', (city, city, city)).fetchall()
-    else:
-        # All venues globally — used for map pins
-        rows = db.execute('''
-            SELECT vd.* FROM venue_directory vd
-            WHERE vd.lat IS NOT NULL AND vd.lng IS NOT NULL
-            AND vd.name NOT IN (SELECT name FROM venues)
-            AND (vd.gmaps IS NULL OR vd.gmaps = '' OR vd.gmaps NOT IN (
-                SELECT gmaps FROM venues WHERE gmaps IS NOT NULL AND gmaps != ''
-            ))
-            AND (vd.days IS NULL OR vd.days = '')
-        ''').fetchall()
-    return jsonify([dict(r) for r in rows])
-
-
-@app.route('/api/venue/<slug>')
-def api_venue(slug):
-    db = get_db()
-    row = db.execute('SELECT * FROM venue_directory WHERE slug=?', (slug,)).fetchone()
-    if not row:
-        return jsonify({'error': 'Not found'}), 404
-    v = dict(row)
-    v['event_id'] = v['id'] + 1000000
-    return jsonify(v)
-
-@app.route('/api/event/<int:event_id>')
-def api_event(event_id):
-    db = get_db()
-    row = db.execute('''
-        SELECT e.*, c.name as community_name, c.image as community_image,
-               v.name as venue_name, v.address as venue_address,
-               v.gmaps as venue_gmaps, v.lat as venue_lat, v.lng as venue_lng,
-               v.city as city,
-               GROUP_CONCAT(r.day, ',') as recurrence_days
-        FROM events e
-        LEFT JOIN communities c ON e.community_id = c.id
-        LEFT JOIN venues v ON e.venue_id = v.id
-        LEFT JOIN event_recurrences r ON r.event_id = e.id
-        WHERE e.id = ?
-        GROUP BY e.id
-    ''', (event_id,)).fetchone()
-    if not row:
-        return jsonify({'error': 'Not found'}), 404
-    d = dict(row)
-    d['recurrence_days'] = d['recurrence_days'].split(',') if d['recurrence_days'] else []
-    return jsonify(d)
 
 # --- Static pin-map images (used as og:image for city and homepage shares) ---
 
@@ -690,35 +562,19 @@ def render_pin_map(points, width=1200, height=630):
 
 
 def get_points(city=None):
-    """Every venue's coordinates for a city (or globally if city is None), deduped
-    across venue_directory and venues (a venue with scheduled events lives in both)."""
+    """Every place's coordinates for a city (or globally if city is None)."""
     db = get_db()
     if city:
-        rows_a = db.execute(
-            'SELECT lat, lng FROM venue_directory WHERE city = ? AND lat IS NOT NULL AND lng IS NOT NULL',
-            (city,)).fetchall()
-        rows_b = db.execute(
-            'SELECT lat, lng FROM venues WHERE city = ? AND lat IS NOT NULL AND lng IS NOT NULL',
-            (city,)).fetchall()
+        rows = db.execute(
+            'SELECT lat, lng FROM places WHERE city = ?', (city,)).fetchall()
     else:
-        rows_a = db.execute(
-            'SELECT lat, lng FROM venue_directory WHERE lat IS NOT NULL AND lng IS NOT NULL').fetchall()
-        rows_b = db.execute(
-            'SELECT lat, lng FROM venues WHERE lat IS NOT NULL AND lng IS NOT NULL').fetchall()
-    seen = set()
-    points = []
-    for r in list(rows_a) + list(rows_b):
-        key = (round(r['lat'], 5), round(r['lng'], 5))
-        if key in seen:
-            continue
-        seen.add(key)
-        points.append((r['lat'], r['lng']))
-    return points
+        rows = db.execute('SELECT lat, lng FROM places').fetchall()
+    return [(r['lat'], r['lng']) for r in rows]
 
 
 def find_city_by_slug(slug):
     db = get_db()
-    rows = db.execute('SELECT DISTINCT city FROM venue_directory').fetchall()
+    rows = db.execute('SELECT DISTINCT city FROM places').fetchall()
     for r in rows:
         if slugify(r['city']) == slug:
             return r['city']
@@ -783,47 +639,50 @@ def city_page(slug):
     )
 
 @app.route('/venue/<slug>')
-def venue_page(slug):
+def venue_redirect(slug):
+    return redirect(f'/place/{slug}', code=301)
+
+@app.route('/place/<slug>')
+def place_page(slug):
     db = get_db()
-    row = db.execute('SELECT * FROM venue_directory WHERE slug=?', (slug,)).fetchone()
+    row = db.execute('SELECT * FROM places WHERE slug=?', (slug,)).fetchone()
     if not row:
         abort(404)
     v = dict(row)
     name = v.get('name', '')
     city = v.get('city', '')
+    days_rows = db.execute('''
+        SELECT DISTINCT r.day FROM event_recurrences r
+        JOIN events e ON e.id = r.event_id
+        WHERE e.place_id = ? AND e.active = 1
+    ''', (row['id'],)).fetchall()
     desc_parts = [f"Chess venue in {city}"]
-    if v.get('days'):
-        desc_parts.append(f"Active on {v['days']}")
+    if days_rows:
+        order = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']
+        days = sorted({d['day'] for d in days_rows}, key=lambda d: order.index(d) if d in order else 99)
+        desc_parts.append(f"Active on {', '.join(days)}")
     if v.get('note'):
         desc_parts.append(v['note'])
     return render_template('index.html',
         og_title=f"{name} · Chess Scenes",
         og_description=" · ".join(desc_parts),
         og_image=v.get('image'),
-        og_url=f"/venue/{slug}",
+        og_url=f"/place/{slug}",
     )
 
 @app.route('/event/<int:event_id>')
 def event_page(event_id):
     db = get_db()
-    row = db.execute('''
-        SELECT e.*, c.name as community_name, c.image as community_image,
-               v.name as venue_name, v.city as city,
-               v.lat as venue_lat, v.lng as venue_lng
-        FROM events e
-        LEFT JOIN communities c ON e.community_id = c.id
-        LEFT JOIN venues v ON e.venue_id = v.id
-        WHERE e.id = ?
-    ''', (event_id,)).fetchone()
+    row = db.execute(EVENT_SELECT + ' WHERE e.id = ? GROUP BY e.id', (event_id,)).fetchone()
     if not row:
         abort(404)
     ev = dict(row)
-    city = ev.get('city', '')
+    city = ev.get('place_city', '')
     name = ev.get('title', '')
-    venue = ev.get('venue_name', '')
+    place = ev.get('place_name', '')
     desc_parts = [f"Chess in {city}"]
-    if venue:
-        desc_parts.append(f"at {venue}")
+    if place:
+        desc_parts.append(f"at {place}")
     if ev.get('notes'):
         desc_parts.append(ev['notes'])
     return render_template('index.html',
@@ -839,7 +698,7 @@ def admin():
 
 if __name__ == '__main__':
     init_db()
-    seed_db()
-    seed_directory()
+    seed_places()
+    seed_communities_and_events()
     port = int(os.environ.get('PORT', 5001))
     app.run(debug=False, host='0.0.0.0', port=port)
