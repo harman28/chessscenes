@@ -107,7 +107,7 @@ HARDCODED_EVENTS = [
     ("De Volewijckers", "Het Zwanenmeer", "De Volewijckers Club Night", "20:00", None, "Club night", "https://www.schaakverenigingdevolewijckers.nl/", None, ["Wednesday"], True),
     ("Schaakvereniging Amsterdam West", "Bilderdijkpark", "Amsterdam West Club Night", "20:00", None, "Club night", "https://www.svamsterdamwest.nl/", None, ["Thursday"], True),
     ("Max Euwe Centrum", "Max Euwe Centrum", "Max Euwe Centrum Open Hours", "10:00", "16:00", "Open play", "https://maxeuwe.nl/", "Open Tue–Sat", ["Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"], True),
-    ("Vondelbunker Chess", "Vondelbunker", "Vondelbunker Chess", "14:00", None, "Casual", "https://radar.squat.net/en/event/amsterdam/vondelbunker/2026-05-17/bunker-chess-club", "Irregular — check link for dates", ["Sunday"], True),
+    ("Vondelbunker Chess", "Vondelbunker", "Vondelbunker Chess", "14:00", None, "Casual", "https://radar.squat.net/en/event/amsterdam/vondelbunker/2026-05-17/bunker-chess-club", "Irregular — check link", ["Sunday"], True),
     ("Amsterdam Spirit Chess Club", "KLABU Clubhouse", "Amsterdam Spirit Chess Club", "15:00", "18:00", "Casual", "https://klabu.org/clubhouses/amsterdam", None, ["Sunday"], True),
     ("Cafe de Laurierboom", "Cafe de Laurierboom", "Cafe de Laurierboom", "15:00", None, "Casual", "https://maps.app.goo.gl/PizEC9TRQ4kt8QyK6", "Hours vary: Wed–Thu until 01:00, Fri–Sat until 03:00, Sun–Tue until 01:00", ALL_DAYS, True),
     ("Schaakcafe Utrecht", "Schaakcafe Utrecht", "Schaakcafe Utrecht", "13:30", "17:00", "Casual", "https://www.schakeninutrecht.nl/schaakcafe/", None, ["Friday"], True),
