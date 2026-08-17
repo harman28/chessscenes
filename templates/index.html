@@ -330,7 +330,10 @@ async function refreshMapPins(city, day) {
     const lat = parseFloat(e.place_lat), lng = parseFloat(e.place_lng);
     if (isNaN(lat) || isNaN(lng)) return;
     const marker = L.marker([lat, lng], {icon: activePinIcon(), zIndexOffset: 100}).addTo(map);
-    marker.on('click', () => navigate(e.place_slug ? '/place/' + e.place_slug : '/event/' + e.id));
+    // Always the event's own page, even when it's tied to a place — a red pin means
+    // "something's happening here today," and the event has the specific title/link/
+    // community photo for that, which the place's own generic info doesn't carry.
+    marker.on('click', () => navigate('/event/' + e.id));
     eventPinMarkers[key] = marker;
   });
 }
@@ -352,11 +355,15 @@ function activityLine(labels, days) {
   return null;
 }
 
-function showMapCard({title, subtitle, note, image, gmaps, link, days, eventId}) {
+function showMapCard({title, subtitle, note, image, gmaps, link, days, when, eventId}) {
   const imgHtml = image ? `<div class="card-image"><img src="${image}" alt="" onerror="this.parentElement.remove()"></div>` : '';
 
   const detailRows = [];
-  const activity = activityLine(subtitle, days);
+  // `when` is a pre-formatted line for an event (its own time/recurrence — subtitle here is
+  // "time · place name", not labels, so activityLine's place-oriented heuristic doesn't
+  // apply). Only fall back to activityLine(subtitle, days) for the place-info call, which
+  // doesn't pass `when`.
+  const activity = when !== undefined ? when : activityLine(subtitle, days);
   if (activity) detailRows.push(`<div class="detail-row"><span class="detail-label">When</span><span>${activity}</span></div>`);
   if (note) detailRows.push(`<div class="detail-note" style="margin-top:0;margin-bottom:6px">${note}</div>`);
   const links = [];
@@ -472,7 +479,9 @@ function renderCard(e) {
 
 function pathForEvent(e) {
   if (!e) return null;
-  return e.place_slug ? '/place/' + e.place_slug : '/event/' + e.id;
+  // Always the event's own page (title, external link, community photo) — /place/<slug>
+  // is for browsing a place itself (reached via a grey pin), not for what's on there today.
+  return '/event/' + e.id;
 }
 
 function onCardClick(el, eventId) {
@@ -498,18 +507,21 @@ function parseRoute(path) {
   return {view: 'home'};
 }
 
-let navDepth = 0; // how many in-app navigations deep we are, so "close" can safely go back
+// The last rendered base view (home or a city) — so closing a place/event overlay can jump
+// straight back to it directly, without replaying every pin/card clicked in between (browser
+// back/forward still walks that full history normally; this is only for the ✕ button).
+let lastBasePath = '/';
 
 function navigate(path, opts) {
   opts = opts || {};
   if (path !== location.pathname) {
     if (opts.replace) history.replaceState({}, '', path);
-    else { history.pushState({}, '', path); navDepth++; }
+    else history.pushState({}, '', path);
   }
   return applyRoute(path);
 }
 
-window.addEventListener('popstate', () => { navDepth = Math.max(0, navDepth - 1); applyRoute(location.pathname); });
+window.addEventListener('popstate', () => applyRoute(location.pathname));
 
 // Returns true if this actually changed the selected city (false if it was already
 // selected, or the name didn't match any option) — callers use this to avoid re-fetching
@@ -556,6 +568,7 @@ async function applyRoute(path) {
   const route = parseRoute(path);
 
   if (route.view === 'city') {
+    lastBasePath = '/city/' + route.slug;
     selectCityInUI(cityNameFromSlug(route.slug));
     applyDayFromQuery();
     await onFilterChange();
@@ -589,16 +602,20 @@ async function applyRoute(path) {
     const e = await res.json();
     if (selectCityInUI(e.place_city)) await onFilterChange();
     if (e.place_lat && e.place_lng) map && map.setView([parseFloat(e.place_lat), parseFloat(e.place_lng)], 15);
+    const tr = e.time_end ? e.time + '–' + e.time_end : e.time;
+    const recurDays = e.recurrence_days && e.recurrence_days.length ? ', every ' + e.recurrence_days.join(', ') : '';
     showMapCard({
       title: e.title,
-      subtitle: e.time ? (e.time_end ? e.time + '–' + e.time_end : e.time) + ' · ' + (e.place_name || '') : e.place_name,
+      subtitle: e.time ? tr + ' · ' + (e.place_name || '') : e.place_name,
       note: e.notes, image: e.community_image, gmaps: e.place_gmaps, link: e.external_link,
+      when: e.time ? tr + recurDays : null,
     });
     highlightSidebarCardFor(e.id);
     return;
   }
 
   // home
+  lastBasePath = '/';
   selectCityInUI(null); // leave whatever the default (first/alphabetical) selection is
   applyDayFromQuery();
   await onFilterChange();
@@ -606,12 +623,16 @@ async function applyRoute(path) {
   panToCity(document.getElementById('city-select').value);
 }
 
-// Closing the place/event overlay returns to whatever view was open before it — using real
-// browser history when we have somewhere in-app to go back to, so back/forward stays coherent.
+// Closing the place/event overlay returns directly to the last base view (home or a city) —
+// not through history.back(), which would replay every pin/card clicked in between one at a
+// time. Updates the URL without re-running applyRoute, so nothing re-fetches or re-pans; the
+// map is left exactly where it was.
 function closeMapCardAndReturn() {
   closeMapCard();
-  if (navDepth > 0) { history.back(); }
-  else { navigate('/'); }
+  const target = pathWithDay(lastBasePath, document.getElementById('date-select').value);
+  if (target !== location.pathname + location.search) {
+    history.pushState({}, '', target);
+  }
 }
 
 // ── Init ──

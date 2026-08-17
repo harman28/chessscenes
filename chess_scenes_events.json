@@ -143,7 +143,12 @@
       "active": true
     },
     {
-      "place_slug": "cafe-de-balie",
+      "place_slug": null,
+      "standalone_name": "Cafe De Balie",
+      "standalone_city": "Amsterdam",
+      "standalone_lat": 52.3632,
+      "standalone_lng": 4.883,
+      "standalone_gmaps": "https://maps.app.goo.gl/bkpboKbMJeadL65F6",
       "community": "Chess & Beer",
       "title": "Chess & Beer",
       "time": "14:00",

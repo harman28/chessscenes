@@ -63,10 +63,12 @@ NEW_PLACES = [
     ("Gaaspstraat 8", "chess club", "https://maps.app.goo.gl/dZG9V7rcx1a9q3rLA", 52.3452, 4.9085, "Amsterdam"),
     ("Speelzaal KLUP", "chess club", "https://maps.app.goo.gl/4hLHEWU5ktfCiWCXA", 52.3544, 4.8545, "Amsterdam"),
     ("Het Zwanenmeer", "chess club", "https://maps.app.goo.gl/mqUyi83fLoGxKCwi8", 52.3956, 4.9499, "Amsterdam"),
-    ("Cafe De Balie", "chess bar", "https://maps.app.goo.gl/bkpboKbMJeadL65F6", 52.3632, 4.8830, "Amsterdam"),
     ("Vondelbunker", "chess bar", "https://maps.app.goo.gl/zVaGJ4eQ19HZ6h6z8", 52.3609, 4.8776, "Amsterdam"),
     ("KLABU Clubhouse", "chess club", "https://maps.app.goo.gl/Hwt9yytsy1LJbFCa8", 52.3831, 4.8865, "Amsterdam"),
 ]
+# Cafe De Balie is deliberately NOT a place — it isn't a chess place in its own right, it
+# was only ever the venue for Chess & Beer (now inactive, see STANDALONE_EVENTS below). Same
+# principle as Barblitz's other bars: don't create a permanent pin for a one-off/ended use.
 
 COMMUNITIES = {
     "Zwart op Wit": "https://i.imgur.com/8jibVQ6.jpeg",
@@ -99,7 +101,6 @@ HARDCODED_EVENTS = [
     ("De Volewijckers", "Het Zwanenmeer", "De Volewijckers Club Night", "20:00", None, "Club night", "https://www.schaakverenigingdevolewijckers.nl/", None, ["Wednesday"], True),
     ("Schaakvereniging Amsterdam West", "Bilderdijkpark", "Amsterdam West Club Night", "20:00", None, "Club night", "https://www.svamsterdamwest.nl/", None, ["Thursday"], True),
     ("Max Euwe Centrum", "Max Euwe Centrum", "Max Euwe Centrum Open Hours", "10:00", "16:00", "Open play", "https://maxeuwe.nl/", "Open Tue–Sat", ["Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"], True),
-    ("Chess & Beer", "Cafe De Balie", "Chess & Beer", "14:00", None, "Casual", "https://www.meetup.com/amsterdam-chess-and-beer/", "Every second Sunday", ["Sunday"], False),
     ("Vondelbunker Chess", "Vondelbunker", "Vondelbunker Chess", "14:00", None, "Casual", "https://radar.squat.net/en/event/amsterdam/vondelbunker/2026-05-17/bunker-chess-club", "Irregular — check link for dates", ["Sunday"], True),
     ("Amsterdam Spirit Chess Club", "KLABU Clubhouse", "Amsterdam Spirit Chess Club", "15:00", "18:00", "Casual", "https://klabu.org/clubhouses/amsterdam", None, ["Sunday"], True),
     ("Cafe de Laurierboom", "Cafe de Laurierboom", "Cafe de Laurierboom", "15:00", None, "Casual", "https://maps.app.goo.gl/PizEC9TRQ4kt8QyK6", "Hours vary: Wed–Thu until 01:00, Fri–Sat until 03:00, Sun–Tue until 01:00", ALL_DAYS, True),
@@ -110,6 +111,16 @@ HARDCODED_EVENTS = [
 # Barblitz Amsterdam is intentionally absent here — no invented schedule.
 # It still needs a communities row (see COMMUNITIES above) so it exists once
 # barblitz_scraper.py starts adding real dated events.
+
+# Events with no place_id at all — the venue isn't (or is no longer) a chess place in its
+# own right, so it never gets a permanent pin. (community, title, standalone_name,
+# standalone_lat, standalone_lng, standalone_gmaps, standalone_city, time, time_end, fmt,
+# link, notes, days, active)
+STANDALONE_EVENTS = [
+    ("Chess & Beer", "Chess & Beer", "Cafe De Balie", 52.3632, 4.883,
+     "https://maps.app.goo.gl/bkpboKbMJeadL65F6", "Amsterdam", "14:00", None, "Casual",
+     "https://www.meetup.com/amsterdam-chess-and-beer/", "Every second Sunday", ["Sunday"], False),
+]
 
 
 def main():
@@ -176,6 +187,15 @@ def main():
             "specific_date": None, "active": active,
         })
         csv_days_used_names.add(place_name.lower())
+
+    for community, title, s_name, s_lat, s_lng, s_gmaps, s_city, time_, time_end, fmt, link, notes, days, active in STANDALONE_EVENTS:
+        events.append({
+            "place_slug": None, "standalone_name": s_name, "standalone_city": s_city,
+            "standalone_lat": s_lat, "standalone_lng": s_lng, "standalone_gmaps": s_gmaps,
+            "community": community, "title": title, "time": time_, "time_end": time_end,
+            "format_tag": fmt, "external_link": link, "notes": notes, "days": days,
+            "specific_date": None, "active": active,
+        })
 
     for row in old_rows:
         name = row["name"].strip()
