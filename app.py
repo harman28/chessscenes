@@ -225,7 +225,7 @@ EVENT_SELECT = '''
     SELECT e.id, e.title, e.time, e.time_end, e.format_tag, e.external_link, e.notes,
            e.specific_date, e.active,
            c.name as community_name, c.image as community_image,
-           p.slug as place_slug,
+           p.slug as place_slug, p.labels as place_labels,
            COALESCE(p.name, e.standalone_name) as place_name,
            COALESCE(p.address, e.standalone_address) as place_address,
            COALESCE(p.city, e.standalone_city) as place_city,

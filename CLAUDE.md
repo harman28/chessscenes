@@ -244,3 +244,14 @@ pins are every place in the selected city (`/api/places?city=`), red pins are wh
 those (or standalone events) have a matching event for the selected day
 (`/api/events?city=&day=`). This is what keeps the map and the scenes list from disagreeing:
 they're the same query, filtered the same way.
+
+**Pin color vs. pin glyph are two independent signals.** Color (red/grey,
+`pin-active`/`pin-inactive` CSS classes) is purely "does this have a matching event today,"
+unrelated to what kind of place it is. The glyph inside — a chess piece — is chosen by
+`pieceForLabels()` from the place's own `labels` (or `null` for a standalone/roaming event
+with no place, which falls back to a pawn): board → pawn, museum → bishop, memorial → king,
+shop → queen, club → rook, bar/meetup → knight. A place can have multiple labels (e.g. "chess
+memorial, chess board"); `PIECE_PRIORITY` picks one, ordered roughly rarest/most-literal
+first, so a square with actual physical chess tables shows as a board (pawn) even if it's
+also described as a memorial. If you add a new label to the vocabulary at the top of this
+file, add it to `PIECE_PRIORITY` too, or it'll silently fall back to a pawn.

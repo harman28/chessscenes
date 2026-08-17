@@ -278,18 +278,40 @@ function initMap() {
   tileLayer.addTo(map);
 }
 
-function activePinIcon() {
+// Pin color = whether something's on today (red = active event, grey = everything else,
+// unrelated to this). Pin glyph = what kind of place it is, independent of color. Priority
+// picks one piece for places with multiple labels (e.g. "chess memorial, chess board") —
+// ordered roughly rarest/most-literal first, so "you can point at an actual board here"
+// wins over a broader "memorial" framing of the same spot.
+const PIECE_PRIORITY = [
+  ['chess board',    '♟'],  // tables, giant outdoor boards
+  ['chess museum',   '♝'],
+  ['chess memorial',  '♚'],
+  ['chess shop',      '♛'],
+  ['chess club',      '♜'],
+  ['chess bar',       '♞'],
+  ['chess meetup',    '♞'],
+];
+function pieceForLabels(labels) {
+  const l = (labels || '').toLowerCase();
+  for (const [key, glyph] of PIECE_PRIORITY) {
+    if (l.includes(key)) return glyph;
+  }
+  return '♟'; // unlabeled / standalone roaming event — no specific place type to show
+}
+
+function activePinIcon(labels) {
   return L.divIcon({
     className: '',
-    html: `<div class="pin-active"><div class="pin-active-inner">♞</div></div>`,
+    html: `<div class="pin-active"><div class="pin-active-inner">${pieceForLabels(labels)}</div></div>`,
     iconSize: [30,30], iconAnchor: [10,30], popupAnchor: [5,-30],
   });
 }
 
-function inactivePinIcon() {
+function inactivePinIcon(labels) {
   return L.divIcon({
     className: '',
-    html: `<div class="pin-inactive"><div class="pin-inactive-inner">♟</div></div>`,
+    html: `<div class="pin-inactive"><div class="pin-inactive-inner">${pieceForLabels(labels)}</div></div>`,
     iconSize: [22,22], iconAnchor: [7,22], popupAnchor: [4,-22],
   });
 }
@@ -316,7 +338,7 @@ async function refreshMapPins(city, day) {
   clearMarkerLayer(eventPinMarkers);
 
   cityPlaces.forEach(p => {
-    const marker = L.marker([p.lat, p.lng], {icon: inactivePinIcon(), zIndexOffset: 0}).addTo(map);
+    const marker = L.marker([p.lat, p.lng], {icon: inactivePinIcon(p.labels), zIndexOffset: 0}).addTo(map);
     marker.on('click', () => navigate('/place/' + p.slug));
     placeMarkers[p.slug] = marker;
   });
@@ -329,7 +351,7 @@ async function refreshMapPins(city, day) {
     if (!e.place_lat || !e.place_lng) return;
     const lat = parseFloat(e.place_lat), lng = parseFloat(e.place_lng);
     if (isNaN(lat) || isNaN(lng)) return;
-    const marker = L.marker([lat, lng], {icon: activePinIcon(), zIndexOffset: 100}).addTo(map);
+    const marker = L.marker([lat, lng], {icon: activePinIcon(e.place_labels), zIndexOffset: 100}).addTo(map);
     // Always the event's own page, even when it's tied to a place — a red pin means
     // "something's happening here today," and the event has the specific title/link/
     // community photo for that, which the place's own generic info doesn't carry.
