@@ -11,7 +11,7 @@
     "Chess & Beer": "https://i.imgur.com/RTWaMou.png",
     "Vondelbunker Chess": "https://i.imgur.com/zgYqQLp.png",
     "Amsterdam Spirit Chess Club": "https://i.imgur.com/qrvUv5i.png",
-    "Barblitz Amsterdam": "https://i.imgur.com/9NRex3f.jpeg",
+    "BarBlitz": "https://i.imgur.com/9NRex3f.jpeg",
     "Cafe de Laurierboom": "https://i.imgur.com/9NRex3f.jpeg",
     "Schaakcafe Utrecht": "https://i.imgur.com/wlhqWob.jpeg",
     "Stichting En Passant": "https://i.imgur.com/fVrdQDp.jpeg",
@@ -1418,6 +1418,19 @@
         "Friday"
       ],
       "specific_date": null,
+      "active": true
+    },
+    {
+      "place_slug": "cafe-de-laurierboom",
+      "community": "BarBlitz",
+      "title": "Blitz Wednesday - De Laurierboom",
+      "time": "20:00",
+      "time_end": null,
+      "format_tag": "Blitz",
+      "external_link": "https://barblitz.co/tournament/475/",
+      "notes": null,
+      "days": null,
+      "specific_date": "2026-08-19",
       "active": true
     }
   ]
