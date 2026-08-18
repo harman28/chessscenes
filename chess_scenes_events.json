@@ -1489,6 +1489,25 @@
       "days": null,
       "specific_date": "2026-08-27",
       "active": true
+    },
+    {
+      "place_slug": null,
+      "standalone_name": "Screaming Beans Waterlooplein",
+      "standalone_address": null,
+      "standalone_city": "Amsterdam",
+      "standalone_lat": 52.36876630484616,
+      "standalone_lng": 4.902114481610876,
+      "standalone_gmaps": "https://www.google.com/maps?q=52.36876630484616,4.902114481610876",
+      "community": "BarBlitz",
+      "title": "Sunday Afternoon Blitz - Waterlooplein",
+      "time": "15:00",
+      "time_end": null,
+      "format_tag": "Blitz",
+      "external_link": "https://barblitz.co/tournament/477/",
+      "notes": null,
+      "days": null,
+      "specific_date": "2026-08-30",
+      "active": true
     }
   ]
 }
