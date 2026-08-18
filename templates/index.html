@@ -160,6 +160,23 @@
       font-size: 16px; color: var(--maroon-mid); cursor: pointer;
       background: none; border: none; line-height: 1; padding: 2px;
     }
+
+    /* Pin type filter — checkbox legend overlaid on the map, top-right (zoom control owns
+       top-left). Lets a visitor show/hide pins by place type; all types on by default. */
+    #pin-filter {
+      position: absolute; top: 12px; right: 12px; z-index: 999;
+      background: rgba(245,230,224,0.95);
+      border-radius: 10px; padding: 8px 10px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.2);
+      max-height: calc(100% - 24px); overflow-y: auto;
+    }
+    .pin-filter-row {
+      display: flex; align-items: center; gap: 7px;
+      padding: 3px 2px; font-size: 12.5px; color: var(--maroon-dark);
+      cursor: pointer; white-space: nowrap; user-select: none;
+    }
+    .pin-filter-row input { accent-color: var(--maroon); cursor: pointer; margin: 0; }
+    .pin-filter-glyph { display: inline-block; width: 15px; text-align: center; color: var(--maroon); }
   </style>
 </head>
 <body>
@@ -179,6 +196,8 @@
   </div>
 
   <div id="map-pane">
+    <!-- Pin type filter -->
+    <div id="pin-filter"></div>
     <!-- Map overlay card -->
     <div id="map-card">
       <button id="map-card-close" onclick="closeMapCardAndReturn()">✕</button>
@@ -276,6 +295,7 @@ function initMap() {
   map = L.map('map-pane', {zoomControl: true, scrollWheelZoom: true});
   const tileLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {maxZoom: 19});
   tileLayer.addTo(map);
+  buildPinFilterUI();
 }
 
 // Pin color = whether something's on today (red = active event, grey = everything else,
@@ -298,6 +318,52 @@ function pieceForLabels(labels) {
     if (l.includes(key)) return glyph;
   }
   return '♟'; // unlabeled / standalone roaming event — no specific place type to show
+}
+
+// Same priority match as pieceForLabels, but returns the label key itself (not the glyph)
+// so pins can be grouped/filtered by type even though "chess bar" and "chess meetup" render
+// the same knight glyph. 'other' catches unlabeled places and standalone roaming events.
+function categoryForLabels(labels) {
+  const l = (labels || '').toLowerCase();
+  for (const [key] of PIECE_PRIORITY) {
+    if (l.includes(key)) return key;
+  }
+  return 'other';
+}
+
+const FILTER_TYPES = [
+  ...PIECE_PRIORITY.map(([key, glyph]) => ({
+    key, glyph, label: key.slice('chess '.length).replace(/^./, c => c.toUpperCase()),
+  })),
+  {key: 'other', glyph: '♟', label: 'Other'},
+];
+const activeCategories = new Set(FILTER_TYPES.map(f => f.key)); // all shown by default
+
+function buildPinFilterUI() {
+  const el = document.getElementById('pin-filter');
+  el.innerHTML = FILTER_TYPES.map(f => `
+    <label class="pin-filter-row">
+      <input type="checkbox" checked onchange="toggleCategory('${f.key}', this.checked)">
+      <span class="pin-filter-glyph">${f.glyph}</span>${f.label}
+    </label>`).join('');
+}
+
+// Toggling a filter just shows/hides already-fetched markers (add/removeLayer) — no refetch,
+// since the pin data itself doesn't change, only which of it is visible.
+function toggleCategory(key, checked) {
+  if (checked) activeCategories.add(key); else activeCategories.delete(key);
+  applyPinFilter();
+}
+
+function applyPinFilter() {
+  [placeMarkers, eventPinMarkers].forEach(group => {
+    Object.values(group).forEach(m => {
+      const show = activeCategories.has(m._category);
+      const onMap = map.hasLayer(m);
+      if (show && !onMap) m.addTo(map);
+      else if (!show && onMap) map.removeLayer(m);
+    });
+  });
 }
 
 function activePinIcon(labels) {
@@ -338,7 +404,9 @@ async function refreshMapPins(city, day) {
   clearMarkerLayer(eventPinMarkers);
 
   cityPlaces.forEach(p => {
-    const marker = L.marker([p.lat, p.lng], {icon: inactivePinIcon(p.labels), zIndexOffset: 0}).addTo(map);
+    const marker = L.marker([p.lat, p.lng], {icon: inactivePinIcon(p.labels), zIndexOffset: 0});
+    marker._category = categoryForLabels(p.labels);
+    if (activeCategories.has(marker._category)) marker.addTo(map);
     marker.on('click', () => navigate('/place/' + p.slug));
     placeMarkers[p.slug] = marker;
   });
@@ -351,7 +419,9 @@ async function refreshMapPins(city, day) {
     if (!e.place_lat || !e.place_lng) return;
     const lat = parseFloat(e.place_lat), lng = parseFloat(e.place_lng);
     if (isNaN(lat) || isNaN(lng)) return;
-    const marker = L.marker([lat, lng], {icon: activePinIcon(e.place_labels), zIndexOffset: 100}).addTo(map);
+    const marker = L.marker([lat, lng], {icon: activePinIcon(e.place_labels), zIndexOffset: 100});
+    marker._category = categoryForLabels(e.place_labels);
+    if (activeCategories.has(marker._category)) marker.addTo(map);
     // Always the event's own page, even when it's tied to a place — a red pin means
     // "something's happening here today," and the event has the specific title/link/
     // community photo for that, which the place's own generic info doesn't carry.

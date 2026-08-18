@@ -15,7 +15,8 @@
     "Cafe de Laurierboom": "https://i.imgur.com/9NRex3f.jpeg",
     "Schaakcafe Utrecht": "https://i.imgur.com/wlhqWob.jpeg",
     "Stichting En Passant": "https://i.imgur.com/fVrdQDp.jpeg",
-    "KopieKoffie": "https://i.imgur.com/pC1qmvK.jpeg"
+    "KopieKoffie": "https://i.imgur.com/pC1qmvK.jpeg",
+    "VAS": "https://i.imgur.com/HgYGobW.png"
   },
   "events": [
     {
@@ -1416,6 +1417,21 @@
       "days": [
         "Monday",
         "Friday"
+      ],
+      "specific_date": null,
+      "active": true
+    },
+    {
+      "place_slug": "vas",
+      "community": "VAS",
+      "title": "VAS Club Night",
+      "time": "20:00",
+      "time_end": null,
+      "format_tag": "Club night",
+      "external_link": "https://www.vas1822.nl/",
+      "notes": null,
+      "days": [
+        "Thursday"
       ],
       "specific_date": null,
       "active": true
