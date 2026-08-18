@@ -88,7 +88,7 @@ COMMUNITIES = {
     "Chess & Beer": "https://i.imgur.com/RTWaMou.png",
     "Vondelbunker Chess": "https://i.imgur.com/zgYqQLp.png",
     "Amsterdam Spirit Chess Club": "https://i.imgur.com/qrvUv5i.png",
-    "BarBlitz": "https://i.imgur.com/9NRex3f.jpeg",
+    "BarBlitz": "https://barblitz.co/static/chess/images/new_logo.4c6a6f89e4c5.png",
     "Cafe de Laurierboom": "https://i.imgur.com/9NRex3f.jpeg",
     "Schaakcafe Utrecht": "https://i.imgur.com/wlhqWob.jpeg",
     "Stichting En Passant": "https://i.imgur.com/fVrdQDp.jpeg",

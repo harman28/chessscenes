@@ -273,6 +273,15 @@ def get_all_events():
     city = request.args.get('city', 'Amsterdam')
     days_order = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']
     result = {}
+    # One-off (specific_date) events don't fit the weekday-template grouping below — that
+    # loop calls fetch_events(city, day) with no date, so its internal
+    # `e.specific_date = ?` check always compares against '' and never matches a real
+    # date, no matter which weekday the event happens to fall on. Surfaced as its own
+    # chronological bucket instead, so it isn't just invisible under "any day".
+    one_off = [e for e in fetch_events(city) if e['specific_date']]
+    if one_off:
+        one_off.sort(key=lambda e: e['specific_date'])
+        result['Upcoming'] = one_off
     for day in days_order:
         events = fetch_events(city, day)
         if events:

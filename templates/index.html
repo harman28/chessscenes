@@ -190,6 +190,14 @@
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
 const DAYS = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+// A one-off (specific_date) event has no recurrence to describe it by — without this,
+// a card only shows a bare time ("19:00"), which is ambiguous once several different
+// dates are mixed together under the "Upcoming" bucket in the any-day view.
+function formatSpecificDate(iso) {
+  const d = new Date(iso + 'T00:00:00');
+  return `${DAYS[d.getDay()].slice(0,3)} ${d.getDate()} ${MONTHS[d.getMonth()]}`;
+}
 let map = null;
 let placeMarkers = {};     // place slug -> marker (grey layer, every place in the current city)
 let eventPinMarkers = {};  // place slug (or "event-<id>" if standalone) -> marker (red overlay)
@@ -490,15 +498,17 @@ function renderList(events, container) {
 
 function renderCard(e) {
   const imgHtml = e.community_image ? `<div class="card-image"><img src="${e.community_image}" alt="" onerror="this.parentElement.remove()"></div>` : '';
+  const dateStr = e.specific_date ? formatSpecificDate(e.specific_date) : null;
   const timeStr = e.time ? (e.time_end ? e.time+'–'+e.time_end : e.time) : null;
-  const meta = [timeStr, e.place_name].filter(Boolean).join(' · ');
+  const meta = [dateStr, timeStr, e.place_name].filter(Boolean).join(' · ');
   const tag = e.format_tag ? `<span class="card-tag">${e.format_tag}</span>` : '';
   const rows = [];
   if (e.place_name) rows.push(`<div class="detail-row"><span class="detail-label">Where</span><span>${e.place_name}${e.place_address?', '+e.place_address:''}</span></div>`);
   if (e.time) {
     const tr = e.time_end ? e.time+'–'+e.time_end : e.time;
     const days = e.recurrence_days&&e.recurrence_days.length ? ', every '+e.recurrence_days.join(', ') : '';
-    rows.push(`<div class="detail-row"><span class="detail-label">When</span><span>${tr}${days}</span></div>`);
+    const datePrefix = dateStr ? dateStr + ', ' : '';
+    rows.push(`<div class="detail-row"><span class="detail-label">When</span><span>${datePrefix}${tr}${days}</span></div>`);
   }
   if (e.notes) rows.push(`<div class="detail-note">${e.notes}</div>`);
   const links = [];
@@ -639,11 +649,13 @@ async function applyRoute(path) {
     if (e.place_lat && e.place_lng) map && map.setView([parseFloat(e.place_lat), parseFloat(e.place_lng)], 15);
     const tr = e.time_end ? e.time + '–' + e.time_end : e.time;
     const recurDays = e.recurrence_days && e.recurrence_days.length ? ', every ' + e.recurrence_days.join(', ') : '';
+    const dateStr = e.specific_date ? formatSpecificDate(e.specific_date) : null;
+    const datePrefix = dateStr ? dateStr + ', ' : '';
     showMapCard({
       title: e.title,
-      subtitle: e.time ? tr + ' · ' + (e.place_name || '') : e.place_name,
+      subtitle: e.time ? datePrefix + tr + ' · ' + (e.place_name || '') : e.place_name,
       note: e.notes, image: e.community_image, gmaps: e.place_gmaps, link: e.external_link,
-      when: e.time ? tr + recurDays : null,
+      when: e.time ? datePrefix + tr + recurDays : null,
     });
     highlightSidebarCardFor(e.id);
     return;
