@@ -1432,6 +1432,25 @@
       "days": null,
       "specific_date": "2026-08-19",
       "active": true
+    },
+    {
+      "place_slug": null,
+      "standalone_name": "Café 't Praethuys",
+      "standalone_address": "Vrouwenkerkkoorstraat 9, 2312 WP Leiden",
+      "standalone_city": "Leiden",
+      "standalone_lat": 52.161011526652906,
+      "standalone_lng": 4.489785520852838,
+      "standalone_gmaps": "https://www.google.com/maps?q=52.161011526652906,4.489785520852838",
+      "community": "BarBlitz",
+      "title": "BarBlitz Praethuys",
+      "time": "20:00",
+      "time_end": null,
+      "format_tag": "Blitz",
+      "external_link": "https://barblitz.co/tournament/494/",
+      "notes": null,
+      "days": null,
+      "specific_date": "2026-08-19",
+      "active": true
     }
   ]
 }
