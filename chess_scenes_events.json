@@ -1451,6 +1451,25 @@
       "days": null,
       "specific_date": "2026-08-19",
       "active": true
+    },
+    {
+      "place_slug": null,
+      "standalone_name": "Poesiat & Kater",
+      "standalone_address": "Oranje-Vrijstaatkade, Amsterdam",
+      "standalone_city": "Amsterdam",
+      "standalone_lat": 52.357665,
+      "standalone_lng": 4.9356751,
+      "standalone_gmaps": "https://www.google.com/maps?q=52.3576650,4.9356751",
+      "community": "BarBlitz",
+      "title": "Blitz Sunday - Poesiat en Kater",
+      "time": "19:00",
+      "time_end": null,
+      "format_tag": "Blitz",
+      "external_link": "https://barblitz.co/tournament/476/",
+      "notes": null,
+      "days": null,
+      "specific_date": "2026-08-23",
+      "active": true
     }
   ]
 }
