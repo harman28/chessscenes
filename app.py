@@ -272,18 +272,26 @@ def get_events():
 def get_all_events():
     city = request.args.get('city', 'Amsterdam')
     days_order = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']
+    all_events = fetch_events(city)  # every active event in the city, once each, with its own recurrence_days
+
     result = {}
-    # One-off (specific_date) events don't fit the weekday-template grouping below — that
-    # loop calls fetch_events(city, day) with no date, so its internal
-    # `e.specific_date = ?` check always compares against '' and never matches a real
-    # date, no matter which weekday the event happens to fall on. Surfaced as its own
-    # chronological bucket instead, so it isn't just invisible under "any day".
-    one_off = [e for e in fetch_events(city) if e['specific_date']]
+
+    # One-off (specific_date) events don't fit a weekday-template grouping at all — grouped
+    # by date instead of day name so they aren't just invisible under "any day".
+    one_off = [e for e in all_events if e['specific_date']]
     if one_off:
         one_off.sort(key=lambda e: e['specific_date'])
         result['Upcoming'] = one_off
+
+    # An event recurring on all 7 days (e.g. Cafe de Laurierboom) would otherwise show up
+    # once per weekday section — the same card seven times. Pulled into its own bucket.
+    daily = [e for e in all_events if not e['specific_date'] and len(e['recurrence_days']) == 7]
+    if daily:
+        result['Daily'] = daily
+
     for day in days_order:
-        events = fetch_events(city, day)
+        events = [e for e in all_events
+                  if not e['specific_date'] and day in e['recurrence_days'] and len(e['recurrence_days']) != 7]
         if events:
             result[day] = events
     return jsonify(result)

@@ -548,7 +548,12 @@ async function onFilterChange() {
 
 function renderGrouped(grouped) {
   const container = document.getElementById('events-container');
-  const days = Object.keys(grouped);
+  // Object.keys() order here is whatever the backend's JSON came in — Flask sorts keys
+  // alphabetically, which would put "Upcoming"/"Daily" wherever they happen to fall next
+  // to the weekday names instead of somewhere sensible. Force them first, in that order.
+  const SECTION_ORDER = ['Upcoming', 'Daily'];
+  const rank = k => { const i = SECTION_ORDER.indexOf(k); return i === -1 ? SECTION_ORDER.length : i; };
+  const days = Object.keys(grouped).sort((a, b) => rank(a) - rank(b));
   if (!days.length) { container.innerHTML = '<div class="empty"><strong>♟</strong>No events found</div>'; return; }
   container.innerHTML = days.map(day => `
     <div class="day-group">
