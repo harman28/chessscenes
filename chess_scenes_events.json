@@ -1470,6 +1470,25 @@
       "days": null,
       "specific_date": "2026-08-23",
       "active": true
+    },
+    {
+      "place_slug": null,
+      "standalone_name": "Cafe Kosmos",
+      "standalone_address": null,
+      "standalone_city": "Amsterdam",
+      "standalone_lat": 52.381405920850156,
+      "standalone_lng": 4.873530742078516,
+      "standalone_gmaps": "https://www.google.com/maps?q=52.381405920850156,4.873530742078516",
+      "community": "BarBlitz",
+      "title": "Thursday Blitz - Café Kosmos",
+      "time": "20:00",
+      "time_end": null,
+      "format_tag": "Blitz",
+      "external_link": "https://barblitz.co/tournament/485/",
+      "notes": null,
+      "days": null,
+      "specific_date": "2026-08-27",
+      "active": true
     }
   ]
 }
