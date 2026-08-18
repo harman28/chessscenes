@@ -88,7 +88,7 @@ COMMUNITIES = {
     "Chess & Beer": "https://i.imgur.com/RTWaMou.png",
     "Vondelbunker Chess": "https://i.imgur.com/zgYqQLp.png",
     "Amsterdam Spirit Chess Club": "https://i.imgur.com/qrvUv5i.png",
-    "Barblitz Amsterdam": "https://i.imgur.com/9NRex3f.jpeg",
+    "BarBlitz": "https://barblitz.co/static/chess/images/new_logo.4c6a6f89e4c5.png",
     "Cafe de Laurierboom": "https://i.imgur.com/9NRex3f.jpeg",
     "Schaakcafe Utrecht": "https://i.imgur.com/wlhqWob.jpeg",
     "Stichting En Passant": "https://i.imgur.com/fVrdQDp.jpeg",
@@ -114,7 +114,7 @@ HARDCODED_EVENTS = [
     ("Stichting En Passant", "Stichting En Passant", "Stichting En Passant", "14:00", None, "Club night", "https://www.stichtingenpassant.nl/", "Chess on weekends.", ["Friday", "Saturday", "Sunday"], True),
     ("KopieKoffie", "KopieKoffie", "KopieKoffie Chess", "15:30", None, "Casual", "https://kopiekoffie.nl/blog/events/schaken-bij-kopiekoffie/", None, ["Sunday"], True),
 ]
-# Barblitz Amsterdam is intentionally absent here — no invented schedule.
+# BarBlitz is intentionally absent here — no invented schedule.
 # It still needs a communities row (see COMMUNITIES above) so it exists once
 # barblitz_scraper.py starts adding real dated events.
 

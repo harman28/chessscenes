@@ -116,7 +116,7 @@ def scrape(html):
             "place_slug": place_slug,
             "standalone_name": None if place_slug else venue_name,
             "standalone_city": None if place_slug else city,
-            "community": "Barblitz Amsterdam",
+            "community": "BarBlitz",
             "title": title,
             "time": local_time,
             "specific_date": specific_date,
