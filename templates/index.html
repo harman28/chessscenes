@@ -228,7 +228,20 @@ function resolveDay(val) {
 }
 function resolveDate(val) {
   const d = new Date();
-  if (val==='tomorrow') d.setDate(d.getDate()+1);
+  if (val === 'tomorrow') {
+    d.setDate(d.getDate() + 1);
+  } else if (val !== 'today' && val !== 'all') {
+    // val is a weekday name from one of the "on <Weekday>" options, which cover
+    // today+2..today+8 (see buildDateOptions) — each name appears at most once in that
+    // window, so this unambiguously finds which offset it is and resolves to that date.
+    // Previously this fell through to today's date for every weekday option, which meant
+    // a one-off (specific_date) event never matched unless it happened to be today — this
+    // stayed invisible until BarBlitz's real dated events made it show up.
+    const today = todayIdx();
+    for (let i = 2; i < 9; i++) {
+      if (dayName(today + i) === val) { d.setDate(d.getDate() + i); break; }
+    }
+  }
   return d.toISOString().split('T')[0];
 }
 
