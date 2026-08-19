@@ -225,7 +225,7 @@ EVENT_SELECT = '''
     SELECT e.id, e.title, e.time, e.time_end, e.format_tag, e.external_link, e.notes,
            e.specific_date, e.active,
            c.name as community_name, c.image as community_image,
-           p.slug as place_slug, p.labels as place_labels,
+           p.slug as place_slug, p.labels as place_labels, p.image as place_image,
            COALESCE(p.name, e.standalone_name) as place_name,
            COALESCE(p.address, e.standalone_address) as place_address,
            COALESCE(p.city, e.standalone_city) as place_city,
@@ -705,7 +705,7 @@ def event_page(event_id):
     return render_template('index.html',
         og_title=f"{name} · Chess Scenes",
         og_description=" · ".join(desc_parts),
-        og_image=ev.get('community_image'),
+        og_image=ev.get('community_image') or ev.get('place_image'),
         og_url=f"/event/{event_id}",
     )
 

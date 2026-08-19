@@ -576,7 +576,11 @@ function renderList(events, container) {
 }
 
 function renderCard(e) {
-  const imgHtml = e.community_image ? `<div class="card-image"><img src="${e.community_image}" alt="" onerror="this.parentElement.remove()"></div>` : '';
+  // Fall back to the place's own photo when the event has no community (or the community
+  // has no photo) — e.g. StrangerChess has a real image on its place row but no community,
+  // so without this fallback its card silently showed nothing.
+  const cardImg = e.community_image || e.place_image;
+  const imgHtml = cardImg ? `<div class="card-image"><img src="${cardImg}" alt="" onerror="this.parentElement.remove()"></div>` : '';
   const dateStr = e.specific_date ? formatSpecificDate(e.specific_date) : null;
   const timeStr = e.time ? (e.time_end ? e.time+'–'+e.time_end : e.time) : null;
   const meta = [dateStr, timeStr, e.place_name].filter(Boolean).join(' · ');
@@ -737,7 +741,7 @@ async function applyRoute(path) {
     showMapCard({
       title: e.title,
       subtitle: e.time ? datePrefix + tr + ' · ' + (e.place_name || '') : e.place_name,
-      note: e.notes, image: e.community_image, gmaps: e.place_gmaps, link: e.external_link,
+      note: e.notes, image: e.community_image || e.place_image, gmaps: e.place_gmaps, link: e.external_link,
       when: e.time ? datePrefix + tr + recurDays : null,
     });
     highlightSidebarCardFor(e.id);
