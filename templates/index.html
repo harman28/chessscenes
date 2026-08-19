@@ -638,7 +638,11 @@ let lastBasePath = '/';
 
 function navigate(path, opts) {
   opts = opts || {};
-  if (path !== location.pathname) {
+  // Compare against pathname+search, not just pathname — pathWithDay() omits ?day= entirely
+  // for "any day", so a pathname-only comparison would see e.g. "/city/bristol" as unchanged
+  // from "/city/bristol?day=today" and skip updating the URL, leaving the stale ?day=today
+  // for applyDayFromQuery() to read back and snap the dropdown back to "today".
+  if (path !== location.pathname + location.search) {
     if (opts.replace) history.replaceState({}, '', path);
     else history.pushState({}, '', path);
   }
