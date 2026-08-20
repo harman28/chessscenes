@@ -1,18 +1,5 @@
 [
   {
-    "_barblitz_tournament_id": "484",
-    "_barblitz_url": "https://barblitz.co/tournament/484/",
-    "place_slug": null,
-    "standalone_name": "Café Schinkelhaven",
-    "standalone_city": "Amsterdam",
-    "community": "BarBlitz",
-    "title": "Sunday Blitz - Cafe Schinkelhaven",
-    "time": "19:00",
-    "specific_date": "2026-09-06",
-    "external_link": "https://barblitz.co/tournament/484/",
-    "active": true
-  },
-  {
     "_barblitz_tournament_id": "480",
     "_barblitz_url": "https://barblitz.co/tournament/480/",
     "place_slug": "cafe-de-laurierboom",
