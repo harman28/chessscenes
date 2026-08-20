@@ -1508,6 +1508,19 @@
       "days": null,
       "specific_date": "2026-08-30",
       "active": true
+    },
+    {
+      "place_slug": "cafe-de-laurierboom",
+      "community": "BarBlitz",
+      "title": "Blitz Wednesday - De Laurierboom",
+      "time": "20:00",
+      "time_end": null,
+      "format_tag": "Blitz",
+      "external_link": "https://barblitz.co/tournament/479/",
+      "notes": null,
+      "days": null,
+      "specific_date": "2026-09-02",
+      "active": true
     }
   ]
 }
