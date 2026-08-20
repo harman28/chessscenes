@@ -15,6 +15,10 @@
   <meta name="twitter:title" content="{{ og_title }}">
   <meta name="twitter:description" content="{{ og_description }}">
   {% endif %}
+  <link rel="icon" href="/static/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon-16.png">
+  <link rel="apple-touch-icon" href="/static/apple-touch-icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
@@ -160,6 +164,23 @@
       font-size: 16px; color: var(--maroon-mid); cursor: pointer;
       background: none; border: none; line-height: 1; padding: 2px;
     }
+
+    /* Pin type filter — checkbox legend overlaid on the map, top-right (zoom control owns
+       top-left). Lets a visitor show/hide pins by place type; all types on by default. */
+    #pin-filter {
+      position: absolute; top: 12px; right: 12px; z-index: 999;
+      background: rgba(245,230,224,0.95);
+      border-radius: 10px; padding: 8px 10px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.2);
+      max-height: calc(100% - 24px); overflow-y: auto;
+    }
+    .pin-filter-row {
+      display: flex; align-items: center; gap: 7px;
+      padding: 3px 2px; font-size: 12.5px; color: var(--maroon-dark);
+      cursor: pointer; white-space: nowrap; user-select: none;
+    }
+    .pin-filter-row input { accent-color: var(--maroon); cursor: pointer; margin: 0; }
+    .pin-filter-glyph { display: inline-block; width: 15px; text-align: center; color: var(--maroon); }
   </style>
 </head>
 <body>
@@ -179,6 +200,8 @@
   </div>
 
   <div id="map-pane">
+    <!-- Pin type filter -->
+    <div id="pin-filter"></div>
     <!-- Map overlay card -->
     <div id="map-card">
       <button id="map-card-close" onclick="closeMapCardAndReturn()">✕</button>
@@ -297,6 +320,7 @@ function initMap() {
   map = L.map('map-pane', {zoomControl: true, scrollWheelZoom: true});
   const tileLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {maxZoom: 19});
   tileLayer.addTo(map);
+  buildPinFilterUI();
 }
 
 // Pin color = whether something's on today (red = active event, grey = everything else,
@@ -319,6 +343,52 @@ function pieceForLabels(labels) {
     if (l.includes(key)) return glyph;
   }
   return '♟'; // unlabeled / standalone roaming event — no specific place type to show
+}
+
+// Same priority match as pieceForLabels, but returns the label key itself (not the glyph)
+// so pins can be grouped/filtered by type even though "chess bar" and "chess meetup" render
+// the same knight glyph. 'other' catches unlabeled places and standalone roaming events.
+function categoryForLabels(labels) {
+  const l = (labels || '').toLowerCase();
+  for (const [key] of PIECE_PRIORITY) {
+    if (l.includes(key)) return key;
+  }
+  return 'other';
+}
+
+const FILTER_TYPES = [
+  ...PIECE_PRIORITY.map(([key, glyph]) => ({
+    key, glyph, label: key.slice('chess '.length).replace(/^./, c => c.toUpperCase()),
+  })),
+  {key: 'other', glyph: '♟', label: 'Other'},
+];
+const activeCategories = new Set(FILTER_TYPES.map(f => f.key)); // all shown by default
+
+function buildPinFilterUI() {
+  const el = document.getElementById('pin-filter');
+  el.innerHTML = FILTER_TYPES.map(f => `
+    <label class="pin-filter-row">
+      <input type="checkbox" checked onchange="toggleCategory('${f.key}', this.checked)">
+      <span class="pin-filter-glyph">${f.glyph}</span>${f.label}
+    </label>`).join('');
+}
+
+// Toggling a filter just shows/hides already-fetched markers (add/removeLayer) — no refetch,
+// since the pin data itself doesn't change, only which of it is visible.
+function toggleCategory(key, checked) {
+  if (checked) activeCategories.add(key); else activeCategories.delete(key);
+  applyPinFilter();
+}
+
+function applyPinFilter() {
+  [placeMarkers, eventPinMarkers].forEach(group => {
+    Object.values(group).forEach(m => {
+      const show = activeCategories.has(m._category);
+      const onMap = map.hasLayer(m);
+      if (show && !onMap) m.addTo(map);
+      else if (!show && onMap) map.removeLayer(m);
+    });
+  });
 }
 
 function activePinIcon(labels) {
@@ -359,7 +429,9 @@ async function refreshMapPins(city, day) {
   clearMarkerLayer(eventPinMarkers);
 
   cityPlaces.forEach(p => {
-    const marker = L.marker([p.lat, p.lng], {icon: inactivePinIcon(p.labels), zIndexOffset: 0}).addTo(map);
+    const marker = L.marker([p.lat, p.lng], {icon: inactivePinIcon(p.labels), zIndexOffset: 0});
+    marker._category = categoryForLabels(p.labels);
+    if (activeCategories.has(marker._category)) marker.addTo(map);
     marker.on('click', () => navigate('/place/' + p.slug));
     placeMarkers[p.slug] = marker;
   });
@@ -372,7 +444,9 @@ async function refreshMapPins(city, day) {
     if (!e.place_lat || !e.place_lng) return;
     const lat = parseFloat(e.place_lat), lng = parseFloat(e.place_lng);
     if (isNaN(lat) || isNaN(lng)) return;
-    const marker = L.marker([lat, lng], {icon: activePinIcon(e.place_labels), zIndexOffset: 100}).addTo(map);
+    const marker = L.marker([lat, lng], {icon: activePinIcon(e.place_labels), zIndexOffset: 100});
+    marker._category = categoryForLabels(e.place_labels);
+    if (activeCategories.has(marker._category)) marker.addTo(map);
     // Always the event's own page, even when it's tied to a place — a red pin means
     // "something's happening here today," and the event has the specific title/link/
     // community photo for that, which the place's own generic info doesn't carry.
@@ -502,7 +576,11 @@ function renderList(events, container) {
 }
 
 function renderCard(e) {
-  const imgHtml = e.community_image ? `<div class="card-image"><img src="${e.community_image}" alt="" onerror="this.parentElement.remove()"></div>` : '';
+  // Fall back to the place's own photo when the event has no community (or the community
+  // has no photo) — e.g. StrangerChess has a real image on its place row but no community,
+  // so without this fallback its card silently showed nothing.
+  const cardImg = e.community_image || e.place_image;
+  const imgHtml = cardImg ? `<div class="card-image"><img src="${cardImg}" alt="" onerror="this.parentElement.remove()"></div>` : '';
   const dateStr = e.specific_date ? formatSpecificDate(e.specific_date) : null;
   const timeStr = e.time ? (e.time_end ? e.time+'–'+e.time_end : e.time) : null;
   const meta = [dateStr, timeStr, e.place_name].filter(Boolean).join(' · ');
@@ -564,7 +642,11 @@ let lastBasePath = '/';
 
 function navigate(path, opts) {
   opts = opts || {};
-  if (path !== location.pathname) {
+  // Compare against pathname+search, not just pathname — pathWithDay() omits ?day= entirely
+  // for "any day", so a pathname-only comparison would see e.g. "/city/bristol" as unchanged
+  // from "/city/bristol?day=today" and skip updating the URL, leaving the stale ?day=today
+  // for applyDayFromQuery() to read back and snap the dropdown back to "today".
+  if (path !== location.pathname + location.search) {
     if (opts.replace) history.replaceState({}, '', path);
     else history.pushState({}, '', path);
   }
@@ -659,7 +741,7 @@ async function applyRoute(path) {
     showMapCard({
       title: e.title,
       subtitle: e.time ? datePrefix + tr + ' · ' + (e.place_name || '') : e.place_name,
-      note: e.notes, image: e.community_image, gmaps: e.place_gmaps, link: e.external_link,
+      note: e.notes, image: e.community_image || e.place_image, gmaps: e.place_gmaps, link: e.external_link,
       when: e.time ? datePrefix + tr + recurDays : null,
     });
     highlightSidebarCardFor(e.id);
