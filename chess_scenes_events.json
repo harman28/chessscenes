@@ -17,7 +17,8 @@
     "Stichting En Passant": "https://i.imgur.com/fVrdQDp.jpeg",
     "KopieKoffie": "https://i.imgur.com/pC1qmvK.jpeg",
     "VAS": "https://i.imgur.com/HgYGobW.png",
-    "Goat of the Boat": "https://i.imgur.com/7bVmOsf.png"
+    "Goat of the Boat": "https://i.imgur.com/7bVmOsf.png",
+    "Chess and Jazz": "https://i.imgur.com/4EBVABa.png"
   },
   "events": [
     {
@@ -1575,6 +1576,123 @@
       "notes": null,
       "days": null,
       "specific_date": "2026-09-06",
+      "active": true
+    },
+    {
+      "place_slug": "cafe-holzmarktperle",
+      "community": "Chess and Jazz",
+      "title": "Chess & Jazz Vol.76",
+      "time": "20:00",
+      "time_end": null,
+      "format_tag": "Casual",
+      "external_link": "https://chessandjazz.de/dates.php",
+      "notes": "5€ recommended donation. Band: Uli Kempendorff (sax) - Phil Donkin (bass) - Malte Wiest (drums)",
+      "days": null,
+      "specific_date": "2026-08-20",
+      "active": true
+    },
+    {
+      "place_slug": "cafe-holzmarktperle",
+      "community": "Chess and Jazz",
+      "title": "Chess Night Vol.55",
+      "time": "20:00",
+      "time_end": null,
+      "format_tag": "Casual",
+      "external_link": "https://chessandjazz.de/dates.php",
+      "notes": "Just chess, no live music. 30 chess sets available on site.",
+      "days": null,
+      "specific_date": "2026-09-03",
+      "active": true
+    },
+    {
+      "place_slug": "cafe-holzmarktperle",
+      "community": "Chess and Jazz",
+      "title": "Chess & Jazz Vol.77",
+      "time": "20:00",
+      "time_end": null,
+      "format_tag": "Casual",
+      "external_link": "https://chessandjazz.de/dates.php",
+      "notes": "5€ recommended donation. Band: Paulo Morello Trio",
+      "days": null,
+      "specific_date": "2026-09-17",
+      "active": true
+    },
+    {
+      "place_slug": "cafe-holzmarktperle",
+      "community": "Chess and Jazz",
+      "title": "Chess Night Vol.56",
+      "time": "20:00",
+      "time_end": null,
+      "format_tag": "Casual",
+      "external_link": "https://chessandjazz.de/dates.php",
+      "notes": "Just chess, no live music. 30 chess sets available on site.",
+      "days": null,
+      "specific_date": "2026-10-01",
+      "active": true
+    },
+    {
+      "place_slug": "cafe-holzmarktperle",
+      "community": "Chess and Jazz",
+      "title": "Chess & Jazz Vol.78",
+      "time": "20:00",
+      "time_end": null,
+      "format_tag": "Casual",
+      "external_link": "https://chessandjazz.de/dates.php",
+      "notes": "5€ recommended donation. Band: Artur Rutgevich Trio",
+      "days": null,
+      "specific_date": "2026-10-15",
+      "active": true
+    },
+    {
+      "place_slug": "cafe-holzmarktperle",
+      "community": "Chess and Jazz",
+      "title": "Chess Night Vol.57",
+      "time": "20:00",
+      "time_end": null,
+      "format_tag": "Casual",
+      "external_link": "https://chessandjazz.de/dates.php",
+      "notes": "Just chess, no live music. 30 chess sets available on site.",
+      "days": null,
+      "specific_date": "2026-11-05",
+      "active": true
+    },
+    {
+      "place_slug": "cafe-holzmarktperle",
+      "community": "Chess and Jazz",
+      "title": "Chess & Jazz Vol.79",
+      "time": "20:00",
+      "time_end": null,
+      "format_tag": "Casual",
+      "external_link": "https://chessandjazz.de/dates.php",
+      "notes": "5€ recommended donation. Band: Béla Meinberg (piano) - Roz Macdonald (bass) - Heinrich Köbberling (drums)",
+      "days": null,
+      "specific_date": "2026-11-19",
+      "active": true
+    },
+    {
+      "place_slug": "cafe-holzmarktperle",
+      "community": "Chess and Jazz",
+      "title": "Chess Night Vol.58",
+      "time": "20:00",
+      "time_end": null,
+      "format_tag": "Casual",
+      "external_link": "https://chessandjazz.de/dates.php",
+      "notes": "Just chess, no live music. 30 chess sets available on site.",
+      "days": null,
+      "specific_date": "2026-12-03",
+      "active": true
+    },
+    {
+      "place_slug": "cafe-holzmarktperle",
+      "community": "Chess and Jazz",
+      "title": "Chess & Jazz Vol.80",
+      "time": "20:00",
+      "time_end": null,
+      "format_tag": "Casual",
+      "external_link": "https://chessandjazz.de/dates.php",
+      "notes": "5€ recommended donation. Band: TBA",
+      "days": null,
+      "specific_date": "2026-12-17",
       "active": true
     }
   ]
