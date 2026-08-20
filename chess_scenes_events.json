@@ -16,7 +16,8 @@
     "Schaakcafe Utrecht": "https://i.imgur.com/wlhqWob.jpeg",
     "Stichting En Passant": "https://i.imgur.com/fVrdQDp.jpeg",
     "KopieKoffie": "https://i.imgur.com/pC1qmvK.jpeg",
-    "VAS": "https://i.imgur.com/HgYGobW.png"
+    "VAS": "https://i.imgur.com/HgYGobW.png",
+    "Goat of the Boat": "https://i.imgur.com/7bVmOsf.png"
   },
   "events": [
     {
@@ -1536,6 +1537,25 @@
       "notes": null,
       "days": null,
       "specific_date": "2026-09-02",
+      "active": true
+    },
+    {
+      "place_slug": null,
+      "standalone_name": "Blue Boat",
+      "standalone_address": "Stadhouderskade 501",
+      "standalone_city": "Amsterdam",
+      "standalone_lat": 52.36184343196581,
+      "standalone_lng": 4.8827014731686385,
+      "standalone_gmaps": "https://www.google.com/maps?q=52.36184343196581,4.8827014731686385",
+      "community": "Goat of the Boat",
+      "title": "Goat of the Boat",
+      "time": "14:00",
+      "time_end": null,
+      "format_tag": null,
+      "external_link": "https://www.zwartopwit.org/goat-of-the-boat",
+      "notes": null,
+      "days": null,
+      "specific_date": "2026-09-06",
       "active": true
     }
   ]
