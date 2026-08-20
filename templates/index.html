@@ -416,11 +416,14 @@ function clearMarkerLayer(obj) {
 // change — grey pins (every place) and red pins (places/standalone events with a match
 // for the current day) come from the same filters as the scenes list, so the two can
 // never disagree about what's showing.
-async function refreshMapPins(city, day) {
+async function refreshMapPins(city, day, date) {
   if (!map) return;
   const [placesRes, eventsRes] = await Promise.all([
     fetch(`/api/places?city=${encodeURIComponent(city)}`),
-    fetch(`/api/events?city=${encodeURIComponent(city)}&day=${encodeURIComponent(day || '')}`),
+    // date matters for one-off (specific_date) events — without it, fetch_events()'s
+    // `e.specific_date = ?` check compares against '' server-side and never matches, so a
+    // one-off event's pin silently stayed grey forever no matter which day was selected.
+    fetch(`/api/events?city=${encodeURIComponent(city)}&day=${encodeURIComponent(day || '')}&date=${encodeURIComponent(date || '')}`),
   ]);
   const cityPlaces = await placesRes.json();
   const dayEvents = await eventsRes.json();
@@ -546,7 +549,7 @@ async function onFilterChange() {
     currentEvents = await res.json();
     renderList(currentEvents, container);
   }
-  await refreshMapPins(city, resolveDay(val));
+  await refreshMapPins(city, resolveDay(val), resolveDate(val));
   panToCity(city);
 }
 
@@ -785,7 +788,8 @@ window.addEventListener('resize', () => {
   if (window.innerWidth>=768 && !map) {
     initMap();
     const city = document.getElementById('city-select').value;
-    refreshMapPins(city, resolveDay(document.getElementById('date-select').value)).then(() => panToCity(city));
+    const val = document.getElementById('date-select').value;
+    refreshMapPins(city, resolveDay(val), resolveDate(val)).then(() => panToCity(city));
   }
 });
 </script>
