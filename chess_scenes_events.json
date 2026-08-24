@@ -1694,6 +1694,25 @@
       "days": null,
       "specific_date": "2026-12-17",
       "active": true
+    },
+    {
+      "place_slug": "cafe-en-passant",
+      "community": null,
+      "title": "Cafe En Passant",
+      "time": "18:00",
+      "time_end": "23:30",
+      "format_tag": "Casual",
+      "external_link": "https://www.facebook.com/pages/en-passant/207672025922346",
+      "notes": "Friday nights feature tournaments hosted by SV Berolina Mitte.",
+      "days": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday"
+      ],
+      "specific_date": null,
+      "active": true
     }
   ]
 }
