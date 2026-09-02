@@ -497,6 +497,40 @@ function panToCity(city) {
   if (bounds.length) map.fitBounds(bounds, {padding:[60,60], maxZoom:14});
 }
 
+// Whether an event's own scheduled window covers this exact moment, so it can carry the
+// same "Live" tag a check-in gets. Needs an end time to know when it's over — real ones
+// (Max Euwe Centrum's open hours, Cafe En Passant) already have time_end from the source
+// data; everything else only has a start time, so two assumptions fill the gap: an
+// Amsterdam club night (the format_tag CLAUDE.md already treats as "real club", not
+// casual) is assumed to run 8pm-11pm the way Dutch chess clubs generally do, and anything
+// else with just a start time (Barblitz, casual meetups) is assumed to run 2 hours. Both
+// are guesses, not real closing times — worth tightening if either turns out wrong.
+const CLUB_NIGHT_ASSUMED_END_MIN = 23 * 60;
+const DEFAULT_EVENT_DURATION_MIN = 2 * 60;
+function isEventLiveNow(e) {
+  if (!e.time) return false;
+  const now = new Date();
+  const todayIso = now.toISOString().split('T')[0];
+  const todayName = DAYS[now.getDay()];
+  const isToday = e.specific_date ? e.specific_date === todayIso
+    : !!(e.recurrence_days && e.recurrence_days.includes(todayName));
+  if (!isToday) return false;
+
+  const [sh, sm] = e.time.split(':').map(Number);
+  const startMin = sh * 60 + sm;
+  let endMin;
+  if (e.time_end) {
+    const [eh, em] = e.time_end.split(':').map(Number);
+    endMin = eh * 60 + em;
+  } else if (e.format_tag === 'Club night' && e.place_city === 'Amsterdam') {
+    endMin = CLUB_NIGHT_ASSUMED_END_MIN;
+  } else {
+    endMin = startMin + DEFAULT_EVENT_DURATION_MIN;
+  }
+  const nowMin = now.getHours() * 60 + now.getMinutes();
+  return nowMin >= startMin && nowMin < endMin;
+}
+
 function activityLine(labels, days) {
   const l = (labels || '').toLowerCase();
   const isLocation = l.includes('chess board') || l.includes('chess memorial') || l.includes('chess shop') || l.includes('chess museum');
@@ -617,9 +651,10 @@ function renderCard(e) {
   const dateStr = e.specific_date ? formatSpecificDate(e.specific_date) : null;
   const timeStr = e.time ? (e.time_end ? e.time+'–'+e.time_end : e.time) : null;
   const meta = [dateStr, timeStr, e.place_name].filter(Boolean).join(' · ');
-  // A live check-in gets its own pulsing tag instead of the plain format_tag pill — same
-  // idea as the active/inactive map pins, just spelled out in the sidebar too.
-  const tag = e.is_live_checkin ? `<span class="live-tag"><span class="pulse-dot"></span>Live</span>`
+  // Anything happening right now gets a pulsing "Live" tag instead of its plain format_tag
+  // pill — a check-in always qualifies (its time/time_end bracket exactly its live window),
+  // same as any other event whose own schedule covers this moment (see isEventLiveNow).
+  const tag = isEventLiveNow(e) ? `<span class="live-tag"><span class="pulse-dot"></span>Live</span>`
     : e.format_tag ? `<span class="card-tag">${e.format_tag}</span>` : '';
   const rows = [];
   if (e.place_name) rows.push(`<div class="detail-row"><span class="detail-label">Where</span><span>${e.place_name}${e.place_address?', '+e.place_address:''}</span></div>`);
