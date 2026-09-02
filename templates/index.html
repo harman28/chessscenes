@@ -113,7 +113,13 @@
     .leaflet-container { background: #e8e4df; }
     .leaflet-control-zoom { border: none !important; }
     .leaflet-control-zoom a { background: var(--maroon) !important; color: var(--cream) !important; border: none !important; }
-    .leaflet-control-attribution { display: none; }
+    /* OpenStreetMap's usage policy requires attribution actually be shown (not hidden) —
+       kept small and muted so it doesn't fight the map for attention. */
+    .leaflet-control-attribution {
+      background: rgba(245,230,224,0.85) !important;
+      color: var(--maroon-dark); font-size: 10px; padding: 1px 6px;
+    }
+    .leaflet-control-attribution a { color: var(--maroon); }
 
     /* Active pin — solid maroon teardrop */
     .pin-active {
@@ -347,7 +353,14 @@ function onDateSelectChange() {
 function initMap() {
   if (map) return;
   map = L.map('map-pane', {zoomControl: true, scrollWheelZoom: true});
-  const tileLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {maxZoom: 19});
+  // CARTO's basemaps.cartocdn.com now requires an API key — unkeyed requests get served
+  // an "API key required" watermark instead of real tiles (a policy change on their end,
+  // not something broken here). Plain OpenStreetMap tiles need no key and are already what
+  // render_pin_map() in app.py uses for the static share-image maps.
+  const tileLayer = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors',
+  });
   tileLayer.addTo(map);
   buildPinFilterUI();
 }
