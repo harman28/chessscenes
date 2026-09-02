@@ -3,62 +3,265 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Checked in — Max Euweplein</title>
+<title>Check in — Max Euweplein</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
+  :root {
+    --maroon: #6B1A2A;
+    --maroon-dark: #3a0e16;
+    --maroon-mid: #8a2a3c;
+    --cream: #f5e6e0;
+    --cream-dark: #e8d0c8;
+    --cream-muted: #c9a89e;
+  }
   * { box-sizing: border-box; }
   body {
-    margin: 0;
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #111;
-    color: #fff;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    margin: 0; min-height: 100vh; background: var(--maroon); color: var(--cream);
+    font-family: 'DM Sans', sans-serif; font-weight: 300;
+    padding: 48px 24px 40px;
   }
-  .card {
-    text-align: center;
-    padding: 2rem;
-    max-width: 360px;
+  .page { max-width: 400px; margin: 0 auto; }
+  .eyebrow {
+    font-size: 11px; font-weight: 500; letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--cream-muted); margin: 0 0 28px;
   }
-  .board {
-    font-size: 3rem;
-    margin-bottom: 0.5rem;
+  h1 { font-family: 'Playfair Display', serif; font-weight: 500; font-size: 26px; margin: 0 0 4px; }
+  .city { font-size: 13px; color: var(--cream-muted); margin: 0 0 24px; }
+
+  .status-line {
+    display: flex; align-items: center; gap: 8px; font-size: 15px; color: var(--cream-muted);
+    margin-bottom: 24px; line-height: 1.5;
   }
-  h1 {
-    font-size: 1.4rem;
-    margin: 0 0 0.5rem;
+  .status-glyph { font-size: 18px; }
+
+  .card { background: var(--cream); border-radius: 14px; padding: 22px 20px; box-shadow: 0 8px 32px rgba(0,0,0,0.25); }
+  .field { margin-bottom: 22px; }
+  .field-label {
+    display: block; font-size: 11px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase;
+    color: #9a5060; margin-bottom: 10px;
   }
-  p {
-    color: #aaa;
-    font-size: 0.95rem;
-    line-height: 1.4;
+  .name-input {
+    width: 100%; border: none; border-bottom: 1.5px solid var(--cream-muted); background: none;
+    font-family: 'DM Sans', sans-serif; font-size: 16px; color: var(--maroon-dark); padding: 0 0 8px; outline: none;
   }
-  #time {
-    color: #fff;
-    font-weight: 600;
+  .name-input::placeholder { color: #c9a89e; }
+  .pills { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pill {
+    font-size: 13px; font-weight: 500; padding: 8px 16px; border-radius: 20px;
+    border: 1px solid rgba(107,26,42,0.25); color: var(--maroon-mid); background: none;
+    font-family: 'DM Sans', sans-serif; cursor: pointer;
   }
+  .pill.selected { background: var(--maroon); border-color: var(--maroon); color: var(--cream); }
+  .checkin-btn {
+    width: 100%; margin-top: 6px; background: var(--maroon); color: var(--cream); border: none;
+    border-radius: 10px; padding: 15px; font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 500;
+    cursor: pointer;
+  }
+  .checkin-btn:disabled { opacity: 0.6; cursor: default; }
+  .footnote { margin-top: 20px; font-size: 12px; color: var(--cream-muted); text-align: center; line-height: 1.5; }
+  .error-text { color: #c23a36; font-size: 13px; margin-top: 10px; text-align: center; }
+
+  .live-badge {
+    display: inline-flex; align-items: center; gap: 7px; background: var(--maroon-dark);
+    border: 1px solid rgba(245,230,224,0.25); border-radius: 20px; padding: 6px 13px 6px 10px;
+    font-size: 11px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 20px;
+  }
+  .pulse-dot { width: 7px; height: 7px; border-radius: 50%; background: #e8534f; animation: pulse 1.6s infinite; }
+  @keyframes pulse {
+    0%   { box-shadow: 0 0 0 0 rgba(232,83,79,0.55); }
+    70%  { box-shadow: 0 0 0 8px rgba(232,83,79,0); }
+    100% { box-shadow: 0 0 0 0 rgba(232,83,79,0); }
+  }
+  .who-row { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; }
+  .avatar {
+    width: 50px; height: 50px; border-radius: 8px; flex-shrink: 0; background: var(--cream-dark);
+    display: flex; align-items: center; justify-content: center; font-size: 22px; color: var(--maroon);
+  }
+  .who-name { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 500; color: var(--maroon-dark); }
+  .who-meta { font-size: 12px; color: var(--maroon-mid); margin-top: 2px; }
+  .time-row { margin-bottom: 22px; }
+  .time-label { display: flex; justify-content: space-between; font-size: 12px; color: #9a5060; margin-bottom: 8px; }
+  .time-track { height: 5px; border-radius: 3px; background: var(--cream-dark); overflow: hidden; }
+  .time-fill { height: 100%; background: var(--maroon); border-radius: 3px; }
+  .checkout-btn {
+    width: 100%; background: none; color: var(--maroon); border: 1.5px solid var(--maroon); border-radius: 10px;
+    padding: 14px; font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 500; cursor: pointer;
+  }
+  .checkout-btn:disabled { opacity: 0.6; cursor: default; }
+
+  [hidden] { display: none !important; }
 </style>
 </head>
 <body>
-  <div class="card">
-    <div class="board">♟️</div>
-    <h1 id="heading">Checked in at Max Euweplein</h1>
-    <p>Someone's playing right now.<br>
-    <span id="time"></span></p>
-  </div>
-  <script>
-    document.getElementById('time').textContent =
-      new Date().toLocaleString('en-GB', {
-        weekday: 'short', hour: '2-digit', minute: '2-digit'
-      });
+<div class="page">
+  <p class="eyebrow">Chess Scenes · Check-in</p>
+  <h1>Max Euweplein</h1>
+  <p class="city" id="subtitle">Amsterdam</p>
 
-    const params = new URLSearchParams(window.location.search);
-    const table = params.get('table');
-    if (table) {
-      document.getElementById('heading').textContent =
-        `Checked in at Max Euweplein — Table ${table}`;
+  <div id="loading" class="status-line"><span class="status-glyph">♟</span>Loading…</div>
+
+  <div id="invalid-table" hidden>
+    <div class="status-line"><span class="status-glyph">♟</span>That table number isn't set up for check-ins.</div>
+  </div>
+
+  <div id="form-view" hidden>
+    <div class="status-line"><span class="status-glyph">♟</span><span id="empty-line"></span></div>
+    <div class="card">
+      <form id="checkin-form">
+        <div class="field">
+          <label class="field-label">Your name</label>
+          <input class="name-input" id="name-input" placeholder="e.g. Harman" maxlength="60" required>
+        </div>
+        <div class="field">
+          <label class="field-label">How long?</label>
+          <div class="pills" id="duration-pills">
+            <button type="button" class="pill" data-minutes="30">30 min</button>
+            <button type="button" class="pill selected" data-minutes="60">60 min</button>
+            <button type="button" class="pill" data-minutes="90">90 min</button>
+            <button type="button" class="pill" data-minutes="120">120 min</button>
+          </div>
+        </div>
+        <button type="submit" class="checkin-btn" id="checkin-submit"><span>♞</span> Check in</button>
+        <div class="error-text" id="form-error" hidden></div>
+      </form>
+    </div>
+    <p class="footnote">Anyone can check in — first come, first served.</p>
+  </div>
+
+  <div id="occupied-view" hidden>
+    <div class="live-badge"><span class="pulse-dot"></span>Live now</div>
+    <div class="card">
+      <div class="who-row">
+        <div class="avatar">♞</div>
+        <div>
+          <div class="who-name" id="who-name"></div>
+          <div class="who-meta" id="who-meta"></div>
+        </div>
+      </div>
+      <div class="time-row">
+        <div class="time-label"><span>Time left</span><span id="time-left-text"></span></div>
+        <div class="time-track"><div class="time-fill" id="time-fill"></div></div>
+      </div>
+      <button class="checkout-btn" id="checkout-btn">Check out</button>
+      <div class="error-text" id="occupied-error" hidden></div>
+    </div>
+    <p class="footnote">Anyone can check out — clears it for the next player.</p>
+  </div>
+</div>
+
+<script>
+const params = new URLSearchParams(window.location.search);
+const table = parseInt(params.get('table'), 10);
+const TABLE_COUNT = 5;
+const STATUS_URL = `/api/checkin/maxeuweplein/status?table=${encodeURIComponent(table)}`;
+let selectedMinutes = 60;
+let current = null; // {id, name, checked_in_at, expires_at} while occupied
+let pollTimer = null;
+
+const el = id => document.getElementById(id);
+
+function showOnly(id) {
+  ['loading', 'invalid-table', 'form-view', 'occupied-view'].forEach(x => el(x).hidden = (x !== id));
+}
+
+if (!Number.isInteger(table) || table < 1 || table > TABLE_COUNT) {
+  showOnly('invalid-table');
+} else {
+  el('subtitle').textContent = `Table ${table} · Amsterdam`;
+  el('duration-pills').addEventListener('click', (ev) => {
+    const btn = ev.target.closest('.pill');
+    if (!btn) return;
+    selectedMinutes = parseInt(btn.dataset.minutes, 10);
+    el('duration-pills').querySelectorAll('.pill').forEach(p => p.classList.toggle('selected', p === btn));
+  });
+  el('checkin-form').addEventListener('submit', onSubmit);
+  el('checkout-btn').addEventListener('click', onCheckout);
+  refresh();
+  pollTimer = setInterval(refresh, 20000);
+}
+
+async function refresh() {
+  let data;
+  try {
+    const res = await fetch(STATUS_URL);
+    data = await res.json();
+  } catch (e) {
+    return; // transient network hiccup — leave whatever's on screen, next poll retries
+  }
+  if (data.active) {
+    current = data;
+    renderOccupied();
+  } else {
+    current = null;
+    el('empty-line').textContent = `Nobody's checked in at Table ${table} right now.`;
+    showOnly('form-view');
+  }
+}
+
+function renderOccupied() {
+  el('who-name').textContent = current.name; // textContent, not innerHTML — name is public input
+  const checkedInAt = new Date(current.checked_in_at + 'Z');
+  const expiresAt = new Date(current.expires_at + 'Z');
+  const minsAgo = Math.max(0, Math.round((Date.now() - checkedInAt) / 60000));
+  el('who-meta').textContent = minsAgo < 1 ? 'Checked in just now' : `Checked in ${minsAgo} min ago`;
+
+  const totalMs = expiresAt - checkedInAt;
+  const leftMs = expiresAt - Date.now();
+  const leftMin = Math.max(0, Math.round(leftMs / 60000));
+  el('time-left-text').textContent = leftMin < 1 ? 'under a minute' : `${leftMin} min`;
+  const pct = totalMs > 0 ? Math.max(0, Math.min(100, (leftMs / totalMs) * 100)) : 0;
+  el('time-fill').style.width = pct + '%';
+
+  showOnly('occupied-view');
+}
+
+async function onSubmit(ev) {
+  ev.preventDefault();
+  const name = el('name-input').value.trim();
+  el('form-error').hidden = true;
+  if (!name) return;
+  el('checkin-submit').disabled = true;
+  try {
+    const res = await fetch('/api/checkin/maxeuweplein', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({table, name, duration_minutes: selectedMinutes}),
+    });
+    const data = await res.json();
+    if (res.status === 201) {
+      current = data;
+      renderOccupied();
+    } else if (res.status === 409) {
+      // Someone else checked in between page load and submit — show their status instead.
+      current = data;
+      renderOccupied();
+    } else {
+      el('form-error').textContent = data.error || 'Something went wrong — try again.';
+      el('form-error').hidden = false;
     }
-  </script>
+  } catch (e) {
+    el('form-error').textContent = 'Network error — try again.';
+    el('form-error').hidden = false;
+  } finally {
+    el('checkin-submit').disabled = false;
+  }
+}
+
+async function onCheckout() {
+  if (!current) return;
+  el('occupied-error').hidden = true;
+  el('checkout-btn').disabled = true;
+  try {
+    await fetch(`/api/checkin/${current.id}/checkout`, {method: 'POST'});
+    await refresh();
+  } catch (e) {
+    el('occupied-error').textContent = 'Network error — try again.';
+    el('occupied-error').hidden = false;
+  } finally {
+    el('checkout-btn').disabled = false;
+  }
+}
+</script>
 </body>
 </html>

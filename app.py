@@ -6,6 +6,7 @@ import csv
 import json
 import jwt
 import datetime
+import html
 import math
 import io
 import urllib.request
@@ -30,6 +31,14 @@ def slugify(text):
 DATABASE = 'chess.db'
 CSV_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'Chess Scenes (Public) - chess_scenes_venues.csv')
 EVENTS_JSON_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'chess_scenes_events.json')
+
+# --- NFC table check-ins (Max Euweplein only, for now) ---
+# One physical NFC sticker per table; the sticker's URL carries which table via ?table=N.
+# Hardcoded rather than a places column since Max Euweplein is the only check-in-enabled
+# place so far — worth promoting to real data once a second place needs this.
+CHECKIN_PLACE_SLUG = 'max-euweplein'
+CHECKIN_TABLE_COUNT = 5
+CHECKIN_DURATIONS_MINUTES = {30, 60, 90, 120}
 
 def get_db():
     db = getattr(g, '_database', None)
@@ -92,6 +101,16 @@ def init_db():
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             event_id INTEGER NOT NULL REFERENCES events(id) ON DELETE CASCADE,
             day TEXT NOT NULL
+        );
+
+        CREATE TABLE IF NOT EXISTS checkins (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            place_id INTEGER NOT NULL REFERENCES places(id),
+            table_number INTEGER NOT NULL,
+            name TEXT NOT NULL,
+            checked_in_at TEXT NOT NULL,
+            expires_at TEXT NOT NULL,
+            checked_out_at TEXT
         );
     ''')
     db.commit()
@@ -259,6 +278,16 @@ def fetch_events(city=None, day=None, date=None):
         d = dict(r)
         d['recurrence_days'] = d['recurrence_days'].split(',') if d['recurrence_days'] else []
         result.append(d)
+
+    # Live check-ins aren't in the events table (checkins survives restarts, events doesn't —
+    # see seed_communities_and_events()), so they're merged in here at read time instead.
+    # date=None means the caller (get_all_events) isn't scoped to one day at all — still show
+    # what's live right now there too; an explicit date only gets them when it's today, since
+    # a check-in from right now has no business appearing under a future "on Friday" filter.
+    if date is None or date == datetime.date.today().isoformat():
+        result.extend(_active_checkins_as_events(db, city))
+        result.sort(key=lambda e: e.get('time') or '')
+
     return result
 
 @app.route('/api/events')
@@ -340,6 +369,145 @@ def api_event(event_id):
     d = dict(row)
     d['recurrence_days'] = d['recurrence_days'].split(',') if d['recurrence_days'] else []
     return jsonify(d)
+
+# --- Check-in API ---
+# No accounts, so this is an honesty system by design: anyone can check in (a name field,
+# not auth) and anyone can check someone else out early (people don't stay the full hour).
+# The only real guard is one check-in slot per (place, table) at a time — a second scan of
+# the same table's sticker sees "occupied" instead of a fresh form.
+
+def _sweep_expired_checkins(db):
+    """A check-in past its own expiry is over even if nobody hit checkout — no background
+    job runs here, so every read/write lazily closes out anything stale first."""
+    now = datetime.datetime.utcnow().isoformat()
+    db.execute('''UPDATE checkins SET checked_out_at = expires_at
+                  WHERE checked_out_at IS NULL AND expires_at <= ?''', (now,))
+    db.commit()
+
+def _checkin_place_id(db):
+    row = db.execute('SELECT id FROM places WHERE slug=?', (CHECKIN_PLACE_SLUG,)).fetchone()
+    return row['id'] if row else None
+
+def _active_checkin(db, place_id, table_number):
+    _sweep_expired_checkins(db)
+    return db.execute('''SELECT * FROM checkins WHERE place_id=? AND table_number=? AND checked_out_at IS NULL
+                          ORDER BY id DESC LIMIT 1''', (place_id, table_number)).fetchone()
+
+def _checkin_json(row):
+    return {'id': row['id'], 'table': row['table_number'], 'name': row['name'],
+            'checked_in_at': row['checked_in_at'], 'expires_at': row['expires_at']}
+
+def _active_checkins_as_events(db, city=None):
+    """Live check-ins shaped like an EVENT_SELECT row, so fetch_events() can merge them in
+    alongside real scheduled events — same shape the frontend already renders either way,
+    so the map/sidebar can't disagree with what's actually checked in right now."""
+    _sweep_expired_checkins(db)
+    rows = db.execute('''
+        SELECT c.id, c.table_number, c.name, c.checked_in_at, c.expires_at,
+               p.slug AS place_slug, p.name AS place_name, p.labels AS place_labels,
+               p.image AS place_image, p.address AS place_address, p.city AS place_city,
+               p.lat AS place_lat, p.lng AS place_lng, p.gmaps AS place_gmaps
+        FROM checkins c JOIN places p ON p.id = c.place_id
+        WHERE c.checked_out_at IS NULL
+    ''').fetchall()
+    today = datetime.date.today().isoformat()
+    events = []
+    for r in rows:
+        if city and r['place_city'] != city:
+            continue
+        # name is public, unauthenticated input that ends up rendered as HTML in the
+        # sidebar card (renderCard() interpolates title/notes straight into innerHTML,
+        # same as it already does for admin-entered event titles) — escape it here so a
+        # malicious ?name= can't become stored XSS on the homepage.
+        safe_name = html.escape(r['name'])
+        events.append({
+            'id': f"checkin-{r['id']}",
+            'title': f"{safe_name} is playing",
+            'time': r['checked_in_at'][11:16],
+            'time_end': r['expires_at'][11:16],
+            'format_tag': 'Live now',
+            'external_link': None,
+            'notes': f"Table {r['table_number']}",
+            'specific_date': today,
+            'active': 1,
+            'community_name': None,
+            'community_image': None,
+            'place_slug': r['place_slug'],
+            'place_labels': r['place_labels'],
+            'place_image': r['place_image'],
+            'place_name': r['place_name'],
+            'place_address': r['place_address'],
+            'place_city': r['place_city'],
+            'place_lat': r['place_lat'],
+            'place_lng': r['place_lng'],
+            'place_gmaps': r['place_gmaps'],
+            'recurrence_days': [],
+            'is_live_checkin': True,
+        })
+    return events
+
+@app.route('/api/checkin/maxeuweplein/status')
+def checkin_status():
+    table = request.args.get('table', type=int)
+    if table is None or not (1 <= table <= CHECKIN_TABLE_COUNT):
+        return jsonify({'error': 'Invalid table'}), 400
+    db = get_db()
+    place_id = _checkin_place_id(db)
+    row = _active_checkin(db, place_id, table)
+    if not row:
+        return jsonify({'active': False})
+    return jsonify({'active': True, **_checkin_json(row)})
+
+@app.route('/api/checkin/maxeuweplein', methods=['POST'])
+def checkin_create():
+    data = request.get_json(silent=True) or {}
+    try:
+        table = int(data.get('table'))
+    except (TypeError, ValueError):
+        table = None
+    name = (data.get('name') or '').strip()[:60]
+    try:
+        duration = int(data.get('duration_minutes'))
+    except (TypeError, ValueError):
+        duration = None
+
+    if table is None or not (1 <= table <= CHECKIN_TABLE_COUNT):
+        return jsonify({'error': 'Invalid table'}), 400
+    if not name:
+        return jsonify({'error': 'Name required'}), 400
+    if duration not in CHECKIN_DURATIONS_MINUTES:
+        return jsonify({'error': 'Invalid duration'}), 400
+
+    db = get_db()
+    place_id = _checkin_place_id(db)
+    if place_id is None:
+        return jsonify({'error': 'Place not configured'}), 500
+
+    existing = _active_checkin(db, place_id, table)
+    if existing:
+        return jsonify({'error': 'Occupied', 'active': True, **_checkin_json(existing)}), 409
+
+    now = datetime.datetime.utcnow()
+    expires = now + datetime.timedelta(minutes=duration)
+    cur = db.execute('''INSERT INTO checkins (place_id, table_number, name, checked_in_at, expires_at)
+                         VALUES (?, ?, ?, ?, ?)''',
+                      (place_id, table, name, now.isoformat(), expires.isoformat()))
+    db.commit()
+    return jsonify({'active': True, 'id': cur.lastrowid, 'table': table, 'name': name,
+                     'checked_in_at': now.isoformat(), 'expires_at': expires.isoformat()}), 201
+
+@app.route('/api/checkin/<int:checkin_id>/checkout', methods=['POST'])
+def checkin_checkout(checkin_id):
+    # Deliberately open to anyone, not just whoever checked in — see module note above.
+    db = get_db()
+    row = db.execute('SELECT * FROM checkins WHERE id=?', (checkin_id,)).fetchone()
+    if not row:
+        return jsonify({'error': 'Not found'}), 404
+    if row['checked_out_at'] is None:
+        db.execute('UPDATE checkins SET checked_out_at=? WHERE id=?',
+                   (datetime.datetime.utcnow().isoformat(), checkin_id))
+        db.commit()
+    return jsonify({'ok': True})
 
 # --- Admin API ---
 
@@ -711,8 +879,8 @@ def event_page(event_id):
 
 @app.route('/checkin/maxeuweplein')
 def checkin_maxeuweplein():
-    # Static NFC check-in confirmation page — the table number (if any) is read
-    # client-side from ?table=N, nothing here needs to branch on it server-side.
+    # The NFC sticker's own page — table number comes from ?table=N. The page itself is a
+    # static file; it talks to /api/checkin/maxeuweplein* client-side for the live behavior.
     return send_file('static/checkin-euweplein.html')
 
 @app.route('/admin')

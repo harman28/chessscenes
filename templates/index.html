@@ -85,6 +85,17 @@
     .card-name { font-size: 15px; font-weight: 500; color: var(--maroon-dark); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .card-meta { font-size: 12px; color: var(--maroon-mid); margin-top: 2px; }
     .card-tag { flex-shrink: 0; font-size: 11px; background: rgba(107,26,42,0.1); color: var(--maroon); padding: 4px 9px; border-radius: 20px; }
+    .live-tag {
+      flex-shrink: 0; display: flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 500;
+      letter-spacing: 0.08em; text-transform: uppercase; color: #c23a36; background: rgba(194,58,54,0.1);
+      padding: 4px 10px 4px 8px; border-radius: 20px;
+    }
+    .pulse-dot { width: 6px; height: 6px; border-radius: 50%; background: #c23a36; animation: pulse 1.6s infinite; }
+    @keyframes pulse {
+      0%   { box-shadow: 0 0 0 0 rgba(194,58,54,0.55); }
+      70%  { box-shadow: 0 0 0 6px rgba(194,58,54,0); }
+      100% { box-shadow: 0 0 0 0 rgba(194,58,54,0); }
+    }
     .card-detail { border-top: 0.5px solid var(--cream-dark); padding: 12px 15px 14px; display: none; }
     .card-detail.open { display: block; }
     .detail-row { display: flex; gap: 10px; font-size: 13px; color: #3a0e16; margin-bottom: 6px; line-height: 1.4; }
@@ -471,7 +482,8 @@ async function refreshMapPins(city, day, date) {
     // Always the event's own page, even when it's tied to a place — a red pin means
     // "something's happening here today," and the event has the specific title/link/
     // community photo for that, which the place's own generic info doesn't carry.
-    marker.on('click', () => navigate('/event/' + e.id));
+    // A live check-in has no event page of its own (see pathForEvent) — go to the place.
+    marker.on('click', () => navigate(e.is_live_checkin ? '/place/' + e.place_slug : '/event/' + e.id));
     eventPinMarkers[key] = marker;
   });
 }
@@ -605,7 +617,10 @@ function renderCard(e) {
   const dateStr = e.specific_date ? formatSpecificDate(e.specific_date) : null;
   const timeStr = e.time ? (e.time_end ? e.time+'–'+e.time_end : e.time) : null;
   const meta = [dateStr, timeStr, e.place_name].filter(Boolean).join(' · ');
-  const tag = e.format_tag ? `<span class="card-tag">${e.format_tag}</span>` : '';
+  // A live check-in gets its own pulsing tag instead of the plain format_tag pill — same
+  // idea as the active/inactive map pins, just spelled out in the sidebar too.
+  const tag = e.is_live_checkin ? `<span class="live-tag"><span class="pulse-dot"></span>Live</span>`
+    : e.format_tag ? `<span class="card-tag">${e.format_tag}</span>` : '';
   const rows = [];
   if (e.place_name) rows.push(`<div class="detail-row"><span class="detail-label">Where</span><span>${e.place_name}${e.place_address?', '+e.place_address:''}</span></div>`);
   if (e.time) {
@@ -620,7 +635,11 @@ function renderCard(e) {
   if (e.external_link) links.push(`<a class="detail-link" href="${e.external_link}" target="_blank" rel="noopener" onclick="event.stopPropagation()">More info ↗</a>`);
   if (links.length) rows.push(`<div class="detail-links">${links.join('')}</div>`);
 
-  return `<div class="event-card" id="card-${e.id}" onclick="onCardClick(this,${e.id})">
+  // Real event ids are numbers straight from the DB; a live check-in's id ("checkin-3") is
+  // a string — quote only the string case so onCardClick's `e.id === eventId` still matches
+  // either type coming back out of currentEvents.
+  const idArg = typeof e.id === 'string' ? `'${e.id}'` : e.id;
+  return `<div class="event-card" id="card-${e.id}" onclick="onCardClick(this,${idArg})">
     <div class="card-top">${imgHtml}<div class="card-body"><div class="card-name">${e.title}</div><div class="card-meta">${meta}</div></div>${tag}</div>
     <div class="card-detail">${rows.join('')}</div>
   </div>`;
@@ -628,8 +647,12 @@ function renderCard(e) {
 
 function pathForEvent(e) {
   if (!e) return null;
-  // Always the event's own page (title, external link, community photo) — /place/<slug>
-  // is for browsing a place itself (reached via a grey pin), not for what's on there today.
+  // A live check-in has no event page of its own (it's synthesized at read time, not a real
+  // row) — send it to the place it's happening at instead.
+  if (e.is_live_checkin) return '/place/' + e.place_slug;
+  // Otherwise always the event's own page (title, external link, community photo) —
+  // /place/<slug> is for browsing a place itself (reached via a grey pin), not for what's
+  // on there today.
   return '/event/' + e.id;
 }
 
