@@ -1,4 +1,4 @@
-from flask import Flask, render_template, jsonify, request, g, abort, Response, redirect
+from flask import Flask, render_template, jsonify, request, g, abort, Response, redirect, send_file
 import sqlite3
 import os
 import re
@@ -708,6 +708,12 @@ def event_page(event_id):
         og_image=ev.get('community_image') or ev.get('place_image'),
         og_url=f"/event/{event_id}",
     )
+
+@app.route('/checkin/maxeuweplein')
+def checkin_maxeuweplein():
+    # Static NFC check-in confirmation page — the table number (if any) is read
+    # client-side from ?table=N, nothing here needs to branch on it server-side.
+    return send_file('static/checkin-euweplein.html')
 
 @app.route('/admin')
 def admin():
