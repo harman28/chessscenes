@@ -77,7 +77,9 @@
   .avatar {
     width: 50px; height: 50px; border-radius: 8px; flex-shrink: 0; background: var(--cream-dark);
     display: flex; align-items: center; justify-content: center; font-size: 22px; color: var(--maroon);
+    overflow: hidden;
   }
+  .avatar img { width: 100%; height: 100%; object-fit: cover; }
   .who-name { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 500; color: var(--maroon-dark); }
   .who-meta { font-size: 12px; color: var(--maroon-mid); margin-top: 2px; }
   .time-row { margin-bottom: 22px; }
@@ -133,7 +135,7 @@
     <div class="live-badge"><span class="pulse-dot"></span>Live now</div>
     <div class="card">
       <div class="who-row">
-        <div class="avatar">♞</div>
+        <div class="avatar" id="avatar">♞</div>
         <div>
           <div class="who-name" id="who-name"></div>
           <div class="who-meta" id="who-meta"></div>
@@ -201,6 +203,17 @@ async function refresh() {
 
 function renderOccupied() {
   el('who-name').textContent = current.name; // textContent, not innerHTML — name is public input
+  const avatar = el('avatar');
+  if (current.image) {
+    avatar.innerHTML = '';
+    const img = document.createElement('img');
+    img.src = current.image;
+    img.alt = '';
+    img.onerror = () => { avatar.innerHTML = '♞'; };
+    avatar.appendChild(img);
+  } else {
+    avatar.textContent = '♞';
+  }
   const checkedInAt = new Date(current.checked_in_at + 'Z');
   const expiresAt = new Date(current.expires_at + 'Z');
   const minsAgo = Math.max(0, Math.round((Date.now() - checkedInAt) / 60000));

@@ -410,9 +410,13 @@ def _active_checkin(db, place_slug, table_number):
     return db.execute('''SELECT * FROM checkins WHERE place_slug=? AND table_number=? AND checked_out_at IS NULL
                           ORDER BY id DESC LIMIT 1''', (place_slug, table_number)).fetchone()
 
+def _is_harman(name):
+    return name.strip().lower() == CHECKIN_HARMAN_NAME
+
 def _checkin_json(row):
     return {'id': row['id'], 'table': row['table_number'], 'name': row['name'],
-            'checked_in_at': row['checked_in_at'], 'expires_at': row['expires_at']}
+            'checked_in_at': row['checked_in_at'], 'expires_at': row['expires_at'],
+            'image': CHECKIN_HARMAN_IMAGE if _is_harman(row['name']) else None}
 
 def _active_checkins_as_events(db, city=None):
     """Live check-ins shaped like an EVENT_SELECT row, so fetch_events() can merge them in
@@ -437,7 +441,7 @@ def _active_checkins_as_events(db, city=None):
         # same as it already does for admin-entered event titles) — escape it here so a
         # malicious ?name= can't become stored XSS on the homepage.
         safe_name = html.escape(r['name'])
-        is_harman = r['name'].strip().lower() == CHECKIN_HARMAN_NAME
+        is_harman = _is_harman(r['name'])
         events.append({
             'id': f"checkin-{r['id']}",
             'title': f"{safe_name} is playing",
@@ -510,7 +514,8 @@ def checkin_create():
                       (CHECKIN_PLACE_SLUG, table, name, now.isoformat(), expires.isoformat()))
     db.commit()
     return jsonify({'active': True, 'id': cur.lastrowid, 'table': table, 'name': name,
-                     'checked_in_at': now.isoformat(), 'expires_at': expires.isoformat()}), 201
+                     'checked_in_at': now.isoformat(), 'expires_at': expires.isoformat(),
+                     'image': CHECKIN_HARMAN_IMAGE if _is_harman(name) else None}), 201
 
 @app.route('/api/checkin/<int:checkin_id>/checkout', methods=['POST'])
 def checkin_checkout(checkin_id):
