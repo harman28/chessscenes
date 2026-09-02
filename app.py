@@ -39,10 +39,12 @@ EVENTS_JSON_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'che
 CHECKIN_PLACE_SLUG = 'max-euweplein'
 CHECKIN_TABLE_COUNT = 5
 CHECKIN_DURATIONS_MINUTES = {30, 60, 90, 120}
-# Harman's own check-ins link out to his Instagram post about the table — everyone else's
-# just don't get a "More info" link, since there's nothing to point them to.
+# Harman's own check-ins link out to his Instagram post about the table, and use his own
+# photo for the card thumbnail — everyone else's checkins fall back to the place's own
+# photo (see community_image in _active_checkins_as_events), same as regular events do.
 CHECKIN_HARMAN_NAME = 'harman'
 CHECKIN_HARMAN_LINK = 'https://www.instagram.com/p/DbjB-apjT3C/?img_index=1'
+CHECKIN_HARMAN_IMAGE = 'https://i.imgur.com/HIfyyFX.jpeg'
 
 def get_db():
     db = getattr(g, '_database', None)
@@ -436,7 +438,7 @@ def _active_checkins_as_events(db, city=None):
             'specific_date': today,
             'active': 1,
             'community_name': None,
-            'community_image': None,
+            'community_image': CHECKIN_HARMAN_IMAGE if is_harman else None,
             'place_slug': r['place_slug'],
             'place_labels': r['place_labels'],
             'place_image': r['place_image'],
