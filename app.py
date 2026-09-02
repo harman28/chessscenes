@@ -39,6 +39,10 @@ EVENTS_JSON_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'che
 CHECKIN_PLACE_SLUG = 'max-euweplein'
 CHECKIN_TABLE_COUNT = 5
 CHECKIN_DURATIONS_MINUTES = {30, 60, 90, 120}
+# Harman's own check-ins link out to his Instagram post about the table — everyone else's
+# just don't get a "More info" link, since there's nothing to point them to.
+CHECKIN_HARMAN_NAME = 'harman'
+CHECKIN_HARMAN_LINK = 'https://www.instagram.com/p/DbjB-apjT3C/?img_index=1'
 
 def get_db():
     db = getattr(g, '_database', None)
@@ -420,13 +424,14 @@ def _active_checkins_as_events(db, city=None):
         # same as it already does for admin-entered event titles) — escape it here so a
         # malicious ?name= can't become stored XSS on the homepage.
         safe_name = html.escape(r['name'])
+        is_harman = r['name'].strip().lower() == CHECKIN_HARMAN_NAME
         events.append({
             'id': f"checkin-{r['id']}",
             'title': f"{safe_name} is playing",
             'time': r['checked_in_at'][11:16],
             'time_end': r['expires_at'][11:16],
             'format_tag': 'Live now',
-            'external_link': None,
+            'external_link': CHECKIN_HARMAN_LINK if is_harman else None,
             'notes': f"Table {r['table_number']}",
             'specific_date': today,
             'active': 1,
