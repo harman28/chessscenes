@@ -111,6 +111,11 @@
 
     /* Map */
     .leaflet-container { background: #e8e4df; }
+    /* Raw OpenStreetMap tiles are far more saturated (green parks, blue water, bright
+       road colors) than CARTO's old light_all style was — mute them toward the app's own
+       beige/maroon palette with a filter instead of depending on a third-party "light"
+       tile style, which is exactly the kind of dependency that just broke. */
+    .leaflet-tile-pane { filter: grayscale(0.65) sepia(0.25) brightness(1.05) contrast(0.9); }
     .leaflet-control-zoom { border: none !important; }
     .leaflet-control-zoom a { background: var(--maroon) !important; color: var(--cream) !important; border: none !important; }
     /* OpenStreetMap's usage policy requires attribution actually be shown (not hidden) —
@@ -541,6 +546,13 @@ function isEventLiveNow(e) {
     endMin = startMin + DEFAULT_EVENT_DURATION_MIN;
   }
   const nowMin = now.getHours() * 60 + now.getMinutes();
+  // A venue open past midnight (Cafe de Laurierboom: 15:00-01:00) has time_end < time — the
+  // window wraps into the next calendar day, so "now" is inside it either from start to
+  // midnight or from midnight to end, rather than a single contiguous range. This doesn't
+  // handle the mirror case — a still-open venue after midnight where "today" was actually
+  // yesterday's occurrence — but every recurring event currently in the data recurs daily,
+  // so today's own occurrence always covers it too.
+  if (endMin <= startMin) return nowMin >= startMin || nowMin < endMin;
   return nowMin >= startMin && nowMin < endMin;
 }
 
