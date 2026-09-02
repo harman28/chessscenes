@@ -6,6 +6,7 @@ import csv
 import json
 import jwt
 import datetime
+from zoneinfo import ZoneInfo
 import html
 import math
 import io
@@ -43,6 +44,14 @@ EVENTS_JSON_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'che
 # One physical NFC sticker per table; the sticker's URL carries which table via ?table=N.
 # Hardcoded rather than a places column since Max Euweplein is the only check-in-enabled
 # place so far — worth promoting to real data once a second place needs this.
+# Every other event's time/time_end in this app is a plain local wall-clock string (whatever
+# city that event is actually in — nothing here is ever timezone-converted), and the
+# frontend's isEventLiveNow() compares those against the *browser's* local clock, which is
+# correct as long as both sides mean "local to the place." Check-in timestamps need to keep
+# that same meaning — computed in Amsterdam's own local time, not UTC — or a check-in made
+# after Amsterdam's local midnight would carry the wrong wall-clock hour and calendar date
+# entirely, comparing incorrectly against a real visitor's local clock.
+CHECKIN_TZ = ZoneInfo('Europe/Amsterdam')
 CHECKIN_PLACE_SLUG = 'max-euweplein'
 CHECKIN_TABLE_COUNT = 5
 CHECKIN_DURATIONS_MINUTES = {30, 60, 90, 120}
@@ -302,7 +311,7 @@ def fetch_events(city=None, day=None, date=None):
     # date=None means the caller (get_all_events) isn't scoped to one day at all — still show
     # what's live right now there too; an explicit date only gets them when it's today, since
     # a check-in from right now has no business appearing under a future "on Friday" filter.
-    if date is None or date == datetime.date.today().isoformat():
+    if date is None or date == datetime.datetime.now(CHECKIN_TZ).date().isoformat():
         result.extend(_active_checkins_as_events(db, city))
         result.sort(key=lambda e: e.get('time') or '')
 
@@ -397,7 +406,7 @@ def api_event(event_id):
 def _sweep_expired_checkins(db):
     """A check-in past its own expiry is over even if nobody hit checkout — no background
     job runs here, so every read/write lazily closes out anything stale first."""
-    now = datetime.datetime.utcnow().isoformat()
+    now = datetime.datetime.now(CHECKIN_TZ).isoformat()
     db.execute('''UPDATE checkins SET checked_out_at = expires_at
                   WHERE checked_out_at IS NULL AND expires_at <= ?''', (now,))
     db.commit()
@@ -431,7 +440,7 @@ def _active_checkins_as_events(db, city=None):
         FROM checkins c JOIN places p ON p.slug = c.place_slug
         WHERE c.checked_out_at IS NULL
     ''').fetchall()
-    today = datetime.date.today().isoformat()
+    today = datetime.datetime.now(CHECKIN_TZ).date().isoformat()
     events = []
     for r in rows:
         if city and r['place_city'] != city:
@@ -507,7 +516,7 @@ def checkin_create():
     if existing:
         return jsonify({'error': 'Occupied', 'active': True, **_checkin_json(existing)}), 409
 
-    now = datetime.datetime.utcnow()
+    now = datetime.datetime.now(CHECKIN_TZ)
     expires = now + datetime.timedelta(minutes=duration)
     cur = db.execute('''INSERT INTO checkins (place_slug, table_number, name, checked_in_at, expires_at)
                          VALUES (?, ?, ?, ?, ?)''',
@@ -526,7 +535,7 @@ def checkin_checkout(checkin_id):
         return jsonify({'error': 'Not found'}), 404
     if row['checked_out_at'] is None:
         db.execute('UPDATE checkins SET checked_out_at=? WHERE id=?',
-                   (datetime.datetime.utcnow().isoformat(), checkin_id))
+                   (datetime.datetime.now(CHECKIN_TZ).isoformat(), checkin_id))
         db.commit()
     return jsonify({'ok': True})
 

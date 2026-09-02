@@ -254,6 +254,12 @@
 <script>
 const DAYS = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+// d.toISOString() normalizes to UTC, which silently swaps in the wrong calendar day for
+// part of the evening in Amsterdam (UTC+1/+2 — "today" flips to tomorrow locally before it
+// does in UTC). Every date resolved for filtering/comparison needs the LOCAL day instead.
+function localDateIso(d) {
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
 // A one-off (specific_date) event has no recurrence to describe it by — without this,
 // a card only shows a bare time ("19:00"), which is ambiguous once several different
 // dates are mixed together under the "Upcoming" bucket in the any-day view.
@@ -313,7 +319,7 @@ function resolveDate(val) {
       if (dayName(today + i) === val) { d.setDate(d.getDate() + i); break; }
     }
   }
-  return d.toISOString().split('T')[0];
+  return localDateIso(d);
 }
 
 // ── Cities ──
@@ -528,7 +534,7 @@ const DEFAULT_EVENT_DURATION_MIN = 2 * 60;
 function isEventLiveNow(e) {
   if (!e.time) return false;
   const now = new Date();
-  const todayIso = now.toISOString().split('T')[0];
+  const todayIso = localDateIso(now);
   const todayName = DAYS[now.getDay()];
   const isToday = e.specific_date ? e.specific_date === todayIso
     : !!(e.recurrence_days && e.recurrence_days.includes(todayName));

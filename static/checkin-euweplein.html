@@ -214,8 +214,11 @@ function renderOccupied() {
   } else {
     avatar.textContent = '♞';
   }
-  const checkedInAt = new Date(current.checked_in_at + 'Z');
-  const expiresAt = new Date(current.expires_at + 'Z');
+  // The server sends real ISO-8601 with its own offset (Amsterdam local, not UTC) —
+  // Date() parses that natively, no 'Z' needed (appending one here used to silently
+  // misinterpret the timestamp as UTC).
+  const checkedInAt = new Date(current.checked_in_at);
+  const expiresAt = new Date(current.expires_at);
   const minsAgo = Math.max(0, Math.round((Date.now() - checkedInAt) / 60000));
   el('who-meta').textContent = minsAgo < 1 ? 'Checked in just now' : `Checked in ${minsAgo} min ago`;
 
