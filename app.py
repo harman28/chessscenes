@@ -28,7 +28,14 @@ def slugify(text):
     text = re.sub(r'[\s_]+', '-', text)
     return re.sub(r'-+', '-', text).strip('-')
 
-DATABASE = 'chess.db'
+# Railway's local container disk is wiped on every deploy — a fresh container has no
+# chess.db at all, so init_db() just creates an empty one from scratch. That's fine for
+# places/events/communities (they're meant to be rebuilt from the committed CSV/JSON every
+# time), but it means checkins gets wiped too even though nothing in this app's own code
+# ever clears it — the whole file is just gone with the old container. Mount a Railway
+# volume and set DATABASE_PATH to somewhere inside it (e.g. /data/chess.db) to make
+# check-ins actually survive a deploy; unset, this keeps today's ephemeral behavior.
+DATABASE = os.environ.get('DATABASE_PATH', 'chess.db')
 CSV_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'Chess Scenes (Public) - chess_scenes_venues.csv')
 EVENTS_JSON_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'chess_scenes_events.json')
 
@@ -111,7 +118,12 @@ def init_db():
 
         CREATE TABLE IF NOT EXISTS checkins (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            place_id INTEGER NOT NULL REFERENCES places(id),
+            -- By slug, not a places.id foreign key: seed_places() deletes and re-inserts
+            -- every place on every startup, and SQLite's AUTOINCREMENT never reuses ids
+            -- after a delete — a places.id would silently drift out from under any checkin
+            -- that survived the restart (checkins is deliberately not reseeded), leaving it
+            -- referencing a place that no longer exists at that id. The slug is stable.
+            place_slug TEXT NOT NULL,
             table_number INTEGER NOT NULL,
             name TEXT NOT NULL,
             checked_in_at TEXT NOT NULL,
@@ -390,14 +402,13 @@ def _sweep_expired_checkins(db):
                   WHERE checked_out_at IS NULL AND expires_at <= ?''', (now,))
     db.commit()
 
-def _checkin_place_id(db):
-    row = db.execute('SELECT id FROM places WHERE slug=?', (CHECKIN_PLACE_SLUG,)).fetchone()
-    return row['id'] if row else None
+def _checkin_place_exists(db):
+    return db.execute('SELECT 1 FROM places WHERE slug=?', (CHECKIN_PLACE_SLUG,)).fetchone() is not None
 
-def _active_checkin(db, place_id, table_number):
+def _active_checkin(db, place_slug, table_number):
     _sweep_expired_checkins(db)
-    return db.execute('''SELECT * FROM checkins WHERE place_id=? AND table_number=? AND checked_out_at IS NULL
-                          ORDER BY id DESC LIMIT 1''', (place_id, table_number)).fetchone()
+    return db.execute('''SELECT * FROM checkins WHERE place_slug=? AND table_number=? AND checked_out_at IS NULL
+                          ORDER BY id DESC LIMIT 1''', (place_slug, table_number)).fetchone()
 
 def _checkin_json(row):
     return {'id': row['id'], 'table': row['table_number'], 'name': row['name'],
@@ -413,7 +424,7 @@ def _active_checkins_as_events(db, city=None):
                p.slug AS place_slug, p.name AS place_name, p.labels AS place_labels,
                p.image AS place_image, p.address AS place_address, p.city AS place_city,
                p.lat AS place_lat, p.lng AS place_lng, p.gmaps AS place_gmaps
-        FROM checkins c JOIN places p ON p.id = c.place_id
+        FROM checkins c JOIN places p ON p.slug = c.place_slug
         WHERE c.checked_out_at IS NULL
     ''').fetchall()
     today = datetime.date.today().isoformat()
@@ -459,8 +470,7 @@ def checkin_status():
     if table is None or not (1 <= table <= CHECKIN_TABLE_COUNT):
         return jsonify({'error': 'Invalid table'}), 400
     db = get_db()
-    place_id = _checkin_place_id(db)
-    row = _active_checkin(db, place_id, table)
+    row = _active_checkin(db, CHECKIN_PLACE_SLUG, table)
     if not row:
         return jsonify({'active': False})
     return jsonify({'active': True, **_checkin_json(row)})
@@ -486,19 +496,18 @@ def checkin_create():
         return jsonify({'error': 'Invalid duration'}), 400
 
     db = get_db()
-    place_id = _checkin_place_id(db)
-    if place_id is None:
+    if not _checkin_place_exists(db):
         return jsonify({'error': 'Place not configured'}), 500
 
-    existing = _active_checkin(db, place_id, table)
+    existing = _active_checkin(db, CHECKIN_PLACE_SLUG, table)
     if existing:
         return jsonify({'error': 'Occupied', 'active': True, **_checkin_json(existing)}), 409
 
     now = datetime.datetime.utcnow()
     expires = now + datetime.timedelta(minutes=duration)
-    cur = db.execute('''INSERT INTO checkins (place_id, table_number, name, checked_in_at, expires_at)
+    cur = db.execute('''INSERT INTO checkins (place_slug, table_number, name, checked_in_at, expires_at)
                          VALUES (?, ?, ?, ?, ?)''',
-                      (place_id, table, name, now.isoformat(), expires.isoformat()))
+                      (CHECKIN_PLACE_SLUG, table, name, now.isoformat(), expires.isoformat()))
     db.commit()
     return jsonify({'active': True, 'id': cur.lastrowid, 'table': table, 'name': name,
                      'checked_in_at': now.isoformat(), 'expires_at': expires.isoformat()}), 201
