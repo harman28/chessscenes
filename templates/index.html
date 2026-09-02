@@ -181,6 +181,18 @@
     }
     .pin-filter-row input { accent-color: var(--maroon); cursor: pointer; margin: 0; }
     .pin-filter-glyph { display: inline-block; width: 15px; text-align: center; color: var(--maroon); }
+
+    /* Footer — sits under the events list, inside the scrolling sidebar, so it's present
+       on every route (home/city/place/event all share this template) without disturbing
+       the fixed-height desktop map layout. */
+    .site-footer { margin-top: 40px; text-align: center; }
+    .site-footer a {
+      display: inline-flex; align-items: center; gap: 6px;
+      color: var(--cream-muted); text-decoration: none; font-size: 12.5px;
+      letter-spacing: 0.02em;
+    }
+    .site-footer a:hover { color: var(--cream); }
+    .site-footer svg { flex-shrink: 0; }
   </style>
 </head>
 <body>
@@ -197,6 +209,12 @@
       in these places.
     </p>
     <div id="events-container"><div class="loading">Loading…</div></div>
+    <div class="site-footer">
+      <a href="https://www.instagram.com/chessscenes/" target="_blank" rel="noopener">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+        @chessscenes
+      </a>
+    </div>
   </div>
 
   <div id="map-pane">
