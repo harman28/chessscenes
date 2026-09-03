@@ -932,7 +932,11 @@ def checkin_event_page(checkin_id):
     row = db.execute(CHECKIN_EVENT_SELECT + ' WHERE c.id = ? AND c.checked_out_at IS NULL',
                       (checkin_id,)).fetchone()
     if not row:
-        abort(404)
+        # Unlike a real event, a check-in routinely stops existing within minutes (checkout
+        # or expiry) — a bare 404 here is the bare Flask error page, not the site, which
+        # reads as broken. The client-side router already redirects home on a failed fetch
+        # for the same case; match that here instead of the default 404.
+        return redirect('/')
     desc_parts = [f"Chess in {row['place_city']}", f"at {row['place_name']}", f"Table {row['table_number']}"]
     return render_template('index.html',
         og_title=f"{row['name']} is playing · Chess Scenes",
