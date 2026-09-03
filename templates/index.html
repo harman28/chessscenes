@@ -505,9 +505,9 @@ async function refreshMapPins(city, day, date) {
     if (activeCategories.has(marker._category)) marker.addTo(map);
     // Always the event's own page, even when it's tied to a place — a red pin means
     // "something's happening here today," and the event has the specific title/link/
-    // community photo for that, which the place's own generic info doesn't carry.
-    // A live check-in has no event page of its own (see pathForEvent) — go to the place.
-    marker.on('click', () => navigate(e.is_live_checkin ? '/place/' + e.place_slug : '/event/' + e.id));
+    // community photo for that, which the place's own generic info doesn't carry. A live
+    // check-in's id ("checkin-3") routes here too — /api/checkin-event/<id> backs it.
+    marker.on('click', () => navigate('/event/' + e.id));
     eventPinMarkers[key] = marker;
   });
 }
@@ -713,12 +713,9 @@ function renderCard(e) {
 
 function pathForEvent(e) {
   if (!e) return null;
-  // A live check-in has no event page of its own (it's synthesized at read time, not a real
-  // row) — send it to the place it's happening at instead.
-  if (e.is_live_checkin) return '/place/' + e.place_slug;
-  // Otherwise always the event's own page (title, external link, community photo) —
-  // /place/<slug> is for browsing a place itself (reached via a grey pin), not for what's
-  // on there today.
+  // Always the event's own page (title, external link, community photo) — /place/<slug>
+  // is for browsing a place itself (reached via a grey pin), not for what's on there today.
+  // A live check-in's id ("checkin-3") routes here too — /api/checkin-event/<id> backs it.
   return '/event/' + e.id;
 }
 
@@ -741,7 +738,12 @@ function parseRoute(path) {
   let m;
   if ((m = path.match(/^\/city\/([^/]+)\/?$/))) return {view: 'city', slug: m[1]};
   if ((m = path.match(/^\/place\/([^/]+)\/?$/))) return {view: 'place', slug: m[1]};
-  if ((m = path.match(/^\/event\/(\d+)\/?$/))) return {view: 'event', id: Number(m[1])};
+  // A real event's id is numeric; a live check-in's is "checkin-<id>" — kept as a string
+  // so the event branch below knows which API endpoint backs it.
+  if ((m = path.match(/^\/event\/([^/]+)\/?$/))) {
+    const raw = m[1];
+    return {view: 'event', id: /^\d+$/.test(raw) ? Number(raw) : raw};
+  }
   return {view: 'home'};
 }
 
@@ -839,7 +841,12 @@ async function applyRoute(path) {
   }
 
   if (route.view === 'event') {
-    const res = await fetch('/api/event/' + route.id);
+    // A live check-in's id ("checkin-3") is backed by its own endpoint, not /api/event/<id>
+    // (there's no real events-table row) — everything past this fetch is shape-identical
+    // either way, so the rest of this branch doesn't need to know which kind it got.
+    const isCheckin = typeof route.id === 'string' && route.id.startsWith('checkin-');
+    const apiPath = isCheckin ? '/api/checkin-event/' + route.id.slice('checkin-'.length) : '/api/event/' + route.id;
+    const res = await fetch(apiPath);
     if (!res.ok) { navigate('/', {replace: true}); return; }
     const e = await res.json();
     if (selectCityInUI(e.place_city)) await onFilterChange();

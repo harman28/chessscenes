@@ -427,55 +427,70 @@ def _checkin_json(row):
             'checked_in_at': row['checked_in_at'], 'expires_at': row['expires_at'],
             'image': CHECKIN_HARMAN_IMAGE if _is_harman(row['name']) else None}
 
+CHECKIN_EVENT_SELECT = '''
+    SELECT c.id, c.table_number, c.name, c.checked_in_at, c.expires_at,
+           p.slug AS place_slug, p.name AS place_name, p.labels AS place_labels,
+           p.image AS place_image, p.address AS place_address, p.city AS place_city,
+           p.lat AS place_lat, p.lng AS place_lng, p.gmaps AS place_gmaps
+    FROM checkins c JOIN places p ON p.slug = c.place_slug
+'''
+
+def _checkin_row_to_event(r):
+    """A live check-in row shaped like an EVENT_SELECT row — the same shape whether it's
+    merged into the main events feed or fetched on its own by /api/checkin-event/<id>, so
+    the frontend renders (and links to) it exactly like a real event either way."""
+    # name is public, unauthenticated input that ends up rendered as HTML in the sidebar
+    # card (renderCard() interpolates title/notes straight into innerHTML, same as it
+    # already does for admin-entered event titles) — escape it here so a malicious ?name=
+    # can't become stored XSS on the homepage.
+    safe_name = html.escape(r['name'])
+    is_harman = _is_harman(r['name'])
+    return {
+        'id': f"checkin-{r['id']}",
+        'title': f"{safe_name} is playing",
+        'time': r['checked_in_at'][11:16],
+        'time_end': r['expires_at'][11:16],
+        'format_tag': 'Live now',
+        'external_link': CHECKIN_HARMAN_LINK if is_harman else None,
+        'notes': f"Table {r['table_number']}",
+        'specific_date': datetime.datetime.now(CHECKIN_TZ).date().isoformat(),
+        'active': 1,
+        'community_name': None,
+        'community_image': CHECKIN_HARMAN_IMAGE if is_harman else None,
+        'place_slug': r['place_slug'],
+        'place_labels': r['place_labels'],
+        'place_image': r['place_image'],
+        'place_name': r['place_name'],
+        'place_address': r['place_address'],
+        'place_city': r['place_city'],
+        'place_lat': r['place_lat'],
+        'place_lng': r['place_lng'],
+        'place_gmaps': r['place_gmaps'],
+        'recurrence_days': [],
+        'is_live_checkin': True,
+    }
+
 def _active_checkins_as_events(db, city=None):
     """Live check-ins shaped like an EVENT_SELECT row, so fetch_events() can merge them in
     alongside real scheduled events — same shape the frontend already renders either way,
     so the map/sidebar can't disagree with what's actually checked in right now."""
     _sweep_expired_checkins(db)
-    rows = db.execute('''
-        SELECT c.id, c.table_number, c.name, c.checked_in_at, c.expires_at,
-               p.slug AS place_slug, p.name AS place_name, p.labels AS place_labels,
-               p.image AS place_image, p.address AS place_address, p.city AS place_city,
-               p.lat AS place_lat, p.lng AS place_lng, p.gmaps AS place_gmaps
-        FROM checkins c JOIN places p ON p.slug = c.place_slug
-        WHERE c.checked_out_at IS NULL
-    ''').fetchall()
-    today = datetime.datetime.now(CHECKIN_TZ).date().isoformat()
-    events = []
-    for r in rows:
-        if city and r['place_city'] != city:
-            continue
-        # name is public, unauthenticated input that ends up rendered as HTML in the
-        # sidebar card (renderCard() interpolates title/notes straight into innerHTML,
-        # same as it already does for admin-entered event titles) — escape it here so a
-        # malicious ?name= can't become stored XSS on the homepage.
-        safe_name = html.escape(r['name'])
-        is_harman = _is_harman(r['name'])
-        events.append({
-            'id': f"checkin-{r['id']}",
-            'title': f"{safe_name} is playing",
-            'time': r['checked_in_at'][11:16],
-            'time_end': r['expires_at'][11:16],
-            'format_tag': 'Live now',
-            'external_link': CHECKIN_HARMAN_LINK if is_harman else None,
-            'notes': f"Table {r['table_number']}",
-            'specific_date': today,
-            'active': 1,
-            'community_name': None,
-            'community_image': CHECKIN_HARMAN_IMAGE if is_harman else None,
-            'place_slug': r['place_slug'],
-            'place_labels': r['place_labels'],
-            'place_image': r['place_image'],
-            'place_name': r['place_name'],
-            'place_address': r['place_address'],
-            'place_city': r['place_city'],
-            'place_lat': r['place_lat'],
-            'place_lng': r['place_lng'],
-            'place_gmaps': r['place_gmaps'],
-            'recurrence_days': [],
-            'is_live_checkin': True,
-        })
-    return events
+    rows = db.execute(CHECKIN_EVENT_SELECT + ' WHERE c.checked_out_at IS NULL').fetchall()
+    return [_checkin_row_to_event(r) for r in rows if not city or r['place_city'] == city]
+
+@app.route('/api/checkin-event/<int:checkin_id>')
+def api_checkin_event(checkin_id):
+    """A single live check-in, shaped like /api/event/<id> — lets a check-in's card/pin
+    link to its own detail view (name, table, live status, the right photo) instead of
+    falling back to the place's generic page, and survives a refresh since it's a real
+    fetch rather than relying on already-loaded list data."""
+    db = get_db()
+    _sweep_expired_checkins(db)
+    row = db.execute(CHECKIN_EVENT_SELECT + ' WHERE c.id = ? AND c.checked_out_at IS NULL',
+                      (checkin_id,)).fetchone()
+    if not row:
+        return jsonify({'error': 'Not found'}), 404
+    return jsonify(_checkin_row_to_event(row))
 
 @app.route('/api/checkin/maxeuweplein/status')
 def checkin_status():
@@ -905,6 +920,25 @@ def event_page(event_id):
         og_description=" · ".join(desc_parts),
         og_image=ev.get('community_image') or ev.get('place_image'),
         og_url=f"/event/{event_id}",
+    )
+
+@app.route('/event/checkin-<int:checkin_id>')
+def checkin_event_page(checkin_id):
+    # Sibling of event_page() for a live check-in — needed as a real server route (not just
+    # client-side routing) so a direct load, refresh, or shared link to a check-in's own
+    # page doesn't 404: /event/<int:event_id> above only matches a plain integer, and
+    # "checkin-3" isn't one.
+    db = get_db()
+    row = db.execute(CHECKIN_EVENT_SELECT + ' WHERE c.id = ? AND c.checked_out_at IS NULL',
+                      (checkin_id,)).fetchone()
+    if not row:
+        abort(404)
+    desc_parts = [f"Chess in {row['place_city']}", f"at {row['place_name']}", f"Table {row['table_number']}"]
+    return render_template('index.html',
+        og_title=f"{row['name']} is playing · Chess Scenes",
+        og_description=" · ".join(desc_parts),
+        og_image=CHECKIN_HARMAN_IMAGE if _is_harman(row['name']) else row['place_image'],
+        og_url=f"/event/checkin-{checkin_id}",
     )
 
 @app.route('/checkin/maxeuweplein')
