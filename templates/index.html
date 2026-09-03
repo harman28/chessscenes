@@ -523,16 +523,21 @@ function panToCity(city) {
 
 // Whether an event's own scheduled window covers this exact moment, so it can carry the
 // same "Live" tag a check-in gets. Needs an end time to know when it's over — real ones
-// (Max Euwe Centrum's open hours, Cafe En Passant) already have time_end from the source
-// data; everything else only has a start time, so two assumptions fill the gap: an
-// Amsterdam club night (the format_tag CLAUDE.md already treats as "real club", not
-// casual) is assumed to run 8pm-11pm the way Dutch chess clubs generally do, and anything
-// else with just a start time (Barblitz, casual meetups) is assumed to run 2 hours. Both
-// are guesses, not real closing times — worth tightening if either turns out wrong.
+// (Cafe En Passant) already have time_end from the source data; everything else only has
+// a start time, so two assumptions fill the gap: an Amsterdam club night (the format_tag
+// CLAUDE.md already treats as "real club", not casual) is assumed to run 8pm-11pm the way
+// Dutch chess clubs generally do, and anything else with just a start time (Barblitz,
+// casual meetups) is assumed to run 2 hours. Both are guesses, not real closing times —
+// worth tightening if either turns out wrong.
 const CLUB_NIGHT_ASSUMED_END_MIN = 23 * 60;
 const DEFAULT_EVENT_DURATION_MIN = 2 * 60;
 function isEventLiveNow(e) {
   if (!e.time) return false;
+  // "Open play" means a venue has chess available during its normal hours (Max Euwe
+  // Centrum, Cafe de Laurierboom) — always technically "in its window" whenever it's
+  // open, but that's not the same claim as "someone's playing right now." Live is for an
+  // actual happening: a check-in, a club night, a tournament.
+  if (e.format_tag === 'Open play') return false;
   const now = new Date();
   const todayIso = localDateIso(now);
   const todayName = DAYS[now.getDay()];
