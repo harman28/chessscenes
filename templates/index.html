@@ -567,6 +567,12 @@ function isEventLiveNow(e) {
   return nowMin >= startMin && nowMin < endMin;
 }
 
+// Live events float to the top regardless of their time slot — a stable sort (native since
+// ES2019) so anything tied on live-ness keeps the chronological order it already had.
+function sortLiveFirst(events) {
+  return events.slice().sort((a, b) => (isEventLiveNow(b) ? 1 : 0) - (isEventLiveNow(a) ? 1 : 0));
+}
+
 function activityLine(labels, days) {
   const l = (labels || '').toLowerCase();
   const isLocation = l.includes('chess board') || l.includes('chess memorial') || l.includes('chess shop') || l.includes('chess museum');
@@ -665,7 +671,7 @@ function renderGrouped(grouped) {
   container.innerHTML = days.map(day => `
     <div class="day-group">
       <div class="day-heading">${day}</div>
-      <div class="events-list">${grouped[day].map(renderCard).join('')}</div>
+      <div class="events-list">${sortLiveFirst(grouped[day]).map(renderCard).join('')}</div>
     </div>`).join('');
 }
 
@@ -675,7 +681,7 @@ function renderList(events, container) {
     container.innerHTML = `<div class="empty"><strong>♟</strong>No chess found ${val==='today'?'today':val==='tomorrow'?'tomorrow':val}</div>`;
     return;
   }
-  container.innerHTML = `<div class="events-list">${events.map(renderCard).join('')}</div>`;
+  container.innerHTML = `<div class="events-list">${sortLiveFirst(events).map(renderCard).join('')}</div>`;
 }
 
 function renderCard(e) {
