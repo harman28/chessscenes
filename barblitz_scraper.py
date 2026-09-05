@@ -117,7 +117,11 @@ def scrape(html):
             "standalone_name": None if place_slug else venue_name,
             "standalone_city": None if place_slug else city,
             "community": "BarBlitz",
-            "title": title,
+            "title": "BarBlitz",  # the scraped title (e.g. "Blitz Wednesday - De Laurierboom")
+                                  # is just barblitz.co's own per-tournament copy — the venue
+                                  # and date are already carried separately (place_slug/
+                                  # standalone_name, specific_date), so displaying it verbatim
+                                  # only duplicated that instead of adding anything.
             "time": local_time,
             "specific_date": specific_date,
             "external_link": f"https://barblitz.co/tournament/{tournament_id}/",
