@@ -333,8 +333,12 @@ def get_all_events():
     result = {}
 
     # One-off (specific_date) events don't fit a weekday-template grouping at all — grouped
-    # by date instead of day name so they aren't just invisible under "any day".
-    one_off = [e for e in all_events if e['specific_date']]
+    # by date instead of day name so they aren't just invisible under "any day". A past date
+    # is excluded outright — a one-off event that already happened isn't "upcoming" under any
+    # reading of that bucket's name, and nothing else here ever prunes it (unlike a recurring
+    # event, which just naturally reapplies every week).
+    today_iso = datetime.datetime.now(CHECKIN_TZ).date().isoformat()
+    one_off = [e for e in all_events if e['specific_date'] and e['specific_date'] >= today_iso]
     if one_off:
         one_off.sort(key=lambda e: e['specific_date'])
         result['Upcoming'] = one_off
