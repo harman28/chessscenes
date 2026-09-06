@@ -1560,25 +1560,6 @@
       "active": true
     },
     {
-      "place_slug": null,
-      "standalone_name": "Café Schinkelhaven",
-      "standalone_address": null,
-      "standalone_city": "Amsterdam",
-      "standalone_lat": 52.35469586749965,
-      "standalone_lng": 4.855241193451056,
-      "standalone_gmaps": "https://maps.app.goo.gl/CZ99kdB4yEiRneh66",
-      "community": "BarBlitz",
-      "title": "BarBlitz",
-      "time": "19:00",
-      "time_end": null,
-      "format_tag": "Blitz",
-      "external_link": "https://barblitz.co/tournament/484/",
-      "notes": null,
-      "days": null,
-      "specific_date": "2026-09-06",
-      "active": true
-    },
-    {
       "place_slug": "cafe-holzmarktperle",
       "community": "Chess and Jazz",
       "title": "Chess & Jazz Vol.76",
