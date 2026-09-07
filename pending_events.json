@@ -154,5 +154,18 @@
     "specific_date": "2026-10-08",
     "external_link": "https://barblitz.co/tournament/495/",
     "active": true
+  },
+  {
+    "_barblitz_tournament_id": "499",
+    "_barblitz_url": "https://barblitz.co/tournament/499/",
+    "place_slug": null,
+    "standalone_name": "Café Dapper",
+    "standalone_city": "Amsterdam",
+    "community": "BarBlitz",
+    "title": "BarBlitz",
+    "time": "15:00",
+    "specific_date": "2026-09-20",
+    "external_link": "https://barblitz.co/tournament/499/",
+    "active": true
   }
 ]
