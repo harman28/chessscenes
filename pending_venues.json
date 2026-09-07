@@ -2335,35 +2335,6 @@
     "_scouted": "2026-06-26"
   },
   {
-    "name": "KL Chess Academy",
-    "city": "Kuala Lumpur",
-    "labels": [
-      "chess club",
-      "chess academy"
-    ],
-    "coordinates": "3.2014, 101.5892",
-    "note": "An enrichment centre specialising in teaching chess and training young chess talent. Hosts the KL Chess Grand Prix on Sundays (13 July, 16 August, 11 October, 15 November, 6 December 2026) from 1:30-5:30pm.",
-    "gmap": "https://maps.google.com/maps?q=20-1+Jln+27/70A+Desa+Sri+Hartamas+50480+Kuala+Lumpur",
-    "link": "https://www.klchessacademy.my/",
-    "image": "",
-    "days": "Sunday",
-    "_scouted": "2026-06-26"
-  },
-  {
-    "name": "Kuala Lumpur Chess Association (KLCA)",
-    "city": "Kuala Lumpur",
-    "labels": [
-      "chess club"
-    ],
-    "coordinates": "3.2014, 101.5892",
-    "note": "Non-governmental organization organizing chess competitions and events in Kuala Lumpur. Based in Desa Sri Hartamas.",
-    "gmap": "",
-    "link": "https://klca.my/",
-    "image": "",
-    "days": "",
-    "_scouted": "2026-06-26"
-  },
-  {
     "name": "Saigon Knight Life",
     "city": "Ho Chi Minh City",
     "labels": [
