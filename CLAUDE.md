@@ -7,11 +7,17 @@ memorials, museums. Lives at a Railway-hosted URL, deployed automatically on pus
 `main`.
 
 **Staging first, always.** The Railway project also has a `chessscenes-rebuild` service
-(same project, its own URL: **https://chessscenes-rebuild-production.up.railway.app**) —
-push non-trivial changes there and have Harman test before merging to `main`, which
-redeploys the real `web` service at chessscenes.com. Never push straight to `main` for
-anything beyond a one-line data fix. **Always include the staging URL above when asking
-Harman to test a staging deploy — don't assume it's memorized.**
+(same project, its own URL: **https://chessscenes-rebuild-production.up.railway.app**),
+auto-deployed from the **`rebuild-routing`** git branch (Railway → `chessscenes-rebuild` →
+Settings → Source) — push non-trivial changes to that branch and have Harman test on the
+URL above before merging to `main`, which redeploys the real `web` service at
+chessscenes.com. Never push straight to `main` for anything beyond a one-line data fix.
+**Always include the staging URL when asking Harman to test a staging deploy — don't
+assume it's memorized.** `rebuild-routing` tends to drift out of sync with `main` (it's an
+old feature branch, not a clean staging mirror) — check `git log main..rebuild-routing` and
+`git log rebuild-routing..main` before pushing, and prefer cherry-picking just the relevant
+commit(s) onto it over merging, to avoid dragging in unrelated diffs or reintroducing
+already-fixed bugs.
 
 ---
 
@@ -78,7 +84,7 @@ of truth, reseeded into `chess.db` on every startup:
 ```
 git add "Chess Scenes (Public) - chess_scenes_venues.csv" chess_scenes_events.json
 git commit -m "..."
-git push origin main   # or push to a branch and deploy to chessscenes-rebuild first
+git push origin main   # or cherry-pick onto rebuild-routing to deploy to staging first
 ```
 
 Railway picks up the push and redeploys automatically; `chess.db` is rebuilt fresh from
