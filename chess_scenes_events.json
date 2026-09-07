@@ -18,7 +18,8 @@
     "KopieKoffie": "https://i.imgur.com/pC1qmvK.jpeg",
     "VAS": "https://i.imgur.com/HgYGobW.png",
     "Goat of the Boat": "https://i.imgur.com/7bVmOsf.png",
-    "Chess and Jazz": "https://i.imgur.com/4EBVABa.png"
+    "Chess and Jazz": "https://i.imgur.com/4EBVABa.png",
+    "Kuala Lumpur Poggers": "https://images.chesscomfiles.com/uploads/v1/group/476247.e4ec9cd1.160x160o.780f89b3d7d0@2x.png"
   },
   "events": [
     {
@@ -1691,6 +1692,21 @@
         "Wednesday",
         "Thursday",
         "Friday"
+      ],
+      "specific_date": null,
+      "active": true
+    },
+    {
+      "place_slug": "kuala-lumpur-poggers",
+      "community": "Kuala Lumpur Poggers",
+      "title": "Kuala Lumpur Poggers",
+      "time": "15:00",
+      "time_end": "18:00",
+      "format_tag": "Casual",
+      "external_link": "https://www.chess.com/club/kuala-lumpur-poggers-by-chess-com",
+      "notes": null,
+      "days": [
+        "Saturday"
       ],
       "specific_date": null,
       "active": true
