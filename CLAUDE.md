@@ -7,9 +7,11 @@ memorials, museums. Lives at a Railway-hosted URL, deployed automatically on pus
 `main`.
 
 **Staging first, always.** The Railway project also has a `chessscenes-rebuild` service
-(same project, its own URL) — push non-trivial changes there and have Harman test before
-merging to `main`, which redeploys the real `web` service at chessscenes.com. Never push
-straight to `main` for anything beyond a one-line data fix.
+(same project, its own URL: **https://chessscenes-rebuild-production.up.railway.app**) —
+push non-trivial changes there and have Harman test before merging to `main`, which
+redeploys the real `web` service at chessscenes.com. Never push straight to `main` for
+anything beyond a one-line data fix. **Always include the staging URL above when asking
+Harman to test a staging deploy — don't assume it's memorized.**
 
 ---
 
@@ -81,6 +83,9 @@ git push origin main   # or push to a branch and deploy to chessscenes-rebuild f
 
 Railway picks up the push and redeploys automatically; `chess.db` is rebuilt fresh from
 these two files on boot. No manual trigger, and nothing to do with `chess.db` itself.
+
+Staging URL: **https://chessscenes-rebuild-production.up.railway.app** — always hand this
+to Harman when asking them to test a non-`main` deploy.
 
 ---
 
