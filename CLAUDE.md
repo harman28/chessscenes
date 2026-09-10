@@ -127,7 +127,7 @@ data became, not something to run again.
 
 ## Reviewing scout / scraper candidates
 
-Three sources feed pending-review files, all reviewed the same way: read the file, present
+Two sources feed pending-review files that need Harman's sign-off: read the file, present
 each candidate to Harman one by one, approve/reject/edit, then commit. **Cap at 5 reviews
 per session** — after the 5th, commit progress and tell Harman how many remain.
 
@@ -138,13 +138,21 @@ per session** — after the 5th, commit progress and tell Harman how many remain
   the pending file either way.
 - **`pending_giant_chessboards.json`** — populated by `giant_chessboard_finder.py` (see
   below). Same review flow; these never have a schedule, so it's CSV-only.
-- **`pending_events.json`** — populated by `barblitz_scraper.py` (see below). Each candidate
-  is already shaped like a `chess_scenes_events.json` event (place-linked if the scraper
-  matched an existing place by name, standalone otherwise). On approval, if it's standalone
-  and you can identify/geocode the venue, either fill in its `standalone_lat`/
-  `standalone_lng` or — if it turns out to be a place worth having its own pin — add it to
-  the CSV and switch the event to reference that `place_slug` instead. Then append it to
-  `chess_scenes_events.json`'s `events` list and remove it from the pending file.
+
+**`pending_events.json`** (from `barblitz_scraper.py`, see below) is different: **BarBlitz
+is a trusted source — don't wait for Harman's approval, just add candidates directly.**
+Whenever you're in this repo and the file is non-empty, work through it yourself: each
+candidate is already shaped like a `chess_scenes_events.json` event (place-linked if the
+scraper matched an existing place by name, standalone otherwise). If it's standalone,
+identify/geocode the venue — fill in `standalone_lat`/`standalone_lng`, or if it's a place
+worth its own pin, add it to the CSV and switch the event to reference that `place_slug`
+instead. Then append it to `chess_scenes_events.json`'s `events` list and remove it from the
+pending file. Still exercise judgment rather than adding blindly: check for entries already
+live (the scraper/pending file can end up with duplicates of already-approved tournaments —
+diff against existing `external_link`s), and don't invent coordinates for a venue you can't
+actually pin down — leave that one candidate in the pending file and flag it to Harman
+directly rather than guessing. The goal is an empty (or near-empty) `pending_events.json` as
+a matter of course, not a growing backlog waiting on review.
 
 ---
 
