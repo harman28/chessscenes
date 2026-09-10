@@ -1819,6 +1819,44 @@
       "days": null,
       "specific_date": "2026-10-08",
       "active": true
+    },
+    {
+      "place_slug": null,
+      "standalone_name": "Café Katoen",
+      "standalone_address": null,
+      "standalone_city": "Amsterdam",
+      "standalone_lat": 52.36795317177363,
+      "standalone_lng": 4.894061379412397,
+      "standalone_gmaps": "https://maps.app.goo.gl/BhbE23hvzbKYNqxn9",
+      "community": "BarBlitz",
+      "title": "BarBlitz",
+      "time": "19:00",
+      "time_end": null,
+      "format_tag": "Blitz",
+      "external_link": "https://barblitz.co/tournament/486/",
+      "notes": null,
+      "days": null,
+      "specific_date": "2026-10-04",
+      "active": true
+    },
+    {
+      "place_slug": null,
+      "standalone_name": "Café Dapper",
+      "standalone_address": null,
+      "standalone_city": "Amsterdam",
+      "standalone_lat": 52.36427911899383,
+      "standalone_lng": 4.926309577539275,
+      "standalone_gmaps": "https://maps.app.goo.gl/Xyrnb8b1HDKBQYvx9",
+      "community": "BarBlitz",
+      "title": "BarBlitz",
+      "time": "15:00",
+      "time_end": null,
+      "format_tag": "Blitz",
+      "external_link": "https://barblitz.co/tournament/499/",
+      "notes": null,
+      "days": null,
+      "specific_date": "2026-09-20",
+      "active": true
     }
   ]
 }
