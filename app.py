@@ -6,6 +6,9 @@ import csv
 import json
 import jwt
 import datetime
+import time
+import secrets
+from collections import defaultdict
 from zoneinfo import ZoneInfo
 import html
 import math
@@ -16,12 +19,41 @@ from PIL import Image, ImageDraw
 from werkzeug.middleware.proxy_fix import ProxyFix
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'dev-secret-change-in-prod')
+# SECRET_KEY signs admin JWTs. A hardcoded fallback here would be visible to anyone —
+# this repo is public — so when it's unset, generate a random per-process one instead of
+# falling back to a known string. That keeps the app bootable (including the documented
+# `python3 -c "from app import slugify; ..."` one-liner, and local dev with no env file)
+# without ever signing a token with a secret an attacker can just read off GitHub. It's
+# still not a substitute for setting SECRET_KEY in Railway: a random value here doesn't
+# survive a restart, which invalidates every existing admin session on redeploy.
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY') or secrets.token_hex(32)
+# Same reasoning as SECRET_KEY above — no hardcoded fallback password in a public repo.
+# login() below degrades to a clean 503 (matching chess-library-api's GOOGLE_CLIENT_ID
+# pattern) rather than accepting a guessable default when this isn't set.
+ADMIN_PASSWORD = os.environ.get('ADMIN_PASSWORD')
 # Railway terminates TLS in front of this app and forwards plain HTTP, so
 # request.url_root/request.scheme would report "http" even though the public site is
 # https-only — trust the one reverse proxy's X-Forwarded-Proto so absolute URLs we build
 # (og:image, og:url) get the right scheme instead of a redirect-requiring http:// one.
-app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
+# x_for=1 does the equivalent fix for request.remote_addr — Railway is the one proxy hop
+# in front, so its X-Forwarded-For is trusted to identify the real client IP, which the
+# login rate limiter below depends on.
+app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1)
+
+# --- Login rate limiting ---
+# In-memory is fine here (unlike chess-library-api's Postgres-backed limiter) because this
+# app is explicitly single-process (Procfile: `python3 app.py`, no gunicorn workers) — see
+# the static-map-cache comment elsewhere in this file for the same reasoning.
+LOGIN_RATE_LIMIT = 10
+LOGIN_RATE_WINDOW_SECONDS = 15 * 60
+_login_attempts = defaultdict(list)
+
+def _login_rate_limited(ip):
+    now = time.time()
+    attempts = [t for t in _login_attempts[ip] if now - t < LOGIN_RATE_WINDOW_SECONDS]
+    attempts.append(now)
+    _login_attempts[ip] = attempts
+    return len(attempts) > LOGIN_RATE_LIMIT
 
 def slugify(text):
     text = text.lower().strip()
@@ -252,9 +284,12 @@ def token_required(f):
 
 @app.route('/api/login', methods=['POST'])
 def login():
+    if not ADMIN_PASSWORD:
+        return jsonify({'error': 'Admin login is not configured'}), 503
+    if _login_rate_limited(request.remote_addr or 'unknown'):
+        return jsonify({'error': 'Too many attempts, try again later'}), 429
     data = request.json
-    admin_password = os.environ.get('ADMIN_PASSWORD', 'chess')
-    if data.get('password') == admin_password:
+    if data.get('password') == ADMIN_PASSWORD:
         token = jwt.encode({
             'admin': True,
             'exp': datetime.datetime.utcnow() + datetime.timedelta(days=7)

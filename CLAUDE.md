@@ -23,6 +23,18 @@ straight to `main` for anything beyond a one-line data fix.
 - Deployed on **Railway** — auto-deploys on every push to `main`
 - `Procfile`: `web: python3 app.py`
 
+### Environment variables (set on Railway — production `web` and the `chessscenes-rebuild`
+staging service both)
+
+- `ADMIN_PASSWORD` — required for `/admin` login (`POST /api/login`). There is no
+  fallback value — if unset, login returns a clean 503 rather than accepting a guessable
+  default. Since this repo is public, do not reintroduce a hardcoded fallback here.
+- `SECRET_KEY` — signs the admin JWT. If unset, the app generates a random per-process
+  value at startup instead of falling back to a hardcoded string (same reasoning as
+  `ADMIN_PASSWORD` — this repo is public). That keeps the app bootable without it, but a
+  process restart then invalidates every existing admin session, so still set it for
+  real in Railway rather than relying on the fallback.
+
 ---
 
 ## Data model

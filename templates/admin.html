@@ -198,6 +198,22 @@
 </div>
 
 <script>
+// Rows shown here ultimately come from admin edits plus approved scout/scraper
+// candidates — escape before innerHTML the same as the public site does, so a
+// crafted field can't execute in the admin's own browser either.
+function esc(str) {
+  if (str === null || str === undefined) return '';
+  return String(str).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+function safeUrl(url) {
+  if (!url) return '';
+  try {
+    const u = new URL(url, window.location.origin);
+    if (u.protocol === 'http:' || u.protocol === 'https:') return esc(url);
+  } catch (e) { /* not a parseable URL */ }
+  return '';
+}
+
 let token = localStorage.getItem('ct_token') || '';
 let communities = [], places = [], events = [];
 let editing = {};
@@ -256,12 +272,12 @@ function renderEvents() {
   const tbody = document.querySelector('#events-table tbody');
   tbody.innerHTML = events.map(e => `
     <tr class="${e.active ? '' : 'inactive'}">
-      <td>${e.title}</td>
-      <td>${e.community_name || '—'}</td>
-      <td>${e.place_name || '—'}</td>
-      <td>${(e.recurrence_days && e.recurrence_days.length ? e.recurrence_days.join(', ') : '') || e.specific_date || '—'}</td>
-      <td>${e.time || '—'}</td>
-      <td>${e.format_tag ? `<span class="badge">${e.format_tag}</span>` : '—'}</td>
+      <td>${esc(e.title)}</td>
+      <td>${esc(e.community_name) || '—'}</td>
+      <td>${esc(e.place_name) || '—'}</td>
+      <td>${esc((e.recurrence_days && e.recurrence_days.length ? e.recurrence_days.join(', ') : '') || e.specific_date) || '—'}</td>
+      <td>${esc(e.time) || '—'}</td>
+      <td>${e.format_tag ? `<span class="badge">${esc(e.format_tag)}</span>` : '—'}</td>
       <td>${e.active ? 'Active' : 'Hidden'}</td>
       <td><div class="row-actions">
         <button class="btn" onclick="openModal('event', ${e.id})">Edit</button>
@@ -274,8 +290,8 @@ function renderCommunities() {
   const tbody = document.querySelector('#communities-table tbody');
   tbody.innerHTML = communities.map(c => `
     <tr>
-      <td>${c.image ? `<img class="thumb" src="${c.image}" onerror="this.style.display='none'">` : '—'}</td>
-      <td>${c.name}</td>
+      <td>${safeUrl(c.image) ? `<img class="thumb" src="${safeUrl(c.image)}" onerror="this.style.display='none'">` : '—'}</td>
+      <td>${esc(c.name)}</td>
       <td><div class="row-actions">
         <button class="btn" onclick="openModal('community', ${c.id})">Edit</button>
         <button class="btn btn-danger" onclick="deleteRow('community', ${c.id})">Delete</button>
@@ -287,9 +303,9 @@ function renderPlaces() {
   const tbody = document.querySelector('#places-table tbody');
   tbody.innerHTML = places.map(v => `
     <tr>
-      <td>${v.name}</td>
-      <td>${v.address || '—'}</td>
-      <td>${v.city}</td>
+      <td>${esc(v.name)}</td>
+      <td>${esc(v.address) || '—'}</td>
+      <td>${esc(v.city)}</td>
       <td><div class="row-actions">
         <button class="btn" onclick="openModal('place', ${v.id})">Edit</button>
         <button class="btn btn-danger" onclick="deleteRow('place', ${v.id})">Delete</button>
@@ -318,8 +334,8 @@ function closeModal() {
 }
 
 function eventForm(e) {
-  const communityOptions = communities.map(c => `<option value="${c.id}" ${e && e.community_id == c.id ? 'selected' : ''}>${c.name}</option>`).join('');
-  const placeOptions = places.map(v => `<option value="${v.id}" ${e && e.place_id == v.id ? 'selected' : ''}>${v.name} (${v.city})</option>`).join('');
+  const communityOptions = communities.map(c => `<option value="${c.id}" ${e && e.community_id == c.id ? 'selected' : ''}>${esc(c.name)}</option>`).join('');
+  const placeOptions = places.map(v => `<option value="${v.id}" ${e && e.place_id == v.id ? 'selected' : ''}>${esc(v.name)} (${esc(v.city)})</option>`).join('');
   const days = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
   const selDays = e && e.recurrence_days ? e.recurrence_days : [];
   const dayCheckboxes = days.map(d => `<label style="display:inline-flex;align-items:center;gap:5px;margin-right:10px;margin-bottom:6px;font-size:13px;text-transform:none;letter-spacing:0;color:var(--text)"><input type="checkbox" class="day-cb" value="${d}" ${selDays.includes(d) ? 'checked' : ''}>${d}</label>`).join('');
@@ -327,15 +343,15 @@ function eventForm(e) {
   const formatOptions = formats.map(f => `<option value="${f}" ${e && e.format_tag === f ? 'selected' : ''}>${f}</option>`).join('');
   return `
     <h2>${e ? 'Edit event' : 'New event'}</h2>
-    <div class="field"><label>Title</label><input id="f-title" value="${e ? e.title : ''}"></div>
+    <div class="field"><label>Title</label><input id="f-title" value="${esc(e ? e.title : '')}"></div>
     <div class="field"><label>Community</label><select id="f-community"><option value="">— none —</option>${communityOptions}</select></div>
     <div class="field"><label>Place</label><select id="f-venue"><option value="">— none —</option>${placeOptions}</select></div>
     <div class="field"><label>Recurring days</label><div style="margin-top:4px;line-height:2">${dayCheckboxes}</div></div>
-    <div class="field"><label>Specific date (if one-off)</label><input type="date" id="f-date" value="${e && e.specific_date ? e.specific_date : ''}"></div>
-    <div class="field" style="display:flex;gap:12px"><div style="flex:1"><label>Start time</label><input id="f-time" placeholder="20:00" value="${e && e.time ? e.time : ''}"></div><div style="flex:1"><label>End time</label><input id="f-time-end" placeholder="22:00" value="${e && e.time_end ? e.time_end : ''}"></div></div>
+    <div class="field"><label>Specific date (if one-off)</label><input type="date" id="f-date" value="${esc(e && e.specific_date ? e.specific_date : '')}"></div>
+    <div class="field" style="display:flex;gap:12px"><div style="flex:1"><label>Start time</label><input id="f-time" placeholder="20:00" value="${esc(e && e.time ? e.time : '')}"></div><div style="flex:1"><label>End time</label><input id="f-time-end" placeholder="22:00" value="${esc(e && e.time_end ? e.time_end : '')}"></div></div>
     <div class="field"><label>Format tag</label><select id="f-format"><option value="">— none —</option>${formatOptions}</select></div>
-    <div class="field"><label>External link</label><input id="f-link" value="${e && e.external_link ? e.external_link : ''}"></div>
-    <div class="field"><label>Notes</label><textarea id="f-notes">${e && e.notes ? e.notes : ''}</textarea></div>
+    <div class="field"><label>External link</label><input id="f-link" value="${esc(e && e.external_link ? e.external_link : '')}"></div>
+    <div class="field"><label>Notes</label><textarea id="f-notes">${esc(e && e.notes ? e.notes : '')}</textarea></div>
     <div class="field"><div class="toggle-row"><input type="checkbox" id="f-active" ${!e || e.active ? 'checked' : ''}><label for="f-active" style="text-transform:none;letter-spacing:0;font-size:13px;color:var(--text)">Active (show on site)</label></div></div>
     <div class="modal-actions">
       <button class="btn" onclick="closeModal()">Cancel</button>
@@ -346,8 +362,8 @@ function eventForm(e) {
 function communityForm(c) {
   return `
     <h2>${c ? 'Edit community' : 'New community'}</h2>
-    <div class="field"><label>Name</label><input id="f-name" value="${c ? c.name : ''}"></div>
-    <div class="field"><label>Image URL</label><input id="f-image" value="${c && c.image ? c.image : ''}"></div>
+    <div class="field"><label>Name</label><input id="f-name" value="${esc(c ? c.name : '')}"></div>
+    <div class="field"><label>Image URL</label><input id="f-image" value="${esc(c && c.image ? c.image : '')}"></div>
     <div class="modal-actions">
       <button class="btn" onclick="closeModal()">Cancel</button>
       <button class="btn btn-primary" onclick="saveCommunity(${c ? c.id : 'null'})">Save</button>
@@ -357,10 +373,10 @@ function communityForm(c) {
 function placeForm(v) {
   return `
     <h2>${v ? 'Edit place' : 'New place'}</h2>
-    <div class="field"><label>Name</label><input id="f-name" value="${v ? v.name : ''}"></div>
-    <div class="field"><label>Address</label><input id="f-address" value="${v && v.address ? v.address : ''}"></div>
-    <div class="field"><label>City</label><input id="f-city" value="${v ? v.city : 'Amsterdam'}"></div>
-    <div class="field"><label>Google Maps link</label><input id="f-gmaps" value="${v && v.gmaps ? v.gmaps : ''}"></div>
+    <div class="field"><label>Name</label><input id="f-name" value="${esc(v ? v.name : '')}"></div>
+    <div class="field"><label>Address</label><input id="f-address" value="${esc(v && v.address ? v.address : '')}"></div>
+    <div class="field"><label>City</label><input id="f-city" value="${esc(v ? v.city : 'Amsterdam')}"></div>
+    <div class="field"><label>Google Maps link</label><input id="f-gmaps" value="${esc(v && v.gmaps ? v.gmaps : '')}"></div>
     <div class="field" style="display:flex;gap:12px"><div style="flex:1"><label>Latitude</label><input id="f-lat" placeholder="52.3728" value="${v && v.lat ? v.lat : ''}"></div><div style="flex:1"><label>Longitude</label><input id="f-lng" placeholder="4.8936" value="${v && v.lng ? v.lng : ''}"></div></div>
     <div class="modal-actions">
       <button class="btn" onclick="closeModal()">Cancel</button>

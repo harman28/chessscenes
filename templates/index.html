@@ -267,6 +267,24 @@
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
+// Place/event fields (name, note, links, images…) ultimately trace back to the scout and
+// barblitz scrapers, not just Harman's own edits — anything built from them via template
+// literals into innerHTML must be escaped here, same as any other unauthenticated-input
+// HTML sink. esc() covers text/attribute content; safeUrl() additionally restricts href/src
+// to http(s) so a scraped field can't smuggle a javascript: URI.
+function esc(str) {
+  if (str === null || str === undefined) return '';
+  return String(str).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+function safeUrl(url) {
+  if (!url) return '';
+  try {
+    const u = new URL(url, window.location.origin);
+    if (u.protocol === 'http:' || u.protocol === 'https:') return esc(url);
+  } catch (e) { /* not a parseable URL */ }
+  return '';
+}
+
 const DAYS = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 // d.toISOString() normalizes to UTC, which silently swaps in the wrong calendar day for
@@ -343,7 +361,7 @@ async function loadCities() {
   const res = await fetch('/api/cities');
   const cities = await res.json();
   const sel = document.getElementById('city-select');
-  sel.innerHTML = cities.map(c=>`<option value="${c.name}" data-slug="${c.slug}">${c.name}</option>`).join('');
+  sel.innerHTML = cities.map(c=>`<option value="${esc(c.name)}" data-slug="${esc(c.slug)}">${esc(c.name)}</option>`).join('');
   fitSelect(sel);
 }
 
@@ -597,7 +615,8 @@ function activityLine(labels, days) {
 }
 
 function showMapCard({title, subtitle, note, image, gmaps, link, days, when, eventId}) {
-  const imgHtml = image ? `<div class="card-image"><img src="${image}" alt="" onerror="this.parentElement.remove()"></div>` : '';
+  const safeImage = safeUrl(image);
+  const imgHtml = safeImage ? `<div class="card-image"><img src="${safeImage}" alt="" onerror="this.parentElement.remove()"></div>` : '';
 
   const detailRows = [];
   // `when` is a pre-formatted line for an event (its own time/recurrence — subtitle here is
@@ -605,19 +624,21 @@ function showMapCard({title, subtitle, note, image, gmaps, link, days, when, eve
   // apply). Only fall back to activityLine(subtitle, days) for the place-info call, which
   // doesn't pass `when`.
   const activity = when !== undefined ? when : activityLine(subtitle, days);
-  if (activity) detailRows.push(`<div class="detail-row"><span class="detail-label">When</span><span>${activity}</span></div>`);
-  if (note) detailRows.push(`<div class="detail-note" style="margin-top:0;margin-bottom:6px">${note}</div>`);
+  if (activity) detailRows.push(`<div class="detail-row"><span class="detail-label">When</span><span>${esc(activity)}</span></div>`);
+  if (note) detailRows.push(`<div class="detail-note" style="margin-top:0;margin-bottom:6px">${esc(note)}</div>`);
   const links = [];
-  if (gmaps) links.push(`<a class="detail-link" href="${gmaps}" target="_blank" rel="noopener">Open in maps ↗</a>`);
-  if (link)  links.push(`<a class="detail-link" href="${link}"  target="_blank" rel="noopener">More info ↗</a>`);
+  const safeGmaps = safeUrl(gmaps);
+  const safeLink = safeUrl(link);
+  if (safeGmaps) links.push(`<a class="detail-link" href="${safeGmaps}" target="_blank" rel="noopener">Open in maps ↗</a>`);
+  if (safeLink)  links.push(`<a class="detail-link" href="${safeLink}"  target="_blank" rel="noopener">More info ↗</a>`);
   if (links.length) detailRows.push(`<div class="detail-links">${links.join('')}</div>`);
 
   document.getElementById('map-card-inner').innerHTML = `
     <div class="card-top">
       ${imgHtml}
       <div class="card-body">
-        <div class="card-name">${title}</div>
-        ${subtitle ? `<div class="card-meta">${subtitle}</div>` : ''}
+        <div class="card-name">${esc(title)}</div>
+        ${subtitle ? `<div class="card-meta">${esc(subtitle)}</div>` : ''}
       </div>
     </div>
     ${detailRows.length ? `<div class="card-detail">${detailRows.join('')}</div>` : ''}`;
@@ -685,7 +706,7 @@ function renderGrouped(grouped) {
   if (!days.length) { container.innerHTML = '<div class="empty"><strong>♟</strong>No events found</div>'; return; }
   container.innerHTML = days.map(day => `
     <div class="day-group">
-      <div class="day-heading">${day}</div>
+      <div class="day-heading">${esc(day)}</div>
       <div class="events-list">${sortLiveFirst(grouped[day]).map(renderCard).join('')}</div>
     </div>`).join('');
 }
@@ -703,28 +724,30 @@ function renderCard(e) {
   // Fall back to the place's own photo when the event has no community (or the community
   // has no photo) — e.g. StrangerChess has a real image on its place row but no community,
   // so without this fallback its card silently showed nothing.
-  const cardImg = e.community_image || e.place_image;
+  const cardImg = safeUrl(e.community_image || e.place_image);
   const imgHtml = cardImg ? `<div class="card-image"><img src="${cardImg}" alt="" onerror="this.parentElement.remove()"></div>` : '';
   const dateStr = e.specific_date ? formatSpecificDate(e.specific_date) : null;
   const timeStr = e.time ? (e.time_end ? e.time+'–'+e.time_end : e.time) : null;
-  const meta = [dateStr, timeStr, e.place_name].filter(Boolean).join(' · ');
+  const meta = esc([dateStr, timeStr, e.place_name].filter(Boolean).join(' · '));
   // Anything happening right now gets a pulsing "Live" tag instead of its plain format_tag
   // pill — a check-in always qualifies (its time/time_end bracket exactly its live window),
   // same as any other event whose own schedule covers this moment (see isEventLiveNow).
   const tag = isEventLiveNow(e) ? `<span class="live-tag"><span class="pulse-dot"></span>Live</span>`
-    : e.format_tag ? `<span class="card-tag">${e.format_tag}</span>` : '';
+    : e.format_tag ? `<span class="card-tag">${esc(e.format_tag)}</span>` : '';
   const rows = [];
-  if (e.place_name) rows.push(`<div class="detail-row"><span class="detail-label">Where</span><span>${e.place_name}${e.place_address?', '+e.place_address:''}</span></div>`);
+  if (e.place_name) rows.push(`<div class="detail-row"><span class="detail-label">Where</span><span>${esc(e.place_name)}${e.place_address?', '+esc(e.place_address):''}</span></div>`);
   if (e.time) {
     const tr = e.time_end ? e.time+'–'+e.time_end : e.time;
     const days = e.recurrence_days&&e.recurrence_days.length ? ', every '+e.recurrence_days.join(', ') : '';
     const datePrefix = dateStr ? dateStr + ', ' : '';
-    rows.push(`<div class="detail-row"><span class="detail-label">When</span><span>${datePrefix}${tr}${days}</span></div>`);
+    rows.push(`<div class="detail-row"><span class="detail-label">When</span><span>${esc(datePrefix+tr+days)}</span></div>`);
   }
-  if (e.notes) rows.push(`<div class="detail-note">${e.notes}</div>`);
+  if (e.notes) rows.push(`<div class="detail-note">${esc(e.notes)}</div>`);
   const links = [];
-  if (e.place_gmaps) links.push(`<a class="detail-link" href="${e.place_gmaps}" target="_blank" rel="noopener" onclick="event.stopPropagation()">Open in maps ↗</a>`);
-  if (e.external_link) links.push(`<a class="detail-link" href="${e.external_link}" target="_blank" rel="noopener" onclick="event.stopPropagation()">More info ↗</a>`);
+  const safeGmaps = safeUrl(e.place_gmaps);
+  const safeExternalLink = safeUrl(e.external_link);
+  if (safeGmaps) links.push(`<a class="detail-link" href="${safeGmaps}" target="_blank" rel="noopener" onclick="event.stopPropagation()">Open in maps ↗</a>`);
+  if (safeExternalLink) links.push(`<a class="detail-link" href="${safeExternalLink}" target="_blank" rel="noopener" onclick="event.stopPropagation()">More info ↗</a>`);
   if (links.length) rows.push(`<div class="detail-links">${links.join('')}</div>`);
 
   // Real event ids are numbers straight from the DB; a live check-in's id ("checkin-3") is
@@ -732,7 +755,7 @@ function renderCard(e) {
   // either type coming back out of currentEvents.
   const idArg = typeof e.id === 'string' ? `'${e.id}'` : e.id;
   return `<div class="event-card" id="card-${e.id}" onclick="onCardClick(this,${idArg})">
-    <div class="card-top">${imgHtml}<div class="card-body"><div class="card-name">${e.title}</div><div class="card-meta">${meta}</div></div>${tag}</div>
+    <div class="card-top">${imgHtml}<div class="card-body"><div class="card-name">${esc(e.title)}</div><div class="card-meta">${meta}</div></div>${tag}</div>
     <div class="card-detail">${rows.join('')}</div>
   </div>`;
 }
