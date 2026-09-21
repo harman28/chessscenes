@@ -20,7 +20,8 @@
     "Goat of the Boat": "https://i.imgur.com/7bVmOsf.png",
     "Chess and Jazz": "https://i.imgur.com/4EBVABa.png",
     "Kuala Lumpur Poggers": "https://images.chesscomfiles.com/uploads/v1/group/476247.e4ec9cd1.160x160o.780f89b3d7d0@2x.png",
-    "Acid Chess Club": "/static/acid-chess-club-logo.jpg"
+    "Acid Chess Club": "/static/acid-chess-club-logo.jpg",
+    "Chess Grinder": null
   },
   "events": [
     {
@@ -1876,6 +1877,26 @@
       "notes": "DJ set by Maliboo",
       "days": null,
       "specific_date": "2026-09-24",
+      "active": true
+    },
+    {
+      "place_slug": null,
+      "standalone_name": "Cloud 9",
+      "standalone_city": "Tbilisi",
+      "standalone_lat": 41.6997789,
+      "standalone_lng": 44.7930236,
+      "standalone_gmaps": "https://maps.app.goo.gl/wqek3hCw8mF9zBX77",
+      "community": "Chess Grinder",
+      "title": "Chess Grinder Rapid Tournament",
+      "time": "20:00",
+      "time_end": null,
+      "format_tag": "Casual",
+      "external_link": "https://t.me/chess_grinder_for_life",
+      "notes": "Roaming Thursday tournament — venue has moved before (Coffee Lars, Poddon Bar), currently Cloud 9. Update standalone_* fields here if it moves again.",
+      "days": [
+        "Thursday"
+      ],
+      "specific_date": null,
       "active": true
     }
   ]
