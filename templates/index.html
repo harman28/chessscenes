@@ -37,6 +37,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@5.9.0/dist/maplibre-gl.css">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
@@ -126,11 +127,13 @@
 
     /* Map */
     .leaflet-container { background: #e8e4df; }
-    /* Raw OpenStreetMap tiles are far more saturated (green parks, blue water, bright
-       road colors) than CARTO's old light_all style was — mute them toward the app's own
-       beige/maroon palette with a filter instead of depending on a third-party "light"
-       tile style, which is exactly the kind of dependency that just broke. */
-    .leaflet-tile-pane { filter: grayscale(0.65) sepia(0.25) brightness(1.05) contrast(0.9); }
+    /* The basemap is OpenFreeMap's "positron" vector style (see initMap() below) — already
+       a light, minimal-label look close to the app's own beige/maroon palette, so unlike the
+       old raw-OpenStreetMap-raster fallback it doesn't need a color filter on top. Panning
+       and zooming are noticeably laggier than plain raster tiles (a known long-standing
+       maplibre-gl-leaflet bridge issue — MapLibre repaints slower than Leaflet's own tile
+       panning) — Harman tried the raster fallback with boosted pin styling instead and
+       preferred this look enough to accept the tradeoff, so it's back. */
     .leaflet-control-zoom { border: none !important; }
     .leaflet-control-zoom a { background: var(--maroon) !important; color: var(--cream) !important; border: none !important; }
     /* OpenStreetMap's usage policy requires attribution actually be shown (not hidden) —
@@ -141,36 +144,38 @@
     }
     .leaflet-control-attribution a { color: var(--maroon); }
 
-    /* Active pin — solid maroon teardrop */
+    /* Active pin — solid maroon teardrop. Sized up and given a heavier outline/shadow (vs.
+       the original 30px/2px-border version) so it stays legible against busier raster tiles
+       without needing to zoom in. */
     .pin-active {
-      width: 30px; height: 30px;
+      width: 36px; height: 36px;
       background: var(--maroon);
       border-radius: 50% 50% 50% 0;
       transform: rotate(-45deg);
       display: flex; align-items: center; justify-content: center;
-      box-shadow: 2px 2px 6px rgba(0,0,0,0.35);
-      border: 2px solid rgba(245,230,224,0.3);
+      box-shadow: 0 2px 3px rgba(0,0,0,0.3), 0 0 0 1px rgba(0,0,0,0.15);
+      border: 3px solid var(--cream);
     }
     .pin-active-inner {
       transform: rotate(45deg);
-      font-size: 14px; color: var(--cream);
+      font-size: 16px; color: var(--cream);
       margin-top: -2px; margin-left: 1px;
       line-height: 1;
     }
 
-    /* Inactive pin — solid grey, smaller */
+    /* Inactive pin — solid grey, smaller, still with a visible cream outline */
     .pin-inactive {
-      width: 22px; height: 22px;
-      background: #888880;
+      width: 26px; height: 26px;
+      background: #7a7a72;
       border-radius: 50% 50% 50% 0;
       transform: rotate(-45deg);
       display: flex; align-items: center; justify-content: center;
-      border: 1.5px solid rgba(255,255,255,0.2);
-      box-shadow: 1px 1px 4px rgba(0,0,0,0.2);
+      border: 2px solid rgba(245,230,224,0.85);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.25);
     }
     .pin-inactive-inner {
       transform: rotate(45deg);
-      font-size: 10px; color: #fff;
+      font-size: 11px; color: #fff;
       margin-top: -1px;
       line-height: 1;
     }
@@ -266,6 +271,8 @@
 </div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://unpkg.com/maplibre-gl@5.9.0/dist/maplibre-gl.js"></script>
+<script src="https://unpkg.com/@maplibre/maplibre-gl-leaflet@0.1.4/leaflet-maplibre-gl.js"></script>
 <script>
 const DAYS = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
@@ -381,13 +388,24 @@ function initMap() {
   map = L.map('map-pane', {zoomControl: true, scrollWheelZoom: true});
   // CARTO's basemaps.cartocdn.com now requires an API key — unkeyed requests get served
   // an "API key required" watermark instead of real tiles (a policy change on their end,
-  // not something broken here). Plain OpenStreetMap tiles need no key and are already what
-  // render_pin_map() in app.py uses for the static share-image maps.
-  const tileLayer = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19,
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors',
-  });
-  tileLayer.addTo(map);
+  // not something broken here). Plain raster OpenStreetMap tiles (tile.openstreetmap.org,
+  // still what render_pin_map() in app.py uses for the static share-image maps) don't need a
+  // key, but they're busy with street/place labels that compete with the pins for attention.
+  // OpenFreeMap's "positron" vector style is a free, keyless, no-signup open-source
+  // recreation of CARTO's old light/minimal look — rendered client-side via MapLibre GL
+  // (through the maplibre-gl-leaflet bridge, so it drops into the same Leaflet map/markers/
+  // popups untouched) instead of pre-baked raster tiles. Slower to pan/zoom than raster
+  // tiles (see the CSS comment above) — a known tradeoff Harman accepted for the look.
+  // IMPORTANT: maplibre-gl is pinned to 5.9.0, not "latest" — 6.0.0 dropped the UMD/global
+  // browser build (dist/maplibre-gl.js) in favor of ESM-only .mjs files, so with a plain
+  // <script src> include it silently leaves `window.maplibregl` undefined and this whole
+  // layer fails ("maplibre_gl.Map is not a constructor" in leaflet-maplibre-gl.js). Bumping
+  // this version needs either staying on a 5.x/4.x/... release with the UMD build, or
+  // switching the include to <script type="module"> and importing maplibre-gl properly.
+  L.maplibreGL({
+    style: 'https://tiles.openfreemap.org/styles/positron',
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors &middot; <a href="https://openfreemap.org" target="_blank" rel="noopener">OpenFreeMap</a>',
+  }).addTo(map);
   buildPinFilterUI();
 }
 
@@ -463,7 +481,7 @@ function activePinIcon(labels) {
   return L.divIcon({
     className: '',
     html: `<div class="pin-active"><div class="pin-active-inner">${pieceForLabels(labels)}</div></div>`,
-    iconSize: [30,30], iconAnchor: [10,30], popupAnchor: [5,-30],
+    iconSize: [36,36], iconAnchor: [12,36], popupAnchor: [6,-36],
   });
 }
 
@@ -471,7 +489,7 @@ function inactivePinIcon(labels) {
   return L.divIcon({
     className: '',
     html: `<div class="pin-inactive"><div class="pin-inactive-inner">${pieceForLabels(labels)}</div></div>`,
-    iconSize: [22,22], iconAnchor: [7,22], popupAnchor: [4,-22],
+    iconSize: [26,26], iconAnchor: [9,26], popupAnchor: [5,-26],
   });
 }
 
